@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)", "Bash(npx *)", "Bash(node *)",
+      "Bash(git *)", "Bash(gh *)",
+      "Bash(mkdir *)", "Bash(cp *)", "Bash(mv *)", "Bash(rm *)",
+      "Bash(cat *)", "Bash(ls *)", "Bash(find *)", "Bash(echo *)",
+      "Bash(touch *)", "Bash(chmod *)",
+      "Read", "Write", "Edit", "Glob", "Grep",
+      "mcp__context7__resolve-library-id", "mcp__context7__query-docs"
+    ]
+  }
+}
