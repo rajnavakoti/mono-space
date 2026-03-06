@@ -1,0 +1,75 @@
+/* Neo-Brutalist Monochrome Design System */
+
+:root {
+  /* === Colors (dark mode default) === */
+  --color-bg: #000;
+  --color-bg-secondary: #111;
+  --color-bg-tertiary: #222;
+  --color-surface: #111;
+  --color-surface-hover: #222;
+  --color-text: #fff;
+  --color-text-secondary: #ccc;
+  --color-text-muted: #999;
+  --color-border: #fff;
+  --color-border-muted: #333;
+  --color-accent: #fff;
+  --color-accent-text: #000;
+
+  /* === Typography === */
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+  --font-sans: system-ui, -apple-system, sans-serif;
+
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.25rem;    /* 20px */
+  --text-xl: 1.5rem;     /* 24px */
+  --text-2xl: 2rem;      /* 32px */
+  --text-3xl: 3rem;      /* 48px */
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  /* === Spacing === */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+  --space-4xl: 6rem;     /* 96px */
+
+  /* === Borders === */
+  --border-thin: 1px solid var(--color-border);
+  --border-medium: 2px solid var(--color-border);
+  --border-thick: 3px solid var(--color-border);
+  --border-muted: 1px solid var(--color-border-muted);
+
+  /* === Layout === */
+  --max-width: 1200px;
+  --max-width-narrow: 800px;
+  --max-width-wide: 1440px;
+}
+
+/* Light mode */
+[data-theme="light"] {
+  --color-bg: #fff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #eee;
+  --color-surface: #f5f5f5;
+  --color-surface-hover: #eee;
+  --color-text: #000;
+  --color-text-secondary: #333;
+  --color-text-muted: #666;
+  --color-border: #000;
+  --color-border-muted: #ccc;
+  --color-accent: #000;
+  --color-accent-text: #fff;
+}
