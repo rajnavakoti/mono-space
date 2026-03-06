@@ -1,22 +1,188 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+.page {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
   padding: var(--space-2xl) var(--space-lg);
+}
+
+/* === Hero === */
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  border-bottom: var(--border-thick);
+}
+
+.greeting {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--space-sm);
+}
+
+.name {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
 }
 
 .title {
   font-family: var(--font-mono);
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-black);
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-lg);
 }
 
-.description {
-  margin-top: var(--space-md);
-  font-size: var(--text-base);
+.tagline {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  line-height: var(--leading-relaxed);
+}
+
+/* === Sections === */
+.section {
+  padding: var(--space-2xl) 0;
+  border-bottom: var(--border-muted);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--color-text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+/* === About === */
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.paragraph {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: 65ch;
+}
+
+/* === Current Focus === */
+.focusList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.focusItem {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.bullet {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* === Speaking === */
+.speakingGroup {
+  margin-bottom: var(--space-xl);
+}
+
+.speakingGroup:last-child {
+  margin-bottom: 0;
+}
+
+.speakingLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.engagements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.talkCard {
+  padding: var(--space-md);
+  border: var(--border-thin);
+  background-color: var(--color-surface);
+}
+
+.talkCard:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.talkTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-xs);
+}
+
+.talkMeta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* === Connect === */
+.linkGrid {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.connectLink {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-medium);
+  border-bottom: var(--border-medium);
+  background-color: var(--color-bg);
+}
+
+.connectLink:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.arrow {
+  display: inline;
+}
+
+/* === Mobile === */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .hero {
+    padding: var(--space-2xl) 0 var(--space-xl);
+  }
+
+  .name {
+    font-size: var(--text-2xl);
+  }
+
+  .tagline {
+    font-size: var(--text-base);
+  }
 }
