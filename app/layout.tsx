@@ -12,6 +12,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteUrl = "https://rajnavakoti.dev";
+
 export const metadata: Metadata = {
   title: {
     default: "Raj Navakoti",
@@ -19,6 +21,26 @@ export const metadata: Metadata = {
   },
   description:
     "Staff Software Engineer - AI, neuroscience, enterprise architecture, DDD",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Raj Navakoti",
+    title: "Raj Navakoti",
+    description:
+      "Staff Software Engineer - AI, neuroscience, enterprise architecture, DDD",
+  },
+  twitter: {
+    card: "summary",
+    title: "Raj Navakoti",
+    description:
+      "Staff Software Engineer - AI, neuroscience, enterprise architecture, DDD",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
