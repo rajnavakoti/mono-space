@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { getAllPosts } from "@/lib/blog";
+import { getAllPosts, getAllTags } from "@/lib/blog";
+import { BlogList } from "@/components/BlogList";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -9,6 +9,7 @@ export const metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const allTags = getAllTags();
 
   return (
     <div className={styles.page}>
@@ -19,44 +20,7 @@ export default function BlogPage() {
         </p>
       </header>
 
-      {posts.length === 0 ? (
-        <p className={styles.empty}>No posts yet.</p>
-      ) : (
-        <ul className={styles.postList}>
-          {posts.map((post) => (
-            <li key={post.slug}>
-              <Link
-                href={`/blog/${post.slug}`}
-                className={styles.postLink}
-              >
-                <article className={styles.postCard}>
-                  <div className={styles.postMeta}>
-                    <time className={styles.date}>
-                      {post.frontmatter.date}
-                    </time>
-                    <span className={styles.readingTime}>
-                      {post.readingTime}
-                    </span>
-                  </div>
-                  <h2 className={styles.postTitle}>
-                    {post.frontmatter.title}
-                  </h2>
-                  <p className={styles.excerpt}>
-                    {post.frontmatter.excerpt}
-                  </p>
-                  <div className={styles.tags}>
-                    {post.frontmatter.tags.map((tag) => (
-                      <span key={tag} className={styles.tag}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </article>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <BlogList posts={posts} allTags={allTags} />
     </div>
   );
 }
