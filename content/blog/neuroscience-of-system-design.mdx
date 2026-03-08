@@ -1,0 +1,61 @@
+---
+title: "The Neuroscience of System Design: Why Your Brain Prefers Microservices"
+date: "2026-01-20"
+tags: ["neuroscience", "architecture", "DDD"]
+excerpt: "Our brains chunk information into 7±2 items. Good system architecture does the same thing — and that's not a coincidence."
+published: true
+---
+
+George Miller's 1956 paper "The Magical Number Seven, Plus or Minus Two" described a fundamental constraint of human working memory. We can hold roughly 7 items in our heads at once.
+
+This has profound implications for how we design software systems.
+
+## Working Memory and Bounded Contexts
+
+When an engineer opens a codebase, their working memory starts filling up. Variable names, function signatures, data flows, side effects — each one takes a slot.
+
+A well-designed bounded context keeps the cognitive load within that 7±2 window. You can reason about the entire context without your mental model collapsing.
+
+```typescript
+// This bounded context fits in working memory:
+// 1. Order entity
+// 2. OrderLine value object
+// 3. OrderStatus enum
+// 4. OrderRepository interface
+// 5. PlaceOrder command
+// 6. OrderPlaced event
+// 7. OrderService
+
+// Add one more concept and comprehension drops
+```
+
+A monolith that exposes 50 concepts in a single namespace overwhelms working memory. The brain can't hold the model, so engineers start making assumptions — and assumptions become bugs.
+
+## Chunking and Service Boundaries
+
+Chunking is the brain's strategy for working around the 7±2 limit. We group related items into a single "chunk" that occupies one working memory slot.
+
+This is exactly what microservices do at the system level:
+
+- **Payment Service** — one chunk, regardless of internal complexity
+- **Inventory Service** — one chunk
+- **Notification Service** — one chunk
+
+As long as the interfaces between chunks are clean, an engineer can reason about the system at a high level using just a few working memory slots.
+
+## The Prefrontal Cortex and Abstraction Layers
+
+The prefrontal cortex handles abstract reasoning. It's also the most energy-expensive part of the brain. When we force engineers to reason across too many abstraction levels simultaneously, we're draining their most expensive cognitive resource.
+
+Good architecture minimizes the number of abstraction levels visible at any point:
+
+- **Infrastructure** — you shouldn't see this when writing business logic
+- **Domain** — this is where you live most of the time
+- **Application** — thin orchestration layer
+- **Presentation** — separate concern entirely
+
+## Implications for Architecture Reviews
+
+Next time you review an architecture, ask: "Can I hold this entire context in my head?" If you can't, the system needs better boundaries. Not because of any technical constraint — because of how human brains work.
+
+The best architectures aren't just technically sound. They're cognitively ergonomic.
