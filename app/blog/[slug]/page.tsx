@@ -20,9 +20,19 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
 
+  const url = `https://rajnavakoti.dev/blog/${slug}`;
+
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.excerpt,
+    openGraph: {
+      type: "article",
+      title: post.frontmatter.title,
+      description: post.frontmatter.excerpt,
+      url,
+      publishedTime: post.frontmatter.date,
+      tags: post.frontmatter.tags,
+    },
   };
 }
 
@@ -39,8 +49,25 @@ export default async function BlogPostPage({ params }: PageProps) {
     options: { parseFrontmatter: false },
   });
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.frontmatter.title,
+    description: post.frontmatter.excerpt,
+    datePublished: post.frontmatter.date,
+    author: {
+      "@type": "Person",
+      name: "Raj Navakoti",
+    },
+    keywords: post.frontmatter.tags.join(", "),
+  };
+
   return (
     <article className={styles.article}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className={styles.header}>
         <div className={styles.meta}>
           <time className={styles.date}>{post.frontmatter.date}</time>
