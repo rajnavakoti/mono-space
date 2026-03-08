@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/lib/navigation";
+import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Header.module.css";
 
 export function Header() {
@@ -17,15 +18,18 @@ export function Header() {
           RAJ<span className={styles.logoAccent}>_</span>N
         </Link>
 
-        <button
-          className={styles.menuToggle}
+        <div className={styles.controls}>
+          <ThemeToggle />
+          <button
+            className={styles.menuToggle}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-expanded={menuOpen}
           aria-controls="main-nav-links"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? "[X]" : "[=]"}
-        </button>
+          </button>
+        </div>
 
         <ul
           id="main-nav-links"

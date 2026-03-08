@@ -33,6 +33,12 @@
   opacity: 0.4;
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .menuToggle {
   display: none;
   font-family: var(--font-mono);
