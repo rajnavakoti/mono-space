@@ -1,4 +1,5 @@
 import { profile } from "@/content/profile";
+import { TypingEffect } from "@/components/TypingEffect";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -11,28 +12,52 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={styles.terminal}>
           <div className={styles.terminalBar}>
-            <span className={styles.terminalDot} aria-hidden="true" />
-            <span className={styles.terminalDot} aria-hidden="true" />
-            <span className={styles.terminalDot} aria-hidden="true" />
-            <span className={styles.terminalTitle}>~/raj</span>
+            <div className={styles.terminalDots} aria-hidden="true">
+              <span className={styles.terminalDot} />
+              <span className={styles.terminalDot} />
+              <span className={styles.terminalDot} />
+            </div>
+            <span className={styles.terminalTitle}>raj@mono-space:~</span>
+            <span className={styles.terminalPid} aria-hidden="true">
+              PID 1337
+            </span>
           </div>
           <div className={styles.terminalBody}>
-            <p className={styles.prompt}>
+            <div className={styles.promptLine}>
               <span className={styles.promptSymbol} aria-hidden="true">
                 $
-              </span>{" "}
-              whoami
-            </p>
-            <h1 className={styles.name}>{profile.name}</h1>
-            <p className={styles.title}>{profile.title}</p>
-            <p className={styles.tagline}>{profile.tagline}</p>
-            <p className={styles.cursor} aria-hidden="true">
-              <span className={styles.promptSymbol}>$</span>{" "}
-              <span className={styles.blink}>_</span>
-            </p>
+              </span>
+              <TypingEffect text=" whoami" className={styles.promptText} />
+            </div>
+            <div className={styles.output}>
+              <h1 className={styles.name}>{profile.name}</h1>
+              <p className={styles.title}>{profile.title}</p>
+              <div className={styles.taglineWrap}>
+                <span className={styles.taglineBracket} aria-hidden="true">
+                  [
+                </span>
+                <p className={styles.tagline}>{profile.tagline}</p>
+                <span className={styles.taglineBracket} aria-hidden="true">
+                  ]
+                </span>
+              </div>
+            </div>
+            <div className={styles.promptLine}>
+              <span className={styles.promptSymbol} aria-hidden="true">
+                $
+              </span>
+              <span className={styles.blink} aria-hidden="true">
+                _
+              </span>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* ASCII divider */}
+      <div className={styles.divider} aria-hidden="true">
+        ========================================
+      </div>
 
       {/* About — window panel */}
       <section aria-labelledby="about-heading">
@@ -64,10 +89,13 @@ export default function Home() {
           </div>
           <div className={styles.windowBody}>
             <ul className={styles.focusList}>
-              {profile.currentFocus.map((item) => (
+              {profile.currentFocus.map((item, i) => (
                 <li key={item} className={styles.focusItem}>
+                  <span className={styles.focusIndex} aria-hidden="true">
+                    {String(i).padStart(2, "0")}
+                  </span>
                   <span className={styles.focusBullet} aria-hidden="true">
-                    &gt;
+                    //
                   </span>
                   {item}
                 </li>
@@ -91,10 +119,15 @@ export default function Home() {
           <div className={styles.windowBody}>
             {upcoming.length > 0 && (
               <div className={styles.talkGroup}>
-                <p className={styles.talkGroupLabel}>// upcoming</p>
+                <p className={styles.talkGroupLabel}>
+                  <span aria-hidden="true">&#9654; </span>upcoming
+                </p>
                 {upcoming.map((talk) => (
                   <article key={talk.title} className={styles.talkCard}>
-                    <p className={styles.talkTitle}>{talk.title}</p>
+                    <div className={styles.talkHeader}>
+                      <p className={styles.talkTitle}>{talk.title}</p>
+                      <span className={styles.talkBadge}>NEXT</span>
+                    </div>
                     <p className={styles.talkMeta}>
                       {talk.event} &mdash; {talk.date}
                     </p>
@@ -104,7 +137,9 @@ export default function Home() {
             )}
             {past.length > 0 && (
               <div className={styles.talkGroup}>
-                <p className={styles.talkGroupLabel}>// past</p>
+                <p className={styles.talkGroupLabel}>
+                  <span aria-hidden="true">&#9632; </span>past
+                </p>
                 {past.map((talk) => (
                   <article key={talk.title} className={styles.talkCard}>
                     <p className={styles.talkTitle}>{talk.title}</p>
@@ -150,6 +185,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Footer divider */}
+      <div className={styles.divider} aria-hidden="true">
+        ========================================
+      </div>
     </div>
   );
 }

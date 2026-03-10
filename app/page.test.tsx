@@ -8,10 +8,9 @@ describe("Home", () => {
     expect(screen.getByText("Staff Software Engineer")).toBeInTheDocument();
   });
 
-  it("renders terminal prompt elements", () => {
+  it("renders terminal bar with path", () => {
     render(<Home />);
-    expect(screen.getByText(/whoami/)).toBeInTheDocument();
-    expect(screen.getByText("~/raj")).toBeInTheDocument();
+    expect(screen.getByText("raj@mono-space:~")).toBeInTheDocument();
   });
 
   it("renders about window panel", () => {
@@ -20,7 +19,7 @@ describe("Home", () => {
     expect(screen.getByText(/intersection of software/)).toBeInTheDocument();
   });
 
-  it("renders focus window with items", () => {
+  it("renders focus window with indexed items", () => {
     render(<Home />);
     expect(screen.getByText("FOCUS.log")).toBeInTheDocument();
     expect(
@@ -31,8 +30,13 @@ describe("Home", () => {
   it("renders speaking window with talks", () => {
     render(<Home />);
     expect(screen.getByText("TALKS.json")).toBeInTheDocument();
-    expect(screen.getByText("// upcoming")).toBeInTheDocument();
-    expect(screen.getByText("// past")).toBeInTheDocument();
+    expect(screen.getByText(/upcoming/)).toBeInTheDocument();
+    expect(screen.getByText(/past/)).toBeInTheDocument();
+  });
+
+  it("renders NEXT badge on upcoming talks", () => {
+    render(<Home />);
+    expect(screen.getByText("NEXT")).toBeInTheDocument();
   });
 
   it("renders connect window with links", () => {

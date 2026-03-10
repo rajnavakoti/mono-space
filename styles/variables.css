@@ -3,17 +3,21 @@
 :root {
   /* === Colors (dark mode default) === */
   --color-bg: #000;
-  --color-bg-secondary: #111;
-  --color-bg-tertiary: #222;
-  --color-surface: #111;
-  --color-surface-hover: #222;
+  --color-bg-secondary: #0a0a0a;
+  --color-bg-tertiary: #151515;
+  --color-surface: #0a0a0a;
+  --color-surface-hover: #151515;
   --color-text: #fff;
   --color-text-secondary: #ccc;
-  --color-text-muted: #999;
+  --color-text-muted: #666;
   --color-border: #fff;
   --color-border-muted: #333;
   --color-accent: #fff;
   --color-accent-text: #000;
+
+  /* === Glow (for dark mode CRT feel) === */
+  --color-glow: rgba(255, 255, 255, 0.03);
+  --color-scanline: rgba(255, 255, 255, 0.015);
 
   /* === Typography === */
   --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
@@ -26,6 +30,7 @@
   --text-xl: 1.5rem;     /* 24px */
   --text-2xl: 2rem;      /* 32px */
   --text-3xl: 3rem;      /* 48px */
+  --text-4xl: 4rem;      /* 64px */
 
   --leading-tight: 1.1;
   --leading-normal: 1.5;
@@ -52,6 +57,11 @@
   --border-thick: 3px solid var(--color-border);
   --border-muted: 1px solid var(--color-border-muted);
 
+  /* === Offset Shadow (neo-brutalist) === */
+  --shadow-offset: 6px;
+  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-text);
+  --shadow-brutal-sm: 4px 4px 0 var(--color-text);
+
   /* === Layout === */
   --max-width: 1200px;
   --max-width-narrow: 800px;
@@ -72,4 +82,10 @@
   --color-border-muted: #ccc;
   --color-accent: #000;
   --color-accent-text: #fff;
+
+  --color-glow: rgba(0, 0, 0, 0.02);
+  --color-scanline: rgba(0, 0, 0, 0.02);
+
+  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-text);
+  --shadow-brutal-sm: 4px 4px 0 var(--color-text);
 }

@@ -67,12 +67,14 @@
 
 /* === Post Card — mini window === */
 .postCard {
-  border: var(--border-thin);
+  border: var(--border-medium);
   overflow: hidden;
 }
 
 .postCard:hover {
   border-color: var(--color-text);
+  box-shadow: var(--shadow-brutal-sm);
+  transform: translate(-2px, -2px);
 }
 
 .postBar {
@@ -80,7 +82,7 @@
   justify-content: space-between;
   padding: var(--space-xs) var(--space-md);
   background-color: var(--color-bg-secondary);
-  border-bottom: var(--border-thin);
+  border-bottom: var(--border-medium);
 }
 
 .date {
@@ -139,5 +141,10 @@
 @media (max-width: 768px) {
   .postTitle {
     font-size: var(--text-base);
+  }
+
+  .postCard:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
