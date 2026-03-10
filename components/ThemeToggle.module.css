@@ -1,21 +1,22 @@
 .toggle {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   background: none;
-  border: none;
-  color: var(--color-text);
+  border: 1px solid var(--color-bg);
+  color: var(--color-bg);
   padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
   letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .toggle:hover {
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .toggle:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 2px solid var(--color-bg);
   outline-offset: 2px;
 }
