@@ -2,6 +2,7 @@ export interface Profile {
   name: string;
   title: string;
   tagline: string;
+  quote: string;
   about: string;
   currentFocus: string[];
   links: ProfileLink[];
@@ -26,6 +27,7 @@ export const profile: Profile = {
   name: "Raj Navakoti",
   title: "Staff Software Engineer",
   tagline: "AI . Architecture . Cognition",
+  quote: "The best architectures emerge from understanding how humans think, not just how machines compute.",
   about:
     "I design systems at the intersection of software architecture, AI, and how humans actually think. Currently deep into demand-driven design and LLM-augmented engineering.",
   currentFocus: [
