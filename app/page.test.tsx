@@ -2,35 +2,42 @@ import { render, screen } from "@testing-library/react";
 import Home from "./page";
 
 describe("Home", () => {
-  it("renders the hero section with name and title", () => {
+  it("renders the terminal hero with name and title", () => {
     render(<Home />);
     expect(screen.getByText("Raj Navakoti")).toBeInTheDocument();
     expect(screen.getByText("Staff Software Engineer")).toBeInTheDocument();
   });
 
-  it("renders about section", () => {
+  it("renders terminal prompt elements", () => {
     render(<Home />);
-    expect(screen.getByText("// about")).toBeInTheDocument();
+    expect(screen.getByText(/whoami/)).toBeInTheDocument();
+    expect(screen.getByText("~/raj")).toBeInTheDocument();
   });
 
-  it("renders current focus items", () => {
+  it("renders about window panel", () => {
     render(<Home />);
-    expect(screen.getByText("// current focus")).toBeInTheDocument();
+    expect(screen.getByText("ABOUT.md")).toBeInTheDocument();
+    expect(screen.getByText(/intersection of software/)).toBeInTheDocument();
+  });
+
+  it("renders focus window with items", () => {
+    render(<Home />);
+    expect(screen.getByText("FOCUS.log")).toBeInTheDocument();
     expect(
       screen.getByText(/Demand-Driven Context framework/)
     ).toBeInTheDocument();
   });
 
-  it("renders speaking engagements", () => {
+  it("renders speaking window with talks", () => {
     render(<Home />);
-    expect(screen.getByText("// speaking")).toBeInTheDocument();
-    expect(screen.getByText("Upcoming")).toBeInTheDocument();
-    expect(screen.getByText("Past")).toBeInTheDocument();
+    expect(screen.getByText("TALKS.json")).toBeInTheDocument();
+    expect(screen.getByText("// upcoming")).toBeInTheDocument();
+    expect(screen.getByText("// past")).toBeInTheDocument();
   });
 
-  it("renders connect links", () => {
+  it("renders connect window with links", () => {
     render(<Home />);
-    expect(screen.getByText("// connect")).toBeInTheDocument();
+    expect(screen.getByText("LINKS.sh")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /GitHub/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /LinkedIn/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Email/ })).toBeInTheDocument();

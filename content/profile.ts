@@ -2,7 +2,7 @@ export interface Profile {
   name: string;
   title: string;
   tagline: string;
-  about: string[];
+  about: string;
   currentFocus: string[];
   links: ProfileLink[];
   speaking: SpeakingEngagement[];
@@ -25,16 +25,14 @@ export interface SpeakingEngagement {
 export const profile: Profile = {
   name: "Raj Navakoti",
   title: "Staff Software Engineer",
-  tagline: "Building at the intersection of AI, architecture, and human cognition.",
-  about: [
-    "I design and build software systems that scale. My work spans enterprise architecture, domain-driven design, and applied AI. I'm fascinated by how neuroscience principles can inform better software design.",
-    "Currently focused on demand-driven architecture methodologies and exploring how large language models can augment software engineering workflows.",
-  ],
+  tagline: "AI . Architecture . Cognition",
+  about:
+    "I design systems at the intersection of software architecture, AI, and how humans actually think. Currently deep into demand-driven design and LLM-augmented engineering.",
   currentFocus: [
-    "Demand-Driven Context framework for architecture knowledge",
-    "AI-augmented development workflows with Claude Code",
+    "Demand-Driven Context framework",
+    "AI-augmented dev workflows",
     "Enterprise DDD at scale",
-    "Neuroscience-inspired system design",
+    "Neuroscience x system design",
   ],
   links: [
     { label: "GitHub", href: "https://github.com/rajnavakoti", external: true },
