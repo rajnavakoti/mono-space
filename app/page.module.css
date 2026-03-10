@@ -105,6 +105,81 @@
   padding: var(--space-lg) 0 var(--space-xl);
 }
 
+.heroContent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xl);
+}
+
+.heroText {
+  flex: 1;
+  min-width: 0;
+}
+
+/* === Photo Frame (retro window) === */
+.photoFrame {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 200px;
+}
+
+.photoWindow {
+  border: var(--border-medium);
+  box-shadow: var(--shadow-brutal-sm);
+  overflow: hidden;
+}
+
+.photoBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 4px var(--space-sm);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-bottom: var(--border-medium);
+}
+
+.photoDots {
+  display: flex;
+  gap: 4px;
+}
+
+.photoDot {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--color-bg);
+  display: inline-block;
+}
+
+.photoLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.05em;
+}
+
+.photo {
+  display: block;
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.quote {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+  text-align: center;
+  font-style: italic;
+  max-width: 200px;
+}
+
 .name {
   font-size: var(--text-4xl);
   font-weight: var(--weight-black);
@@ -349,6 +424,22 @@
 }
 
 /* ============================================
+   PIXEL CHARACTERS — positioning
+   ============================================ */
+.pixelBottomRight {
+  position: absolute;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  pointer-events: auto;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+
+.window:hover .pixelBottomRight {
+  opacity: 0.8;
+}
+
+/* ============================================
    MOBILE
    ============================================ */
 @media (max-width: 768px) {
@@ -372,6 +463,26 @@
 
   .terminalTitle {
     display: none;
+  }
+
+  .heroContent {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .photoFrame {
+    align-self: center;
+    max-width: 160px;
+  }
+
+  .photo {
+    width: 140px;
+    height: 170px;
+  }
+
+  .quote {
+    font-size: 0.65rem;
+    max-width: 160px;
   }
 
   .name {

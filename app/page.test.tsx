@@ -53,4 +53,21 @@ describe("Home", () => {
     expect(githubLink).toHaveAttribute("target", "_blank");
     expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
   });
+
+  it("renders profile photo with alt text", () => {
+    render(<Home />);
+    const photo = screen.getByAltText("Raj Navakoti");
+    expect(photo).toBeInTheDocument();
+  });
+
+  it("renders quote below photo", () => {
+    render(<Home />);
+    expect(screen.getByText(/best architectures emerge/)).toBeInTheDocument();
+  });
+
+  it("renders pixel characters as decorative elements", () => {
+    const { container } = render(<Home />);
+    const pixelChars = container.querySelectorAll("[aria-hidden='true'][class*='pixel']");
+    expect(pixelChars.length).toBeGreaterThanOrEqual(4);
+  });
 });

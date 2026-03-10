@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { profile } from "@/content/profile";
 import { TypingEffect } from "@/components/TypingEffect";
+import { PixelCharacter } from "@/components/PixelCharacter";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -30,16 +32,41 @@ export default function Home() {
               <TypingEffect text=" whoami" className={styles.promptText} />
             </div>
             <div className={styles.output}>
-              <h1 className={styles.name}>{profile.name}</h1>
-              <p className={styles.title}>{profile.title}</p>
-              <div className={styles.taglineWrap}>
-                <span className={styles.taglineBracket} aria-hidden="true">
-                  [
-                </span>
-                <p className={styles.tagline}>{profile.tagline}</p>
-                <span className={styles.taglineBracket} aria-hidden="true">
-                  ]
-                </span>
+              <div className={styles.heroContent}>
+                <div className={styles.heroText}>
+                  <h1 className={styles.name}>{profile.name}</h1>
+                  <p className={styles.title}>{profile.title}</p>
+                  <div className={styles.taglineWrap}>
+                    <span className={styles.taglineBracket} aria-hidden="true">
+                      [
+                    </span>
+                    <p className={styles.tagline}>{profile.tagline}</p>
+                    <span className={styles.taglineBracket} aria-hidden="true">
+                      ]
+                    </span>
+                  </div>
+                </div>
+                <div className={styles.photoFrame}>
+                  <div className={styles.photoWindow}>
+                    <div className={styles.photoBar}>
+                      <span className={styles.photoDots} aria-hidden="true">
+                        <span className={styles.photoDot} />
+                        <span className={styles.photoDot} />
+                        <span className={styles.photoDot} />
+                      </span>
+                      <span className={styles.photoLabel}>profile.jpeg</span>
+                    </div>
+                    <Image
+                      src="/profile.jpeg"
+                      alt="Raj Navakoti"
+                      width={180}
+                      height={220}
+                      className={styles.photo}
+                      priority
+                    />
+                  </div>
+                  <p className={styles.quote}>&ldquo;{profile.quote}&rdquo;</p>
+                </div>
               </div>
             </div>
             <div className={styles.promptLine}>
@@ -73,6 +100,7 @@ export default function Home() {
           <div className={styles.windowBody}>
             <p className={styles.aboutText}>{profile.about}</p>
           </div>
+          <PixelCharacter type="reader" className={styles.pixelBottomRight} />
         </div>
       </section>
 
@@ -102,6 +130,7 @@ export default function Home() {
               ))}
             </ul>
           </div>
+          <PixelCharacter type="coder" className={styles.pixelBottomRight} />
         </div>
       </section>
 
@@ -151,6 +180,7 @@ export default function Home() {
               </div>
             )}
           </div>
+          <PixelCharacter type="speaker" className={styles.pixelBottomRight} />
         </div>
       </section>
 
@@ -183,6 +213,7 @@ export default function Home() {
               ))}
             </div>
           </div>
+          <PixelCharacter type="waver" className={styles.pixelBottomRight} />
         </div>
       </section>
 
