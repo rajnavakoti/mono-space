@@ -4,25 +4,40 @@
   padding: var(--space-2xl) var(--space-lg);
 }
 
-.header {
-  padding-bottom: var(--space-2xl);
-  border-bottom: var(--border-thick);
-  margin-bottom: var(--space-2xl);
+/* === Outer Window === */
+.window {
+  border: var(--border-medium);
+  overflow: hidden;
 }
 
-.title {
+.windowBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg-secondary);
+  border-bottom: var(--border-medium);
+}
+
+.windowLabel {
   font-family: var(--font-mono);
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-black);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+  letter-spacing: 0.1em;
 }
 
-.subtitle {
+.windowMeta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
-  font-size: var(--text-base);
 }
 
+.windowBody {
+  padding: var(--space-lg);
+}
+
+/* === List === */
 .empty {
   color: var(--color-text-muted);
   font-family: var(--font-mono);
@@ -46,22 +61,25 @@
   color: inherit;
 }
 
+/* === Presentation Card — mini window === */
 .card {
-  padding: var(--space-lg);
-  border: var(--border-medium);
-  background-color: var(--color-surface);
+  border: var(--border-thin);
+  overflow: hidden;
 }
 
 .card:hover {
-  background-color: var(--color-surface-hover);
   border-color: var(--color-text);
 }
 
-.meta {
+.cardBar {
   display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-md);
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--color-bg-secondary);
+  border-bottom: var(--border-thin);
   flex-wrap: wrap;
+  gap: var(--space-sm);
 }
 
 .event {
@@ -70,8 +88,12 @@
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 2px var(--space-sm);
-  border: var(--border-thin);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .date {
@@ -80,10 +102,21 @@
   color: var(--color-text-muted);
 }
 
+.separator {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  opacity: 0.4;
+}
+
 .slides {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-text-muted);
+}
+
+.cardBody {
+  padding: var(--space-md);
 }
 
 .cardTitle {
@@ -92,6 +125,11 @@
   font-weight: var(--weight-bold);
   margin-bottom: var(--space-sm);
   line-height: var(--leading-tight);
+}
+
+.card:hover .cardTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .description {
@@ -103,6 +141,10 @@
 @media (max-width: 768px) {
   .page {
     padding: var(--space-lg) var(--space-md);
+  }
+
+  .windowBody {
+    padding: var(--space-md);
   }
 
   .cardTitle {

@@ -12,39 +12,47 @@ export default function PresentationsPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>// presentations</h1>
-        <p className={styles.subtitle}>
-          Conference talks and presentations.
-        </p>
-      </header>
-
-      {presentations.length === 0 ? (
-        <p className={styles.empty}>No presentations yet.</p>
-      ) : (
-        <ul className={styles.list}>
-          {presentations.map((pres) => (
-            <li key={pres.slug}>
-              <Link
-                href={`/presentations/${pres.slug}`}
-                className={styles.cardLink}
-              >
-                <article className={styles.card}>
-                  <div className={styles.meta}>
-                    <span className={styles.event}>{pres.event}</span>
-                    <time className={styles.date}>{pres.date}</time>
-                    <span className={styles.slides}>
-                      {pres.slideCount} slides
-                    </span>
-                  </div>
-                  <h2 className={styles.cardTitle}>{pres.title}</h2>
-                  <p className={styles.description}>{pres.description}</p>
-                </article>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className={styles.window}>
+        <div className={styles.windowBar}>
+          <span className={styles.windowLabel}>TALKS/</span>
+          <span className={styles.windowMeta}>
+            {presentations.length} {presentations.length === 1 ? "talk" : "talks"}
+          </span>
+        </div>
+        <div className={styles.windowBody}>
+          {presentations.length === 0 ? (
+            <p className={styles.empty}>// no presentations yet</p>
+          ) : (
+            <ul className={styles.list}>
+              {presentations.map((pres) => (
+                <li key={pres.slug}>
+                  <Link
+                    href={`/presentations/${pres.slug}`}
+                    className={styles.cardLink}
+                  >
+                    <article className={styles.card}>
+                      <div className={styles.cardBar}>
+                        <span className={styles.event}>{pres.event}</span>
+                        <div className={styles.cardMeta}>
+                          <time className={styles.date}>{pres.date}</time>
+                          <span className={styles.separator} aria-hidden="true">|</span>
+                          <span className={styles.slides}>
+                            {pres.slideCount} slides
+                          </span>
+                        </div>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <h2 className={styles.cardTitle}>{pres.title}</h2>
+                        <p className={styles.description}>{pres.description}</p>
+                      </div>
+                    </article>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
