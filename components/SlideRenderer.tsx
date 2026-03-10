@@ -70,9 +70,21 @@ export function SlideRenderer({ slide }: SlideRendererProps) {
       return (
         <div className={`${styles.slide} ${styles.codeSlide}`}>
           <h2 className={styles.heading}>{slide.title}</h2>
-          <pre className={styles.codeBlock}>
-            <code>{slide.code}</code>
-          </pre>
+          <div className={styles.codeWindow}>
+            <div className={styles.codeBar}>
+              <div className={styles.codeDots} aria-hidden="true">
+                <span className={styles.codeDot} />
+                <span className={styles.codeDot} />
+                <span className={styles.codeDot} />
+              </div>
+              <span className={styles.codeLabel}>
+                {slide.caption || "code.sh"}
+              </span>
+            </div>
+            <pre className={styles.codeBlock}>
+              <code>{slide.code}</code>
+            </pre>
+          </div>
           {slide.caption && (
             <p className={styles.caption}>{slide.caption}</p>
           )}

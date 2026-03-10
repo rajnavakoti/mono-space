@@ -153,6 +153,52 @@ export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Controls — top toolbar */}
+      <div className={styles.controls}>
+        <div className={styles.navGroup}>
+          <button
+            className={styles.navButton}
+            onClick={prev}
+            disabled={currentSlide === 1}
+            aria-label="Previous slide"
+          >
+            &larr;
+          </button>
+
+          <span className={styles.counter} aria-live="polite">
+            {currentSlide} / {totalSlides}
+          </span>
+
+          <button
+            className={styles.navButton}
+            onClick={next}
+            disabled={currentSlide === totalSlides}
+            aria-label="Next slide"
+          >
+            &rarr;
+          </button>
+        </div>
+
+        <div className={styles.controlGroup}>
+          <button
+            className={styles.controlButton}
+            onClick={() => setShowNotes(!showNotes)}
+            aria-label={showNotes ? "Hide speaker notes" : "Show speaker notes"}
+            aria-pressed={showNotes}
+          >
+            [N]
+          </button>
+
+          <button
+            className={styles.controlButton}
+            onClick={toggleFullscreen}
+            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          >
+            {isFullscreen ? "[×]" : "[□]"}
+          </button>
+        </div>
+      </div>
+
       <div className={styles.slideContainer}>
         <SlideRenderer slide={slide} />
       </div>
@@ -164,48 +210,6 @@ export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
           <p className={styles.notesText}>{notes}</p>
         </div>
       )}
-
-      {/* Controls */}
-      <div className={styles.controls}>
-        <button
-          className={styles.navButton}
-          onClick={prev}
-          disabled={currentSlide === 1}
-          aria-label="Previous slide"
-        >
-          &larr;
-        </button>
-
-        <span className={styles.counter} aria-live="polite">
-          {currentSlide} / {totalSlides}
-        </span>
-
-        <button
-          className={styles.navButton}
-          onClick={next}
-          disabled={currentSlide === totalSlides}
-          aria-label="Next slide"
-        >
-          &rarr;
-        </button>
-
-        <button
-          className={styles.controlButton}
-          onClick={() => setShowNotes(!showNotes)}
-          aria-label={showNotes ? "Hide speaker notes" : "Show speaker notes"}
-          aria-pressed={showNotes}
-        >
-          [N]
-        </button>
-
-        <button
-          className={styles.controlButton}
-          onClick={toggleFullscreen}
-          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        >
-          {isFullscreen ? "[X]" : "[F]"}
-        </button>
-      </div>
 
       {/* Progress Bar */}
       <div

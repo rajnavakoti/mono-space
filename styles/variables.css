@@ -88,4 +88,7 @@
 
   --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-text);
   --shadow-brutal-sm: 4px 4px 0 var(--color-text);
+
+  /* === Transition === */
+  --transition-lift: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
