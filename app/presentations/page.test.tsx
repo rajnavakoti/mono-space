@@ -14,9 +14,9 @@ jest.mock("next/link", () => {
 });
 
 describe("PresentationsPage", () => {
-  it("renders the presentations heading", () => {
+  it("renders the presentations window panel", () => {
     render(<PresentationsPage />);
-    expect(screen.getByText("// presentations")).toBeInTheDocument();
+    expect(screen.getByText("TALKS/")).toBeInTheDocument();
   });
 
   it("renders presentation cards", () => {
