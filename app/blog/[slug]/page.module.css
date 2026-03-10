@@ -7,6 +7,7 @@
 /* === Window === */
 .window {
   border: var(--border-medium);
+  box-shadow: var(--shadow-brutal-sm);
   overflow: hidden;
 }
 
@@ -15,7 +16,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-text);
+  color: var(--color-bg);
   border-bottom: var(--border-medium);
 }
 
@@ -175,11 +177,15 @@
   letter-spacing: 0.05em;
   padding: var(--space-sm) var(--space-md);
   border: var(--border-medium);
+  box-shadow: var(--shadow-brutal-sm);
+  display: inline-block;
 }
 
 .backLink:hover {
   background-color: var(--color-text);
   color: var(--color-bg);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-text);
 }
 
 @media (max-width: 768px) {
