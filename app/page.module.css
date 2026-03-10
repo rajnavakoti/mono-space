@@ -2,21 +2,64 @@
   max-width: var(--max-width-narrow);
   margin: 0 auto;
   padding: var(--space-2xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }
 
-/* === Hero === */
+/* ============================================
+   HERO — Terminal Window
+   ============================================ */
 .hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
+  padding-top: var(--space-2xl);
+}
+
+.terminal {
+  border: var(--border-thick);
+  overflow: hidden;
+}
+
+.terminalBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-text);
+  color: var(--color-bg);
   border-bottom: var(--border-thick);
 }
 
-.greeting {
+.terminalDot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-bg);
+  display: inline-block;
+}
+
+.terminalTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-left: var(--space-sm);
+}
+
+.terminalBody {
+  padding: var(--space-xl) var(--space-lg);
+  background-color: var(--color-bg);
+}
+
+.prompt {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.promptSymbol {
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
 }
 
 .name {
@@ -25,54 +68,94 @@
   text-transform: uppercase;
   letter-spacing: -0.03em;
   line-height: 1;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .title {
   font-family: var(--font-mono);
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  margin-bottom: var(--space-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
 }
 
 .tagline {
-  font-size: var(--text-lg);
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  line-height: var(--leading-relaxed);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
-/* === Sections === */
-.section {
-  padding: var(--space-2xl) 0;
-  border-bottom: var(--border-muted);
-}
-
-.sectionTitle {
+.cursor {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
+  margin-top: var(--space-xl);
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   WINDOW PANELS — Retro OS style
+   ============================================ */
+.window {
+  border: var(--border-medium);
+  overflow: hidden;
+}
+
+.windowBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg-secondary);
+  border-bottom: var(--border-medium);
+}
+
+.windowLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+.windowControls {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
-  margin-bottom: var(--space-xl);
+  letter-spacing: 0.05em;
 }
 
-/* === About === */
-.aboutContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+.windowBody {
+  padding: var(--space-lg);
 }
 
-.paragraph {
+/* ============================================
+   ABOUT
+   ============================================ */
+.aboutText {
   font-size: var(--text-base);
   color: var(--color-text-secondary);
   line-height: var(--leading-relaxed);
-  max-width: 65ch;
+  max-width: 60ch;
 }
 
-/* === Current Focus === */
+/* ============================================
+   FOCUS
+   ============================================ */
 .focusList {
   list-style: none;
   display: flex;
@@ -88,44 +171,50 @@
   gap: var(--space-sm);
 }
 
-.bullet {
+.focusBullet {
   color: var(--color-text-muted);
   flex-shrink: 0;
+  font-weight: var(--weight-bold);
 }
 
-/* === Speaking === */
-.speakingGroup {
-  margin-bottom: var(--space-xl);
+/* ============================================
+   SPEAKING
+   ============================================ */
+.talkGroup {
+  margin-bottom: var(--space-lg);
 }
 
-.speakingGroup:last-child {
+.talkGroup:last-child {
   margin-bottom: 0;
 }
 
-.speakingLabel {
+.talkGroupLabel {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
   color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin-bottom: var(--space-md);
-}
-
-.engagements {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
 }
 
 .talkCard {
   padding: var(--space-md);
   border: var(--border-thin);
-  background-color: var(--color-surface);
+  margin-bottom: var(--space-sm);
+}
+
+.talkCard:last-child {
+  margin-bottom: 0;
 }
 
 .talkCard:hover {
-  background-color: var(--color-surface-hover);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.talkCard:hover .talkMeta {
+  color: var(--color-bg);
+  opacity: 0.7;
 }
 
 .talkTitle {
@@ -136,11 +225,14 @@
 }
 
 .talkMeta {
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
 
-/* === Connect === */
+/* ============================================
+   CONNECT
+   ============================================ */
 .linkGrid {
   display: flex;
   gap: var(--space-md);
@@ -152,10 +244,9 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: var(--space-sm) var(--space-md);
+  letter-spacing: 0.08em;
+  padding: var(--space-sm) var(--space-lg);
   border: var(--border-medium);
-  border-bottom: var(--border-medium);
   background-color: var(--color-bg);
 }
 
@@ -164,25 +255,44 @@
   color: var(--color-bg);
 }
 
-.arrow {
-  display: inline;
-}
-
-/* === Mobile === */
+/* ============================================
+   MOBILE
+   ============================================ */
 @media (max-width: 768px) {
   .page {
     padding: var(--space-lg) var(--space-md);
+    gap: var(--space-lg);
   }
 
   .hero {
-    padding: var(--space-2xl) 0 var(--space-xl);
+    padding-top: var(--space-lg);
+  }
+
+  .terminalBody {
+    padding: var(--space-lg) var(--space-md);
   }
 
   .name {
     font-size: var(--text-2xl);
   }
 
-  .tagline {
+  .title {
     font-size: var(--text-base);
+  }
+
+  .tagline {
+    font-size: var(--text-sm);
+  }
+
+  .windowBody {
+    padding: var(--space-md);
+  }
+
+  .linkGrid {
+    flex-direction: column;
+  }
+
+  .connectLink {
+    text-align: center;
   }
 }
