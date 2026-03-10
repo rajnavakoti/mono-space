@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import BlogPage from "./page";
 
 describe("BlogPage", () => {
-  it("renders the blog heading", () => {
+  it("renders the blog window panel", () => {
     render(<BlogPage />);
-    expect(screen.getByText("// blog")).toBeInTheDocument();
+    expect(screen.getByText("BLOG.md")).toBeInTheDocument();
   });
 
   it("renders blog posts", () => {

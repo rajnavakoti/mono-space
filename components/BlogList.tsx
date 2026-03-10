@@ -20,6 +20,9 @@ export function BlogList({ posts, allTags }: BlogListProps) {
   return (
     <>
       <div className={styles.tagFilter} role="group" aria-label="Filter by tag">
+        <span className={styles.filterLabel} aria-hidden="true">
+          filter:
+        </span>
         <button
           className={`${styles.tagButton} ${!activeTag ? styles.tagActive : ""}`}
           onClick={() => setActiveTag(null)}
@@ -40,14 +43,14 @@ export function BlogList({ posts, allTags }: BlogListProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className={styles.empty}>No posts with this tag.</p>
+        <p className={styles.empty}>// no posts matching this filter</p>
       ) : (
         <ul className={styles.postList}>
           {filtered.map((post) => (
             <li key={post.slug}>
               <Link href={`/blog/${post.slug}`} className={styles.postLink}>
                 <article className={styles.postCard}>
-                  <div className={styles.postMeta}>
+                  <div className={styles.postBar}>
                     <time className={styles.date}>
                       {post.frontmatter.date}
                     </time>
@@ -55,18 +58,20 @@ export function BlogList({ posts, allTags }: BlogListProps) {
                       {post.readingTime}
                     </span>
                   </div>
-                  <h2 className={styles.postTitle}>
-                    {post.frontmatter.title}
-                  </h2>
-                  <p className={styles.excerpt}>
-                    {post.frontmatter.excerpt}
-                  </p>
-                  <div className={styles.tags}>
-                    {post.frontmatter.tags.map((tag) => (
-                      <span key={tag} className={styles.tag}>
-                        {tag}
-                      </span>
-                    ))}
+                  <div className={styles.postBody}>
+                    <h2 className={styles.postTitle}>
+                      {post.frontmatter.title}
+                    </h2>
+                    <p className={styles.excerpt}>
+                      {post.frontmatter.excerpt}
+                    </p>
+                    <div className={styles.tags}>
+                      {post.frontmatter.tags.map((tag) => (
+                        <span key={tag} className={styles.tag}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </article>
               </Link>
