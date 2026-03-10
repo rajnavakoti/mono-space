@@ -13,14 +13,17 @@ export default function BlogPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>// blog</h1>
-        <p className={styles.subtitle}>
-          Writing about architecture, DDD, AI, and engineering.
-        </p>
-      </header>
-
-      <BlogList posts={posts} allTags={allTags} />
+      <div className={styles.window}>
+        <div className={styles.windowBar}>
+          <span className={styles.windowLabel}>BLOG.md</span>
+          <span className={styles.windowMeta}>
+            {posts.length} {posts.length === 1 ? "post" : "posts"}
+          </span>
+        </div>
+        <div className={styles.windowBody}>
+          <BlogList posts={posts} allTags={allTags} />
+        </div>
+      </div>
     </div>
   );
 }

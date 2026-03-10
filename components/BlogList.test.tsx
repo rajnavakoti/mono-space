@@ -82,6 +82,6 @@ describe("BlogList", () => {
 
     await user.click(screen.getByRole("button", { name: "AI" }));
 
-    expect(screen.getByText("No posts with this tag.")).toBeInTheDocument();
+    expect(screen.getByText("// no posts matching this filter")).toBeInTheDocument();
   });
 });
