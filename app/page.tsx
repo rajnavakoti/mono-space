@@ -60,7 +60,7 @@ export default function Home() {
       </div>
 
       {/* About — window panel */}
-      <section aria-labelledby="about-heading">
+      <section aria-labelledby="about-heading" className="fade-in fade-in-1">
         <div className={styles.window}>
           <div className={styles.windowBar}>
             <span className={styles.windowLabel} id="about-heading">
@@ -77,7 +77,7 @@ export default function Home() {
       </section>
 
       {/* Focus — window panel */}
-      <section aria-labelledby="focus-heading">
+      <section aria-labelledby="focus-heading" className="fade-in fade-in-2">
         <div className={styles.window}>
           <div className={styles.windowBar}>
             <span className={styles.windowLabel} id="focus-heading">
@@ -106,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* Speaking — window panel */}
-      <section aria-labelledby="speaking-heading">
+      <section aria-labelledby="speaking-heading" className="fade-in fade-in-3">
         <div className={styles.window}>
           <div className={styles.windowBar}>
             <span className={styles.windowLabel} id="speaking-heading">
@@ -155,7 +155,7 @@ export default function Home() {
       </section>
 
       {/* Connect — window panel */}
-      <section aria-labelledby="connect-heading">
+      <section aria-labelledby="connect-heading" className="fade-in fade-in-4">
         <div className={styles.window}>
           <div className={styles.windowBar}>
             <span className={styles.windowLabel} id="connect-heading">
