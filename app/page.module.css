@@ -267,6 +267,7 @@
 
 .windowBody {
   padding: var(--space-lg);
+  padding-bottom: var(--space-3xl);
 }
 
 /* ============================================
@@ -428,15 +429,15 @@
    ============================================ */
 .pixelBottomRight {
   position: absolute;
-  bottom: var(--space-md);
-  right: var(--space-md);
+  bottom: var(--space-lg);
+  right: var(--space-xl);
   pointer-events: auto;
-  opacity: 0.35;
+  opacity: 0.6;
   transition: opacity 0.3s ease;
 }
 
 .window:hover .pixelBottomRight {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 /* ============================================
