@@ -4,39 +4,28 @@
   padding: var(--space-2xl) var(--space-lg);
 }
 
-/* === Outer Window === */
-.window {
-  border: var(--border-medium);
-  box-shadow: var(--shadow-brutal-sm);
-  overflow: hidden;
-}
-
-.windowBar {
+.sectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-bottom: var(--border-medium);
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-accent);
 }
 
-.windowLabel {
+.sectionLabel {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  color: var(--color-accent);
 }
 
-.windowMeta {
+.sectionMeta {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  opacity: 0.5;
-}
-
-.windowBody {
-  padding: var(--space-lg);
+  color: var(--color-text-muted);
 }
 
 /* === List === */
@@ -50,7 +39,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 .cardLink {
@@ -63,27 +52,27 @@
   color: inherit;
 }
 
-/* === Presentation Card === */
+/* === Presentation Card — flat layout === */
 .card {
-  border: var(--border-medium);
-  overflow: hidden;
+  padding: var(--space-lg) 0;
+  border-bottom: var(--border-muted);
+  transition: background-color var(--transition-fast);
 }
 
 .card:hover {
-  border-color: var(--color-text);
-  box-shadow: var(--shadow-brutal-sm);
-  transform: translate(-2px, -2px);
+  background-color: var(--color-surface-hover);
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+  margin-left: calc(-1 * var(--space-md));
+  margin-right: calc(-1 * var(--space-md));
 }
 
-.cardBar {
+.cardMeta {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: var(--space-xs) var(--space-md);
-  background-color: var(--color-bg-secondary);
-  border-bottom: var(--border-medium);
-  flex-wrap: wrap;
   gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .event {
@@ -92,12 +81,7 @@
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-.cardMeta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  color: var(--color-accent-secondary);
 }
 
 .date {
@@ -119,21 +103,17 @@
   color: var(--color-text-muted);
 }
 
-.cardBody {
-  padding: var(--space-md);
-}
-
 .cardTitle {
   font-family: var(--font-mono);
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
   margin-bottom: var(--space-sm);
   line-height: var(--leading-tight);
+  transition: color var(--transition-fast);
 }
 
 .card:hover .cardTitle {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--color-accent);
 }
 
 .description {
@@ -147,20 +127,15 @@
     padding: var(--space-lg) var(--space-md);
   }
 
-  .window {
-    box-shadow: 3px 3px 0 var(--color-text);
-  }
-
-  .windowBody {
-    padding: var(--space-md);
-  }
-
   .cardTitle {
     font-size: var(--text-base);
   }
 
   .card:hover {
-    transform: none;
-    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: transparent;
   }
 }

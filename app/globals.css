@@ -28,7 +28,7 @@ body {
   overflow-x: hidden;
 }
 
-/* === CRT Scanline Overlay === */
+/* === CRT Scanline Overlay (subtle texture) === */
 body::after {
   content: "";
   position: fixed;
@@ -43,7 +43,7 @@ body::after {
     var(--color-scanline) 0px,
     var(--color-scanline) 1px,
     transparent 1px,
-    transparent 3px
+    transparent 4px
   );
 }
 
@@ -89,7 +89,7 @@ kbd {
 
 pre {
   background-color: var(--color-bg-secondary);
-  border: var(--border-medium);
+  border: var(--border-muted);
   padding: var(--space-md);
   overflow-x: auto;
   line-height: var(--leading-normal);
@@ -109,17 +109,17 @@ pre code {
 a {
   color: var(--color-text);
   text-decoration: none;
-  border-bottom: var(--border-thin);
-  transition: none;
+  border-bottom: 1px solid var(--color-border-muted);
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 a:hover {
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 a:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -136,15 +136,16 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 button:hover {
-  color: var(--color-accent);
-  background-color: var(--color-accent-text);
+  background-color: var(--color-accent-hover);
+  color: var(--color-accent-text);
 }
 
 button:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -157,8 +158,8 @@ img {
 
 /* === Selection === */
 ::selection {
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* === Scrollbar (subtle) === */
@@ -171,7 +172,7 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-muted);
+  background: var(--color-border);
   border: 1px solid var(--color-bg);
 }
 
@@ -182,8 +183,8 @@ img {
   left: var(--space-md);
   z-index: 100;
   padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
   font-family: var(--font-mono);
   font-weight: var(--weight-bold);
   border: var(--border-medium);
@@ -214,7 +215,7 @@ img {
 .ascii-divider {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: var(--color-border-muted);
   text-align: center;
   letter-spacing: 0.3em;
   padding: var(--space-sm) 0;

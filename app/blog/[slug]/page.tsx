@@ -69,32 +69,29 @@ export default async function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className={styles.window}>
-        <div className={styles.windowBar}>
-          <span className={styles.windowLabel}>
-            {slug}.mdx
-          </span>
-          <div className={styles.windowMeta}>
-            <time className={styles.date}>{post.frontmatter.date}</time>
-            <span className={styles.separator} aria-hidden="true">|</span>
-            <span className={styles.readingTime}>{post.readingTime}</span>
-          </div>
-        </div>
-        <div className={styles.windowBody}>
-          <header className={styles.header}>
-            <h1 className={styles.title}>{post.frontmatter.title}</h1>
-            <div className={styles.tags}>
-              {post.frontmatter.tags.map((tag) => (
-                <span key={tag} className={styles.tag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </header>
-
-          <div className={styles.content}>{content}</div>
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionLabel}>
+          {slug}.mdx
+        </span>
+        <div className={styles.windowMeta}>
+          <time className={styles.date}>{post.frontmatter.date}</time>
+          <span className={styles.separator} aria-hidden="true">|</span>
+          <span className={styles.readingTime}>{post.readingTime}</span>
         </div>
       </div>
+
+      <header className={styles.header}>
+        <h1 className={styles.title}>{post.frontmatter.title}</h1>
+        <div className={styles.tags}>
+          {post.frontmatter.tags.map((tag) => (
+            <span key={tag} className={styles.tag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </header>
+
+      <div className={styles.content}>{content}</div>
 
       <footer className={styles.footer}>
         <a href="/blog" className={styles.backLink}>

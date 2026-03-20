@@ -62,6 +62,7 @@ export default function Home() {
                       width={180}
                       height={220}
                       className={styles.photo}
+                      unoptimized
                       priority
                     />
                   </div>
@@ -86,134 +87,126 @@ export default function Home() {
         ========================================
       </div>
 
-      {/* About — window panel */}
+      {/* About */}
       <section aria-labelledby="about-heading" className="fade-in fade-in-1">
-        <div className={styles.window}>
-          <div className={styles.windowBar}>
-            <span className={styles.windowLabel} id="about-heading">
-              ABOUT.md
-            </span>
-            <span className={styles.windowControls} aria-hidden="true">
-              [&minus;] [&square;] [&times;]
-            </span>
-          </div>
-          <div className={styles.windowBody}>
-            <p className={styles.aboutText}>{profile.about}</p>
-          </div>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel} id="about-heading">
+            ABOUT.md
+          </span>
+          <span className={styles.sectionControls} aria-hidden="true">
+            [&minus;] [&square;] [&times;]
+          </span>
+        </div>
+        <div className={styles.sectionBody}>
+          <p className={styles.aboutText}>{profile.about}</p>
           <PixelCharacter type="reader" className={styles.pixelBottomRight} />
         </div>
       </section>
 
-      {/* Focus — window panel */}
+      {/* Focus */}
       <section aria-labelledby="focus-heading" className="fade-in fade-in-2">
-        <div className={styles.window}>
-          <div className={styles.windowBar}>
-            <span className={styles.windowLabel} id="focus-heading">
-              FOCUS.log
-            </span>
-            <span className={styles.windowControls} aria-hidden="true">
-              [&minus;] [&square;] [&times;]
-            </span>
-          </div>
-          <div className={styles.windowBody}>
-            <ul className={styles.focusList}>
-              {profile.currentFocus.map((item, i) => (
-                <li key={item} className={styles.focusItem}>
-                  <span className={styles.focusIndex} aria-hidden="true">
-                    {String(i).padStart(2, "0")}
-                  </span>
-                  <span className={styles.focusBullet} aria-hidden="true">
-                    //
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <PixelCharacter type="coder" className={styles.pixelBottomRight} />
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel} id="focus-heading">
+            FOCUS.log
+          </span>
+          <span className={styles.sectionControls} aria-hidden="true">
+            [&minus;] [&square;] [&times;]
+          </span>
+        </div>
+        <div className={styles.sectionBody}>
+          <ul className={styles.focusList}>
+            {profile.currentFocus.map((item, i) => (
+              <li key={item} className={styles.focusItem}>
+                <span className={styles.focusIndex} aria-hidden="true">
+                  {String(i).padStart(2, "0")}
+                </span>
+                <span className={styles.focusBullet} aria-hidden="true">
+                  //
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <PixelCharacter type="coder" className={styles.pixelBottomLeft} />
         </div>
       </section>
 
-      {/* Speaking — window panel */}
+      {/* Speaking */}
       <section aria-labelledby="speaking-heading" className="fade-in fade-in-3">
-        <div className={styles.window}>
-          <div className={styles.windowBar}>
-            <span className={styles.windowLabel} id="speaking-heading">
-              TALKS.json
-            </span>
-            <span className={styles.windowControls} aria-hidden="true">
-              [&minus;] [&square;] [&times;]
-            </span>
-          </div>
-          <div className={styles.windowBody}>
-            {upcoming.length > 0 && (
-              <div className={styles.talkGroup}>
-                <p className={styles.talkGroupLabel}>
-                  <span aria-hidden="true">&#9654; </span>upcoming
-                </p>
-                {upcoming.map((talk) => (
-                  <article key={talk.title} className={styles.talkCard}>
-                    <div className={styles.talkHeader}>
-                      <p className={styles.talkTitle}>{talk.title}</p>
-                      <span className={styles.talkBadge}>NEXT</span>
-                    </div>
-                    <p className={styles.talkMeta}>
-                      {talk.event} &mdash; {talk.date}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            )}
-            {past.length > 0 && (
-              <div className={styles.talkGroup}>
-                <p className={styles.talkGroupLabel}>
-                  <span aria-hidden="true">&#9632; </span>past
-                </p>
-                {past.map((talk) => (
-                  <article key={talk.title} className={styles.talkCard}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel} id="speaking-heading">
+            TALKS.json
+          </span>
+          <span className={styles.sectionControls} aria-hidden="true">
+            [&minus;] [&square;] [&times;]
+          </span>
+        </div>
+        <div className={styles.sectionBody}>
+          {upcoming.length > 0 && (
+            <div className={styles.talkGroup}>
+              <p className={styles.talkGroupLabel}>
+                <span aria-hidden="true">&#9654; </span>upcoming
+              </p>
+              {upcoming.map((talk) => (
+                <article key={talk.title} className={styles.talkCard}>
+                  <div className={styles.talkHeader}>
                     <p className={styles.talkTitle}>{talk.title}</p>
-                    <p className={styles.talkMeta}>
-                      {talk.event} &mdash; {talk.date}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
+                    <span className={styles.talkBadge}>NEXT</span>
+                  </div>
+                  <p className={styles.talkMeta}>
+                    {talk.event} &mdash; {talk.date}
+                  </p>
+                </article>
+              ))}
+            </div>
+          )}
+          {past.length > 0 && (
+            <div className={styles.talkGroup}>
+              <p className={styles.talkGroupLabel}>
+                <span aria-hidden="true">&#9632; </span>past
+              </p>
+              {past.map((talk) => (
+                <article key={talk.title} className={styles.talkCard}>
+                  <p className={styles.talkTitle}>{talk.title}</p>
+                  <p className={styles.talkMeta}>
+                    {talk.event} &mdash; {talk.date}
+                  </p>
+                </article>
+              ))}
+            </div>
+          )}
           <PixelCharacter type="speaker" className={styles.pixelBottomRight} />
         </div>
       </section>
 
-      {/* Connect — window panel */}
+      {/* Connect */}
       <section aria-labelledby="connect-heading" className="fade-in fade-in-4">
-        <div className={styles.window}>
-          <div className={styles.windowBar}>
-            <span className={styles.windowLabel} id="connect-heading">
-              LINKS.sh
-            </span>
-            <span className={styles.windowControls} aria-hidden="true">
-              [&minus;] [&square;] [&times;]
-            </span>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel} id="connect-heading">
+            LINKS.sh
+          </span>
+          <span className={styles.sectionControls} aria-hidden="true">
+            [&minus;] [&square;] [&times;]
+          </span>
+        </div>
+        <div className={styles.sectionBody}>
+          <div className={styles.linkGrid}>
+            {profile.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={styles.connectLink}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+              >
+                {link.label}
+                {link.external && (
+                  <span aria-hidden="true"> &rarr;</span>
+                )}
+              </a>
+            ))}
           </div>
-          <div className={styles.windowBody}>
-            <div className={styles.linkGrid}>
-              {profile.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={styles.connectLink}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                >
-                  {link.label}
-                  {link.external && (
-                    <span aria-hidden="true"> &rarr;</span>
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
-          <PixelCharacter type="waver" className={styles.pixelBottomRight} />
+          <PixelCharacter type="waver" className={styles.pixelBottomLeft} />
         </div>
       </section>
 
