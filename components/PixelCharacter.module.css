@@ -8,6 +8,9 @@
 .character {
   position: relative;
   transition: transform 0.3s ease;
+  /* Scale up 4x — makes each "pixel" ~16px */
+  transform: scale(4);
+  transform-origin: bottom right;
 }
 
 /* Scale: each "pixel" is 4px × 4px */
@@ -21,7 +24,7 @@
 /* === READER — sitting figure with book === */
 /* 10×14 grid, drawn with box-shadow */
 .reader .sprite {
-  color: var(--color-text);
+  color: var(--color-accent-secondary);
   box-shadow:
     /* head */
     12px 0 0 0 currentColor,
@@ -75,7 +78,7 @@
 
 /* === CODER — figure at screen === */
 .coder .sprite {
-  color: var(--color-text);
+  color: var(--color-accent);
   box-shadow:
     /* head */
     12px 0 0 0 currentColor,
@@ -123,7 +126,7 @@
 
 /* === SPEAKER — figure at podium === */
 .speaker .sprite {
-  color: var(--color-text);
+  color: var(--color-accent-tertiary);
   box-shadow:
     /* head */
     12px 0 0 0 currentColor,
@@ -174,7 +177,7 @@
 
 /* === WAVER — figure waving hand === */
 .waver .sprite {
-  color: var(--color-text);
+  color: var(--color-accent);
   box-shadow:
     /* head */
     12px 4px 0 0 currentColor,
@@ -222,10 +225,10 @@
     28px 32px 0 0 currentColor;
 }
 
-/* === Idle Animation — subtle bob === */
+/* === Idle Animation — subtle bob (preserves scale) === */
 @keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  0%, 100% { transform: scale(4) translateY(0); }
+  50% { transform: scale(4) translateY(-3px); }
 }
 
 .character {
@@ -239,8 +242,8 @@
 }
 
 @keyframes readBounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-6px) rotate(-3deg); }
+  0%, 100% { transform: scale(4) translateY(0) rotate(0deg); }
+  50% { transform: scale(4) translateY(-6px) rotate(-3deg); }
 }
 
 /* Coder: types faster (vibrate) */
@@ -249,9 +252,9 @@
 }
 
 @keyframes typeVibrate {
-  0%, 100% { transform: translateY(0); }
-  25% { transform: translateY(-1px) translateX(1px); }
-  75% { transform: translateY(1px) translateX(-1px); }
+  0%, 100% { transform: scale(4) translateY(0); }
+  25% { transform: scale(4) translateY(-1px) translateX(1px); }
+  75% { transform: scale(4) translateY(1px) translateX(-1px); }
 }
 
 /* Speaker: jumps with enthusiasm */
@@ -260,9 +263,9 @@
 }
 
 @keyframes speakJump {
-  0%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-12px); }
-  60% { transform: translateY(-12px); }
+  0%, 100% { transform: scale(4) translateY(0); }
+  40% { transform: scale(4) translateY(-12px); }
+  60% { transform: scale(4) translateY(-12px); }
 }
 
 /* Waver: waves rapidly */
@@ -271,9 +274,9 @@
 }
 
 @keyframes waveRapid {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  75% { transform: rotate(-5deg); }
+  0%, 100% { transform: scale(4) rotate(0deg); }
+  25% { transform: scale(4) rotate(5deg); }
+  75% { transform: scale(4) rotate(-5deg); }
 }
 
 /* === Responsive — hide on very small screens === */

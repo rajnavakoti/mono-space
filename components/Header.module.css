@@ -2,9 +2,9 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-bottom: var(--border-thick);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  border-bottom: var(--border-medium);
 }
 
 .toolbar {
@@ -28,13 +28,14 @@
   font-weight: var(--weight-black);
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--color-bg);
+  color: var(--color-accent);
   border-bottom: none;
+  transition: color var(--transition-fast);
 }
 
 .logo:hover {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-accent-hover);
+  background-color: transparent;
 }
 
 .logoAccent {
@@ -44,8 +45,8 @@
 .separator {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
-  color: var(--color-bg);
-  opacity: 0.3;
+  color: var(--color-border);
+  opacity: 0.5;
 }
 
 .status {
@@ -53,8 +54,8 @@
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-bg);
-  opacity: 0.5;
+  color: var(--color-accent-tertiary);
+  opacity: 0.8;
 }
 
 .toolbarRight {
@@ -76,23 +77,25 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: var(--space-xs) var(--space-md);
-  color: var(--color-bg);
+  color: var(--color-text-secondary);
   border-bottom: none;
   border: 1px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .link:hover {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-accent);
+  background-color: transparent;
 }
 
 .linkActive {
-  border: 1px solid var(--color-bg);
-  opacity: 1;
+  color: var(--color-accent);
+  border-bottom: 2px solid var(--color-accent);
 }
 
 .activeMarker {
   font-weight: var(--weight-bold);
+  color: var(--color-accent);
 }
 
 .menuToggle {
@@ -101,15 +104,17 @@
   font-size: var(--text-base);
   font-weight: var(--weight-bold);
   background: none;
-  border: none;
-  color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .menuToggle:hover {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background-color: transparent;
 }
 
 /* Mobile */
@@ -138,8 +143,8 @@
     right: 0;
     flex-direction: column;
     gap: 0;
-    background-color: var(--color-text);
-    border-bottom: var(--border-thick);
+    background-color: var(--color-bg-secondary);
+    border-bottom: var(--border-medium);
   }
 
   .linksOpen {
@@ -149,17 +154,14 @@
   .link {
     display: block;
     padding: var(--space-md) var(--space-lg);
-    border-bottom: 1px solid var(--color-bg);
     border: none;
-    border-bottom: 1px solid var(--color-border-muted);
+    border-bottom: var(--border-muted);
     font-size: var(--text-sm);
-    opacity: 0.8;
   }
 
   .link:hover,
   .linkActive {
-    opacity: 1;
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    color: var(--color-accent);
+    background-color: var(--color-surface-hover);
   }
 }

@@ -1,23 +1,28 @@
-/* Neo-Brutalist Monochrome Design System */
+/* Neo-Brutalist Design System — Soft Dark + Muted Accents */
 
 :root {
   /* === Colors (dark mode default) === */
-  --color-bg: #000;
-  --color-bg-secondary: #0a0a0a;
-  --color-bg-tertiary: #151515;
-  --color-surface: #0a0a0a;
-  --color-surface-hover: #151515;
-  --color-text: #fff;
-  --color-text-secondary: #ccc;
-  --color-text-muted: #666;
-  --color-border: #fff;
-  --color-border-muted: #333;
-  --color-accent: #fff;
-  --color-accent-text: #000;
+  --color-bg: #1A1A1A;
+  --color-bg-secondary: #222222;
+  --color-bg-tertiary: #2A2A2A;
+  --color-surface: #242424;
+  --color-surface-hover: #2E2E2E;
+  --color-text: #E0E0E0;
+  --color-text-secondary: #BABABA;
+  --color-text-muted: #777;
+  --color-border: #555;
+  --color-border-muted: #3A3A3A;
 
-  /* === Glow (for dark mode CRT feel) === */
-  --color-glow: rgba(255, 255, 255, 0.03);
-  --color-scanline: rgba(255, 255, 255, 0.015);
+  /* === Accent Colors === */
+  --color-accent: #C9A96E;
+  --color-accent-text: #1A1A1A;
+  --color-accent-hover: #D4B87A;
+  --color-accent-secondary: #7B8EA8;
+  --color-accent-tertiary: #8A9A6B;
+
+  /* === CRT texture (nearly invisible) === */
+  --color-glow: rgba(201, 169, 110, 0.03);
+  --color-scanline: rgba(255, 255, 255, 0.008);
 
   /* === Typography === */
   --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
@@ -57,10 +62,14 @@
   --border-thick: 3px solid var(--color-border);
   --border-muted: 1px solid var(--color-border-muted);
 
-  /* === Offset Shadow (neo-brutalist) === */
+  /* === Offset Shadow (neo-brutalist, softened) === */
   --shadow-offset: 6px;
-  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-text);
-  --shadow-brutal-sm: 4px 4px 0 var(--color-text);
+  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-border);
+  --shadow-brutal-sm: 4px 4px 0 var(--color-border);
+
+  /* === Transitions === */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
 
   /* === Layout === */
   --max-width: 1200px;
@@ -75,20 +84,21 @@
   --color-bg-tertiary: #eee;
   --color-surface: #f5f5f5;
   --color-surface-hover: #eee;
-  --color-text: #000;
+  --color-text: #111;
   --color-text-secondary: #333;
   --color-text-muted: #666;
-  --color-border: #000;
+  --color-border: #111;
   --color-border-muted: #ccc;
-  --color-accent: #000;
+
+  --color-accent: #8B7340;
   --color-accent-text: #fff;
+  --color-accent-hover: #7A6535;
+  --color-accent-secondary: #5A6F82;
+  --color-accent-tertiary: #5E6E45;
 
   --color-glow: rgba(0, 0, 0, 0.02);
-  --color-scanline: rgba(0, 0, 0, 0.02);
+  --color-scanline: rgba(0, 0, 0, 0.015);
 
-  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-text);
-  --shadow-brutal-sm: 4px 4px 0 var(--color-text);
-
-  /* === Transition === */
-  --transition-lift: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  --shadow-brutal: var(--shadow-offset) var(--shadow-offset) 0 var(--color-border);
+  --shadow-brutal-sm: 4px 4px 0 var(--color-border);
 }

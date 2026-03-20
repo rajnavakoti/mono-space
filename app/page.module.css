@@ -21,7 +21,7 @@
 }
 
 /* ============================================
-   HERO — Terminal Window (the star)
+   HERO — Terminal Window
    ============================================ */
 .hero {
   padding-top: var(--space-xl);
@@ -39,9 +39,9 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-bottom: var(--border-thick);
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+  border-bottom: 2px solid var(--color-accent);
 }
 
 .terminalDots {
@@ -52,8 +52,19 @@
 .terminalDot {
   width: 12px;
   height: 12px;
-  border: 2px solid var(--color-bg);
   display: inline-block;
+}
+
+.terminalDot:nth-child(1) {
+  background-color: #B07070;
+}
+
+.terminalDot:nth-child(2) {
+  background-color: var(--color-accent);
+}
+
+.terminalDot:nth-child(3) {
+  background-color: var(--color-accent-tertiary);
 }
 
 .terminalTitle {
@@ -61,6 +72,7 @@
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   letter-spacing: 0.05em;
+  color: var(--color-text-muted);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -69,6 +81,7 @@
 .terminalPid {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
+  color: var(--color-text-muted);
   opacity: 0.4;
 }
 
@@ -91,7 +104,7 @@
 }
 
 .promptSymbol {
-  color: var(--color-text);
+  color: var(--color-accent);
   font-weight: var(--weight-black);
 }
 
@@ -138,9 +151,9 @@
   align-items: center;
   gap: var(--space-sm);
   padding: 4px var(--space-sm);
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-bottom: var(--border-medium);
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+  border-bottom: var(--border-muted);
 }
 
 .photoDots {
@@ -151,8 +164,19 @@
 .photoDot {
   width: 8px;
   height: 8px;
-  border: 1.5px solid var(--color-bg);
   display: inline-block;
+}
+
+.photoDot:nth-child(1) {
+  background-color: #B07070;
+}
+
+.photoDot:nth-child(2) {
+  background-color: var(--color-accent);
+}
+
+.photoDot:nth-child(3) {
+  background-color: var(--color-accent-tertiary);
 }
 
 .photoLabel {
@@ -160,6 +184,7 @@
   font-size: 0.6rem;
   font-weight: var(--weight-bold);
   letter-spacing: 0.05em;
+  color: var(--color-text-muted);
 }
 
 .photo {
@@ -167,7 +192,7 @@
   width: 180px;
   height: 220px;
   object-fit: cover;
-  filter: grayscale(100%) contrast(1.1);
+  filter: grayscale(30%) contrast(1.05);
 }
 
 .quote {
@@ -193,7 +218,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  color: var(--color-text-secondary);
+  color: var(--color-accent);
   margin-bottom: var(--space-lg);
 }
 
@@ -207,7 +232,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-xl);
   font-weight: var(--weight-black);
-  color: var(--color-text-muted);
+  color: var(--color-accent-secondary);
 }
 
 .tagline {
@@ -223,6 +248,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
+  color: var(--color-accent);
 }
 
 @keyframes blink {
@@ -231,42 +257,37 @@
 }
 
 /* ============================================
-   WINDOW PANELS — with offset shadow
+   SECTIONS — clean header bar, no wrapping box
    ============================================ */
-.window {
-  border: var(--border-medium);
-  box-shadow: var(--shadow-brutal-sm);
-  overflow: hidden;
-  position: relative;
-}
-
-.windowBar {
+.sectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-bottom: var(--border-medium);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-accent);
 }
 
-.windowLabel {
+.sectionLabel {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  color: var(--color-accent);
 }
 
-.windowControls {
+.sectionControls {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
+  color: var(--color-text-muted);
   opacity: 0.5;
   letter-spacing: 0.05em;
 }
 
-.windowBody {
-  padding: var(--space-lg);
+.sectionBody {
+  position: relative;
+  min-height: 80px;
 }
 
 /* ============================================
@@ -286,7 +307,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .focusItem {
@@ -305,7 +326,7 @@
 
 .focusIndex {
   font-size: var(--text-xs);
-  color: var(--color-border-muted);
+  color: var(--color-accent-secondary);
   font-weight: var(--weight-bold);
   min-width: 2ch;
 }
@@ -339,29 +360,22 @@
 
 .talkCard {
   padding: var(--space-md);
-  border: var(--border-medium);
   margin-bottom: var(--space-sm);
+  border-bottom: var(--border-muted);
+  transition: background-color var(--transition-fast);
 }
 
 .talkCard:last-child {
   margin-bottom: 0;
+  border-bottom: none;
 }
 
 .talkCard:hover {
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  box-shadow: var(--shadow-brutal-sm);
-  transform: translate(-2px, -2px);
+  background-color: var(--color-surface-hover);
 }
 
-.talkCard:hover .talkMeta {
-  color: var(--color-bg);
-  opacity: 0.7;
-}
-
-.talkCard:hover .talkBadge {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+.talkCard:hover .talkTitle {
+  color: var(--color-accent);
 }
 
 .talkHeader {
@@ -376,6 +390,7 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   margin-bottom: var(--space-xs);
+  transition: color var(--transition-fast);
 }
 
 .talkBadge {
@@ -383,7 +398,8 @@
   font-size: var(--text-xs);
   font-weight: var(--weight-black);
   padding: 2px var(--space-sm);
-  border: var(--border-thin);
+  background-color: var(--color-accent-tertiary);
+  color: var(--color-accent-text);
   flex-shrink: 0;
   letter-spacing: 0.1em;
 }
@@ -414,13 +430,15 @@
   background-color: var(--color-bg);
   box-shadow: var(--shadow-brutal-sm);
   position: relative;
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .connectLink:hover {
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  border-color: var(--color-accent);
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--color-text);
+  box-shadow: 6px 6px 0 var(--color-border);
 }
 
 /* ============================================
@@ -428,15 +446,25 @@
    ============================================ */
 .pixelBottomRight {
   position: absolute;
-  bottom: var(--space-md);
+  bottom: var(--space-sm);
   right: var(--space-md);
   pointer-events: auto;
-  opacity: 0.35;
+  opacity: 0.5;
   transition: opacity 0.3s ease;
 }
 
-.window:hover .pixelBottomRight {
-  opacity: 0.8;
+.pixelBottomLeft {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: var(--space-md);
+  pointer-events: auto;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.sectionBody:hover .pixelBottomRight,
+.sectionBody:hover .pixelBottomLeft {
+  opacity: 1;
 }
 
 /* ============================================
@@ -453,7 +481,7 @@
   }
 
   .terminal {
-    box-shadow: 4px 4px 0 var(--color-text);
+    box-shadow: 4px 4px 0 var(--color-border);
   }
 
   .terminalBody {
@@ -502,30 +530,22 @@
     font-size: var(--text-base);
   }
 
-  .windowBody {
-    padding: var(--space-md);
-  }
-
-  .window {
-    box-shadow: 3px 3px 0 var(--color-text);
-  }
-
   .linkGrid {
     flex-direction: column;
   }
 
   .connectLink {
     text-align: center;
-    box-shadow: 3px 3px 0 var(--color-text);
+    box-shadow: 3px 3px 0 var(--color-border);
   }
 
   .talkCard:hover {
-    transform: none;
+    background-color: transparent;
   }
 
   .connectLink:hover {
     transform: none;
-    box-shadow: 3px 3px 0 var(--color-text);
+    box-shadow: 3px 3px 0 var(--color-border);
   }
 
   .divider {
