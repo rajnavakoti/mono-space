@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { profile } from "@/content/profile";
 import { TypingEffect } from "@/components/TypingEffect";
-
+import { SvgIllustration } from "@/components/SvgIllustration";
+import { TerminalSnippet } from "@/components/TerminalSnippet";
+import { GeoPattern } from "@/components/GeoPattern";
+import { DotMatrix } from "@/components/DotMatrix";
+import { SkillsChart } from "@/components/SkillsChart";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -10,7 +14,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      {/* Hero — terminal style */}
+      {/* Hero — terminal style with DotMatrix background */}
       <section className={styles.hero}>
         <div className={styles.terminal}>
           <div className={styles.terminalBar}>
@@ -25,6 +29,7 @@ export default function Home() {
             </span>
           </div>
           <div className={styles.terminalBody}>
+            <DotMatrix />
             <div className={styles.promptLine}>
               <span className={styles.promptSymbol} aria-hidden="true">
                 $
@@ -87,7 +92,7 @@ export default function Home() {
         ========================================
       </div>
 
-      {/* About */}
+      {/* About — with SVG illustration */}
       <section aria-labelledby="about-heading" className="fade-in fade-in-1">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="about-heading">
@@ -98,12 +103,14 @@ export default function Home() {
           </span>
         </div>
         <div className={styles.sectionBody}>
-          <p className={styles.aboutText}>{profile.about}</p>
-
+          <div className={styles.sectionWithVisual}>
+            <p className={styles.aboutText}>{profile.about}</p>
+            <SvgIllustration type="blueprint" />
+          </div>
         </div>
       </section>
 
-      {/* Focus */}
+      {/* Focus — with terminal snippet */}
       <section aria-labelledby="focus-heading" className="fade-in fade-in-2">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="focus-heading">
@@ -114,25 +121,49 @@ export default function Home() {
           </span>
         </div>
         <div className={styles.sectionBody}>
-          <ul className={styles.focusList}>
-            {profile.currentFocus.map((item, i) => (
-              <li key={item} className={styles.focusItem}>
-                <span className={styles.focusIndex} aria-hidden="true">
-                  {String(i).padStart(2, "0")}
-                </span>
-                <span className={styles.focusBullet} aria-hidden="true">
-                  //
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
-
+          <div className={styles.sectionWithVisual}>
+            <ul className={styles.focusList}>
+              {profile.currentFocus.map((item, i) => (
+                <li key={item} className={styles.focusItem}>
+                  <span className={styles.focusIndex} aria-hidden="true">
+                    {String(i).padStart(2, "0")}
+                  </span>
+                  <span className={styles.focusBullet} aria-hidden="true">
+                    //
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <TerminalSnippet
+              lines={[
+                "npm run architect",
+                "loading context...",
+                "demand-driven: active",
+                "AI augmentation: on",
+              ]}
+            />
+          </div>
         </div>
       </section>
 
-      {/* Speaking */}
-      <section aria-labelledby="speaking-heading" className="fade-in fade-in-3">
+      {/* Skills — agent extensions style pie charts */}
+      <section aria-labelledby="skills-heading" className="fade-in fade-in-3">
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel} id="skills-heading">
+            SKILLS.config
+          </span>
+          <span className={styles.sectionControls} aria-hidden="true">
+            [&minus;] [&square;] [&times;]
+          </span>
+        </div>
+        <div className={styles.sectionBody}>
+          <SkillsChart groups={profile.skills} />
+        </div>
+      </section>
+
+      {/* Speaking — with geo pattern background */}
+      <section aria-labelledby="speaking-heading" className="fade-in fade-in-4">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="speaking-heading">
             TALKS.json
@@ -142,6 +173,7 @@ export default function Home() {
           </span>
         </div>
         <div className={styles.sectionBody}>
+          <GeoPattern type="dots" />
           {upcoming.length > 0 && (
             <div className={styles.talkGroup}>
               <p className={styles.talkGroupLabel}>
@@ -175,12 +207,11 @@ export default function Home() {
               ))}
             </div>
           )}
-
         </div>
       </section>
 
-      {/* Connect */}
-      <section aria-labelledby="connect-heading" className="fade-in fade-in-4">
+      {/* Connect — with network illustration */}
+      <section aria-labelledby="connect-heading" className="fade-in fade-in-5">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="connect-heading">
             LINKS.sh
@@ -190,23 +221,25 @@ export default function Home() {
           </span>
         </div>
         <div className={styles.sectionBody}>
-          <div className={styles.linkGrid}>
-            {profile.links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={styles.connectLink}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-              >
-                {link.label}
-                {link.external && (
-                  <span aria-hidden="true"> &rarr;</span>
-                )}
-              </a>
-            ))}
+          <div className={styles.sectionWithVisual}>
+            <div className={styles.linkGrid}>
+              {profile.links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={styles.connectLink}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                >
+                  {link.label}
+                  {link.external && (
+                    <span aria-hidden="true"> &rarr;</span>
+                  )}
+                </a>
+              ))}
+            </div>
+            <SvgIllustration type="network" />
           </div>
-
         </div>
       </section>
 

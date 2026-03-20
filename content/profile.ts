@@ -1,3 +1,9 @@
+export interface SkillGroup {
+  label: string;
+  icon: string;
+  items: { name: string; level: number }[];
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -5,6 +11,7 @@ export interface Profile {
   quote: string;
   about: string;
   currentFocus: string[];
+  skills: SkillGroup[];
   links: ProfileLink[];
   speaking: SpeakingEngagement[];
 }
@@ -35,6 +42,52 @@ export const profile: Profile = {
     "AI-augmented dev workflows",
     "Enterprise DDD at scale",
     "Neuroscience x system design",
+  ],
+  skills: [
+    {
+      label: "Skills",
+      icon: "/skill",
+      items: [
+        { name: "System Architecture", level: 95 },
+        { name: "AI Engineering", level: 90 },
+        { name: "Video Editing", level: 75 },
+        { name: "Fictional Writing", level: 70 },
+        { name: "Robotics", level: 60 },
+      ],
+    },
+    {
+      label: "Sub-Agents",
+      icon: "/agent",
+      items: [
+        { name: "The Architect", level: 95 },
+        { name: "The Storyteller", level: 80 },
+        { name: "The Tinkerer", level: 70 },
+        { name: "The Editor", level: 75 },
+        { name: "The Explorer", level: 85 },
+      ],
+    },
+    {
+      label: "Hooks",
+      icon: "/hook",
+      items: [
+        { name: "Brain-Computer Interfaces", level: 90 },
+        { name: "Neuroscience", level: 85 },
+        { name: "Cinematography", level: 70 },
+        { name: "Generative AI Art", level: 80 },
+        { name: "Cognitive Science", level: 85 },
+      ],
+    },
+    {
+      label: "Tools",
+      icon: "/tool",
+      items: [
+        { name: "Claude / LLMs", level: 95 },
+        { name: "DaVinci Resolve", level: 70 },
+        { name: "Blender", level: 55 },
+        { name: "Arduino / RPi", level: 65 },
+        { name: "Obsidian", level: 90 },
+      ],
+    },
   ],
   links: [
     { label: "GitHub", href: "https://github.com/rajnavakoti", external: true },

@@ -3,9 +3,9 @@ import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
 
-const BLOG_DIR = path.join(process.cwd(), "content/blog");
+const WRITINGS_DIR = path.join(process.cwd(), "content/writings");
 
-export interface BlogFrontmatter {
+export interface WritingFrontmatter {
   title: string;
   date: string;
   tags: string[];
@@ -13,33 +13,33 @@ export interface BlogFrontmatter {
   published: boolean;
 }
 
-export interface BlogPost {
+export interface Writing {
   slug: string;
-  frontmatter: BlogFrontmatter;
+  frontmatter: WritingFrontmatter;
   readingTime: string;
   content: string;
 }
 
-export interface BlogPostMeta {
+export interface WritingMeta {
   slug: string;
-  frontmatter: BlogFrontmatter;
+  frontmatter: WritingFrontmatter;
   readingTime: string;
 }
 
-export function getAllPosts(): BlogPostMeta[] {
-  if (!fs.existsSync(BLOG_DIR)) {
+export function getAllWritings(): WritingMeta[] {
+  if (!fs.existsSync(WRITINGS_DIR)) {
     return [];
   }
 
-  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
+  const files = fs.readdirSync(WRITINGS_DIR).filter((f) => f.endsWith(".mdx"));
 
   const posts = files
     .map((filename) => {
       const slug = filename.replace(/\.mdx$/, "");
-      const filePath = path.join(BLOG_DIR, filename);
+      const filePath = path.join(WRITINGS_DIR, filename);
       const raw = fs.readFileSync(filePath, "utf-8");
       const { data, content } = matter(raw);
-      const frontmatter = data as BlogFrontmatter;
+      const frontmatter = data as WritingFrontmatter;
 
       if (!frontmatter.published) {
         return null;
@@ -53,7 +53,7 @@ export function getAllPosts(): BlogPostMeta[] {
         readingTime: stats.text,
       };
     })
-    .filter((post): post is BlogPostMeta => post !== null);
+    .filter((post): post is WritingMeta => post !== null);
 
   posts.sort(
     (a, b) =>
@@ -64,8 +64,8 @@ export function getAllPosts(): BlogPostMeta[] {
   return posts;
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
+export function getWritingBySlug(slug: string): Writing | null {
+  const filePath = path.join(WRITINGS_DIR, `${slug}.mdx`);
 
   if (!fs.existsSync(filePath)) {
     return null;
@@ -73,7 +73,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
 
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
-  const frontmatter = data as BlogFrontmatter;
+  const frontmatter = data as WritingFrontmatter;
   const stats = readingTime(content);
 
   return {
@@ -85,7 +85,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
 }
 
 export function getAllTags(): string[] {
-  const posts = getAllPosts();
+  const posts = getAllWritings();
   const tagSet = new Set<string>();
 
   for (const post of posts) {
@@ -98,12 +98,12 @@ export function getAllTags(): string[] {
 }
 
 export function getAllSlugs(): string[] {
-  if (!fs.existsSync(BLOG_DIR)) {
+  if (!fs.existsSync(WRITINGS_DIR)) {
     return [];
   }
 
   return fs
-    .readdirSync(BLOG_DIR)
+    .readdirSync(WRITINGS_DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => f.replace(/\.mdx$/, ""));
 }

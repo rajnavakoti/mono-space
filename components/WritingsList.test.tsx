@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BlogList } from "./BlogList";
-import type { BlogPostMeta } from "@/lib/blog";
+import { WritingsList } from "./WritingsList";
+import type { WritingMeta } from "@/lib/writings";
 
-const mockPosts: BlogPostMeta[] = [
+const mockWritings: WritingMeta[] = [
   {
     slug: "post-one",
     frontmatter: {
@@ -30,23 +30,23 @@ const mockPosts: BlogPostMeta[] = [
 
 const allTags = ["AI", "DDD", "architecture"];
 
-describe("BlogList", () => {
-  it("renders all posts by default", () => {
-    render(<BlogList posts={mockPosts} allTags={allTags} />);
+describe("WritingsList", () => {
+  it("renders all writings by default", () => {
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
     expect(screen.getByText("Post One")).toBeInTheDocument();
     expect(screen.getByText("Post Two")).toBeInTheDocument();
   });
 
   it("renders tag filter buttons", () => {
-    render(<BlogList posts={mockPosts} allTags={allTags} />);
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
     expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "DDD" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "AI" })).toBeInTheDocument();
   });
 
-  it("filters posts when a tag is clicked", async () => {
+  it("filters writings when a tag is clicked", async () => {
     const user = userEvent.setup();
-    render(<BlogList posts={mockPosts} allTags={allTags} />);
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
 
     await user.click(screen.getByRole("button", { name: "AI" }));
 
@@ -56,7 +56,7 @@ describe("BlogList", () => {
 
   it("clears filter when clicking the same tag again", async () => {
     const user = userEvent.setup();
-    render(<BlogList posts={mockPosts} allTags={allTags} />);
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
 
     await user.click(screen.getByRole("button", { name: "AI" }));
     await user.click(screen.getByRole("button", { name: "AI" }));
@@ -67,7 +67,7 @@ describe("BlogList", () => {
 
   it("clears filter when All is clicked", async () => {
     const user = userEvent.setup();
-    render(<BlogList posts={mockPosts} allTags={allTags} />);
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
 
     await user.click(screen.getByRole("button", { name: "AI" }));
     await user.click(screen.getByRole("button", { name: "All" }));
@@ -76,12 +76,12 @@ describe("BlogList", () => {
     expect(screen.getByText("Post Two")).toBeInTheDocument();
   });
 
-  it("shows empty message when no posts match filter", async () => {
+  it("shows empty message when no writings match filter", async () => {
     const user = userEvent.setup();
-    render(<BlogList posts={[mockPosts[0]]} allTags={["AI", "DDD"]} />);
+    render(<WritingsList writings={[mockWritings[0]]} allTags={["AI", "DDD"]} />);
 
     await user.click(screen.getByRole("button", { name: "AI" }));
 
-    expect(screen.getByText("// no posts matching this filter")).toBeInTheDocument();
+    expect(screen.getByText("// no writings matching this filter")).toBeInTheDocument();
   });
 });

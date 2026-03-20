@@ -39,8 +39,8 @@ export default function NotFound() {
               <Link href="/" className={styles.link}>
                 cd ~
               </Link>
-              <Link href="/blog" className={styles.link}>
-                cd ~/blog
+              <Link href="/writings" className={styles.link}>
+                cd ~/writings
               </Link>
               <Link href="/presentations" className={styles.link}>
                 cd ~/talks

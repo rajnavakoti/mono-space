@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { BlogPostMeta } from "@/lib/blog";
-import styles from "./BlogList.module.css";
+import type { WritingMeta } from "@/lib/writings";
+import styles from "./WritingsList.module.css";
 
-interface BlogListProps {
-  posts: BlogPostMeta[];
+interface WritingsListProps {
+  writings: WritingMeta[];
   allTags: string[];
 }
 
-export function BlogList({ posts, allTags }: BlogListProps) {
+export function WritingsList({ writings, allTags }: WritingsListProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const filtered = activeTag
-    ? posts.filter((p) => p.frontmatter.tags.includes(activeTag))
-    : posts;
+    ? writings.filter((w) => w.frontmatter.tags.includes(activeTag))
+    : writings;
 
   return (
     <>
@@ -43,30 +43,30 @@ export function BlogList({ posts, allTags }: BlogListProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className={styles.empty}>// no posts matching this filter</p>
+        <p className={styles.empty}>// no writings matching this filter</p>
       ) : (
         <ul className={styles.postList}>
-          {filtered.map((post) => (
-            <li key={post.slug}>
-              <Link href={`/blog/${post.slug}`} className={styles.postLink}>
+          {filtered.map((writing) => (
+            <li key={writing.slug}>
+              <Link href={`/writings/${writing.slug}`} className={styles.postLink}>
                 <article className={styles.postCard}>
                   <div className={styles.postBar}>
                     <time className={styles.date}>
-                      {post.frontmatter.date}
+                      {writing.frontmatter.date}
                     </time>
                     <span className={styles.readingTime}>
-                      {post.readingTime}
+                      {writing.readingTime}
                     </span>
                   </div>
                   <div className={styles.postBody}>
                     <h2 className={styles.postTitle}>
-                      {post.frontmatter.title}
+                      {writing.frontmatter.title}
                     </h2>
                     <p className={styles.excerpt}>
-                      {post.frontmatter.excerpt}
+                      {writing.frontmatter.excerpt}
                     </p>
                     <div className={styles.tags}>
-                      {post.frontmatter.tags.map((tag) => (
+                      {writing.frontmatter.tags.map((tag) => (
                         <span key={tag} className={styles.tag}>
                           {tag}
                         </span>

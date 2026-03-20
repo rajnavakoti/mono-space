@@ -92,6 +92,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+}
+
+/* === Section with visual element side-by-side === */
+.sectionWithVisual {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xl);
 }
 
 .promptLine {
@@ -521,6 +530,10 @@
   .connectLink:hover {
     transform: none;
     box-shadow: 3px 3px 0 var(--color-border);
+  }
+
+  .sectionWithVisual {
+    flex-direction: column;
   }
 
   .divider {
