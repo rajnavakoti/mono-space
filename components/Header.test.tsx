@@ -24,7 +24,7 @@ describe("Header", () => {
   it("renders all navigation links", () => {
     renderHeader();
     expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Writings" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Presentations" })
     ).toBeInTheDocument();

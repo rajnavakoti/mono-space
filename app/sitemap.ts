@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";
 
-import { getAllSlugs } from "@/lib/blog";
+import { getAllSlugs } from "@/lib/writings";
 import { getAllPresentationSlugs } from "@/lib/presentations";
 
 const siteUrl = "https://rajnavakoti.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const blogSlugs = getAllSlugs();
+  const writingSlugs = getAllSlugs();
   const presentationSlugs = getAllPresentationSlugs();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${siteUrl}/blog`,
+      url: `${siteUrl}/writings`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
@@ -32,8 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${siteUrl}/blog/${slug}`,
+  const writingPages: MetadataRoute.Sitemap = writingSlugs.map((slug) => ({
+    url: `${siteUrl}/writings/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.6,
@@ -48,5 +48,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  return [...staticPages, ...blogPages, ...presentationPages];
+  return [...staticPages, ...writingPages, ...presentationPages];
 }

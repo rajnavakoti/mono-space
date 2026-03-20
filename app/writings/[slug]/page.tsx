@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
-import { getAllSlugs, getPostBySlug } from "@/lib/blog";
-import type { BlogFrontmatter } from "@/lib/blog";
+import { getAllSlugs, getWritingBySlug } from "@/lib/writings";
+import type { WritingFrontmatter } from "@/lib/writings";
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
@@ -17,49 +17,49 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
-  if (!post) return {};
+  const writing = getWritingBySlug(slug);
+  if (!writing) return {};
 
-  const url = `https://rajnavakoti.dev/blog/${slug}`;
+  const url = `https://rajnavakoti.dev/writings/${slug}`;
 
   return {
-    title: post.frontmatter.title,
-    description: post.frontmatter.excerpt,
+    title: writing.frontmatter.title,
+    description: writing.frontmatter.excerpt,
     openGraph: {
       type: "article",
-      title: post.frontmatter.title,
-      description: post.frontmatter.excerpt,
+      title: writing.frontmatter.title,
+      description: writing.frontmatter.excerpt,
       url,
-      publishedTime: post.frontmatter.date,
-      tags: post.frontmatter.tags,
+      publishedTime: writing.frontmatter.date,
+      tags: writing.frontmatter.tags,
     },
   };
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function WritingPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const writing = getWritingBySlug(slug);
 
-  if (!post) {
+  if (!writing) {
     notFound();
   }
 
-  const { content } = await compileMDX<BlogFrontmatter>({
-    source: post.content,
+  const { content } = await compileMDX<WritingFrontmatter>({
+    source: writing.content,
     options: { parseFrontmatter: false },
   });
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.frontmatter.title,
-    description: post.frontmatter.excerpt,
-    datePublished: post.frontmatter.date,
+    headline: writing.frontmatter.title,
+    description: writing.frontmatter.excerpt,
+    datePublished: writing.frontmatter.date,
     author: {
       "@type": "Person",
       name: "Raj Navakoti",
     },
-    keywords: post.frontmatter.tags.join(", "),
+    keywords: writing.frontmatter.tags.join(", "),
   };
 
   return (
@@ -74,16 +74,16 @@ export default async function BlogPostPage({ params }: PageProps) {
           {slug}.mdx
         </span>
         <div className={styles.windowMeta}>
-          <time className={styles.date}>{post.frontmatter.date}</time>
+          <time className={styles.date}>{writing.frontmatter.date}</time>
           <span className={styles.separator} aria-hidden="true">|</span>
-          <span className={styles.readingTime}>{post.readingTime}</span>
+          <span className={styles.readingTime}>{writing.readingTime}</span>
         </div>
       </div>
 
       <header className={styles.header}>
-        <h1 className={styles.title}>{post.frontmatter.title}</h1>
+        <h1 className={styles.title}>{writing.frontmatter.title}</h1>
         <div className={styles.tags}>
-          {post.frontmatter.tags.map((tag) => (
+          {writing.frontmatter.tags.map((tag) => (
             <span key={tag} className={styles.tag}>
               {tag}
             </span>
@@ -94,8 +94,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       <div className={styles.content}>{content}</div>
 
       <footer className={styles.footer}>
-        <a href="/blog" className={styles.backLink}>
-          &larr; cd /blog
+        <a href="/writings" className={styles.backLink}>
+          &larr; cd /writings
         </a>
       </footer>
     </article>
