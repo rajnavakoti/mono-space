@@ -54,17 +54,17 @@
 
 /* === Presentation Card — flat layout === */
 .card {
-  padding: var(--space-lg) 0;
-  border-bottom: var(--border-muted);
-  transition: background-color var(--transition-fast);
+  border: var(--border-muted);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
 }
 
 .card:hover {
-  background-color: var(--color-surface-hover);
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
-  margin-left: calc(-1 * var(--space-md));
-  margin-right: calc(-1 * var(--space-md));
+  border-color: var(--color-accent);
+}
+
+.cardBody {
+  padding: var(--space-md);
 }
 
 .cardMeta {
@@ -132,10 +132,6 @@
   }
 
   .card:hover {
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-    background-color: transparent;
+    border-color: var(--color-border-muted);
   }
 }
