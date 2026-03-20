@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { getAllSlugs, getWritingBySlug } from "@/lib/writings";
 import type { WritingFrontmatter } from "@/lib/writings";
+import { PlaceholderCover } from "@/components/PlaceholderCover";
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
@@ -79,6 +80,8 @@ export default async function WritingPage({ params }: PageProps) {
           <span className={styles.readingTime}>{writing.readingTime}</span>
         </div>
       </div>
+
+      <PlaceholderCover title={writing.frontmatter.title} className={styles.coverImage} />
 
       <header className={styles.header}>
         <h1 className={styles.title}>{writing.frontmatter.title}</h1>

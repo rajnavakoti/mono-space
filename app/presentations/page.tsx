@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPresentations } from "@/lib/presentations";
+import { PlaceholderCover } from "@/components/PlaceholderCover";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -29,17 +30,20 @@ export default function PresentationsPage() {
                 className={styles.cardLink}
               >
                 <article className={styles.card}>
-                  <div className={styles.cardMeta}>
-                    <span className={styles.event}>{pres.event}</span>
-                    <span className={styles.separator} aria-hidden="true">|</span>
-                    <time className={styles.date}>{pres.date}</time>
-                    <span className={styles.separator} aria-hidden="true">|</span>
-                    <span className={styles.slides}>
-                      {pres.slideCount} slides
-                    </span>
+                  <PlaceholderCover title={pres.title} />
+                  <div className={styles.cardBody}>
+                    <div className={styles.cardMeta}>
+                      <span className={styles.event}>{pres.event}</span>
+                      <span className={styles.separator} aria-hidden="true">|</span>
+                      <time className={styles.date}>{pres.date}</time>
+                      <span className={styles.separator} aria-hidden="true">|</span>
+                      <span className={styles.slides}>
+                        {pres.slideCount} slides
+                      </span>
+                    </div>
+                    <h2 className={styles.cardTitle}>{pres.title}</h2>
+                    <p className={styles.description}>{pres.description}</p>
                   </div>
-                  <h2 className={styles.cardTitle}>{pres.title}</h2>
-                  <p className={styles.description}>{pres.description}</p>
                 </article>
               </Link>
             </li>

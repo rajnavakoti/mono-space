@@ -55,6 +55,13 @@
   margin-bottom: var(--space-xl);
 }
 
+/* === Cover Image === */
+.coverImage {
+  height: 180px;
+  border: var(--border-muted);
+  margin-bottom: var(--space-xl);
+}
+
 .title {
   font-size: var(--text-2xl);
   font-weight: var(--weight-black);

@@ -70,23 +70,20 @@
 
 /* === Post Card === */
 .postCard {
-  padding: var(--space-lg) 0;
-  border-bottom: var(--border-muted);
-  transition: background-color var(--transition-fast);
+  border: var(--border-muted);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
 }
 
 .postCard:hover {
-  background-color: var(--color-surface-hover);
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
-  margin-left: calc(-1 * var(--space-md));
-  margin-right: calc(-1 * var(--space-md));
+  border-color: var(--color-accent);
 }
 
 .postBar {
   display: flex;
   justify-content: flex-start;
   gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md) 0;
   margin-bottom: var(--space-sm);
 }
 
@@ -103,7 +100,7 @@
 }
 
 .postBody {
-  /* no extra padding needed */
+  padding: 0 var(--space-md) var(--space-md);
 }
 
 .postTitle {
@@ -150,10 +147,6 @@
   }
 
   .postCard:hover {
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-    background-color: transparent;
+    border-color: var(--color-border-muted);
   }
 }

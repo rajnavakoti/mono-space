@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { WritingMeta } from "@/lib/writings";
+import { PlaceholderCover } from "./PlaceholderCover";
 import styles from "./WritingsList.module.css";
 
 interface WritingsListProps {
@@ -50,6 +51,7 @@ export function WritingsList({ writings, allTags }: WritingsListProps) {
             <li key={writing.slug}>
               <Link href={`/writings/${writing.slug}`} className={styles.postLink}>
                 <article className={styles.postCard}>
+                  <PlaceholderCover title={writing.frontmatter.title} />
                   <div className={styles.postBar}>
                     <time className={styles.date}>
                       {writing.frontmatter.date}
