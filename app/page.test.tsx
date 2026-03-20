@@ -65,9 +65,5 @@ describe("Home", () => {
     expect(screen.getByText(/best architectures emerge/)).toBeInTheDocument();
   });
 
-  it("renders pixel characters as decorative elements", () => {
-    const { container } = render(<Home />);
-    const pixelChars = container.querySelectorAll("[aria-hidden='true'][class*='pixel']");
-    expect(pixelChars.length).toBeGreaterThanOrEqual(4);
-  });
+
 });

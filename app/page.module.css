@@ -441,31 +441,6 @@
   box-shadow: 6px 6px 0 var(--color-border);
 }
 
-/* ============================================
-   PIXEL CHARACTERS — positioning
-   ============================================ */
-.pixelBottomRight {
-  position: absolute;
-  bottom: var(--space-sm);
-  right: var(--space-md);
-  pointer-events: auto;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-
-.pixelBottomLeft {
-  position: absolute;
-  bottom: var(--space-sm);
-  left: var(--space-md);
-  pointer-events: auto;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-
-.sectionBody:hover .pixelBottomRight,
-.sectionBody:hover .pixelBottomLeft {
-  opacity: 1;
-}
 
 /* ============================================
    MOBILE

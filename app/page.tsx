@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { profile } from "@/content/profile";
 import { TypingEffect } from "@/components/TypingEffect";
-import { PixelCharacter } from "@/components/PixelCharacter";
+
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -99,7 +99,7 @@ export default function Home() {
         </div>
         <div className={styles.sectionBody}>
           <p className={styles.aboutText}>{profile.about}</p>
-          <PixelCharacter type="reader" className={styles.pixelBottomRight} />
+
         </div>
       </section>
 
@@ -127,7 +127,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <PixelCharacter type="coder" className={styles.pixelBottomLeft} />
+
         </div>
       </section>
 
@@ -175,7 +175,7 @@ export default function Home() {
               ))}
             </div>
           )}
-          <PixelCharacter type="speaker" className={styles.pixelBottomRight} />
+
         </div>
       </section>
 
@@ -206,7 +206,7 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <PixelCharacter type="waver" className={styles.pixelBottomLeft} />
+
         </div>
       </section>
 
