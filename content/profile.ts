@@ -1,3 +1,9 @@
+export interface SkillGroup {
+  label: string;
+  icon: string;
+  items: { name: string; level: number }[];
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -5,6 +11,7 @@ export interface Profile {
   quote: string;
   about: string;
   currentFocus: string[];
+  skills: SkillGroup[];
   links: ProfileLink[];
   speaking: SpeakingEngagement[];
 }
@@ -35,6 +42,52 @@ export const profile: Profile = {
     "AI-augmented dev workflows",
     "Enterprise DDD at scale",
     "Neuroscience x system design",
+  ],
+  skills: [
+    {
+      label: "Skills",
+      icon: "/skill",
+      items: [
+        { name: "TypeScript", level: 95 },
+        { name: "System Design", level: 90 },
+        { name: "Python", level: 80 },
+        { name: "React/Next.js", level: 85 },
+        { name: "DDD", level: 90 },
+      ],
+    },
+    {
+      label: "Tools",
+      icon: "/tool",
+      items: [
+        { name: "AWS/GCP", level: 85 },
+        { name: "Docker/K8s", level: 75 },
+        { name: "CI/CD", level: 80 },
+        { name: "PostgreSQL", level: 80 },
+        { name: "LLM APIs", level: 90 },
+      ],
+    },
+    {
+      label: "Agents",
+      icon: "/agent",
+      items: [
+        { name: "Architecture", level: 95 },
+        { name: "AI/ML Integration", level: 85 },
+        { name: "Team Leadership", level: 90 },
+        { name: "Technical Writing", level: 80 },
+        { name: "Mentoring", level: 85 },
+      ],
+    },
+    {
+      label: "Hooks",
+      icon: "/hook",
+      items: [
+        { name: "Code Review", level: 90 },
+        { name: "Perf Optimization", level: 80 },
+        { name: "Security", level: 75 },
+        { name: "Observability", level: 85 },
+        { name: "Testing", level: 85 },
+      ],
+    },
   ],
   links: [
     { label: "GitHub", href: "https://github.com/rajnavakoti", external: true },
