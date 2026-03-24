@@ -50,13 +50,13 @@ export default async function PresentationPage({ params }: PageProps) {
               {pres.event} &mdash; {pres.date}
             </span>
           </div>
-          <div className={styles.galleryStrip}>
+          <div className={styles.galleryGrid}>
             {pres.photos!.map((photo, i) => (
               <div key={photo} className={styles.galleryItem}>
                 <Image
                   src={photo}
                   alt={`${pres.event} — photo ${i + 1}`}
-                  width={280}
+                  width={400}
                   height={200}
                   className={styles.galleryPhoto}
                   unoptimized

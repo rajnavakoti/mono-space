@@ -137,7 +137,6 @@ export const profile: Profile = {
       upcoming: false,
       url: "/presentations/ai-builders-ddc",
       logo: "/talks/ai-builders-logo.jpeg",
-      photo: "/talks/ai-builders-event-1.jpeg",
     },
   ],
 };
