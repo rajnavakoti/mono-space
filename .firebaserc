@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "mono-space-site"
+  },
+  "targets": {
+    "mono-space-site": {
+      "hosting": {
+        "main": ["rajnavakoti-dev"]
+      }
+    }
   }
 }
