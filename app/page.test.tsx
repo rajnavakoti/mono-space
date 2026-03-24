@@ -36,7 +36,7 @@ describe("Home", () => {
 
   it("renders NEXT badge on upcoming talks", () => {
     render(<Home />);
-    expect(screen.getByText("NEXT")).toBeInTheDocument();
+    expect(screen.getAllByText("NEXT").length).toBeGreaterThan(0);
   });
 
   it("renders connect window with links", () => {

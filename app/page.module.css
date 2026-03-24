@@ -368,10 +368,28 @@
 }
 
 .talkCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
   padding: var(--space-md);
   margin-bottom: var(--space-sm);
   border-bottom: var(--border-muted);
   transition: background-color var(--transition-fast);
+}
+
+.talkLogo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: var(--border-muted);
+  padding: 4px;
+  background-color: var(--color-bg-secondary);
+}
+
+.talkContent {
+  flex: 1;
+  min-width: 0;
 }
 
 .talkCard:last-child {

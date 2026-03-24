@@ -26,8 +26,11 @@ export interface SpeakingEngagement {
   title: string;
   event: string;
   date: string;
+  location: string;
   upcoming: boolean;
   url?: string;
+  logo?: string;
+  photo?: string;
 }
 
 export const profile: Profile = {
@@ -100,22 +103,37 @@ export const profile: Profile = {
   ],
   speaking: [
     {
-      title: "Demand-Driven Context: A New Framework for Architecture Knowledge",
-      event: "NDC 2026",
-      date: "2026-06-15",
+      title: "Enterprise Context Management",
+      event: "Create With",
+      date: "2026-06-25",
+      location: "Brighton, UK",
       upcoming: true,
+      logo: "/talks/create-with-logo.png",
     },
     {
-      title: "Reverse-Engineering DDD in Legacy Systems",
-      event: "DDD Europe 2026",
-      date: "2026-02-10",
-      upcoming: false,
+      title: "Reverse-Engineering Domain-Driven Architecture",
+      event: "DDD Europe",
+      date: "2026-06-09",
+      location: "Antwerp, Belgium",
+      upcoming: true,
+      logo: "/talks/ddd-europe-logo.png",
     },
     {
-      title: "AI-Augmented Architecture Decision Records",
-      event: "GOTO Copenhagen 2025",
-      date: "2025-11-20",
+      title: "Demand-Driven Context",
+      event: "AI.engineer",
+      date: "2026-04-08",
+      location: "London, UK",
+      upcoming: true,
+      logo: "/talks/ai-engineer-logo.png",
+    },
+    {
+      title: "Enterprise Agentic Context",
+      event: "AI Builders Amsterdam",
+      date: "2026-02-26",
+      location: "Amsterdam, NL",
       upcoming: false,
+      logo: "/talks/ai-builders-logo.png",
+      photo: "/talks/ai-builders-event.jpg",
     },
   ],
 };
