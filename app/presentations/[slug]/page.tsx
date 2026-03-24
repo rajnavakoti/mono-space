@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   getAllPresentationSlugs,
@@ -6,6 +7,7 @@ import {
 } from "@/lib/presentations";
 import { PresentationViewer } from "@/components/PresentationViewer";
 import type { Metadata } from "next";
+import styles from "./page.module.css";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,9 +38,38 @@ export default async function PresentationPage({ params }: PageProps) {
     notFound();
   }
 
+  const hasPhotos = pres.photos && pres.photos.length > 0;
+
   return (
-    <Suspense>
-      <PresentationViewer slides={pres.slides} slug={slug} />
-    </Suspense>
+    <div className={styles.page}>
+      {hasPhotos && (
+        <div className={styles.gallery}>
+          <div className={styles.galleryHeader}>
+            <span className={styles.galleryLabel}>EVENT PHOTOS</span>
+            <span className={styles.galleryMeta}>
+              {pres.event} &mdash; {pres.date}
+            </span>
+          </div>
+          <div className={styles.galleryStrip}>
+            {pres.photos!.map((photo, i) => (
+              <div key={photo} className={styles.galleryItem}>
+                <Image
+                  src={photo}
+                  alt={`${pres.event} — photo ${i + 1}`}
+                  width={280}
+                  height={200}
+                  className={styles.galleryPhoto}
+                  unoptimized
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <Suspense>
+        <PresentationViewer slides={pres.slides} slug={slug} />
+      </Suspense>
+    </div>
   );
 }

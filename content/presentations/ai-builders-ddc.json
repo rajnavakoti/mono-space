@@ -3,6 +3,12 @@
   "event": "AI Builders Amsterdam",
   "date": "2026-02-26",
   "description": "A framework for enterprise AI agents that lets problems drive context curation — like TDD for knowledge. Presented at AI Builders meetup in Amsterdam.",
+  "photos": [
+    "/talks/ai-builders-event-1.jpeg",
+    "/talks/ai-builders-event-2.jpeg",
+    "/talks/ai-builders-event-3.jpeg",
+    "/talks/ai-builders-event-4.jpeg"
+  ],
   "slides": [
     {
       "type": "title",

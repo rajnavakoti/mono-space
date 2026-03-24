@@ -89,6 +89,7 @@ export interface Presentation {
   date: string;
   description: string;
   slides: Slide[];
+  photos?: string[];
 }
 
 /* === Data Access === */
