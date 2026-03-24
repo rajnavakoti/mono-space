@@ -39,7 +39,7 @@ export const profile: Profile = {
   tagline: "AI . Architecture . Cognition",
   quote: "The best architectures emerge from understanding how humans think, not just how machines compute.",
   about:
-    "I design systems at the intersection of software architecture, AI, and how humans actually think. Currently deep into demand-driven design and LLM-augmented engineering.",
+    "Building tools that make enterprise architecture less painful — from AI agents that curate their own context, to static sites that generate interactive diagrams from Markdown, to prototyping pipelines you can fork and ship. On the side, exploring how brains compute and what that means for the systems we build.",
   currentFocus: [
     {
       name: "DDC Framework",
