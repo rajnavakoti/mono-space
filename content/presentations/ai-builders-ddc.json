@@ -55,14 +55,8 @@
     {
       "type": "two-column",
       "title": "The Curation Problem",
-      "left": {
-        "header": "Top-Down",
-        "items": ["Document everything", "80% is never used", "Stale before you finish"]
-      },
-      "right": {
-        "header": "Bottom-Up",
-        "items": ["Document nothing", "Agent guesses wrong", "Hallucination city"]
-      },
+      "left": ["Top-Down", "Document everything", "80% is never used", "Stale before you finish"],
+      "right": ["Bottom-Up", "Document nothing", "Agent guesses wrong", "Hallucination city"],
       "notes": "Both extremes fail. There's a third way."
     },
     {
@@ -90,26 +84,8 @@
     {
       "type": "two-column",
       "title": "The TDD Parallel",
-      "left": {
-        "header": "TDD",
-        "items": [
-          "Write failing test",
-          "Write minimum code",
-          "Test passes",
-          "Refactor",
-          "Accumulates coverage"
-        ]
-      },
-      "right": {
-        "header": "DDC",
-        "items": [
-          "Give agent a problem",
-          "Provide minimum context",
-          "Agent succeeds",
-          "Curate into KB",
-          "Accumulates context"
-        ]
-      }
+      "left": ["TDD", "Write failing test", "Write minimum code", "Test passes", "Refactor", "Accumulates coverage"],
+      "right": ["DDC", "Give agent a problem", "Provide minimum context", "Agent succeeds", "Curate into KB", "Accumulates context"]
     },
     {
       "type": "section",

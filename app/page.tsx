@@ -192,8 +192,8 @@ export default function Home() {
                       <Image
                         src={talk.logo}
                         alt={`${talk.event} logo`}
-                        width={40}
-                        height={40}
+                        width={56}
+                        height={56}
                         className={styles.talkLogo}
                         unoptimized
                       />
@@ -230,8 +230,8 @@ export default function Home() {
                       <Image
                         src={talk.photo}
                         alt={`${talk.event} — ${talk.title}`}
-                        width={80}
-                        height={60}
+                        width={100}
+                        height={75}
                         className={styles.talkPhoto}
                         unoptimized
                       />
@@ -239,8 +239,8 @@ export default function Home() {
                       <Image
                         src={talk.logo}
                         alt={`${talk.event} logo`}
-                        width={40}
-                        height={40}
+                        width={56}
+                        height={56}
                         className={styles.talkLogo}
                         unoptimized
                       />

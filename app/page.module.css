@@ -388,18 +388,18 @@
 }
 
 .talkLogo {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   flex-shrink: 0;
   border: var(--border-muted);
-  padding: 4px;
+  padding: 6px;
   background-color: var(--color-bg-secondary);
 }
 
 .talkPhoto {
-  width: 80px;
-  height: 60px;
+  width: 100px;
+  height: 75px;
   object-fit: cover;
   flex-shrink: 0;
   border: var(--border-muted);
@@ -437,7 +437,7 @@
 
 .talkTitle {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--weight-bold);
   margin-bottom: var(--space-xs);
   transition: color var(--transition-fast);
@@ -447,7 +447,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: var(--weight-black);
-  padding: 2px var(--space-sm);
+  padding: 4px var(--space-md);
   background-color: var(--color-accent-tertiary);
   color: var(--color-accent-text);
   flex-shrink: 0;
@@ -456,7 +456,7 @@
 
 .talkMeta {
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
 }
 
