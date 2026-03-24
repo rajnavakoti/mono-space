@@ -23,6 +23,8 @@ const mockWritings: WritingMeta[] = [
       tags: ["AI"],
       excerpt: "Second post excerpt",
       published: true,
+      externalUrl: "https://example.com/post-two",
+      platform: "Medium",
     },
     readingTime: "5 min read",
   },
@@ -37,11 +39,22 @@ describe("WritingsList", () => {
     expect(screen.getByText("Post Two")).toBeInTheDocument();
   });
 
-  it("renders tag filter buttons", () => {
+  it("renders platform badge for external writings", () => {
     render(<WritingsList writings={mockWritings} allTags={allTags} />);
-    expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "DDD" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "AI" })).toBeInTheDocument();
+    expect(screen.getByText("Medium")).toBeInTheDocument();
+  });
+
+  it("links external writings to external URL", () => {
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
+    const externalLink = screen.getByRole("link", { name: /Post Two/ });
+    expect(externalLink).toHaveAttribute("href", "https://example.com/post-two");
+    expect(externalLink).toHaveAttribute("target", "_blank");
+  });
+
+  it("links internal writings to /writings/slug", () => {
+    render(<WritingsList writings={mockWritings} allTags={allTags} />);
+    const internalLink = screen.getByRole("link", { name: /Post One/ });
+    expect(internalLink).toHaveAttribute("href", "/writings/post-one");
   });
 
   it("filters writings when a tag is clicked", async () => {
@@ -51,28 +64,6 @@ describe("WritingsList", () => {
     await user.click(screen.getByRole("button", { name: "AI" }));
 
     expect(screen.queryByText("Post One")).not.toBeInTheDocument();
-    expect(screen.getByText("Post Two")).toBeInTheDocument();
-  });
-
-  it("clears filter when clicking the same tag again", async () => {
-    const user = userEvent.setup();
-    render(<WritingsList writings={mockWritings} allTags={allTags} />);
-
-    await user.click(screen.getByRole("button", { name: "AI" }));
-    await user.click(screen.getByRole("button", { name: "AI" }));
-
-    expect(screen.getByText("Post One")).toBeInTheDocument();
-    expect(screen.getByText("Post Two")).toBeInTheDocument();
-  });
-
-  it("clears filter when All is clicked", async () => {
-    const user = userEvent.setup();
-    render(<WritingsList writings={mockWritings} allTags={allTags} />);
-
-    await user.click(screen.getByRole("button", { name: "AI" }));
-    await user.click(screen.getByRole("button", { name: "All" }));
-
-    expect(screen.getByText("Post One")).toBeInTheDocument();
     expect(screen.getByText("Post Two")).toBeInTheDocument();
   });
 

@@ -10,7 +10,7 @@ describe("WritingsPage", () => {
   it("renders writings", () => {
     render(<WritingsPage />);
     expect(
-      screen.getByText(/Reverse-Engineering DDD/)
+      screen.getByText(/Demand-Driven Context/)
     ).toBeInTheDocument();
   });
 
