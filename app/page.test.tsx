@@ -16,7 +16,7 @@ describe("Home", () => {
   it("renders about window panel", () => {
     render(<Home />);
     expect(screen.getByText("ABOUT.md")).toBeInTheDocument();
-    expect(screen.getByText(/intersection of software/)).toBeInTheDocument();
+    expect(screen.getByText(/enterprise architecture less painful/)).toBeInTheDocument();
   });
 
   it("renders focus window with indexed items", () => {

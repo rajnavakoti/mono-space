@@ -39,7 +39,7 @@ export const profile: Profile = {
   tagline: "AI . Architecture . Cognition",
   quote: "The best architectures emerge from understanding how humans think, not just how machines compute.",
   about:
-    "Building tools that make enterprise architecture less painful — from AI agents that curate their own context, to static sites that generate interactive diagrams from Markdown, to prototyping pipelines you can fork and ship. On the side, exploring how brains compute and what that means for the systems we build.",
+    "Building tools that make enterprise architecture less painful — from AI agents that curate their own context, to static sites that generate interactive diagrams from Markdown, to prototyping pipelines you can fork and ship. On the side, exploring BCI, neuroscience, and cognitive state monitoring.",
   currentFocus: [
     {
       name: "DDC Framework",
