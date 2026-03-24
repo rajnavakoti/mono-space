@@ -96,7 +96,7 @@ export const profile: Profile = {
     { label: "GitHub", href: "https://github.com/rajnavakoti", external: true },
     {
       label: "LinkedIn",
-      href: "https://linkedin.com/in/rajnavakoti",
+      href: "https://www.linkedin.com/in/raj-navakoti-529880b1/",
       external: true,
     },
     { label: "Email", href: "mailto:rajnavakoti@gmail.com" },

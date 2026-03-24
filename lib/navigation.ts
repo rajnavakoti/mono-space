@@ -16,6 +16,6 @@ export interface SocialLink {
 
 export const socialLinks: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/rajnavakoti" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/rajnavakoti" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/raj-navakoti-529880b1/" },
   { label: "Email", href: "mailto:rajnavakoti@gmail.com" },
 ];
