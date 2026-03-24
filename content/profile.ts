@@ -10,7 +10,7 @@ export interface Profile {
   tagline: string;
   quote: string;
   about: string;
-  currentFocus: string[];
+  currentFocus: { name: string; description: string; url: string }[];
   skills: SkillGroup[];
   links: ProfileLink[];
   speaking: SpeakingEngagement[];
@@ -41,10 +41,26 @@ export const profile: Profile = {
   about:
     "I design systems at the intersection of software architecture, AI, and how humans actually think. Currently deep into demand-driven design and LLM-augmented engineering.",
   currentFocus: [
-    "Demand-Driven Context framework",
-    "AI-augmented dev workflows",
-    "Enterprise DDD at scale",
-    "Neuroscience x system design",
+    {
+      name: "DDC Framework",
+      description: "TDD-style methodology for building AI agent knowledge bases",
+      url: "https://github.com/ea-toolkit/ddc",
+    },
+    {
+      name: "Architecture Catalog",
+      description: "Markdown-to-interactive-diagrams for enterprise architecture",
+      url: "https://github.com/ea-toolkit/architecture-catalog",
+    },
+    {
+      name: "Prototype-Ops",
+      description: "Forkable template for enterprise prototyping pipelines",
+      url: "https://github.com/ea-toolkit/prototype-ops",
+    },
+    {
+      name: "Neuro State Monitor",
+      description: "Real-time cognitive state tracking via EEG signals",
+      url: "https://github.com/neural-state-lab/neuro-state-monitor",
+    },
   ],
   skills: [
     {

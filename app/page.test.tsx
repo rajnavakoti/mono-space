@@ -23,7 +23,7 @@ describe("Home", () => {
     render(<Home />);
     expect(screen.getByText("FOCUS.log")).toBeInTheDocument();
     expect(
-      screen.getByText(/Demand-Driven Context framework/)
+      screen.getByText(/DDC Framework/)
     ).toBeInTheDocument();
   });
 

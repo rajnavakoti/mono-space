@@ -121,29 +121,25 @@ export default function Home() {
           </span>
         </div>
         <div className={styles.sectionBody}>
-          <div className={styles.sectionWithVisual}>
-            <ul className={styles.focusList}>
-              {profile.currentFocus.map((item, i) => (
-                <li key={item} className={styles.focusItem}>
-                  <span className={styles.focusIndex} aria-hidden="true">
-                    {String(i).padStart(2, "0")}
-                  </span>
-                  <span className={styles.focusBullet} aria-hidden="true">
-                    //
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <TerminalSnippet
-              lines={[
-                "npm run architect",
-                "loading context...",
-                "demand-driven: active",
-                "AI augmentation: on",
-              ]}
-            />
-          </div>
+          <ul className={styles.focusList}>
+            {profile.currentFocus.map((item, i) => (
+              <li key={item.name} className={styles.focusItem}>
+                <span className={styles.focusIndex} aria-hidden="true">
+                  {String(i).padStart(2, "0")}
+                </span>
+                <a
+                  href={item.url}
+                  className={styles.focusLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className={styles.focusName}>{item.name}</span>
+                  <span className={styles.focusDesc}>{item.description}</span>
+                  <span className={styles.focusArrow} aria-hidden="true">&rarr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
