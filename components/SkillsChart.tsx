@@ -61,12 +61,12 @@ export function SkillsChart({ groups }: SkillsChartProps) {
   const [active, setActive] = useState<number | null>(null);
   const total = groups.reduce((sum, g) => sum + g.items.length, 0);
 
-  const cx = 200;
-  const cy = 200;
-  const r = 150;
-  const labelR = r + 40;
+  const cx = 250;
+  const cy = 250;
+  const r = 140;
+  const labelR = r + 45;
   const lineStartR = r + 5;
-  const lineEndR = r + 25;
+  const lineEndR = r + 30;
 
   let cumulative = 0;
   const slices = groups.map((group, i) => {
@@ -90,13 +90,47 @@ export function SkillsChart({ groups }: SkillsChartProps) {
     <div className={styles.container}>
       <div className={styles.chartWrap}>
         <svg
-          viewBox="0 0 400 400"
+          viewBox="0 0 500 500"
           className={styles.svg}
           aria-hidden="true"
         >
           <PatternDefs />
 
-          {/* Slices */}
+          {/* Label lines + text (render first, behind slices) */}
+          {slices.map((slice) => {
+            const lineStart = polarToCartesian(cx, cy, lineStartR, slice.midAngle);
+            const lineEnd = polarToCartesian(cx, cy, lineEndR, slice.midAngle);
+            const labelPos = polarToCartesian(cx, cy, labelR, slice.midAngle);
+            const isRight = labelPos.x > cx;
+
+            return (
+              <g key={`label-${slice.label}`}>
+                <line
+                  x1={lineStart.x}
+                  y1={lineStart.y}
+                  x2={lineEnd.x}
+                  y2={lineEnd.y}
+                  stroke={slice.svgColor}
+                  strokeWidth="1.5"
+                  strokeOpacity="0.6"
+                />
+                <text
+                  x={labelPos.x + (isRight ? 8 : -8)}
+                  y={labelPos.y + 4}
+                  textAnchor={isRight ? "start" : "end"}
+                  fill={slice.svgColor}
+                  fontSize="11"
+                  fontFamily="monospace"
+                  fontWeight="700"
+                  letterSpacing="0.05em"
+                >
+                  {slice.icon} {slice.label.toUpperCase()}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Slices (render on top for hover) */}
           {slices.map((slice) => (
             <path
               key={slice.label}
@@ -119,40 +153,6 @@ export function SkillsChart({ groups }: SkillsChartProps) {
           <text x={cx} y={cy + 12} textAnchor="middle" fill="var(--color-text-muted)" fontSize="9" fontFamily="monospace" fontWeight="700" letterSpacing="0.1em">
             TRAITS
           </text>
-
-          {/* Label lines + text */}
-          {slices.map((slice) => {
-            const lineStart = polarToCartesian(cx, cy, lineStartR, slice.midAngle);
-            const lineEnd = polarToCartesian(cx, cy, lineEndR, slice.midAngle);
-            const labelPos = polarToCartesian(cx, cy, labelR, slice.midAngle);
-            const isRight = labelPos.x > cx;
-
-            return (
-              <g key={`label-${slice.label}`} className={styles.labelGroup}>
-                <line
-                  x1={lineStart.x}
-                  y1={lineStart.y}
-                  x2={lineEnd.x}
-                  y2={lineEnd.y}
-                  stroke={slice.svgColor}
-                  strokeWidth="1.5"
-                  strokeOpacity="0.6"
-                />
-                <text
-                  x={labelPos.x + (isRight ? 6 : -6)}
-                  y={labelPos.y + 4}
-                  textAnchor={isRight ? "start" : "end"}
-                  fill={slice.svgColor}
-                  fontSize="10"
-                  fontFamily="monospace"
-                  fontWeight="700"
-                  letterSpacing="0.05em"
-                >
-                  {slice.icon} {slice.label.toUpperCase()}
-                </text>
-              </g>
-            );
-          })}
         </svg>
       </div>
 

@@ -20,7 +20,7 @@
 /* === Slice states === */
 .slice {
   transition: opacity 0.2s ease, transform 0.2s ease;
-  transform-origin: 200px 200px;
+  transform-origin: 250px 250px;
 }
 
 .sliceActive {
@@ -32,9 +32,6 @@
   opacity: 0.3;
 }
 
-.labelGroup {
-  pointer-events: none;
-}
 
 /* === Tooltip (desktop hover) === */
 .tooltip {
