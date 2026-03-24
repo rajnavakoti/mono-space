@@ -1,0 +1,140 @@
+{
+  "title": "Demand-Driven Context: Teaching AI Agents to Remember What Matters",
+  "event": "AI Builders Amsterdam",
+  "date": "2026-02-26",
+  "description": "A framework for enterprise AI agents that lets problems drive context curation — like TDD for knowledge. Presented at AI Builders meetup in Amsterdam.",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Demand-Driven Context",
+      "subtitle": "Teaching AI Agents to Remember What Matters",
+      "author": "Raj Navakoti",
+      "event": "AI Builders Amsterdam",
+      "date": "Feb 2026"
+    },
+    {
+      "type": "content",
+      "title": "\"I Have This Condition\"",
+      "body": [
+        "Expert investigator. Sharp mind.",
+        "Zero memory of what happened ten minutes ago.",
+        "Without his system of tattoos and Polaroid photos — he's just a confused man in a motel room."
+      ],
+      "notes": "Remember Memento? Leonard Shelby — the guy who can't form new memories. Every morning he wakes up in a motel room with no idea how he got there."
+    },
+    {
+      "type": "content",
+      "title": "Your AI Agent is Leonard",
+      "body": [
+        "Skills: 10/10",
+        "Company context: 0/10",
+        "It confidently produces a beautifully structured, completely wrong answer."
+      ],
+      "notes": "Give your agent a real enterprise problem and it wakes up like Leonard. Expert reasoning. Zero memory of your company."
+    },
+    {
+      "type": "content",
+      "title": "IKEA vs Your Enterprise",
+      "body": [
+        "Physical world: Clear pathways, numbered sections, you walk in with a list and walk out with exactly what you need.",
+        "Digital world: Hundreds of systems, thousands of APIs, tribal knowledge locked in people's heads, docs scattered everywhere."
+      ],
+      "notes": "Anyone who's shopped at IKEA knows how easy it is to navigate. But look at the digital side of any enterprise. No clear path. No numbered arrows."
+    },
+    {
+      "type": "content",
+      "title": "We Have the Pipes, Not the Water",
+      "body": [
+        "MCP servers · Context services · CLAUDE.md · .cursorrules",
+        "System prompts · RAG pipelines",
+        "",
+        "But who curates what flows through them?"
+      ],
+      "notes": "The pipes are getting better every week. But there's a problem upstream: how do you curate the context? Most teams either dump everything in or guess. Both fail."
+    },
+    {
+      "type": "two-column",
+      "title": "The Curation Problem",
+      "left": {
+        "header": "Top-Down",
+        "items": ["Document everything", "80% is never used", "Stale before you finish"]
+      },
+      "right": {
+        "header": "Bottom-Up",
+        "items": ["Document nothing", "Agent guesses wrong", "Hallucination city"]
+      },
+      "notes": "Both extremes fail. There's a third way."
+    },
+    {
+      "type": "content",
+      "title": "What if the Agent Told You What's Missing?",
+      "body": [
+        "Treat your AI agent like a new joiner on Day 1.",
+        "They don't read the entire wiki.",
+        "They start working on real problems and ask questions.",
+        "After 20-30 problems — they're productive."
+      ]
+    },
+    {
+      "type": "bullets",
+      "title": "DDC: Demand-Driven Context",
+      "items": [
+        "Give the agent a real problem",
+        "Let it fail",
+        "Let it tell you what's missing",
+        "Fill the gaps",
+        "Let it ink its own tattoos"
+      ],
+      "notes": "Problem-driven context curation. Like TDD for knowledge — RED, GREEN, REFACTOR."
+    },
+    {
+      "type": "two-column",
+      "title": "The TDD Parallel",
+      "left": {
+        "header": "TDD",
+        "items": [
+          "Write failing test",
+          "Write minimum code",
+          "Test passes",
+          "Refactor",
+          "Accumulates coverage"
+        ]
+      },
+      "right": {
+        "header": "DDC",
+        "items": [
+          "Give agent a problem",
+          "Provide minimum context",
+          "Agent succeeds",
+          "Curate into KB",
+          "Accumulates context"
+        ]
+      }
+    },
+    {
+      "type": "section",
+      "title": "Live Demo"
+    },
+    {
+      "type": "bullets",
+      "title": "What Just Happened",
+      "items": [
+        "RED — Agent searched KB → empty → produced Demand Checklist",
+        "GREEN — Human pasted rough notes → Agent curated 5 typed entities",
+        "DONE — Agent answered 3 vendor questions with real specifics",
+        "0 hallucination · 0 pre-existing docs · 5 min"
+      ]
+    },
+    {
+      "type": "content",
+      "title": "Stop Documenting Everything",
+      "body": [
+        "Give your agent a real problem.",
+        "Let it tell you what's missing.",
+        "Let it ink its own tattoos.",
+        "",
+        "Unlike Leonard — your agent's tattoos are version-controlled."
+      ]
+    }
+  ]
+}

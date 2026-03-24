@@ -377,6 +377,16 @@
   transition: background-color var(--transition-fast);
 }
 
+.talkLink {
+  border-bottom: none;
+  display: block;
+}
+
+.talkLink:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
 .talkLogo {
   width: 40px;
   height: 40px;
@@ -385,6 +395,19 @@
   border: var(--border-muted);
   padding: 4px;
   background-color: var(--color-bg-secondary);
+}
+
+.talkPhoto {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: var(--border-muted);
+}
+
+.talkArrow {
+  color: var(--color-accent);
+  font-weight: var(--weight-normal);
 }
 
 .talkContent {

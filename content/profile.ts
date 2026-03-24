@@ -108,6 +108,7 @@ export const profile: Profile = {
       date: "2026-06-25",
       location: "Brighton, UK",
       upcoming: true,
+      url: "https://www.createwith.com/",
       logo: "/talks/create-with-logo.png",
     },
     {
@@ -116,7 +117,8 @@ export const profile: Profile = {
       date: "2026-06-09",
       location: "Antwerp, Belgium",
       upcoming: true,
-      logo: "/talks/ddd-europe-logo.png",
+      url: "https://2026.dddeurope.com/",
+      logo: "/talks/ddd-europe-logo.jpeg",
     },
     {
       title: "Demand-Driven Context",
@@ -124,7 +126,8 @@ export const profile: Profile = {
       date: "2026-04-08",
       location: "London, UK",
       upcoming: true,
-      logo: "/talks/ai-engineer-logo.png",
+      url: "https://www.ai.engineer/europe#speakers",
+      logo: "/talks/ai-engineer-logo.jpg",
     },
     {
       title: "Enterprise Agentic Context",
@@ -132,8 +135,9 @@ export const profile: Profile = {
       date: "2026-02-26",
       location: "Amsterdam, NL",
       upcoming: false,
-      logo: "/talks/ai-builders-logo.png",
-      photo: "/talks/ai-builders-event.jpg",
+      url: "/presentations/ai-builders-ddc",
+      logo: "/talks/ai-builders-logo.jpeg",
+      photo: "/talks/ai-builders-event-1.jpeg",
     },
   ],
 };

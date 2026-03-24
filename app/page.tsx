@@ -180,27 +180,37 @@ export default function Home() {
                 <span aria-hidden="true">&#9654; </span>upcoming
               </p>
               {upcoming.map((talk) => (
-                <article key={talk.title} className={styles.talkCard}>
-                  {talk.logo && (
-                    <Image
-                      src={talk.logo}
-                      alt={`${talk.event} logo`}
-                      width={40}
-                      height={40}
-                      className={styles.talkLogo}
-                      unoptimized
-                    />
-                  )}
-                  <div className={styles.talkContent}>
-                    <div className={styles.talkHeader}>
-                      <p className={styles.talkTitle}>{talk.title}</p>
-                      <span className={styles.talkBadge}>NEXT</span>
+                <a
+                  key={talk.title}
+                  href={talk.url}
+                  className={styles.talkLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <article className={styles.talkCard}>
+                    {talk.logo && (
+                      <Image
+                        src={talk.logo}
+                        alt={`${talk.event} logo`}
+                        width={40}
+                        height={40}
+                        className={styles.talkLogo}
+                        unoptimized
+                      />
+                    )}
+                    <div className={styles.talkContent}>
+                      <div className={styles.talkHeader}>
+                        <p className={styles.talkTitle}>
+                          {talk.title} <span className={styles.talkArrow}>&rarr;</span>
+                        </p>
+                        <span className={styles.talkBadge}>NEXT</span>
+                      </div>
+                      <p className={styles.talkMeta}>
+                        {talk.event} &mdash; {talk.location} &mdash; {talk.date}
+                      </p>
                     </div>
-                    <p className={styles.talkMeta}>
-                      {talk.event} &mdash; {talk.location} &mdash; {talk.date}
-                    </p>
-                  </div>
-                </article>
+                  </article>
+                </a>
               ))}
             </div>
           )}
@@ -210,24 +220,39 @@ export default function Home() {
                 <span aria-hidden="true">&#9632; </span>past
               </p>
               {past.map((talk) => (
-                <article key={talk.title} className={styles.talkCard}>
-                  {talk.logo && (
-                    <Image
-                      src={talk.logo}
-                      alt={`${talk.event} logo`}
-                      width={40}
-                      height={40}
-                      className={styles.talkLogo}
-                      unoptimized
-                    />
-                  )}
-                  <div className={styles.talkContent}>
-                    <p className={styles.talkTitle}>{talk.title}</p>
-                    <p className={styles.talkMeta}>
-                      {talk.event} &mdash; {talk.location} &mdash; {talk.date}
-                    </p>
-                  </div>
-                </article>
+                <a
+                  key={talk.title}
+                  href={talk.url}
+                  className={styles.talkLink}
+                >
+                  <article className={styles.talkCard}>
+                    {talk.photo ? (
+                      <Image
+                        src={talk.photo}
+                        alt={`${talk.event} — ${talk.title}`}
+                        width={80}
+                        height={60}
+                        className={styles.talkPhoto}
+                        unoptimized
+                      />
+                    ) : talk.logo ? (
+                      <Image
+                        src={talk.logo}
+                        alt={`${talk.event} logo`}
+                        width={40}
+                        height={40}
+                        className={styles.talkLogo}
+                        unoptimized
+                      />
+                    ) : null}
+                    <div className={styles.talkContent}>
+                      <p className={styles.talkTitle}>{talk.title}</p>
+                      <p className={styles.talkMeta}>
+                        {talk.event} &mdash; {talk.location} &mdash; {talk.date}
+                      </p>
+                    </div>
+                  </article>
+                </a>
               ))}
             </div>
           )}

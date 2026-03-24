@@ -14,7 +14,7 @@ jest.mock("next/link", () => {
 });
 
 describe("PresentationsPage", () => {
-  it("renders the presentations window panel", () => {
+  it("renders the presentations section header", () => {
     render(<PresentationsPage />);
     expect(screen.getByText("TALKS/")).toBeInTheDocument();
   });
@@ -22,24 +22,24 @@ describe("PresentationsPage", () => {
   it("renders presentation cards", () => {
     render(<PresentationsPage />);
     expect(
-      screen.getByText(/Demand-Driven Context/)
+      screen.getByText(/Teaching AI Agents to Remember/)
     ).toBeInTheDocument();
   });
 
   it("shows event name and slide count", () => {
     render(<PresentationsPage />);
-    expect(screen.getByText("NDC 2026")).toBeInTheDocument();
-    expect(screen.getByText("10 slides")).toBeInTheDocument();
+    expect(screen.getByText("AI Builders Amsterdam")).toBeInTheDocument();
+    expect(screen.getByText("12 slides")).toBeInTheDocument();
   });
 
   it("links to individual presentations", () => {
     render(<PresentationsPage />);
     const link = screen.getByRole("link", {
-      name: /Demand-Driven Context/,
+      name: /Teaching AI Agents/,
     });
     expect(link).toHaveAttribute(
       "href",
-      "/presentations/demand-driven-context"
+      "/presentations/ai-builders-ddc"
     );
   });
 });
