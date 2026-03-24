@@ -25,10 +25,10 @@ describe("writings utilities", () => {
   });
 
   it("gets a writing by slug with content", () => {
-    const writing = getWritingBySlug("reverse-engineering-ddd");
+    const writing = getWritingBySlug("demand-driven-context");
     expect(writing).not.toBeNull();
-    expect(writing!.frontmatter.title).toContain("Reverse-Engineering DDD");
-    expect(writing!.content).toContain("Most teams discover");
+    expect(writing!.frontmatter.title).toContain("Demand-Driven Context");
+    expect(writing!.content).toBeTruthy();
     expect(writing!.readingTime).toBeDefined();
   });
 
@@ -47,6 +47,7 @@ describe("writings utilities", () => {
 
   it("returns all slugs", () => {
     const slugs = getAllSlugs();
-    expect(slugs).toContain("reverse-engineering-ddd");
+    expect(slugs).toContain("demand-driven-context");
+    expect(slugs).toContain("architecture-catalog");
   });
 });

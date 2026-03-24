@@ -11,6 +11,8 @@ export interface WritingFrontmatter {
   tags: string[];
   excerpt: string;
   published: boolean;
+  externalUrl?: string;
+  platform?: string;
 }
 
 export interface Writing {

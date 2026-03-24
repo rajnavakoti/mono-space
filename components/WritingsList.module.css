@@ -99,6 +99,21 @@
   color: var(--color-text-muted);
 }
 
+.platform {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+}
+
+.externalIcon {
+  color: var(--color-accent);
+  font-weight: var(--weight-normal);
+}
+
 .postBody {
   padding: 0 var(--space-md) var(--space-md);
 }

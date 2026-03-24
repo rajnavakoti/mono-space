@@ -11,6 +11,64 @@ interface WritingsListProps {
   allTags: string[];
 }
 
+function WritingCard({ writing }: { writing: WritingMeta }) {
+  const externalUrl = writing.frontmatter.externalUrl;
+  const platform = writing.frontmatter.platform;
+  const isExternal = externalUrl && externalUrl.length > 0;
+
+  const card = (
+    <article className={styles.postCard}>
+      <PlaceholderCover title={writing.frontmatter.title} />
+      <div className={styles.postBar}>
+        <time className={styles.date}>
+          {writing.frontmatter.date}
+        </time>
+        <span className={styles.readingTime}>
+          {writing.readingTime}
+        </span>
+        {platform && (
+          <span className={styles.platform}>{platform}</span>
+        )}
+      </div>
+      <div className={styles.postBody}>
+        <h2 className={styles.postTitle}>
+          {writing.frontmatter.title}
+          {isExternal && <span className={styles.externalIcon}> &rarr;</span>}
+        </h2>
+        <p className={styles.excerpt}>
+          {writing.frontmatter.excerpt}
+        </p>
+        <div className={styles.tags}>
+          {writing.frontmatter.tags.map((tag) => (
+            <span key={tag} className={styles.tag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+
+  if (isExternal) {
+    return (
+      <a
+        href={externalUrl}
+        className={styles.postLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {card}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={`/writings/${writing.slug}`} className={styles.postLink}>
+      {card}
+    </Link>
+  );
+}
+
 export function WritingsList({ writings, allTags }: WritingsListProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -49,34 +107,7 @@ export function WritingsList({ writings, allTags }: WritingsListProps) {
         <ul className={styles.postList}>
           {filtered.map((writing) => (
             <li key={writing.slug}>
-              <Link href={`/writings/${writing.slug}`} className={styles.postLink}>
-                <article className={styles.postCard}>
-                  <PlaceholderCover title={writing.frontmatter.title} />
-                  <div className={styles.postBar}>
-                    <time className={styles.date}>
-                      {writing.frontmatter.date}
-                    </time>
-                    <span className={styles.readingTime}>
-                      {writing.readingTime}
-                    </span>
-                  </div>
-                  <div className={styles.postBody}>
-                    <h2 className={styles.postTitle}>
-                      {writing.frontmatter.title}
-                    </h2>
-                    <p className={styles.excerpt}>
-                      {writing.frontmatter.excerpt}
-                    </p>
-                    <div className={styles.tags}>
-                      {writing.frontmatter.tags.map((tag) => (
-                        <span key={tag} className={styles.tag}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              </Link>
+              <WritingCard writing={writing} />
             </li>
           ))}
         </ul>
