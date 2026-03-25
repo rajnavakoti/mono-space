@@ -1,0 +1,105 @@
+{
+  "title": "AgentReady: Battle-Test Your AI Agent Before You Ship",
+  "event": "TAG AI Hackathon — Amsterdam",
+  "date": "2026-03-25",
+  "description": "Your agent is only as good as what it knows. AgentReady stress-tests your knowledge base and agent harness with 800M+ real-world data points — and tells you exactly where it'll break. Ship with data, not vibes.",
+  "photos": [],
+  "slides": [
+    {
+      "type": "title",
+      "title": "AgentReady",
+      "subtitle": "Battle-test your agent. Ship with data, not vibes.",
+      "author": "Raj Navakoti",
+      "event": "TAG AI Hackathon",
+      "date": "Mar 2026"
+    },
+    {
+      "type": "content",
+      "title": "The Problem",
+      "body": [
+        "Everyone's building AI agents.",
+        "Nobody's testing if they actually know enough to work.",
+        "70% of enterprise AI projects fail — not because models are bad, but because the knowledge agents need doesn't exist in any document.",
+        "It's tribal. It's in people's heads. It's in configs nobody reads.",
+        "Your agent ships. Day one: hallucination."
+      ],
+      "notes": "Every team in this room has this problem. You built an agent, gave it some docs, crossed your fingers."
+    },
+    {
+      "type": "content",
+      "title": "The Solution",
+      "body": [
+        "AgentReady doesn't test your LLM. It tests what YOU built on top of it.",
+        "Upload your knowledge base (docs, context, READMEs)",
+        "Upload your harness (skills, rules, system prompts, tools)",
+        "Tell us what your agent does",
+        "We simulate real-world battle scenarios and score its readiness."
+      ],
+      "notes": "It's not about the engine. It's about the fuel."
+    },
+    {
+      "type": "content",
+      "title": "Powered by Real Data",
+      "body": [
+        "800M+ data points from 17 public datasets across 8 domains:",
+        "Healthcare — 206K+ clinical exam questions (MedQA, MedMCQA)",
+        "IT Incidents — 24,918 real ServiceNow incidents (UCI)",
+        "Finance — 875K+ labeled transactions (ULB, IEEE-CIS)",
+        "Legal — 1,117 real contracts with expert annotations (CUAD)",
+        "Code — 2,294 real GitHub issues with verified fixes (SWE-bench)",
+        "Plus: Customer Support, Real Estate, E-commerce"
+      ],
+      "notes": "We don't make up test scenarios. We use real-world data. That's what makes the blind spots real."
+    },
+    {
+      "type": "content",
+      "title": "Live Demo",
+      "body": [
+        "→ melodious-hotteok-80230a.netlify.app",
+        "",
+        "Upload. Test. Score.",
+        "",
+        "Let's battle-test an agent right now."
+      ],
+      "notes": "Switch to the live app and run a test with the SRE Incident preset."
+    },
+    {
+      "type": "content",
+      "title": "The Money",
+      "body": [
+        "Every company deploying AI agents needs this.",
+        "Free: 3 battle tests/month (acquisition)",
+        "Pro ($49/mo): Unlimited tests, harness testing, history",
+        "Enterprise: CI/CD integration, private datasets, compliance reports, API access",
+        "TAM: $4.6B AI testing & monitoring market (growing 40% YoY)"
+      ],
+      "notes": "Freemium SaaS. The more agents you build, the more you test."
+    },
+    {
+      "type": "content",
+      "title": "Why Us",
+      "body": [
+        "Published research — arXiv:2603.14057 (Demand-Driven Context)",
+        "No competitor does this — Perplexity deep research confirmed the whitespace",
+        "800M+ real-world data points — not synthetic tests",
+        "Tests both knowledge AND harness — nobody else touches the harness layer",
+        "Already deployed. Already working. Built today."
+      ],
+      "notes": "We didn't just build an app. We published the methodology. That's the moat."
+    },
+    {
+      "type": "content",
+      "title": "Ship with data, not vibes.",
+      "body": [
+        "AgentReady",
+        "",
+        "melodious-hotteok-80230a.netlify.app",
+        "github.com/rajnavakoti/agent-ready",
+        "arxiv.org/abs/2603.14057",
+        "",
+        "Raj Navakoti — rajnavakoti-dev.web.app"
+      ],
+      "notes": "Thank you. Questions?"
+    }
+  ]
+}
