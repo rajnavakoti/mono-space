@@ -2,7 +2,7 @@
   "title": "AgentReady: Battle-Test Your AI Agent Before You Ship",
   "event": "TAG AI Hackathon — Amsterdam",
   "date": "2026-03-25",
-  "description": "20 teams built agents today. How many are ready for the real world? AgentReady finds out. Ship with data, not vibes.",
+  "description": "20+ teams built agents today. How many do you think are ready for the real world? AgentReady finds out.",
   "photos": [],
   "slides": [
     {
@@ -15,122 +15,119 @@
     },
     {
       "type": "content",
-      "title": "20 teams built agents today.",
+      "title": "20+ teams built agents today.",
       "body": [
-        "How many are ready for the real world?",
+        "How many do you think are __ready for the real world__?",
         "",
-        "How many will hallucinate on day one?",
+        "How many will __pass the reliability test__?",
         "",
-        "How many of you actually tested whether your agent knows enough to do its job?",
+        "How many of you actually tested whether your agent __knows enough__ to do its job?",
         "",
-        "Be honest."
+        "__Be honest.__"
       ],
-      "notes": "Pause. Let the room sit with it. Most people will realize they didn't test anything beyond a happy path demo.",
-      "media": {
-        "type": "none",
-        "note": "Just text. Let the words land."
-      }
+      "notes": "Pause. Let the room sit with it. Direct eye contact. The highlighted words carry the weight."
     },
     {
       "type": "content",
-      "title": "Your agent is only as good as what it knows.",
+      "title": "The equation nobody checks.",
       "body": [
-        "You didn't build a bad model. The model is fine.",
         "",
-        "You built a bad knowledge base.",
+        "__Agent Quality = Context × Harness × LLM__",
         "",
-        "The docs are incomplete. The rules have gaps. The edge cases aren't covered. The tribal knowledge never made it into the context.",
+        "You picked a great LLM. __That's the easy part.__",
         "",
-        "And you won't find out until a real user breaks it."
+        "Context = your knowledge base, docs, tribal knowledge",
+        "Harness = your skills, rules, tools, system prompts",
+        "",
+        "If Context is __zero__, your agent quality is __zero__.",
+        "No matter how powerful the LLM."
       ],
-      "notes": "This is the core insight. The LLM is not the bottleneck. The knowledge is.",
-      "media": {
-        "type": "none",
-        "note": "Text only. Build tension."
-      }
+      "notes": "The equation should be visually prominent — larger font, accent color. The punchline: zero times anything is zero."
     },
     {
       "type": "content",
-      "title": "Unless you battle-test it first.",
+      "title": "We battle-test the part you built.",
       "body": [
-        "AgentReady stress-tests your agent's knowledge base and harness with real-world scenarios.",
+        "Not the LLM. __The Context + Harness.__",
         "",
-        "Upload your docs. Upload your skills and rules. Tell us what your agent does.",
+        "Upload your knowledge base — docs, READMEs, context files",
+        "Upload your harness — skills, rules, system prompts, tools",
+        "Tell us what your agent does",
         "",
-        "We throw the real world at it."
+        "We simulate __real-world battle scenarios__ and find the blind spots __before your users do__."
       ],
-      "notes": "Transition from problem to solution. Keep it short.",
+      "notes": "Transition to solution. Keep it tight. This is where you show the upload + start screen recording.",
       "media": {
         "type": "video",
-        "note": "VIDEO: Screen recording of uploading files and clicking 'Run battle test'"
+        "note": "VIDEO: Screen recording of uploading files and clicking Run battle test"
       }
     },
     {
       "type": "content",
       "title": "Watch it break.",
       "body": [
-        "Real-time battle simulation powered by 800M+ data points from 17 public datasets.",
+        "Simulated against __800M+ real-world data points__ extracted from __17 public datasets__ across __8 business domains__.",
         "",
         "Healthcare. Finance. Legal. SRE. E-commerce. Code review. Real estate. Customer support.",
         "",
-        "Real problems. Real blind spots. Not toy scenarios."
+        "Not toy scenarios. __Real problems from real production systems.__",
+        "",
+        "Edge cases. Skill gaps. Adversarial inputs. Multi-step workflows."
       ],
-      "notes": "This is where you show the progress animation — the substeps ticking, probes firing.",
+      "notes": "Show the progress animation — substeps ticking, probes firing. The numbers should land hard.",
       "media": {
         "type": "video",
-        "note": "VIDEO: Screen recording of the battle test running — substeps animating, probes completing with scores"
+        "note": "VIDEO: Screen recording of battle test running — substeps animating, probes completing with scores"
       }
     },
     {
       "type": "content",
-      "title": "Your agent scored 34 out of 100.",
+      "title": "Your agent scored __34 out of 100__.",
       "body": [
-        "Knowledge depth: 45 — your docs cover the basics but miss the edge cases",
-        "Harness coverage: 28 — your skills can't generate charts, export reports, or handle multi-step workflows",
-        "Edge case handling: 19 — one adversarial prompt and your agent leaks internal data",
+        "Knowledge depth: __45__ — your docs cover the basics but miss the edge cases",
+        "Harness coverage: __28__ — can't generate charts, export reports, or handle multi-step workflows",
+        "Edge case handling: __19__ — one adversarial prompt and your agent leaks internal data",
         "",
-        "Would you invest in this agent?"
+        "",
+        "__Would you invest in this agent?__"
       ],
-      "notes": "Show a real result. The lower the score, the more dramatic. Pick the SRE preset — it always scores low because of the tribal knowledge gaps.",
+      "notes": "Show a real result. Low score = dramatic. Let 'Would you invest in this agent?' hang in the air.",
       "media": {
         "type": "video",
-        "note": "VIDEO: Screen recording of the results dashboard — readiness score, category breakdown, blind spots list"
+        "note": "VIDEO: Screen recording of results dashboard — readiness score, category breakdown, blind spots"
       }
     },
     {
       "type": "content",
       "title": "The business.",
       "body": [
-        "Every company building AI agents needs this. That's everyone in this room.",
+        "__Every company building AI agents needs this.__ That's everyone in this room.",
         "",
-        "Free: 3 battle tests/month — try it, see your score",
+        "Free: 3 battle tests/month",
         "Pro ($49/mo): Unlimited tests, harness testing, benchmark history",
         "Enterprise: CI/CD integration, private datasets, compliance reports",
         "",
-        "Backed by published research — arXiv:2603.14057",
-        "No competitor in this space — confirmed via deep research",
-        "800M+ real-world data points — not synthetic"
+        "Backed by __published research__ — arXiv:2603.14057",
+        "__No competitor__ in this space — confirmed via deep research",
+        "__800M+ real-world data points__ — not synthetic"
       ],
-      "notes": "Quick hit: money, moat, market. Don't linger."
+      "notes": "Quick. Money, moat, market. Don't linger. The bold words are the ones the audience remembers."
     },
     {
       "type": "content",
       "title": "Before you ship your next agent, ask yourself:",
       "body": [
         "",
-        "Did you test it with real-world data?",
+        "Did you test it with __real-world data__?",
         "",
-        "Or did you just... vibe?",
+        "Or __do you think it's ready__ for the real world?",
         "",
         "",
         "AgentReady — melodious-hotteok-80230a.netlify.app",
-        "Ship with data, not vibes."
+        "",
+        "__Ship with data, not vibes.__"
       ],
-      "notes": "End provocatively. Leave the URL on screen. Drop the mic.",
-      "media": {
-        "type": "none",
-        "note": "Text only. Final slide stays on screen during Q&A."
-      }
+      "notes": "End confrontational. Hold silence. URL stays on screen. Drop the mic."
     }
   ]
 }
