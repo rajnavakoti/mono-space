@@ -65,7 +65,7 @@ export const profile: Profile = {
   skills: [
     {
       label: "Skills",
-      icon: "/skill",
+      icon: ">",
       items: [
         { name: "Enterprise Architecture", level: 95 },
         { name: "AI / LLM Engineering", level: 90 },
@@ -76,7 +76,7 @@ export const profile: Profile = {
     },
     {
       label: "Tools",
-      icon: "/tool",
+      icon: "#",
       items: [
         { name: "Claude Code / LLMs", level: 95 },
         { name: "tmux / Terminal", level: 90 },
@@ -87,7 +87,7 @@ export const profile: Profile = {
     },
     {
       label: "Hooks",
-      icon: "/hook",
+      icon: "*",
       items: [
         { name: "Neuroscience", level: 90 },
         { name: "Brain-Computer Interfaces", level: 85 },
@@ -98,7 +98,7 @@ export const profile: Profile = {
     },
     {
       label: "Sub-Agents",
-      icon: "/agent",
+      icon: "@",
       items: [
         { name: "Academic Research", level: 85 },
         { name: "Technical Writing / Speaking", level: 85 },
@@ -137,7 +137,7 @@ export const profile: Profile = {
       logo: "/talks/ddd-europe-logo.jpeg",
     },
     {
-      title: "Demand-Driven Context",
+      title: "Demand-Driven Context (Workshop)",
       event: "AI.engineer",
       date: "2026-04-08",
       location: "London, UK",
