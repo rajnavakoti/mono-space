@@ -1,3 +1,9 @@
+/* === Highlight (inline bold from __text__) === */
+.highlight {
+  color: var(--color-accent, #C4A35A);
+  font-weight: 700;
+}
+
 /* === Base Slide === */
 .slide {
   display: flex;

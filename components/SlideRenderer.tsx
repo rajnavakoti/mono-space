@@ -1,6 +1,20 @@
 import type { Slide } from "@/lib/presentations";
 import styles from "./SlideRenderer.module.css";
 
+function renderInlineMarkdown(text: string) {
+  const parts = text.split(/(__[^_]+__)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("__") && part.endsWith("__")) {
+      return (
+        <strong key={i} className={styles.highlight}>
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 interface SlideRendererProps {
   slide: Slide;
 }
@@ -43,10 +57,10 @@ export function SlideRenderer({ slide }: SlideRendererProps) {
     case "content":
       return (
         <div className={`${styles.slide} ${styles.contentSlide}`}>
-          <h2 className={styles.heading}>{slide.title}</h2>
+          <h2 className={styles.heading}>{renderInlineMarkdown(slide.title)}</h2>
           <div className={styles.body}>
             {slide.body.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
+              <p key={i}>{renderInlineMarkdown(paragraph)}</p>
             ))}
           </div>
         </div>
