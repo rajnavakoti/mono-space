@@ -1,97 +1,809 @@
 ---
-title: "Building AI Agents That Actually Work"
-event: "AI.engineer Workshop"
-date: "2026-04-04"
-description: "A 2-hour hands-on workshop on building production AI agent systems."
+title: "Build Your First Demand-Driven Context Base"
+event: "AI.engineer Europe 2026"
+date: "2026-04-08"
+description: "Let AI Agents Tell You What They Need — a 2-hour hands-on workshop on demand-driven context curation for enterprise AI agents."
 ---
 
-# Building AI Agents That Actually Work
+# Build Your First Demand-Driven Context Base
 
-A hands-on workshop
+**Let AI Agents Tell You What They Need**
 
-**Raj Navakoti** | AI.engineer 2026
+Raj Navakoti | AI.engineer Europe 2026
 
-<Notes>Welcome everyone. This is a 2-hour workshop, so we'll take a break halfway. Quick show of hands — who here has built an AI agent that made it to production?</Notes>
-
----
-
-## The Promise vs Reality
-
-<Split ratio="1:1">
-<div>
-
-### What we expect
-
-- Agent understands our codebase
-- Agent remembers past decisions
-- Agent follows our conventions
-- Agent improves over time
-
-</div>
-<div>
-
-### What we get
-
-- Hallucinated file paths
-- Repeated mistakes
-- Generic boilerplate
-- Context window amnesia
-
-</div>
-</Split>
-
-<Notes>Start with the gap between expectation and reality. This is the core tension we're going to resolve today.</Notes>
-
----
-
-## Workshop Agenda
-
-1. **Context Architecture** — how agents consume and retain knowledge
-2. **Tool Design** — building the right interfaces for agent capabilities
-3. **Feedback Loops** — teaching agents from their own mistakes
-4. **Production Patterns** — what actually works at scale
-
-<Callout type="tip">
-
-Each section has a hands-on exercise. You'll build a working agent by the end.
-
-</Callout>
-
-<Notes>Four sections, roughly 25 minutes each, with a break after section 2.</Notes>
+<Notes>Welcome everyone. Before we start — quick logistics. This is 2 hours, we'll take a break halfway. There's a hands-on segment where you'll try this yourself. And I'll be honest with you throughout — some of this works, some of it doesn't. You'll see both. Let's go.</Notes>
 
 ---
 
 <FullBleed background="var(--color-bg-secondary)">
 
-## Part 1
+<Animate type="fade-in">
 
-# Context Architecture
+## Act 1
 
-<Animate type="fade-in" delay="300ms">
-
-*"An agent without context is just a very expensive autocomplete."*
+# The Problem Nobody's Solving
 
 </Animate>
 
 </FullBleed>
 
-<Notes>Transition slide. Let this land for a moment before moving on.</Notes>
+<Notes>We're going to start with a story. Not mine — London's.</Notes>
 
 ---
 
-## The Context Problem
+## The Knowledge
 
-<CodeBlock title="naive-agent.py">
-{`# The naive approach — dump everything
-context = read_entire_codebase()
-response = llm.complete(
-    system=context,  # 2M tokens of noise
-    prompt=user_task
-)
-# Result: slow, expensive, unfocused`}
-</CodeBlock>
+<Split ratio="2:1">
+<div>
 
-> Throwing more context at the problem doesn't solve it.
-> **Relevance beats volume, every time.**
+To become a licensed black cab driver in London, you must pass **The Knowledge** — the hardest test in the world.
 
-<Notes>This is what most teams start with. It's the brute force approach and it fails for three reasons: cost, latency, and signal-to-noise ratio.</Notes>
+You don't study a map. An examiner gives you a **destination**. You get lost. You discover which streets you didn't know. You go learn those streets.
+
+Each run fills gaps the previous one revealed.
+
+**Nobody told them what to learn. The journeys told them.**
+
+</div>
+<div>
+
+*320 routes*
+*25,000 streets*
+*2-4 years to complete*
+*Most fail multiple times*
+
+</div>
+</Split>
+
+<Notes>How many of you have been to London? You know those black cabs? The drivers have to pass something called The Knowledge. It takes 2-4 years. But here's the thing — they don't learn by reading a map. They learn by getting lost. An examiner gives them a destination, they try to get there, they fail, they discover what streets they didn't know, and they go learn THOSE streets. Each run reveals the gaps. That's the opposite of what we're doing with AI agents.</Notes>
+
+---
+
+## What Every Enterprise Team Is Doing Instead
+
+<Split ratio="1:1">
+<div>
+
+### The "Map" Approach
+
+- Three people arguing over a Miro board
+- "What does the agent need to know?"
+- Screenshots into Confluence
+- 200-page knowledge dump
+- Hope for the best
+
+</div>
+<div>
+
+### The Result
+
+- Agent still can't reason about your domain
+- Half the docs are outdated
+- The other half was never needed
+- Six months of curation effort
+- Expensive autocomplete
+
+</div>
+</Split>
+
+<Notes>Instead, what does every enterprise team do? They sit in a room, argue about what the agent needs to know, document everything they can think of, dump it into Confluence or a knowledge base, and hope. Six months later, the agent still can't answer domain-specific questions. Sound familiar? Show of hands — who's been in that room?</Notes>
+
+---
+
+## Meet LEO
+
+<Animate type="fade-in">
+
+LEO is an AI agent. Brilliant. Top of his class.
+
+- Reasoning: **10/10**
+- Computation: **10/10**
+- Domain knowledge: **0/10**
+
+</Animate>
+
+We gave LEO everything — skills, rules, RAG pipelines, MCP servers.
+
+LEO is a great **coding assistant**.
+
+But LEO works at an IKEA store. And the boss wants ROI.
+
+<Notes>Let me introduce LEO. LEO is your typical AI agent. Incredible reasoning. Massive computation power. We gave him everything — skills, rules, retrieval, MCP servers, the works. LEO can write code, refactor, debug, do code reviews. LEO is a fantastic coding assistant. But LEO works at an IKEA store. And the boss wants to know — with all this talent, why isn't the store running faster?</Notes>
+
+---
+
+## LEO's First Day
+
+<Animate type="slide-up">
+
+LEO was asked to build a Billy bookcase.
+
+He had the reasoning. He had the computation.
+
+He did not have the manual.
+
+</Animate>
+
+<Callout type="quote">
+
+"I have arranged the dowels in alphabetical order and generated a comprehensive report on Swedish timber sourcing. The bookcase remains in 47 pieces."
+
+</Callout>
+
+<Notes>So LEO's first task — build a Billy bookcase. How many of you have built IKEA furniture? You know that moment where you're staring at step 4 and nothing makes sense? That's LEO. Except LEO is CONFIDENT about it. He arranged the dowels alphabetically and wrote a report on Swedish timber. The bookcase is still in 47 pieces. That's your AI agent on your domain without context.</Notes>
+
+---
+
+## The Real Problem
+
+Here are 5 Jira tickets from LEO's team:
+
+<CodeBlock title="tickets.md" code={'TICKET-101: Delivery slots not showing for market-nl\n  > "Check if ██████████████████ uses the ██████████████████"\n\nTICKET-102: Orders stuck in processing after deployment\n  > "Verify the ██████████████████ consumer group rebalanced"\n\nTICKET-103: Customer complaints about wrong delivery dates\n  > "The ██████████████████ might be using ██████████████████"\n\nTICKET-104: Integration timeout between OMS and WMS\n  > "Check if the ██████████████████ is respecting ██████████████████"\n\nTICKET-105: Service bookings not reaching providers\n  > "Review the ██████████████████ routing logic for ██████████████████"'} />
+
+The redacted parts? **Domain knowledge.** Without it, LEO can't even start.
+
+<Notes>Here's the real problem. These are 5 Jira tickets from LEO's team. Look at the redacted parts. Those aren't code references — they're domain knowledge. System names, business processes, integration patterns, operational quirks. Without those redacted sections, LEO can't even begin to solve these tickets. He'll give you generic advice — check the logs, restart the service, verify the config. Your senior engineer would solve these in 10 minutes because they KNOW the redacted parts. The question is: how do you get that knowledge into LEO's head?</Notes>
+
+---
+
+## What I Tried
+
+<Split ratio="1:1">
+<div>
+
+### Attempt 1: Dump Everything
+Threw all our docs into context.
+Agent drowned in noise.
+
+### Attempt 2: RAG
+Chunked, embedded, retrieved.
+**RAG can't retrieve what was never written down.**
+
+</div>
+<div>
+
+### Attempt 3: Knowledge Graph
+Extracted entities, built relationships.
+Graph went stale in weeks. Nobody maintains it.
+
+### Attempt 4: Manual Curation
+Sat down with a blank page.
+Burned out at 15%. **I was guessing what to document.**
+
+</div>
+</Split>
+
+<Notes>So I tried everything. Dumped all our docs into the agent's context — it drowned in noise. Built a RAG pipeline — better, but RAG retrieves what's WRITTEN. The most valuable knowledge in my domain was never written down. Tried a knowledge graph — looked impressive, went stale in three weeks. Finally tried manual curation — sat down and started documenting everything. Lasted about two weeks before I wanted to quit. And the reason all four failed is the same: I was PUSHING knowledge into the system. Guessing what the agent needs. Hoping it's useful.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in" delay="200ms">
+
+## The Plot Twist
+
+</Animate>
+
+<Animate type="fade-in" delay="800ms">
+
+# It's not LEO who has the problem.
+
+# It's me.
+
+</Animate>
+
+</FullBleed>
+
+<Notes>And that's when it hit me. The problem isn't LEO. LEO's brilliant. The problem is ME. I need to figure out what knowledge to curate, where to find it, and how to structure it. The bottleneck for AI in your company isn't the model, isn't the framework, isn't the prompt. It's the context. And specifically — how do you DISCOVER what context is missing?</Notes>
+
+---
+
+## Context Engineering — The Missing Layer
+
+Everyone is building the pipes.
+
+**Nobody is solving what flows through them.**
+
+<Split ratio="1:1">
+<div>
+
+### What exists (context management)
+- RAG / Vector databases
+- MCP servers
+- Skills, rules, specs
+- Prompt engineering
+- Fine-tuning
+
+</div>
+<div>
+
+### What's missing (context discovery)
+- How do you know what to curate?
+- How do you find tribal knowledge?
+- How do you prioritize?
+- How do you know when you're done?
+- **Nobody is talking about this.**
+
+</div>
+</Split>
+
+<Notes>Here's the gap in the industry right now. Everyone is building context management — RAG, MCP servers, vector databases. Great tools. But they all assume the knowledge EXISTS and is documented. The harder unsolved problem is context DISCOVERY — how do you even know what to curate? That's what nobody is talking about. That's what this workshop is about.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+## Act 2
+
+# Demand-Driven Context
+
+</Animate>
+
+</FullBleed>
+
+<Notes>So how do we solve it? Remember the cab drivers? They didn't learn from a map. They learned from getting lost. What if we did the same thing?</Notes>
+
+---
+
+## The TDD Parallel
+
+If you've practiced Test-Driven Development, you already know this:
+
+| TDD | DDC |
+|-----|-----|
+| Write a failing test | Give agent a failing problem |
+| Write minimum code to pass | Curate minimum context to succeed |
+| Test passes | Agent produces correct output |
+| Refactor | Validate and tighten entities |
+| Next test | Next problem |
+
+**You don't write all the tests upfront. You don't curate all the context upfront.**
+
+<Notes>Has anyone here practiced TDD? Good. Then you already understand DDC. In TDD, you write a failing test, then the minimum code to pass. You don't write all the tests upfront. DDC is the same principle applied to knowledge. Give the agent a problem. It fails. Its failure tells you EXACTLY what knowledge to curate. Curate the minimum. Agent succeeds. Next problem. You don't curate all the context upfront. You let failures tell you what's missing.</Notes>
+
+---
+
+## One DDC Cycle
+
+<Split ratio="1:1">
+<div>
+
+**1. Give agent a real problem**
+An incident, a design question, a ticket.
+
+**2. Agent fails (RED phase)**
+Produces a Demand Checklist — exactly what's missing.
+
+**3. Human fills the gaps (GREEN phase)**
+Domain expert provides the missing knowledge.
+
+**4. Knowledge gets curated**
+Structured entities, connected, placed in the repo.
+
+**5. Agent re-answers**
+Specific, accurate, domain-aware.
+
+</div>
+<div>
+
+**6. Human reviews**
+Expert validates. Corrections go back into entities.
+
+**The cycle takes 30-60 minutes.**
+
+**After 20-30 cycles, the agent knows your domain.**
+
+Each new problem needs less new context because previous cycles already documented overlapping knowledge.
+
+</div>
+</Split>
+
+<Notes>Here's what one cycle looks like. You give the agent a real problem — an incident, a Jira ticket, an architecture question. The agent tries with zero context and fails. But it doesn't just fail — it produces a Demand Checklist. A structured list of exactly what knowledge is missing. A domain expert fills those gaps. The knowledge gets curated into structured entities. The agent re-answers — and this time it's specific, accurate, domain-aware. The whole thing takes 30 to 60 minutes. And here's the key: after 20-30 of these cycles, the agent knows your domain. Because each new problem overlaps with previous ones.</Notes>
+
+---
+
+## Let Me Show You
+
+<Animate type="fade-in">
+
+### Live DDC Cycle
+
+*Switching to terminal*
+
+</Animate>
+
+<Callout type="info">
+
+**What you'll see:** Left pane — agent working on a problem. Right top — entities before. Right bottom — entities created during this cycle.
+
+</Callout>
+
+<Notes>Let me show you what this looks like in practice. I'm going to switch to the terminal and run a DDC cycle live. On the left you'll see the agent working on a real problem. On the right, top pane shows the existing knowledge base — what the agent knows before. Bottom pane shows what gets created during this cycle. Watch the agent fail first, then watch what happens after we curate the context.</Notes>
+
+---
+
+## [TMUX — Live DDC Cycle]
+
+*This slide is a placeholder — switch to tmux for the live demo.*
+
+*Duration: ~10 minutes*
+
+<Notes>LIVE DEMO. Run one DDC cycle. Talk through: the problem, the agent's first attempt (generic, wrong), the demand checklist, you providing answers, the entities being created, the agent's second attempt (specific, correct). Emphasize the delta between before and after.</Notes>
+
+---
+
+## 20 Cycles Later
+
+What happens when you do this 20 times?
+
+<Split ratio="1:1">
+<div>
+
+### Cycle 1
+- Agent knew nothing
+- Created **8 new entities**
+- Confidence: **1/5**
+- Generic advice: "check the logs"
+
+### Cycle 10
+- Agent **reused** half the entities from previous cycles
+- Created only **2 new entities**
+- Confidence: **4/5**
+- Named specific systems and flows
+
+</div>
+<div>
+
+### Cycle 20
+- Agent **recognized a pattern**
+- "This looks like the same failure class as cycle 5"
+- Confidence: **5/5**
+- Reasoned like a senior engineer
+
+### The demand checklist gets shorter every cycle.
+
+The knowledge base **converges**.
+
+</div>
+</Split>
+
+<Notes>SWITCH BACK TO SLIDES. So I did this 20 times. Here's what happened. Cycle 1 — agent knew nothing, created 8 new entities just to answer one question. By cycle 10, it was reusing knowledge from previous cycles. Only 2 new entities needed. The demand checklist got shorter. By cycle 20, the agent recognized a PATTERN. It said "this looks like the same failure class as cycle 5 — correct logic operating on bad configuration with no validation." That's not retrieval. That's reasoning. That's what your senior engineer does.</Notes>
+
+---
+
+## [TMUX — 20 Cycle Evidence]
+
+*Switch to tmux — show pre-run cycles side by side.*
+
+*Cycle 1 response vs Cycle 10 vs Cycle 20*
+
+*Duration: ~5 minutes*
+
+<Notes>LIVE DEMO. Show the pre-done cycles. Focus on three moments: cycle 1 (terrible generic output), cycle 10 (reusing context, much better), cycle 20 (pattern recognition). Don't read the full responses — highlight the key differences. The audience should SEE the quality delta.</Notes>
+
+---
+
+## The Honest Bit
+
+I need to tell you what almost killed this.
+
+<Animate type="fade-in" delay="300ms">
+
+**Nobody wants to sit and chat with an AI agent for 45 minutes just to teach it context.**
+
+I did 20 of these cycles. By cycle 15, I was questioning my life choices.
+
+Manual DDC works. But it doesn't scale.
+
+</Animate>
+
+<Notes>Now let me be honest with you. This works. The methodology is sound. But nobody — and I mean nobody — wants to sit and chat back and forth with an AI agent for 45 minutes just to teach it context. I did 20 of these cycles. By cycle 15, I was questioning my life choices. My team thought I'd lost it. So the question became: can this be automated?</Notes>
+
+---
+
+## What If You Didn't Have to Do It Manually?
+
+<Animate type="slide-up">
+
+What if instead of chatting with an agent...
+
+You gave it **50 Jira tickets** a developer already worked on?
+
+Or **50 incidents** an SRE already resolved?
+
+Or **30 customer support conversations** already closed?
+
+</Animate>
+
+The historical work **already contains the demand signal**.
+
+Each ticket is a problem. Each resolution is the context that was needed.
+
+<Notes>So I asked myself — what if I didn't have to do this manually? What if instead of me having a conversation with an agent, I just gave it 50 historical Jira tickets? Or 50 resolved incidents? Or 30 closed customer support conversations? The historical work already CONTAINS the demand signal. Each ticket is a problem. Each resolution reveals what knowledge was needed to solve it. Extract the demands, consolidate them, and you have a curated list of exactly what to document.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+## Act 3
+
+# See It For Yourself
+
+</Animate>
+
+</FullBleed>
+
+<Notes>Let me show you what this looks like as a tool.</Notes>
+
+---
+
+## Context Gap Scanner — Live Demo
+
+<Callout type="tip">
+
+**What you're about to see:** Paste a domain description. AI agents probe it with real questions. You get back an AI-Readiness Score and a prioritized list of what to curate.
+
+</Callout>
+
+*Switching to browser*
+
+<Notes>LIVE DEMO. Open the Context Gap Scanner. Show a preset domain first (pick SRE or Customer Support). Walk through: the input, the probes running, the readiness score, the category breakdown, the prioritized curation list. Then ask: "Who wants to try with their own domain?" If someone volunteers, type their description live. If not, use a second preset. The moment someone sees THEIR domain scored at 19/100 — that's when it clicks.</Notes>
+
+---
+
+## [SCANNER DEMO]
+
+*This slide is a placeholder — switch to browser for the live demo.*
+
+*Duration: ~15 minutes (including audience participation)*
+
+<Notes>LIVE DEMO. Run the scanner. Show results. Ask audience to try. Take 2-3 domain descriptions from the audience if time permits. This is the most important moment of the workshop — they need to FEEL it, not just see it.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+# Break
+
+*10 minutes — grab coffee, check your AI-Readiness Score on your phone*
+
+</Animate>
+
+</FullBleed>
+
+<Notes>10 minute break. If you want to try the scanner yourself, the URL is on screen. Type your company domain description and see your score. We'll come back and talk about what to do with the results.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+## Act 4
+
+# Making It Real
+
+</Animate>
+
+</FullBleed>
+
+<Notes>OK. So you've seen the problem, you've seen the methodology, you've seen the scanner surface gaps. Now — what do you actually DO with this? Where does the curated knowledge live? How does it stay maintained? How do agents consume it?</Notes>
+
+---
+
+## The Context Lake
+
+Your curated knowledge lives in a **Git repo**.
+
+<Split ratio="1:1">
+<div>
+
+### Why Git?
+- Version controlled — every change tracked
+- PRs for human review — no unchecked additions
+- Branching — experiment without breaking production
+- Your engineers already know this workflow
+- Machine-readable AND human-readable
+
+</div>
+<div>
+
+### Structure
+```
+domain-knowledge/
+  entities/
+    systems/
+    processes/
+    jargon-business/
+    jargon-tech/
+    data-models/
+  diagrams/
+  decisions/
+```
+
+</div>
+</Split>
+
+<Notes>The curated knowledge lives in a Git repo. Why Git? Because your engineers already know the workflow. Version control, pull requests, branching, code review — it's the same process they use for code, applied to knowledge. Every entity is a markdown file with YAML frontmatter for relationships. Human-readable, machine-parseable. No special database, no vendor lock-in.</Notes>
+
+---
+
+## Entity Format
+
+<CodeBlock title="system-entity.md" highlight="1-7" code={'---\ntype: system\nid: order-management\nname: Order Management Service\nstatus: active\nrelated_systems: [fleet-management, payment-gateway]\nowned_by: checkout-team\n---\n\n# Order Management Service\n\n## Overview\nHandles order lifecycle from placement to fulfillment.\nReceives orders from web/mobile/POS channels.\n\n## Key Behaviors\n- Validates inventory before confirmation\n- Splits orders across warehouses when needed\n- Sends DELIVERY_READY event to Fleet Management'} />
+
+<Notes>Each entity looks like this. YAML frontmatter at the top — type, ID, status, relationships to other entities. Then markdown prose — overview, key behaviors, anything the agent needs to know. The relationships in the frontmatter are what make this a knowledge BASE, not just a knowledge DUMP. The agent can traverse from one entity to related entities. "I'm looking at Order Management — what systems does it connect to? Let me read Fleet Management next."</Notes>
+
+---
+
+## The Meta Model — Your Store Map
+
+Think of it like the map at the entrance of an IKEA store.
+
+LEO needs to know: **where things are, how they connect, and how to get from one place to another.**
+
+<Split ratio="1:1">
+<div>
+
+### 13 Entity Types
+- Systems, APIs, Platforms
+- Processes, Business Events
+- Data Models, Data Products
+- Teams, Personas, Capabilities
+- Business Jargon, Tech Jargon
+- Offerings
+
+</div>
+<div>
+
+### Relationships
+- `related_systems: [a, b]`
+- `implements_capability: x`
+- `depends_on: [y, z]`
+- `owned_by: team-id`
+
+Agents follow relationships to build context for any problem.
+
+</div>
+</Split>
+
+<Notes>Think of the meta model like the store map at the entrance of an IKEA. You know that map? It shows you where everything is and how departments connect. LEO needs the same thing for your domain. The meta model defines 13 entity types and the relationships between them. It's not mandatory — you can start simple with just systems and jargon. But as the knowledge base grows, the relationships become powerful. An agent working on an incident can trace from a system to its dependencies to the team that owns it to the business process it supports.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+## Act 5
+
+# Hands-On
+
+</Animate>
+
+</FullBleed>
+
+<Notes>OK, your turn. I'm going to give you a problem. You're going to run a DDC cycle — either in your head or using the scanner. Let's see what your domain is missing.</Notes>
+
+---
+
+## Your Turn
+
+<Split ratio="2:1">
+<div>
+
+### Option A: Use the Scanner
+Open the scanner URL on your laptop or phone.
+Type a paragraph describing your company's domain.
+See your AI-Readiness Score.
+
+### Option B: Mental DDC Cycle
+Think of a real problem from your domain.
+Ask yourself: what would an agent need to know to solve this?
+Write down the demand checklist.
+
+### Option C: Problem Cards
+Pick a problem card from the table.
+We'll run it together.
+
+</div>
+<div>
+
+*Scanner URL on screen*
+
+**Time: 15 minutes**
+
+I'll walk around and help.
+
+</div>
+</Split>
+
+<Notes>Three options depending on what you're comfortable with. Option A — use the scanner, paste your own domain. Option B — think of a real problem from your work and mentally walk through what context the agent would need. Option C — grab a problem card from the table, these are pre-made enterprise problems. Take 15 minutes. I'll walk around. Shout if you see something interesting in your results.</Notes>
+
+---
+
+## [HANDS-ON SESSION]
+
+*Duration: ~15 minutes*
+
+*Walk around. Help people. Note interesting examples to discuss.*
+
+<Notes>Walk the room. Look for people with interesting results — low scores, surprising gaps, "aha" moments. Ask permission to show their results to the group. Collect 2-3 examples for the discussion. If WiFi fails or scanner is slow, pivot to the mental DDC cycle — ask 3 people to describe a problem from their domain and you run the demand checklist live on stage.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+## Act 6
+
+# What I Learned
+
+</Animate>
+
+</FullBleed>
+
+<Notes>Let's come back together. I want to share what I've learned from doing this — the good, the bad, and the honest.</Notes>
+
+---
+
+## What Value This Created
+
+<Split ratio="1:1">
+<div>
+
+### For the Agent
+- Goes from generic advice to **domain-expert reasoning**
+- Names specific systems, traces specific flows
+- Recognizes failure patterns across problems
+- Actually useful on Jira tickets
+
+### For the Knowledge Base
+- **46 structured entities** that didn't exist before
+- Reusable across agents and roles
+- Best **onboarding document** the team ever had
+
+</div>
+<div>
+
+### For the Team
+- New joiners (human and AI) ramp on the **same knowledge base**
+- Domain expertise **democratized** — not locked in one person's head
+- Discovered knowledge **nobody knew was undocumented**
+
+### The Numbers
+- 15 cycles completed
+- Demand checklist shrinks each cycle
+- Entity reuse climbs from 0% to 60%+
+- Agent confidence: 1/5 → 4.5/5
+
+</div>
+</Split>
+
+<Notes>So what did I actually get from all this? Three things. First — the agent works now. Not generic advice. Specific, named-system, traced-flow, domain-expert level reasoning. Second — a knowledge base that didn't exist before. 46 entities, all reusable. And here's what nobody expects — it's the best onboarding document the team has ever had. New joiners, human and AI, use the same knowledge base. Third — we discovered what we DIDN'T know. The demand checklists revealed gaps nobody had noticed. Knowledge that lived in one person's head. That person goes on vacation, and the whole team is stuck.</Notes>
+
+---
+
+## Where It Breaks
+
+I'm going to be honest about what doesn't work.
+
+- **Small teams don't need this.** If your context fits in one person's head, just talk to each other.
+
+- **Manual curation is painful.** The automation helps but it's early.
+
+- **Getting domain experts to curate is hard.** They're busy. They don't see it as their job. That's a people problem, not a tech problem.
+
+- **The convergence claim needs more evidence.** 15 cycles on one domain is promising but not proof.
+
+- **We're early.** This is a methodology with evidence, not a finished product.
+
+<Notes>Let me be honest about what doesn't work. Small teams don't need DDC. If your context fits in one person's head, just talk to each other. Manual curation is painful — the automation helps but it's early. Getting domain experts to sit down and curate is the hardest part. They're busy, they don't see it as their job. And I'll be transparent — 15 cycles on one domain is promising evidence but it's not proof. We're early. I'm showing you a direction, not a destination.</Notes>
+
+---
+
+## The Positioning
+
+<Animate type="fade-in" delay="200ms">
+
+Everyone in this room is building agents.
+
+You're picking models, frameworks, tools. Building MCP servers, RAG pipelines, skill systems.
+
+**That's the plumbing.**
+
+But nobody is talking about what flows through the pipes.
+
+</Animate>
+
+<Animate type="fade-in" delay="800ms">
+
+**Context discovery** — figuring out what knowledge your agents actually need — is the unsolved problem.
+
+And it's the one that determines whether your agent is a coding assistant or a domain expert.
+
+</Animate>
+
+<Notes>Everyone in this room is building agents. You're picking models, frameworks, tools. You're building MCP servers, RAG pipelines, skill systems. That's the plumbing. Important plumbing. But nobody is talking about what flows through the pipes. Context discovery — figuring out what knowledge your agents actually need — is the unsolved problem in this space. And it's the one that determines whether your agent is a coding assistant or a domain expert.</Notes>
+
+---
+
+## What You Take Home
+
+<Split ratio="1:1">
+<div>
+
+### The Framework
+- DDC methodology — TDD for knowledge
+- Entity meta model — 13 types, structured relationships
+- Context lake — Git-based knowledge repo
+
+### The Process
+- Give agent a problem → let it fail
+- Demand checklist reveals gaps
+- Curate minimum → agent succeeds
+- Knowledge compounds across cycles
+
+</div>
+<div>
+
+### The Tools
+- Context Gap Scanner — paste docs, see gaps
+- Template repo — entity formats, starter structure
+- GETTING-STARTED guide
+
+### The Insight
+- Don't push knowledge. Let agents pull.
+- 30 real problems beat 6 months of documentation.
+- The hardest problem isn't the agent. It's knowing what context to give it.
+
+</div>
+</Split>
+
+<Notes>What you take home. The framework — DDC methodology, the entity meta model, the context lake concept. The process — give agent a problem, let it fail, curate the gaps, knowledge compounds. The tools — the scanner, the template repo, the getting started guide. And the insight — don't push knowledge, let agents pull. 30 real problems beat 6 months of documentation.</Notes>
+
+---
+
+## Thank You
+
+**Raj Navakoti**
+
+I work at IKEA Digital on supply chain logistics. I've been running DDC on real enterprise problems for the past few months.
+
+Happy to chat after — find me during the networking.
+
+<Callout type="info">
+
+Paper: *Demand-Driven Context* — ask me for the link
+
+Scanner: *URL on screen*
+
+Template: github.com/ea-toolkit/ddc — GETTING-STARTED.md
+
+</Callout>
+
+<Notes>Thank you. I'm around for the rest of the conference — happy to chat about your specific domain, whether DDC would work for your use case, or anything else. The paper link and scanner URL — come find me and I'll share them. The template repo is public — you can clone it tonight and start your first cycle. Questions?</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+<Animate type="fade-in">
+
+# Q&A
+
+*What did I get wrong? What would you do differently?*
+
+</Animate>
+
+</FullBleed>
+
+<Notes>Open Q&A. Don't be defensive. If someone challenges the methodology, engage honestly. "That's a good point — here's what I've seen, but I might be wrong." The best outcome is a real conversation, not applause. If someone asks about the paper or repo, offer to share after. If someone describes their domain problem, run a quick mental DDC cycle with them — "what would the agent need to know to solve that?"</Notes>

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import styles from "./MdxSlides.module.css";
 
 interface CodeBlockProps {
-  children: ReactNode;
+  children?: ReactNode;
+  code?: string;
   title?: string;
   highlight?: string;
 }
@@ -37,10 +38,11 @@ function extractText(node: ReactNode): string {
 
 export function CodeBlock({
   children,
+  code,
   title,
   highlight,
 }: CodeBlockProps) {
-  const text = extractText(children);
+  const text = code || extractText(children);
   const highlightLines = highlight ? parseHighlightLines(highlight) : null;
   const codeLines = text.trimEnd().split("\n");
 
