@@ -1,17 +1,17 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Slide } from "@/lib/presentations";
-import { SlideRenderer } from "./SlideRenderer";
 import styles from "./PresentationViewer.module.css";
 
 interface PresentationViewerProps {
-  slides: Slide[];
+  slides: ReactNode[];
+  notes: (string | undefined)[];
   slug: string;
 }
 
-export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
+export function PresentationViewer({ slides, notes: slideNotes, slug }: PresentationViewerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,6 @@ export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const totalSlides = slides.length;
-  const slide = slides[currentSlide - 1];
   const progress = (currentSlide / totalSlides) * 100;
 
   const goToSlide = useCallback(
@@ -144,7 +143,7 @@ export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
     [next, prev]
   );
 
-  const notes = "notes" in slide ? slide.notes : undefined;
+  const notes = slideNotes[currentSlide - 1];
 
   return (
     <div
@@ -200,7 +199,7 @@ export function PresentationViewer({ slides, slug }: PresentationViewerProps) {
       </div>
 
       <div className={styles.slideContainer}>
-        <SlideRenderer slide={slide} />
+        {slides[currentSlide - 1]}
       </div>
 
       {/* Speaker Notes */}

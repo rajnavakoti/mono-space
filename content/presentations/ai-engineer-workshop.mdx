@@ -1,0 +1,97 @@
+---
+title: "Building AI Agents That Actually Work"
+event: "AI.engineer Workshop"
+date: "2026-04-04"
+description: "A 2-hour hands-on workshop on building production AI agent systems."
+---
+
+# Building AI Agents That Actually Work
+
+A hands-on workshop
+
+**Raj Navakoti** | AI.engineer 2026
+
+<Notes>Welcome everyone. This is a 2-hour workshop, so we'll take a break halfway. Quick show of hands — who here has built an AI agent that made it to production?</Notes>
+
+---
+
+## The Promise vs Reality
+
+<Split ratio="1:1">
+<div>
+
+### What we expect
+
+- Agent understands our codebase
+- Agent remembers past decisions
+- Agent follows our conventions
+- Agent improves over time
+
+</div>
+<div>
+
+### What we get
+
+- Hallucinated file paths
+- Repeated mistakes
+- Generic boilerplate
+- Context window amnesia
+
+</div>
+</Split>
+
+<Notes>Start with the gap between expectation and reality. This is the core tension we're going to resolve today.</Notes>
+
+---
+
+## Workshop Agenda
+
+1. **Context Architecture** — how agents consume and retain knowledge
+2. **Tool Design** — building the right interfaces for agent capabilities
+3. **Feedback Loops** — teaching agents from their own mistakes
+4. **Production Patterns** — what actually works at scale
+
+<Callout type="tip">
+
+Each section has a hands-on exercise. You'll build a working agent by the end.
+
+</Callout>
+
+<Notes>Four sections, roughly 25 minutes each, with a break after section 2.</Notes>
+
+---
+
+<FullBleed background="var(--color-bg-secondary)">
+
+## Part 1
+
+# Context Architecture
+
+<Animate type="fade-in" delay="300ms">
+
+*"An agent without context is just a very expensive autocomplete."*
+
+</Animate>
+
+</FullBleed>
+
+<Notes>Transition slide. Let this land for a moment before moving on.</Notes>
+
+---
+
+## The Context Problem
+
+<CodeBlock title="naive-agent.py">
+{`# The naive approach — dump everything
+context = read_entire_codebase()
+response = llm.complete(
+    system=context,  # 2M tokens of noise
+    prompt=user_task
+)
+# Result: slow, expensive, unfocused`}
+</CodeBlock>
+
+> Throwing more context at the problem doesn't solve it.
+> **Relevance beats volume, every time.**
+
+<Notes>This is what most teams start with. It's the brute force approach and it fails for three reasons: cost, latency, and signal-to-noise ratio.</Notes>

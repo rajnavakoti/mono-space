@@ -40,6 +40,12 @@ export default function PresentationsPage() {
                       <span className={styles.slides}>
                         {pres.slideCount} slides
                       </span>
+                      {pres.format === "mdx" && (
+                        <>
+                          <span className={styles.separator} aria-hidden="true">|</span>
+                          <span className={styles.formatBadge}>INTERACTIVE</span>
+                        </>
+                      )}
                     </div>
                     <h2 className={styles.cardTitle}>{pres.title}</h2>
                     <p className={styles.description}>{pres.description}</p>

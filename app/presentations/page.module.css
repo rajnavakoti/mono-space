@@ -103,6 +103,15 @@
   color: var(--color-text-muted);
 }
 
+.formatBadge {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-tertiary);
+}
+
 .cardTitle {
   font-family: var(--font-mono);
   font-size: var(--text-lg);
