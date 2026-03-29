@@ -1,0 +1,249 @@
+/* === Evolution Timeline === */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.timelineNode {
+  display: grid;
+  grid-template-columns: 60px 24px 1fr;
+  gap: var(--space-md);
+  align-items: start;
+  min-height: 70px;
+}
+
+.timelineNodeHighlight {
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-accent);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-xs) calc(-1 * var(--space-md));
+}
+
+.timelineYear {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-black);
+  color: var(--color-text-muted);
+  text-align: right;
+  padding-top: 2px;
+}
+
+.timelineNodeHighlight .timelineYear {
+  color: var(--color-accent);
+}
+
+.timelineLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-text-muted);
+  background: var(--color-bg);
+  flex-shrink: 0;
+}
+
+.timelineNodeHighlight .timelineDot {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.timelineConnector {
+  width: 2px;
+  flex: 1;
+  background: var(--color-text-muted);
+  min-height: 30px;
+}
+
+.timelineContent {
+  padding-bottom: var(--space-md);
+}
+
+.timelineTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.timelineSubtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.timelineBadge {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border: 2px solid #B55A5A;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: #B55A5A;
+}
+
+/* === Pie Chart === */
+
+.pieContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.pieChart {
+  width: 220px;
+  height: 220px;
+  border: 3px solid var(--color-border-heavy);
+}
+
+.pieLegend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.pieLegendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.pieLegendHighlight {
+  font-weight: var(--weight-black);
+  font-size: var(--text-sm);
+}
+
+.pieSwatch {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border-heavy);
+  flex-shrink: 0;
+}
+
+.pieLegendLabel {
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+.pieLegendPercent {
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
+}
+
+.pieSource {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* === Flow Diagram === */
+
+.flowRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flowColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.flowBox {
+  border: 2px solid var(--color-border-heavy);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-align: center;
+  min-width: 100px;
+}
+
+.flowBoxAccent {
+  border-color: var(--color-accent);
+  border-width: 3px;
+}
+
+.flowBoxSuccess {
+  border-color: #5AB55A;
+  border-width: 3px;
+}
+
+.flowBoxMuted {
+  border-color: var(--color-text-muted);
+  border-width: 1px;
+  opacity: 0.8;
+}
+
+.flowBoxSmall {
+  min-width: auto;
+  padding: 4px var(--space-sm);
+  font-size: 10px;
+}
+
+.flowArrowRight {
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
+  flex-shrink: 0;
+}
+
+.flowArrowDown {
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  padding: var(--space-xs) 0;
+}
+
+/* === Lifecycle Diagram === */
+
+.lifecycleContainer {
+  width: 100%;
+  max-width: 360px;
+}
+
+.lifecycleSvg {
+  width: 100%;
+  height: auto;
+}
+
+/* === Mobile === */
+
+@media (max-width: 768px) {
+  .pieChart {
+    width: 160px;
+    height: 160px;
+  }
+
+  .flowRow {
+    gap: var(--space-sm);
+  }
+
+  .flowBox {
+    min-width: 80px;
+    font-size: 10px;
+  }
+
+  .timelineNode {
+    grid-template-columns: 45px 20px 1fr;
+    min-height: 60px;
+  }
+}

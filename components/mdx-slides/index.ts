@@ -5,6 +5,10 @@ export { CodeBlock } from "./CodeBlock";
 export { Animate } from "./Animate";
 export { FullBleed } from "./FullBleed";
 export { Callout } from "./Callout";
+export { EvolutionTimeline } from "./diagrams";
+export { PieChart } from "./diagrams";
+export { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
+export { LifecycleDiagram } from "./diagrams";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -13,10 +17,13 @@ import { CodeBlock } from "./CodeBlock";
 import { Animate } from "./Animate";
 import { FullBleed } from "./FullBleed";
 import { Callout } from "./Callout";
+import { EvolutionTimeline } from "./diagrams";
+import { PieChart } from "./diagrams";
+import { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
+import { LifecycleDiagram } from "./diagrams";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
- * Custom components are available as JSX tags in MDX content.
  */
 export const mdxSlideComponents = {
   Notes,
@@ -26,4 +33,11 @@ export const mdxSlideComponents = {
   Animate,
   FullBleed,
   Callout,
+  EvolutionTimeline,
+  PieChart,
+  FlowBox,
+  FlowArrow,
+  FlowRow,
+  FlowColumn,
+  LifecycleDiagram,
 };
