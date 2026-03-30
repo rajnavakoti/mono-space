@@ -31,14 +31,14 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const size = 300;
-  const cx = size / 2;
-  const cy = size / 2;
-  const r = size / 2 - 10;
+  const pieSize = 260;
+  const cx = pieSize / 2;
+  const cy = pieSize / 2;
+  const r = pieSize / 2 - 6;
 
   let angle = -Math.PI / 2;
 
-  const sliceData = items.map((item, i) => {
+  const sliceData = items.map((item) => {
     const sliceAngle = (item.percent / 100) * Math.PI * 2;
     const startAngle = angle;
     const x1 = cx + r * Math.cos(angle);
@@ -49,14 +49,14 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     const large = sliceAngle > Math.PI ? 1 : 0;
     const midAngle = startAngle + sliceAngle / 2;
     const d = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
-
-    return { ...item, d, midAngle, index: i };
+    return { ...item, d, midAngle };
   });
 
-  const totalWidth = 700;
-  const totalHeight = 340;
-  const chartOffsetX = (totalWidth - size) / 2;
-  const chartOffsetY = (totalHeight - size) / 2;
+  const margin = 220;
+  const totalWidth = pieSize + margin * 2;
+  const totalHeight = pieSize + 40;
+  const pieOffsetX = margin;
+  const pieOffsetY = 20;
 
   return (
     <div className={styles.pieContainer}>
@@ -64,7 +64,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
         className={styles.pieChartSvg}
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", maxWidth: "700px", height: "auto" }}
+        style={{ width: "100%", maxWidth: "800px", height: "auto" }}
       >
         <defs>
           <pattern id="pie-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -80,14 +80,18 @@ export function PieChart({ slices, annotations }: PieChartProps) {
           <pattern id="pie-stripe-rev" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
             <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-bg)" strokeWidth="1.5" />
           </pattern>
+          <marker id="pie-arrow" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
+            <polygon points="0 0, 6 2.5, 0 5" fill="#B55A5A" />
+          </marker>
         </defs>
 
-        <g transform={`translate(${chartOffsetX}, ${chartOffsetY})`}>
+        {/* Pie slices */}
+        <g transform={`translate(${pieOffsetX}, ${pieOffsetY})`}>
           {sliceData.map((item, i) => {
             const patterns = ["pie-stripe", "pie-dot", "pie-grid", "pie-stripe-rev"];
             return (
               <g key={item.label}>
-                <path d={item.d} fill={item.highlight ? "#B55A5A" : "var(--color-text-secondary)"} stroke="var(--color-bg)" strokeWidth="2" />
+                <path d={item.d} fill={item.highlight ? "#B55A5A" : "var(--color-text-secondary)"} stroke="var(--color-bg)" strokeWidth="2.5" />
                 {!item.highlight && (
                   <path d={item.d} fill={`url(#${patterns[i % patterns.length]})`} stroke="none" />
                 )}
@@ -96,29 +100,42 @@ export function PieChart({ slices, annotations }: PieChartProps) {
           })}
         </g>
 
+        {/* Annotations */}
         {notes.length > 0 && sliceData.map((item, i) => {
           if (i >= notes.length || !notes[i]) return null;
-          const edgeX = chartOffsetX + cx + (r * 0.7) * Math.cos(item.midAngle);
-          const edgeY = chartOffsetY + cy + (r * 0.7) * Math.sin(item.midAngle);
+
+          const edgeX = pieOffsetX + cx + r * Math.cos(item.midAngle);
+          const edgeY = pieOffsetY + cy + r * Math.sin(item.midAngle);
+
           const isRight = item.midAngle > -Math.PI / 2 && item.midAngle < Math.PI / 2;
-          const labelX = isRight ? chartOffsetX + size + 20 : chartOffsetX - 20;
-          const labelY = edgeY;
+          const elbowX = isRight ? pieOffsetX + pieSize + 20 : pieOffsetX - 20;
+          const labelX = isRight ? elbowX + 8 : elbowX - 8;
           const anchor = isRight ? "start" : "end";
+
+          const noteText = `(${item.label.toLowerCase()}) ${notes[i]}`;
 
           return (
             <g key={`ann-${i}`}>
-              <line x1={edgeX} y1={edgeY} x2={labelX} y2={labelY} stroke="#B55A5A" strokeWidth="1.5" />
+              <line
+                x1={edgeX}
+                y1={edgeY}
+                x2={elbowX}
+                y2={edgeY}
+                stroke="#B55A5A"
+                strokeWidth="1.5"
+                markerStart="url(#pie-arrow)"
+              />
               <text
-                x={labelX + (isRight ? 6 : -6)}
-                y={labelY + 4}
+                x={labelX}
+                y={edgeY + 5}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="12"
+                fontSize="15"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
               >
-                {notes[i]}
+                {noteText}
               </text>
             </g>
           );
