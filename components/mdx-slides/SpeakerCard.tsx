@@ -1,17 +1,14 @@
 import styles from "./MdxSlides.module.css";
 
-interface SpeakerLink {
-  label: string;
-  url: string;
-}
-
 interface SpeakerCardProps {
   name: string;
   photo: string;
   role: string;
   org: string;
-  interests?: string[];
-  links?: SpeakerLink[];
+  interests?: string;
+  link1?: string;
+  link2?: string;
+  link3?: string;
   qrUrl?: string;
 }
 
@@ -20,10 +17,15 @@ export function SpeakerCard({
   photo,
   role,
   org,
-  interests = [],
-  links = [],
+  interests,
+  link1,
+  link2,
+  link3,
   qrUrl,
 }: SpeakerCardProps) {
+  const interestList = interests ? interests.split(",").map((s) => s.trim()) : [];
+  const links = [link1, link2, link3].filter(Boolean) as string[];
+
   return (
     <div className={styles.speakerLayout}>
       <div className={styles.speakerMain}>
@@ -40,9 +42,9 @@ export function SpeakerCard({
           <div className={styles.speakerInfo}>
             <div className={styles.speakerRole}>{role}</div>
             <div className={styles.speakerOrg}>{org}</div>
-            {interests.length > 0 && (
+            {interestList.length > 0 && (
               <div className={styles.speakerInterests}>
-                {interests.map((item, i) => (
+                {interestList.map((item, i) => (
                   <span key={item}>
                     {i > 0 && <span className={styles.speakerInterestSep}> · </span>}
                     {item}
@@ -53,9 +55,8 @@ export function SpeakerCard({
             {links.length > 0 && (
               <div className={styles.speakerLinks}>
                 {links.map((link) => (
-                  <div key={link.label} className={styles.speakerLink}>
-                    <span className={styles.speakerLinkLabel}>{link.label}</span>
-                    {link.url}
+                  <div key={link} className={styles.speakerLink}>
+                    {link}
                   </div>
                 ))}
               </div>
