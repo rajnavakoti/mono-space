@@ -26,6 +26,15 @@ function parseBars(input: string): BarData[] {
   });
 }
 
+// Monochrome hatching patterns — each bar gets a different texture
+const BAR_PATTERNS = [
+  "bar-stripe",
+  "bar-dot",
+  "bar-grid",
+  "bar-stripe-rev",
+  "bar-dot-lg",
+];
+
 export function BarChart({ bars, annotation }: BarChartProps) {
   const items = parseBars(bars);
   const barWidth = 56;
@@ -45,7 +54,7 @@ export function BarChart({ bars, annotation }: BarChartProps) {
   const dangerIndex = items.findIndex((i) => i.danger);
   const dangerBarX =
     dangerIndex >= 0
-      ? axisMarginLeft + gap + dangerIndex * (barWidth + gap) + barWidth / 2
+      ? axisMarginLeft + gap + dangerIndex * (barWidth + gap)
       : 0;
 
   return (
@@ -56,6 +65,28 @@ export function BarChart({ bars, annotation }: BarChartProps) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
+          {/* Diagonal stripes 45° */}
+          <pattern id="bar-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-bg)" strokeWidth="1.5" />
+          </pattern>
+          {/* Small dots */}
+          <pattern id="bar-dot" width="5" height="5" patternUnits="userSpaceOnUse">
+            <circle cx="2.5" cy="2.5" r="1.2" fill="var(--color-bg)" />
+          </pattern>
+          {/* Grid / crosshatch */}
+          <pattern id="bar-grid" width="6" height="6" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="3" x2="6" y2="3" stroke="var(--color-bg)" strokeWidth="1" />
+            <line x1="3" y1="0" x2="3" y2="6" stroke="var(--color-bg)" strokeWidth="1" />
+          </pattern>
+          {/* Diagonal stripes -45° */}
+          <pattern id="bar-stripe-rev" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-bg)" strokeWidth="1.5" />
+          </pattern>
+          {/* Large dots */}
+          <pattern id="bar-dot-lg" width="8" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="4" cy="4" r="2" fill="var(--color-bg)" />
+          </pattern>
+          {/* Arrow marker */}
           <marker
             id="bar-arrowhead"
             markerWidth="8"
@@ -123,21 +154,32 @@ export function BarChart({ bars, annotation }: BarChartProps) {
           const x = axisMarginLeft + gap + i * (barWidth + gap);
           const barH = (item.value / maxVal) * chartHeight;
           const y = topPad + chartHeight - barH;
-          const fill = item.danger ? "#B55A5A" : "var(--color-text-secondary)";
+          const patternId = BAR_PATTERNS[i % BAR_PATTERNS.length];
 
           return (
             <g key={item.label}>
-              {/* Bar fill */}
-              {barH > 0 && (
-                <rect
-                  x={x}
-                  y={y}
-                  width={barWidth}
-                  height={barH}
-                  fill={fill}
-                  stroke="var(--color-border)"
-                  strokeWidth="2"
-                />
+              {/* Bar fill — solid base */}
+              {barH > 0 && !item.danger && (
+                <>
+                  <rect
+                    x={x}
+                    y={y}
+                    width={barWidth}
+                    height={barH}
+                    fill="var(--color-text-secondary)"
+                    stroke="var(--color-text)"
+                    strokeWidth="2"
+                  />
+                  {/* Pattern overlay */}
+                  <rect
+                    x={x}
+                    y={y}
+                    width={barWidth}
+                    height={barH}
+                    fill={`url(#${patternId})`}
+                    stroke="none"
+                  />
+                </>
               )}
 
               {/* Dashed outline for 0-value danger bar */}
@@ -154,6 +196,19 @@ export function BarChart({ bars, annotation }: BarChartProps) {
                 />
               )}
 
+              {/* Danger bar with fill */}
+              {item.danger && barH > 0 && (
+                <rect
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={barH}
+                  fill="#B55A5A"
+                  stroke="#B55A5A"
+                  strokeWidth="2"
+                />
+              )}
+
               {/* Value on top */}
               <text
                 x={x + barWidth / 2}
@@ -167,53 +222,48 @@ export function BarChart({ bars, annotation }: BarChartProps) {
                 {item.value}/{item.max}
               </text>
 
-              {/* Label below x-axis — handle multi-word */}
-              {item.label.split(" ").length > 1 ? (
-                <text
-                  x={x + barWidth / 2}
-                  y={topPad + chartHeight + 18}
-                  textAnchor="middle"
-                  fill={item.danger ? "#B55A5A" : "var(--color-text-secondary)"}
-                  fontSize="10"
-                  fontFamily="var(--font-mono)"
-                  fontWeight={item.danger ? "900" : "700"}
-                >
-                  {item.label.split(" ").map((word, wi) => (
-                    <tspan key={wi} x={x + barWidth / 2} dy={wi === 0 ? 0 : 12}>
-                      {word}
-                    </tspan>
-                  ))}
-                </text>
-              ) : (
-                <text
-                  x={x + barWidth / 2}
-                  y={topPad + chartHeight + 18}
-                  textAnchor="middle"
-                  fill={item.danger ? "#B55A5A" : "var(--color-text-secondary)"}
-                  fontSize="10"
-                  fontFamily="var(--font-mono)"
-                  fontWeight={item.danger ? "900" : "700"}
-                >
-                  {item.label}
-                </text>
-              )}
+              {/* Label below x-axis */}
+              <text
+                x={x + barWidth / 2}
+                y={topPad + chartHeight + 18}
+                textAnchor="middle"
+                fill={item.danger ? "#B55A5A" : "var(--color-text-secondary)"}
+                fontSize="10"
+                fontFamily="var(--font-mono)"
+                fontWeight={item.danger ? "900" : "700"}
+              >
+                {item.label.split(" ").map((word, wi) => (
+                  <tspan key={wi} x={x + barWidth / 2} dy={wi === 0 ? 0 : 12}>
+                    {word}
+                  </tspan>
+                ))}
+              </text>
             </g>
           );
         })}
 
-        {/* Curved annotation arrow */}
+        {/* Curved annotation arrow — arcs UP from bar top to text above */}
         {annotation && dangerIndex >= 0 && (
           <g>
             <path
-              d={`M ${dangerBarX + barWidth + 40} ${topPad + 40} C ${dangerBarX + barWidth + 30} ${topPad + chartHeight - 40}, ${dangerBarX + 20} ${topPad + chartHeight - 20}, ${dangerBarX + barWidth / 2 + 4} ${topPad + chartHeight - 10}`}
+              d={`M ${dangerBarX + barWidth / 2} ${topPad + chartHeight * 0.4} C ${dangerBarX + barWidth + 20} ${topPad - 10}, ${dangerBarX + barWidth + 50} ${topPad - 20}, ${dangerBarX + barWidth + 70} ${topPad + 10}`}
               fill="none"
               stroke="#B55A5A"
               strokeWidth="2"
               markerEnd="url(#bar-arrowhead)"
+              transform="rotate(180, ${dangerBarX + barWidth / 2 + 35}, ${topPad + chartHeight * 0.2})"
+            />
+            {/* Simple upward curve */}
+            <path
+              d={`M ${dangerBarX + barWidth + 8} ${topPad + chartHeight * 0.35} Q ${dangerBarX + barWidth + 60} ${topPad - 30}, ${dangerBarX + barWidth + 60} ${topPad + 14}`}
+              fill="none"
+              stroke="#B55A5A"
+              strokeWidth="2"
+              markerStart="url(#bar-arrowhead)"
             />
             <text
-              x={dangerBarX + barWidth + 44}
-              y={topPad + 38}
+              x={dangerBarX + barWidth + 64}
+              y={topPad + 14}
               textAnchor="start"
               fill="#B55A5A"
               fontSize="11"
@@ -221,7 +271,7 @@ export function BarChart({ bars, annotation }: BarChartProps) {
               fontWeight="700"
             >
               {annotation.split("\\n").map((line, li) => (
-                <tspan key={li} x={dangerBarX + barWidth + 44} dy={li === 0 ? 0 : 14}>
+                <tspan key={li} x={dangerBarX + barWidth + 64} dy={li === 0 ? 0 : 14}>
                   {line}
                 </tspan>
               ))}
