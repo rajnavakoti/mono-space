@@ -470,6 +470,48 @@
   }
 }
 
+/* === CompareTable Component === */
+
+.compareTable {
+  width: 100%;
+  max-width: 700px;
+  border: 2px solid var(--color-text);
+}
+
+.compareTableHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.compareTableHeaderCell {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-sm) var(--space-md);
+}
+
+.compareTableRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.compareTableRow:nth-child(even) {
+  background: var(--color-bg-secondary);
+}
+
+.compareTableCell {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding: var(--space-sm) var(--space-md);
+  line-height: 1.4;
+}
+
 /* === Legend Component === */
 
 .legend {
