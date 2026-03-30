@@ -8,6 +8,7 @@ export { Callout } from "./Callout";
 export { TitleCard } from "./TitleCard";
 export { SpeakerCard } from "./SpeakerCard";
 export { ContentCard } from "./ContentCard";
+export { TicketCard } from "./TicketCard";
 export { SlideImage } from "./SlideImage";
 export { EvolutionTimeline } from "./diagrams";
 export { PieChart } from "./diagrams";
@@ -26,6 +27,7 @@ import { Callout } from "./Callout";
 import { TitleCard } from "./TitleCard";
 import { SpeakerCard } from "./SpeakerCard";
 import { ContentCard } from "./ContentCard";
+import { TicketCard } from "./TicketCard";
 import { SlideImage } from "./SlideImage";
 import { EvolutionTimeline } from "./diagrams";
 import { PieChart } from "./diagrams";
@@ -48,6 +50,7 @@ export const mdxSlideComponents = {
   TitleCard,
   SpeakerCard,
   ContentCard,
+  TicketCard,
   SlideImage,
   EvolutionTimeline,
   PieChart,

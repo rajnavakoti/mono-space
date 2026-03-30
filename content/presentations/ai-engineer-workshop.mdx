@@ -150,14 +150,25 @@ Now we get to it. This is the meat. If they only remember one thing from the wor
 
 ## Code != Development
 
-Here are 6 real-looking Jira tickets. Spot the pattern:
+<Split ratio="1:1">
+<div>
 
-<CodeBlock title="team-backlog.md" code={'DLVR-2891  Publish API contracts to partner portal\n  Acceptance: Partner portal updated with v4 contracts\n  Context needed: ████████ partner access levels ████████\n                  ████████ contract format migration from v2 ████████\n\nDLVR-1044  Add planned billing proposal to the app\n  Acceptance: Billing proposal visible in installer app\n  Context needed: ████████ what IS a billing proposal ████████\n                  ████████ which app — customer or installer ████████\n\nAPIS-0847  Fix timeout between Order Mgmt and Fleet Mgmt\n  Acceptance: Orders flow within SLA\n  Context needed: ████████ retry config on the consumer side ████████\n                  ████████ why is there a 30s hardcoded delay ████████\n\nPLAT-0312  Migrate capacity service to new platform\n  Acceptance: Zero-downtime migration complete\n  Context needed: ████████ undocumented template validation ████████\n                  ████████ 3 markets have custom overrides ████████\n\nSRE-0099   Investigate settlement batch delays\n  Acceptance: Batches arrive within 2-hour SLA\n  Context needed: ████████ silent retry mechanism in reconciliation ████████\n                  ████████ upstream KYC provider throttle limit ████████\n\nCUST-0415  Handle dual-eligible member claims\n  Acceptance: Correct payer determination for Medicare+Medicaid\n  Context needed: ████████ 4 different calculation methods by state ████████\n                  ████████ which analyst configured the priority rules ████████'} />
+<TicketCard id="DLVR-2891" type="Story" title="Publish API contracts to partner portal" items="g All v4 contracts published to portal|o OpenAPI spec follows REST standards|r Partner access levels mapped per tier|r Deprecation notice sent for v2 endpoints" />
 
-The ████ blocks? That's **domain knowledge**. Without it, the agent produces generic code that passes CI and fails in production.
+<TicketCard id="SRE-0099" type="Incident" title="Settlement batches arriving 6 hours late" items="g Root cause identified and documented|o Monitoring alert added for batch SLA|r Silent retry mechanism in reconciliation documented|r Upstream KYC provider throttle limit confirmed" />
+
+</div>
+<div>
+
+<TicketCard id="PLAT-0312" type="Task" title="Migrate capacity service to new platform" items="g Zero-downtime deployment strategy|o Infra-as-code follows platform conventions|r Capacity template validation rules preserved|r Custom market overrides for 3 markets carried over" />
+
+<TicketCard id="CUST-0415" type="Bug" title="Dual-eligible members getting wrong copay" items="g Copay correct for Medicare+Medicaid|o Unit tests cover all 4 COB methods|r State-specific regulation applied|r Priority order matches retired analyst config" />
+
+</div>
+</Split>
 
 <Notes>
-"Look at these tickets. The green parts — acceptance criteria, technical descriptions — the agent handles those beautifully. The red blocks? Those are domain knowledge. 'What IS a billing proposal?' 'Which app — customer or installer?' 'Why is there a 30-second hardcoded delay?' Without those answers, the agent writes code that compiles, passes tests, and does the wrong thing. How many of you have seen this in your team?"
+"Look at these tickets. Each has 4 acceptance criteria. The green ones — the agent handles those. The orange ones — you can teach it with a skill or rule. But the red ones? Those are domain knowledge. Tribal. Undocumented. Dependent on people who may not be around anymore. That's the pattern. The red items are always the blockers."
 </Notes>
 
 ---
