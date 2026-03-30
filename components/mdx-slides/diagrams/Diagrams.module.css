@@ -241,6 +241,7 @@
   border-left: 2px solid var(--color-border);
   border-bottom: 2px solid var(--color-border);
   padding: var(--space-sm) var(--space-sm) 0;
+  margin-bottom: var(--space-xl);
 }
 
 .barChartColumn {
@@ -290,7 +291,11 @@
   font-weight: var(--weight-bold);
   color: var(--color-text-secondary);
   text-align: center;
-  margin-top: var(--space-xs);
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
   line-height: 1.3;
 }
 
