@@ -357,14 +357,19 @@
 .pipelineArrow {
   font-size: var(--text-2xl);
   color: var(--color-text-muted);
-  padding: 0 var(--space-sm);
+  padding: 0 var(--space-md);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
 }
 
 .pipelineBox {
   border: 2px solid var(--color-text);
-  padding: var(--space-lg) var(--space-md);
-  min-width: 140px;
+  padding: var(--space-xl) var(--space-lg);
+  min-width: 180px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -404,10 +409,33 @@
 
 .pipelineBoxItem {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--color-text-secondary);
   padding-left: var(--space-md);
   position: relative;
+}
+
+.pipelineBoxAnnotation {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  color: #B55A5A;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pipelineBoxAnnotation::before {
+  content: "↑";
+  font-size: 18px;
+  font-style: normal;
+  line-height: 1;
 }
 
 .pipelineBoxItem::before {
