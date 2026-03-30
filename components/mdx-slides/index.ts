@@ -11,6 +11,7 @@ export { ContentCard } from "./ContentCard";
 export { SlideImage } from "./SlideImage";
 export { EvolutionTimeline } from "./diagrams";
 export { PieChart } from "./diagrams";
+export { BarChart } from "./diagrams";
 export { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
 export { LifecycleDiagram } from "./diagrams";
 
@@ -27,6 +28,7 @@ import { ContentCard } from "./ContentCard";
 import { SlideImage } from "./SlideImage";
 import { EvolutionTimeline } from "./diagrams";
 import { PieChart } from "./diagrams";
+import { BarChart } from "./diagrams";
 import { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
 import { LifecycleDiagram } from "./diagrams";
 
@@ -47,6 +49,7 @@ export const mdxSlideComponents = {
   SlideImage,
   EvolutionTimeline,
   PieChart,
+  BarChart,
   FlowBox,
   FlowArrow,
   FlowRow,
