@@ -48,7 +48,6 @@ export function Timeline({ points }: TimelineProps) {
           {items.map((item) => (
             <div key={`dot-${item.year}`} className={styles.timelineHDotWrap}>
               <div className={`${styles.timelineHDot} ${item.highlight ? styles.timelineHDotHighlight : ""}`} />
-              <div className={`${styles.timelineHYear} ${item.highlight ? styles.timelineHHighlight : ""}`}>{item.year}</div>
             </div>
           ))}
         </div>

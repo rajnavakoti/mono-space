@@ -345,6 +345,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  margin-top: var(--space-2xl);
 }
 
 .timelineHRow {
@@ -355,27 +356,31 @@
 
 .timelineHTop {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--weight-bold);
   color: var(--color-text);
   text-align: center;
-  padding: 0 var(--space-sm) var(--space-xl);
+  padding: 0 var(--space-md) var(--space-xl);
   line-height: 1.6;
-  min-height: 80px;
+  min-height: 100px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .timelineHBottom {
   font-family: "Comic Sans MS", "Segoe Print", cursive;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-style: italic;
   color: var(--color-text-muted);
   text-align: center;
-  padding: var(--space-xl) var(--space-sm) 0;
+  padding: var(--space-xl) var(--space-md) 0;
   line-height: 1.6;
-  min-height: 80px;
+  min-height: 100px;
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .timelineHHighlight {
@@ -409,14 +414,13 @@
 
 .timelineHDotWrap {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
 }
 
 .timelineHDot {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: var(--color-bg);
   border: 3px solid var(--color-text);
 }
@@ -424,15 +428,8 @@
 .timelineHDotHighlight {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  width: 18px;
-  height: 18px;
-}
-
-.timelineHYear {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-black);
-  color: var(--color-text-secondary);
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 768px) {
