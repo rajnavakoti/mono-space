@@ -301,15 +301,30 @@
 
 .barChartAnnotation {
   position: absolute;
-  top: -20px;
+  top: -60px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: var(--weight-bold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.barChartAnnotationText {
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: 12px;
+  font-weight: 700;
   color: #B55A5A;
   text-align: center;
   white-space: nowrap;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.barChartAnnotationArrow {
+  color: #B55A5A;
+  font-size: 18px;
+  line-height: 1;
 }
 
 @media (max-width: 768px) {

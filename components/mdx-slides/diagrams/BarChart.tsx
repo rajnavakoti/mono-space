@@ -70,6 +70,16 @@ export function BarChart({ bars, annotation }: BarChartProps) {
               <div className={styles.barChartLabel} style={item.danger ? { color: "#B55A5A", fontWeight: 900 } : undefined}>
                 {item.label}
               </div>
+              {item.danger && annotation && (
+                <div className={styles.barChartAnnotation}>
+                  <div className={styles.barChartAnnotationText}>
+                    {annotation.split("\\n").map((line, li) => (
+                      <div key={li}>{line}</div>
+                    ))}
+                  </div>
+                  <div className={styles.barChartAnnotationArrow}>↓</div>
+                </div>
+              )}
             </div>
           );
         })}
