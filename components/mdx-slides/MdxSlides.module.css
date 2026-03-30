@@ -476,6 +476,7 @@
   border: 2px solid var(--color-border);
   border-left: 4px solid var(--color-border);
   overflow: hidden;
+  margin-bottom: var(--space-md);
 }
 
 .ticketCardHeader {
@@ -488,14 +489,14 @@
 
 .ticketCardId {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-sm);
   font-weight: var(--weight-black);
   color: var(--color-text);
 }
 
 .ticketCardType {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -504,7 +505,7 @@
 
 .ticketCardTitle {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   color: var(--color-text-secondary);
   padding: var(--space-xs) var(--space-sm);
@@ -512,18 +513,18 @@
 }
 
 .ticketCardItems {
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-xs);
 }
 
 .ticketCardItem {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-sm);
   color: var(--color-text-secondary);
   line-height: 1.4;
 }
