@@ -52,7 +52,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const margin = 220;
+  const margin = 320;
   const totalWidth = pieSize + margin * 2;
   const totalHeight = pieSize + 40;
   const pieOffsetX = margin;
@@ -64,7 +64,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
         className={styles.pieChartSvg}
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", maxWidth: "800px", height: "auto" }}
+        style={{ width: "100%", maxWidth: "900px", height: "auto", overflow: "visible" }}
       >
         <defs>
           <pattern id="pie-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
