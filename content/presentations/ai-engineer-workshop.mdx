@@ -412,49 +412,7 @@ Manual DDC works. The methodology is sound. The results are real.
 
 ## What If You Already Had the Demand Signal?
 
-<Split ratio="1:1">
-<div>
-
-Your team already solved hundreds of problems.
-
-**50 Jira tickets** a developer worked on.
-**50 incidents** an SRE resolved.
-**30 support conversations** already closed.
-
-Each one contains the demand signal — what knowledge was needed to solve it.
-
-**Extract the demands. Consolidate. Curate.**
-
-The work already happened. The context discovery is free.
-
-</div>
-<div>
-
-<FlowColumn>
-<FlowRow>
-<FlowBox small>50 Jira Tickets</FlowBox>
-<FlowBox small>50 Incidents</FlowBox>
-<FlowBox small>30 Conversations</FlowBox>
-</FlowRow>
-<FlowArrow direction="down" />
-<FlowRow>
-<FlowBox muted small>Existing KB</FlowBox>
-<FlowArrow direction="right" />
-<FlowBox accent>
-DDC FRAMEWORK
-</FlowBox>
-<FlowArrow direction="right" />
-<FlowBox muted small>Domain Desc</FlowBox>
-</FlowRow>
-<FlowArrow direction="down" />
-<FlowBox success>
-DISCOVERED & CURATED CONTEXT{"\n"}
-Prioritized by severity. Classified by quality.
-</FlowBox>
-</FlowColumn>
-
-</div>
-</Split>
+<PipelineDiagram columns='Jira Tickets::50 resolved tickets,Developer context,Acceptance criteria::[bottom]historical work||Incidents::50 resolved incidents,SRE runbooks,Root cause analysis::[bottom]operational knowledge||Conversations::30 closed threads,Customer context,Domain questions::[bottom]tribal signals' endLabel="CURATED CONTEXT" endText="Prioritized by severity. Classified by quality. The work already happened." />
 
 <Notes>
 "Here's the insight that changed everything. You don't need to chat with the agent. Your team already solved hundreds of problems. Every Jira ticket, every incident, every support conversation — they contain the demand signal. What knowledge was needed to solve each one? Extract that, consolidate it, and you have a curated list of exactly what to document. The work already happened. The context discovery is free."
