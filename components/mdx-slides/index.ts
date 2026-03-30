@@ -9,6 +9,7 @@ export { TitleCard } from "./TitleCard";
 export { SpeakerCard } from "./SpeakerCard";
 export { ContentCard } from "./ContentCard";
 export { TicketCard } from "./TicketCard";
+export { Legend } from "./Legend";
 export { SlideImage } from "./SlideImage";
 export { EvolutionTimeline } from "./diagrams";
 export { PieChart } from "./diagrams";
@@ -28,6 +29,7 @@ import { TitleCard } from "./TitleCard";
 import { SpeakerCard } from "./SpeakerCard";
 import { ContentCard } from "./ContentCard";
 import { TicketCard } from "./TicketCard";
+import { Legend } from "./Legend";
 import { SlideImage } from "./SlideImage";
 import { EvolutionTimeline } from "./diagrams";
 import { PieChart } from "./diagrams";
@@ -51,6 +53,7 @@ export const mdxSlideComponents = {
   SpeakerCard,
   ContentCard,
   TicketCard,
+  Legend,
   SlideImage,
   EvolutionTimeline,
   PieChart,
