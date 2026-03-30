@@ -28,8 +28,8 @@ function parseBars(input: string): BarData[] {
 
 export function BarChart({ bars, annotation }: BarChartProps) {
   const items = parseBars(bars);
-  const barWidth = 56;
-  const gap = 20;
+  const barWidth = 28;
+  const gap = 16;
   const chartHeight = 220;
   const axisMarginLeft = 36;
   const topPad = 30;
@@ -128,23 +128,31 @@ export function BarChart({ bars, annotation }: BarChartProps) {
           );
         })}
 
-        {/* Single curved arrow — from text above, curving down to top of danger bar */}
-        {annotation && dangerIndex >= 0 && (
-          <g>
-            <text x={dangerBarCenterX + 50} y={topPad - 4} textAnchor="start" fill="#B55A5A" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
-              {annotation.split("\\n").map((line, li) => (
-                <tspan key={li} x={dangerBarCenterX + 50} dy={li === 0 ? 0 : 14}>{line}</tspan>
-              ))}
-            </text>
-            <path
-              d={`M ${dangerBarCenterX + 46} ${topPad + 4} Q ${dangerBarCenterX + 20} ${topPad - 10}, ${dangerBarCenterX} ${topPad + 30}`}
-              fill="none"
-              stroke="#B55A5A"
-              strokeWidth="2"
-              markerEnd="url(#bar-arrow)"
-            />
-          </g>
-        )}
+        {/* Curved arrow — text above chart, arrow curves down to top of danger bar */}
+        {annotation && dangerIndex >= 0 && (() => {
+          const textX = dangerBarCenterX - barWidth * 2;
+          const textY = 14;
+          const arrowStartX = textX + 60;
+          const arrowStartY = textY + 10;
+          const arrowEndX = dangerBarCenterX;
+          const arrowEndY = topPad;
+          return (
+            <g>
+              <text x={textX} y={textY} textAnchor="start" fill="#B55A5A" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                {annotation.split("\\n").map((line, li) => (
+                  <tspan key={li} x={textX} dy={li === 0 ? 0 : 14}>{line}</tspan>
+                ))}
+              </text>
+              <path
+                d={`M ${arrowStartX} ${arrowStartY} Q ${arrowEndX + 30} ${arrowStartY}, ${arrowEndX} ${arrowEndY}`}
+                fill="none"
+                stroke="#B55A5A"
+                strokeWidth="2"
+                markerEnd="url(#bar-arrow)"
+              />
+            </g>
+          );
+        })()}
       </svg>
     </div>
   );
