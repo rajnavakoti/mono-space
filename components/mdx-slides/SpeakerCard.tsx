@@ -10,6 +10,7 @@ interface SpeakerCardProps {
   photo: string;
   role: string;
   org: string;
+  interests?: string[];
   links?: SpeakerLink[];
   qrUrl?: string;
 }
@@ -19,6 +20,7 @@ export function SpeakerCard({
   photo,
   role,
   org,
+  interests = [],
   links = [],
   qrUrl,
 }: SpeakerCardProps) {
@@ -38,13 +40,26 @@ export function SpeakerCard({
           <div className={styles.speakerInfo}>
             <div className={styles.speakerRole}>{role}</div>
             <div className={styles.speakerOrg}>{org}</div>
-            <div className={styles.speakerLinks}>
-              {links.map((link) => (
-                <div key={link.label} className={styles.speakerLink}>
-                  {link.url}
-                </div>
-              ))}
-            </div>
+            {interests.length > 0 && (
+              <div className={styles.speakerInterests}>
+                {interests.map((item, i) => (
+                  <span key={item}>
+                    {i > 0 && <span className={styles.speakerInterestSep}> · </span>}
+                    {item}
+                  </span>
+                ))}
+              </div>
+            )}
+            {links.length > 0 && (
+              <div className={styles.speakerLinks}>
+                {links.map((link) => (
+                  <div key={link.label} className={styles.speakerLink}>
+                    <span className={styles.speakerLinkLabel}>{link.label}</span>
+                    {link.url}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -52,7 +67,7 @@ export function SpeakerCard({
         <div className={styles.speakerQr}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrUrl)}&bgcolor=1A1A1A&color=E0E0E0&format=svg`}
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrUrl)}&bgcolor=FFFFFF&color=000000&format=svg`}
             alt="QR Code"
             className={styles.speakerQrImg}
           />

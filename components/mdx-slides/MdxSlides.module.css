@@ -441,6 +441,17 @@
   margin-bottom: var(--space-md);
 }
 
+.speakerInterests {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  margin-bottom: var(--space-lg);
+}
+
+.speakerInterestSep {
+  color: var(--color-text-muted);
+}
+
 .speakerLinks {
   display: flex;
   flex-direction: column;
@@ -453,10 +464,18 @@
   color: var(--color-text-muted);
 }
 
+.speakerLinkLabel {
+  display: inline-block;
+  width: 40px;
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-bold);
+}
+
 .speakerQr {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  align-self: center;
 }
 
 .speakerQrImg {
