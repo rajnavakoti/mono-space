@@ -177,52 +177,7 @@ Now we get to it. This is the meat. If they only remember one thing from the wor
 
 ## The "Kind Of" Solution
 
-<Split ratio="1:1">
-<div>
-
-The industry built a stack for this:
-
-**Sources** — Confluence, Jira, SharePoint, GitHub, Slack
-
-**Retrieval Layer** — RAG, MCP servers, vector databases, knowledge graphs
-
-**Agent Layer** — Agent + skills + rules + hooks
-
-**Output** — Code, designs, decisions, artifacts
-
-And it works. For **documented knowledge**.
-
-</div>
-<div>
-
-<FlowRow>
-<FlowColumn>
-<FlowBox small>CF</FlowBox>
-<FlowBox small>JIRA</FlowBox>
-<FlowBox small>SP</FlowBox>
-<FlowBox small>GH</FlowBox>
-</FlowColumn>
-<FlowArrow direction="right" />
-<FlowBox>
-RETRIEVAL{"\n"}
-RAG{"\n"}
-MCP Servers{"\n"}
-Vector DB
-</FlowBox>
-<FlowArrow direction="right" />
-<FlowBox accent>
-AGENT{"\n"}
-Skills + Rules
-</FlowBox>
-<FlowArrow direction="right" />
-<FlowBox success>
-ROI{"\n"}
-Business Value
-</FlowBox>
-</FlowRow>
-
-</div>
-</Split>
+<PipelineDiagram columns='Context::Confluence,Jira,SharePoint,GitHub,Slack||Retrieval::RAG,Graph RAG,MCP,API||Agent::Skills,Hooks,Rules,Specs,Instructions' endLabel="ROI" endText="Code, designs, decisions, artifacts. Works for documented knowledge." />
 
 <Notes>
 "This is what the industry built. And honestly? It works. If the knowledge is documented, RAG finds it. MCP servers connect to it. The agent uses it. Beautiful stack. I'm not here to trash it."

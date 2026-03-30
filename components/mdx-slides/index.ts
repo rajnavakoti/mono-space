@@ -17,6 +17,7 @@ export { BarChart } from "./diagrams";
 export { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
 export { LifecycleDiagram } from "./diagrams";
 export { Timeline } from "./diagrams";
+export { PipelineDiagram } from "./diagrams";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -37,6 +38,7 @@ import { BarChart } from "./diagrams";
 import { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
 import { LifecycleDiagram } from "./diagrams";
 import { Timeline } from "./diagrams";
+import { PipelineDiagram } from "./diagrams";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -64,4 +66,5 @@ export const mdxSlideComponents = {
   FlowColumn,
   LifecycleDiagram,
   Timeline,
+  PipelineDiagram,
 };
