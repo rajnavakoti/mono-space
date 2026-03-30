@@ -7,6 +7,7 @@ interface PipelineColumn {
   items: string[];
   pattern: string;
   annotation?: string;
+  annotationPos?: string;
 }
 
 interface PipelineDiagramProps {
@@ -22,8 +23,19 @@ function parseColumns(input: string): PipelineColumn[] {
     const parts = col.trim().split("::");
     const label = parts[0]?.trim() || "";
     const items = parts[1]?.trim().split(",").map((s) => s.trim()) || [];
-    const annotation = parts[2]?.trim() || undefined;
-    return { label, items, pattern: PATTERNS[i % PATTERNS.length], annotation };
+    const annotationRaw = parts[2]?.trim() || undefined;
+    let annotation: string | undefined;
+    let annotationPos = "bottom";
+    if (annotationRaw) {
+      const posMatch = annotationRaw.match(/^\[(left|bottom|top)\]/);
+      if (posMatch) {
+        annotationPos = posMatch[1];
+        annotation = annotationRaw.slice(posMatch[0].length).trim();
+      } else {
+        annotation = annotationRaw;
+      }
+    }
+    return { label, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos };
   });
 }
 
@@ -72,7 +84,11 @@ export function PipelineDiagram({ columns, endLabel, endText }: PipelineDiagramP
               ))}
             </div>
             {col.annotation && (
-              <div className={styles.pipelineBoxAnnotation}>{col.annotation}</div>
+              <div className={`${styles.pipelineBoxAnnotation} ${
+                col.annotationPos === "left" ? styles.pipelineAnnotationLeft :
+                col.annotationPos === "top" ? styles.pipelineAnnotationTop :
+                styles.pipelineAnnotationBottom
+              }`}>{col.annotation}</div>
             )}
           </div>
         </div>
