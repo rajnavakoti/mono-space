@@ -31,7 +31,7 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const pieSize = 260;
+  const pieSize = 300;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
@@ -112,7 +112,19 @@ export function PieChart({ slices, annotations }: PieChartProps) {
           const labelX = isRight ? elbowX + 8 : elbowX - 8;
           const anchor = isRight ? "start" : "end";
 
-          const noteText = `(${item.label.toLowerCase()}) ${notes[i]}`;
+          const typeLabel = `(${item.label.toLowerCase()})`;
+          const noteWords = notes[i].split(" ");
+          const lines: string[] = [];
+          let currentLine = typeLabel;
+          for (const word of noteWords) {
+            if ((currentLine + " " + word).length > 28) {
+              lines.push(currentLine);
+              currentLine = word;
+            } else {
+              currentLine += " " + word;
+            }
+          }
+          lines.push(currentLine);
 
           return (
             <g key={`ann-${i}`}>
@@ -127,15 +139,17 @@ export function PieChart({ slices, annotations }: PieChartProps) {
               />
               <text
                 x={labelX}
-                y={edgeY + 5}
+                y={edgeY - ((lines.length - 1) * 9)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="15"
+                fontSize="17"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
               >
-                {noteText}
+                {lines.map((line, li) => (
+                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : 18}>{line}</tspan>
+                ))}
               </text>
             </g>
           );
