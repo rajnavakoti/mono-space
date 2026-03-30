@@ -4,7 +4,7 @@ import styles from "./Diagrams.module.css";
 
 interface PieChartProps {
   slices: string;
-  source?: string;
+  annotations?: string;
 }
 
 interface SliceData {
@@ -12,16 +12,6 @@ interface SliceData {
   percent: number;
   highlight: boolean;
 }
-
-const PATTERNS = [
-  { id: "pie-stripe", fill: "var(--color-text-secondary)" },
-  { id: "pie-dot", fill: "var(--color-text-secondary)" },
-  { id: "pie-grid", fill: "var(--color-text-secondary)" },
-  { id: "pie-stripe-rev", fill: "var(--color-text-secondary)" },
-  { id: "pie-solid", fill: "var(--color-text-muted)" },
-];
-
-const HIGHLIGHT_PATTERN = { id: null, fill: "#B55A5A" };
 
 function parseSlices(input: string): SliceData[] {
   return input.split("|").map((entry) => {
@@ -34,23 +24,47 @@ function parseSlices(input: string): SliceData[] {
   });
 }
 
-export function PieChart({ slices, source }: PieChartProps) {
+function parseAnnotations(input: string): string[] {
+  return input.split("|").map((s) => s.trim());
+}
+
+export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
-  const size = 280;
+  const notes = annotations ? parseAnnotations(annotations) : [];
+  const size = 300;
   const cx = size / 2;
   const cy = size / 2;
   const r = size / 2 - 10;
 
   let angle = -Math.PI / 2;
 
+  const sliceData = items.map((item, i) => {
+    const sliceAngle = (item.percent / 100) * Math.PI * 2;
+    const startAngle = angle;
+    const x1 = cx + r * Math.cos(angle);
+    const y1 = cy + r * Math.sin(angle);
+    angle += sliceAngle;
+    const x2 = cx + r * Math.cos(angle);
+    const y2 = cy + r * Math.sin(angle);
+    const large = sliceAngle > Math.PI ? 1 : 0;
+    const midAngle = startAngle + sliceAngle / 2;
+    const d = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
+
+    return { ...item, d, midAngle, index: i };
+  });
+
+  const totalWidth = 700;
+  const totalHeight = 340;
+  const chartOffsetX = (totalWidth - size) / 2;
+  const chartOffsetY = (totalHeight - size) / 2;
+
   return (
     <div className={styles.pieContainer}>
       <svg
-        width={size}
-        height={size}
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox={`0 0 ${totalWidth} ${totalHeight}`}
         className={styles.pieChartSvg}
         xmlns="http://www.w3.org/2000/svg"
+        style={{ width: "100%", maxWidth: "700px", height: "auto" }}
       >
         <defs>
           <pattern id="pie-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -68,43 +82,48 @@ export function PieChart({ slices, source }: PieChartProps) {
           </pattern>
         </defs>
 
-        <rect x="0" y="0" width={size} height={size} fill="none" stroke="var(--color-text)" strokeWidth="3" />
+        <g transform={`translate(${chartOffsetX}, ${chartOffsetY})`}>
+          {sliceData.map((item, i) => {
+            const patterns = ["pie-stripe", "pie-dot", "pie-grid", "pie-stripe-rev"];
+            return (
+              <g key={item.label}>
+                <path d={item.d} fill={item.highlight ? "#B55A5A" : "var(--color-text-secondary)"} stroke="var(--color-bg)" strokeWidth="2" />
+                {!item.highlight && (
+                  <path d={item.d} fill={`url(#${patterns[i % patterns.length]})`} stroke="none" />
+                )}
+              </g>
+            );
+          })}
+        </g>
 
-        {items.map((item, i) => {
-          const sliceAngle = (item.percent / 100) * Math.PI * 2;
-          const x1 = cx + r * Math.cos(angle);
-          const y1 = cy + r * Math.sin(angle);
-          angle += sliceAngle;
-          const x2 = cx + r * Math.cos(angle);
-          const y2 = cy + r * Math.sin(angle);
-          const large = sliceAngle > Math.PI ? 1 : 0;
-          const pat = item.highlight ? HIGHLIGHT_PATTERN : PATTERNS[i % PATTERNS.length];
-          const d = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
+        {notes.length > 0 && sliceData.map((item, i) => {
+          if (i >= notes.length || !notes[i]) return null;
+          const edgeX = chartOffsetX + cx + (r * 0.7) * Math.cos(item.midAngle);
+          const edgeY = chartOffsetY + cy + (r * 0.7) * Math.sin(item.midAngle);
+          const isRight = item.midAngle > -Math.PI / 2 && item.midAngle < Math.PI / 2;
+          const labelX = isRight ? chartOffsetX + size + 20 : chartOffsetX - 20;
+          const labelY = edgeY;
+          const anchor = isRight ? "start" : "end";
 
           return (
-            <g key={item.label}>
-              <path d={d} fill={pat.fill} stroke="var(--color-bg)" strokeWidth="2" />
-              {pat.id && (
-                <path d={d} fill={`url(#${pat.id})`} stroke="none" />
-              )}
+            <g key={`ann-${i}`}>
+              <line x1={edgeX} y1={edgeY} x2={labelX} y2={labelY} stroke="#B55A5A" strokeWidth="1.5" />
+              <text
+                x={labelX + (isRight ? 6 : -6)}
+                y={labelY + 4}
+                textAnchor={anchor}
+                fill="#B55A5A"
+                fontSize="12"
+                fontFamily="Comic Sans MS, Segoe Print, cursive"
+                fontWeight="700"
+                fontStyle="italic"
+              >
+                {notes[i]}
+              </text>
             </g>
           );
         })}
       </svg>
-
-      <div className={styles.pieLegend}>
-        {items.map((item, i) => {
-          const pat = item.highlight ? HIGHLIGHT_PATTERN : PATTERNS[i % PATTERNS.length];
-          return (
-            <div key={item.label} className={`${styles.pieLegendItem} ${item.highlight ? styles.pieLegendHighlight : ""}`}>
-              <span className={styles.pieSwatch} style={{ backgroundColor: pat.fill }} />
-              <span className={styles.pieLegendLabel}>{item.label}</span>
-              <span className={styles.pieLegendPercent}>{item.percent}%</span>
-            </div>
-          );
-        })}
-      </div>
-      {source && <div className={styles.pieSource}>{source}</div>}
     </div>
   );
 }
