@@ -337,6 +337,110 @@
   }
 }
 
+/* === Hub Diagram (center + inputs from 3 sides + output) === */
+
+.hubContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  padding: var(--space-lg) 0;
+}
+
+.hubTop,
+.hubBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.hubMiddle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.hubInputBox {
+  border: 2px solid var(--color-text);
+  padding: var(--space-md) var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  text-align: center;
+  min-width: 140px;
+  background: var(--color-bg-tertiary);
+}
+
+.hubCenterBox {
+  border: 3px solid var(--color-accent);
+  padding: var(--space-xl) var(--space-2xl);
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.hubCenterPattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hubCenterLabel {
+  position: relative;
+  z-index: 1;
+}
+
+.hubOutputBox {
+  border: 2px solid #5AB55A;
+  padding: var(--space-md) var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: var(--weight-black);
+  color: #5AB55A;
+  text-align: center;
+  min-width: 160px;
+}
+
+.hubArrowRight {
+  font-size: var(--text-2xl);
+  color: var(--color-text-muted);
+  padding: 0 var(--space-md);
+  flex-shrink: 0;
+}
+
+.hubArrowDown {
+  font-size: var(--text-2xl);
+  color: var(--color-text-muted);
+  padding: var(--space-xs) 0;
+}
+
+.hubArrowUp {
+  font-size: var(--text-2xl);
+  color: var(--color-text-muted);
+  padding: var(--space-xs) 0;
+}
+
+@media (max-width: 768px) {
+  .hubMiddle {
+    flex-direction: column;
+  }
+
+  .hubArrowRight {
+    transform: rotate(90deg);
+    padding: var(--space-xs) 0;
+  }
+}
+
 /* === Pipeline Diagram === */
 
 .pipelineContainer {
