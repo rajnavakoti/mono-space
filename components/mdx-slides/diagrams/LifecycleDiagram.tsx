@@ -12,7 +12,7 @@ interface LifecycleDiagramProps {
   centerText?: string;
 }
 
-export function LifecycleDiagram({ nodes, centerText }: LifecycleDiagramProps) {
+export function LifecycleDiagram({ nodes = [], centerText }: LifecycleDiagramProps) {
   const count = nodes.length;
   const radius = 140;
   const centerX = 180;

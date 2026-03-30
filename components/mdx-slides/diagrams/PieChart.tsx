@@ -14,7 +14,7 @@ interface PieChartProps {
   source?: string;
 }
 
-export function PieChart({ slices, source }: PieChartProps) {
+export function PieChart({ slices = [], source }: PieChartProps) {
   let cumulative = 0;
   const gradientStops = slices.map((slice) => {
     const start = cumulative;

@@ -14,7 +14,7 @@ interface EvolutionTimelineProps {
   nodes: TimelineNode[];
 }
 
-export function EvolutionTimeline({ nodes }: EvolutionTimelineProps) {
+export function EvolutionTimeline({ nodes = [] }: EvolutionTimelineProps) {
   return (
     <div className={styles.timeline}>
       {nodes.map((node, i) => (

@@ -55,7 +55,7 @@ Quick audience pulse. Hands up for each one. The last question matters most — 
 
 ### What you'll sit through:
 
-<div class="act-boxes">
+<div className="act-boxes">
 
 **SITUATION** — Where we are
 - The evolution from AI to agents
@@ -209,12 +209,7 @@ How many of you have seen Memento? Remember how he tattooed facts on his body to
 </div>
 <div>
 
-<EvolutionTimeline nodes={[
-  { year: "2023", title: '"What is an agent?"', subtitle: "? Definitions, debates, confusion" },
-  { year: "2024", title: "Agents + Extensions", subtitle: "⚙ Skills, rules, MCP servers" },
-  { year: "2025", title: "Multi-Agent Systems", subtitle: "⚡ Teams, orchestration, delegation" },
-  { year: "2026", title: "Context Engineering", subtitle: "★ The model isn't the bottleneck", highlight: true, badge: "90% failing | $40B invested | 5% value" }
-]} />
+<EvolutionTimeline nodes={[{ year: "2023", title: "What is an agent?", subtitle: "Definitions, debates, confusion" }, { year: "2024", title: "Agents + Extensions", subtitle: "Skills, rules, MCP servers" }, { year: "2025", title: "Multi-Agent Systems", subtitle: "Teams, orchestration, delegation" }, { year: "2026", title: "Context Engineering", subtitle: "The model is not the bottleneck", highlight: true, badge: "90% failing | $40B invested | 5% value" }]} />
 
 </div>
 </Split>
@@ -434,16 +429,7 @@ Context discovery — figuring out what's missing — is the unsolved problem.
 </div>
 <div>
 
-<PieChart
-  slices={[
-    { label: "CLEAN", percent: 10, color: "#5AB55A" },
-    { label: "OUTDATED", percent: 20, color: "#B5955A" },
-    { label: "UNRELIABLE", percent: 20, color: "#5A8AB5" },
-    { label: "DUPLICATED", percent: 10, color: "#666" },
-    { label: "TRIBAL", percent: 40, color: "#B55A5A", highlight: true }
-  ]}
-  source="Source: Internal KB audit, Delivery & Services domain"
-/>
+<PieChart slices={[{ label: "CLEAN", percent: 10, color: "#5AB55A" }, { label: "OUTDATED", percent: 20, color: "#B5955A" }, { label: "UNRELIABLE", percent: 20, color: "#5A8AB5" }, { label: "DUPLICATED", percent: 10, color: "#666" }, { label: "TRIBAL", percent: 40, color: "#B55A5A", highlight: true }]} source="Source: Internal KB audit, Delivery & Services domain" />
 
 </div>
 </Split>
@@ -503,17 +489,7 @@ DDC does the same for AI agents:
 </div>
 <div>
 
-<LifecycleDiagram
-  centerText="30-60 min / cycle"
-  nodes={[
-    { label: "PROBLEM" },
-    { label: "AGENT FAILS", color: "#B55A5A" },
-    { label: "CHECKLIST", color: "#B5955A" },
-    { label: "FILL GAPS", color: "#5A8AB5" },
-    { label: "CURATE", color: "#C4A35A" },
-    { label: "SUCCEEDS", color: "#5AB55A" }
-  ]}
-/>
+<LifecycleDiagram centerText="30-60 min / cycle" nodes={[{ label: "PROBLEM" }, { label: "AGENT FAILS", color: "#B55A5A" }, { label: "CHECKLIST", color: "#B5955A" }, { label: "FILL GAPS", color: "#5A8AB5" }, { label: "CURATE", color: "#C4A35A" }, { label: "SUCCEEDS", color: "#5AB55A" }]} />
 
 </div>
 </Split>
