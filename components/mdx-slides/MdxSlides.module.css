@@ -314,14 +314,17 @@
 /* === FullBleed Component === */
 
 .fullBleed {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: var(--space-2xl) var(--space-3xl);
   text-align: center;
+  /* Break out of .mdxSlide padding to fill entire slide */
+  margin: calc(-1 * var(--space-2xl)) calc(-1 * var(--space-3xl));
+  width: calc(100% + 2 * var(--space-3xl));
+  min-height: calc(100% + 2 * var(--space-2xl));
+  flex: 1;
 }
 
 /* === Callout Component === */
@@ -396,5 +399,8 @@
 
   .fullBleed {
     padding: var(--space-lg) var(--space-md);
+    margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-md));
+    width: calc(100% + 2 * var(--space-md));
+    min-height: calc(100% + 2 * var(--space-lg));
   }
 }
