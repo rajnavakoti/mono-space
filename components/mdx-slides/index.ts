@@ -6,6 +6,7 @@ export { Animate } from "./Animate";
 export { FullBleed } from "./FullBleed";
 export { Callout } from "./Callout";
 export { TitleCard } from "./TitleCard";
+export { SpeakerCard } from "./SpeakerCard";
 export { EvolutionTimeline } from "./diagrams";
 export { PieChart } from "./diagrams";
 export { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
@@ -19,6 +20,7 @@ import { Animate } from "./Animate";
 import { FullBleed } from "./FullBleed";
 import { Callout } from "./Callout";
 import { TitleCard } from "./TitleCard";
+import { SpeakerCard } from "./SpeakerCard";
 import { EvolutionTimeline } from "./diagrams";
 import { PieChart } from "./diagrams";
 import { FlowBox, FlowArrow, FlowRow, FlowColumn } from "./diagrams";
@@ -36,6 +38,7 @@ export const mdxSlideComponents = {
   FullBleed,
   Callout,
   TitleCard,
+  SpeakerCard,
   EvolutionTimeline,
   PieChart,
   FlowBox,

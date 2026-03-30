@@ -13,30 +13,7 @@ Title slide. Let it sit for a moment while people settle in. Don't start talking
 
 ---
 
-<Split ratio="1:2">
-<div>
-
-<div style={{width: "200px", height: "200px", border: "3px solid var(--color-text)", background: "var(--color-bg-secondary)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--color-text-muted)"}}>PHOTO</div>
-
-</div>
-<div>
-
-<div style={{fontFamily: "var(--font-mono)", fontSize: "var(--text-3xl)", fontWeight: 900, textTransform: "uppercase", letterSpacing: "-0.03em", lineHeight: 1}}>Raj Navakoti</div>
-
-<div style={{fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", marginTop: "var(--space-md)", lineHeight: 1.6}}>Senior Engineer — IKEA Digital, Delivery & Services</div>
-
-<div style={{marginTop: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-sm)", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--color-text-muted)"}}>
-
-<span>LI — linkedin.com/in/rajnavakoti</span>
-<span>GH — github.com/rajnavakoti</span>
-<span>WEB — rajnavakoti.dev</span>
-
-</div>
-
-<div style={{marginTop: "var(--space-xl)", padding: "var(--space-sm) var(--space-md)", border: "2px solid var(--color-accent)", display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--color-accent)"}}>Paper: Demand-Driven Context — arxiv, March 2026</div>
-
-</div>
-</Split>
+<SpeakerCard name="Raj Navakoti" photo="/profile.jpeg" role="Staff Software Engineer" org="@Ingka Digital, IKEA" links={[{ label: "web", url: "rajnavakoti.dev" }, { label: "li", url: "linkedin.com/in/rajnavakoti" }, { label: "gh", url: "github.com/rajnavakoti" }]} qrUrl="https://rajnavakoti.dev" />
 
 <Notes>
 Welcome everyone. I'm Raj — I work at IKEA Digital on supply chain logistics. For the past few months I've been obsessed with one question: why do our AI agents fail on domain-specific work? This workshop is the answer I found. Let's go.
