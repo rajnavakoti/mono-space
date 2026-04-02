@@ -510,30 +510,12 @@ If scanner is slow or breaks: show pre-run screenshots. Have 3 domain results pr
 
 ---
 
-## The Positioning
+## The Positioning — The Complete Picture
 
-<Animate type="fade-in" delay="200ms">
-
-Everyone in this room is building agents.
-
-You're picking models, frameworks, tools. Building MCP servers, RAG pipelines, skill systems.
-
-**That's the plumbing.**
-
-</Animate>
-
-<Animate type="fade-in" delay="800ms">
-
-**Nobody is talking about what flows through the pipes.**
-
-Context discovery — figuring out what knowledge your agents actually need — is the unsolved problem.
-
-It's the one that determines whether your agent is a **coding assistant** or a **domain expert**.
-
-</Animate>
+<PipelineDiagram columns='Context::Confluence,Jira,SharePoint,GitHub,Slack::[bottom]messy, tribal, outdated||DDC::Extract,Consolidate,Curate::[top]the missing piece||[blocks]Curated Blocks::systems,apis,processes,jargon,data-models,decisions,teams,capabilities,events::[bottom]structured, agent-ready||Retrieval::RAG,Graph RAG,MCP,API||Agent::Skills,Hooks,Rules,Specs' endLabel="ROI" endText="Domain-expert reasoning. Not just code — business delivery." />
 
 <Notes>
-"Everyone here is building the plumbing. MCP servers, RAG pipelines, agent frameworks. Important work. But nobody is talking about what flows through those pipes. Context discovery — figuring out what to curate — is the gap. And it's the gap that determines whether your agent is an expensive autocomplete or a domain expert."
+"This is the complete picture. Remember slide 11 — the pipeline that works for documented knowledge? Now it's complete. DDC sits between your messy context and the retrieval layer. It extracts, consolidates, curates — produces structured context blocks. Those blocks flow through RAG, MCP, into the agent. And the agent doesn't just write code — it reasons about your domain."
 </Notes>
 
 ---

@@ -587,6 +587,22 @@
   color: var(--color-text-muted);
 }
 
+.pipelineBlocksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.pipelineBlock {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-text);
+  background: var(--color-bg-tertiary);
+  overflow: hidden;
+}
+
 .pipelineEnd {
   display: flex;
   flex-direction: column;

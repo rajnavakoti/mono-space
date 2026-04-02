@@ -8,6 +8,7 @@ interface PipelineColumn {
   pattern: string;
   annotation?: string;
   annotationPos?: string;
+  blocks?: boolean;
 }
 
 interface PipelineDiagramProps {
@@ -35,7 +36,9 @@ function parseColumns(input: string): PipelineColumn[] {
         annotation = annotationRaw;
       }
     }
-    return { label, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos };
+    const blocks = label.startsWith("[blocks]");
+    const cleanLabel = blocks ? label.replace("[blocks]", "").trim() : label;
+    return { label: cleanLabel, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos, blocks };
   });
 }
 
@@ -78,11 +81,30 @@ export function PipelineDiagram({ columns, endLabel, endText }: PipelineDiagramP
                 <rect width="100%" height="100%" fill={`url(#${col.pattern})`} />
               </svg>
             </div>
-            <div className={styles.pipelineBoxItems}>
-              {col.items.map((item) => (
-                <div key={item} className={styles.pipelineBoxItem}>{item}</div>
-              ))}
-            </div>
+            {col.blocks ? (
+              <div className={styles.pipelineBlocksGrid}>
+                {col.items.map((item, j) => (
+                  <div key={item} className={styles.pipelineBlock} title={item}>
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <pattern id={`blk-${j}`} width="5" height="5" patternUnits="userSpaceOnUse" patternTransform={j % 2 === 0 ? "rotate(45)" : undefined}>
+                          {j % 3 === 0 && <line x1="0" y1="0" x2="0" y2="5" stroke="var(--color-text)" strokeWidth="1" />}
+                          {j % 3 === 1 && <circle cx="2.5" cy="2.5" r="0.8" fill="var(--color-text)" />}
+                          {j % 3 === 2 && <><line x1="0" y1="2.5" x2="5" y2="2.5" stroke="var(--color-text)" strokeWidth="0.6" /><line x1="2.5" y1="0" x2="2.5" y2="5" stroke="var(--color-text)" strokeWidth="0.6" /></>}
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill={`url(#blk-${j})`} opacity="0.3" />
+                    </svg>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.pipelineBoxItems}>
+                {col.items.map((item) => (
+                  <div key={item} className={styles.pipelineBoxItem}>{item}</div>
+                ))}
+              </div>
+            )}
             {col.annotation && (
               <div className={`${styles.pipelineBoxAnnotation} ${
                 col.annotationPos === "left" ? styles.pipelineAnnotationLeft :
