@@ -348,21 +348,21 @@
   padding: var(--space-lg) 0;
 }
 
-.hubTop,
-.hubBottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
 .hubMiddle {
   display: flex;
   align-items: center;
   gap: 0;
 }
 
-.hubInputBox {
+.hubCenterColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.hubInputBoxA,
+.hubInputBoxB {
   border: 2px solid var(--color-text);
   padding: var(--space-md) var(--space-lg);
   font-family: var(--font-mono);
@@ -371,7 +371,28 @@
   color: var(--color-text);
   text-align: center;
   min-width: 140px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hubInputBoxA {
   background: var(--color-bg-tertiary);
+}
+
+.hubInputBoxB {
+  background: var(--color-bg-secondary);
+}
+
+.hubInputPattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hubInputLabel {
+  position: relative;
+  z-index: 1;
 }
 
 .hubCenterBox {
