@@ -442,53 +442,19 @@ If scanner is slow or breaks: show pre-run screenshots. Have 3 domain results pr
 
 ## The Meta Model — Your Store Map
 
-Think of it like the map at the entrance of an IKEA store.
-
-Your agent needs to know: **where things are, how they connect, and how to get from one place to another.**
+> *"Think of it like the map at the entrance of an **IKEA** store."*
 
 <Split ratio="1:1">
 <div>
 
-### 13 Entity Types
-Systems, APIs, Platforms, Processes, Business Events, Data Models, Data Products, Teams, Personas, Capabilities, Offerings, Business Jargon, Tech Jargon
+<ContentCard title="13 ENTITY TYPES" accent="amber" items="Systems, APIs, Platforms, Processes, Business Events, Data Models, Data Products, Teams, Personas, Capabilities, Offerings, Business Jargon, Tech Jargon" />
 
-### Relationships
-```yaml
-related_systems: [fleet-mgmt, payment-gateway]
-implements_capability: last-mile-delivery
-depends_on: [carrier-api, capacity-service]
-owned_by: delivery-platform-team
-```
-
-Agents follow relationships to build context for any problem.
+<CodeBlock title="relationships.yaml" code="related_systems: [fleet-mgmt, payment-gateway]&#10;implements_capability: last-mile-delivery&#10;depends_on: [carrier-api, capacity-service]&#10;owned_by: delivery-platform-team" />
 
 </div>
 <div>
 
-
-<pre style={{fontFamily: "var(--font-mono)", fontSize: "11px", lineHeight: "1.4", color: "var(--color-text-muted)"}}>
-{`
-  ┌──────────┐  owns   ┌────────┐
-  │  TEAM    │────────▶│ SYSTEM │
-  └──────────┘         └───┬────┘
-                           │
-                   depends_on
-                           │
-                       ┌───▼────┐
-  ┌──────────┐         │  API   │
-  │ PROCESS  │◀────────┤        │
-  └────┬─────┘  uses   └────────┘
-       │
-   implements
-       │
-  ┌────▼─────┐         ┌────────┐
-  │CAPABILITY│         │ JARGON │
-  └──────────┘         └────────┘
-     business            domain
-     function            language
-`}
-</pre>
-
+<CodeBlock title="entity-map" code="  TEAM ---owns---> SYSTEM&#10;                     |&#10;                depends_on&#10;                     |&#10;                     v&#10;  PROCESS <--uses-- API&#10;     |&#10;  implements&#10;     |&#10;     v&#10;  CAPABILITY         JARGON&#10;  (business)         (domain)" />
 
 </div>
 </Split>
