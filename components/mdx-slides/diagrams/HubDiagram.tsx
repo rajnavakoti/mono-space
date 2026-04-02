@@ -8,9 +8,10 @@ interface HubDiagramProps {
   top?: string;
   bottom?: string;
   right?: string;
+  rightSub?: string;
 }
 
-export function HubDiagram({ center, left, top, bottom, right }: HubDiagramProps) {
+export function HubDiagram({ center, left, top, bottom, right, rightSub }: HubDiagramProps) {
   return (
     <div className={styles.hubContainer}>
       {/* Top input */}
@@ -46,7 +47,10 @@ export function HubDiagram({ center, left, top, bottom, right }: HubDiagramProps
         {right && (
           <>
             <div className={styles.hubArrowRight}>→</div>
-            <div className={styles.hubOutputBox}>{right}</div>
+            <div className={styles.hubOutputEnd}>
+              <div className={styles.hubOutputLabel}>{right}</div>
+              {rightSub && <div className={styles.hubOutputSub}>{rightSub}</div>}
+            </div>
           </>
         )}
       </div>
