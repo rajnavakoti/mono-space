@@ -422,58 +422,14 @@ If scanner is slow or breaks: show pre-run screenshots. Have 3 domain results pr
 <Split ratio="1:1">
 <div>
 
-Curated knowledge lives in a **Git repo**.
+<ContentCard title="WHY GIT?" accent="green" items="Version controlled — every change tracked, PRs for human review — no unchecked additions, Your engineers already know the workflow, Machine-readable AND human-readable, Branching — experiment safely" />
 
-**Why Git?**
-- Version controlled — every change tracked
-- PRs for human review — no unchecked additions
-- Your engineers already know the workflow
-- Machine-readable AND human-readable
-- Branching — experiment safely
-
-**Structure:**
-```
-context-lake/
-  entities/
-    systems/         → 34 entities
-    apis/            → 89 entities
-    processes/       → 20 entities
-    jargon-business/ → 22 entities
-    data-models/     → 45 entities
-    decisions/       → 10 entities
-  meta/
-    entity-types.yaml
-    relationship-types.yaml
-```
+<CodeBlock title="context-lake/" code="entities/&#10;  systems/         → 34 entities&#10;  apis/            → 89 entities&#10;  processes/       → 20 entities&#10;  jargon-business/ → 22 entities&#10;  data-models/     → 45 entities&#10;meta/&#10;  entity-types.yaml&#10;  relationship-types.yaml" />
 
 </div>
 <div>
 
-
-<pre style={{fontFamily: "var(--font-mono)", fontSize: "11px", lineHeight: "1.5", color: "var(--color-text-muted)"}}>
-{`
-  main
-  │
-  ●  add: order-mgmt entity
-  │
-  ●  add: fleet-mgmt entity
-  │
-  │  feat/curate-billing-terms
-  ├──●  add: billing-proposal
-  │  │
-  │  ●  add: installer-app
-  │  │
-  │  ●  link: billing → installer
-  │  │
-  ├──┤  PR #12 merged
-  │     ✓ Reviewed by: Domain Expert
-  │
-  ●  add: capacity-service
-  │
-  ▼  HEAD
-`}
-</pre>
-
+<SlideImage src="/Filing cabinet.webp" alt="The old way of storing knowledge" />
 
 </div>
 </Split>
