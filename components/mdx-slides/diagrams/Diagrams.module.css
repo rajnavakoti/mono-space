@@ -337,60 +337,67 @@
   }
 }
 
-/* === Hub Diagram (center + inputs from 3 sides + output) === */
+/* === Hub Diagram (CSS Grid) === */
 
-.hubContainer {
-  display: flex;
-  flex-direction: column;
+.hubGrid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  justify-content: center;
   align-items: center;
   gap: 0;
   width: 100%;
-  padding: var(--space-lg) 0;
+  padding: var(--space-xl) 0;
 }
 
-.hubMiddle {
+.hubCell {
   display: flex;
   align-items: center;
-  gap: 0;
+  justify-content: center;
 }
 
-.hubCenterColumn {
+.hubCellCenter {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0;
+  justify-content: center;
 }
 
-.hubInputBoxA,
-.hubInputBoxB {
+.hubCellRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.hubCellLeft {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.hubBoxA,
+.hubBoxB {
   border: 2px solid var(--color-text);
   padding: var(--space-md) var(--space-lg);
   font-family: var(--font-mono);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   color: var(--color-text);
   text-align: center;
-  min-width: 140px;
   position: relative;
   overflow: hidden;
 }
 
-.hubInputBoxA {
-  background: var(--color-bg-tertiary);
-}
+.hubBoxA { background: var(--color-bg-tertiary); }
+.hubBoxB { background: var(--color-bg-secondary); }
 
-.hubInputBoxB {
-  background: var(--color-bg-secondary);
-}
-
-.hubInputPattern {
+.hubBoxPattern {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.hubInputLabel {
+.hubBoxLabel {
   position: relative;
   z-index: 1;
 }
@@ -406,14 +413,6 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-width: 200px;
-}
-
-.hubCenterPattern {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .hubCenterLabel {
@@ -425,6 +424,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
+  padding-left: var(--space-md);
 }
 
 .hubOutputLabel {
@@ -442,35 +442,12 @@
   max-width: 220px;
 }
 
-.hubArrowRight {
+.hubArrow {
   font-size: var(--text-2xl);
   color: var(--color-text-muted);
-  padding: 0 var(--space-md);
-  flex-shrink: 0;
+  padding: var(--space-xs) var(--space-sm);
 }
 
-.hubArrowDown {
-  font-size: var(--text-2xl);
-  color: var(--color-text-muted);
-  padding: var(--space-xs) 0;
-}
-
-.hubArrowUp {
-  font-size: var(--text-2xl);
-  color: var(--color-text-muted);
-  padding: var(--space-xs) 0;
-}
-
-@media (max-width: 768px) {
-  .hubMiddle {
-    flex-direction: column;
-  }
-
-  .hubArrowRight {
-    transform: rotate(90deg);
-    padding: var(--space-xs) 0;
-  }
-}
 
 /* === Pipeline Diagram === */
 

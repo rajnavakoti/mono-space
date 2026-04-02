@@ -13,7 +13,7 @@ interface HubDiagramProps {
 
 export function HubDiagram({ center, left, top, bottom, right, rightSub }: HubDiagramProps) {
   return (
-    <div className={styles.hubContainer}>
+    <div className={styles.hubGrid}>
       <svg width="0" height="0" style={{ position: "absolute" }}>
         <defs>
           <pattern id="hub-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -29,60 +29,79 @@ export function HubDiagram({ center, left, top, bottom, right, rightSub }: HubDi
         </defs>
       </svg>
 
-      {/* Middle row: left → center column (with top/bottom) → right */}
-      <div className={styles.hubMiddle}>
-        {/* Left input */}
+      {/* Row 1: empty | top input | empty | empty */}
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell}>
+        {top && (
+          <div className={styles.hubBoxB}>
+            <svg className={styles.hubBoxPattern}><rect width="100%" height="100%" fill="url(#hub-dot)" opacity="0.15" /></svg>
+            <span className={styles.hubBoxLabel}>{top}</span>
+          </div>
+        )}
+      </div>
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell} />
+
+      {/* Row 2: empty | arrow down | empty | empty */}
+      <div className={styles.hubCell} />
+      <div className={styles.hubCellCenter}>
+        {top && <span className={styles.hubArrow}>↓</span>}
+      </div>
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell} />
+
+      {/* Row 3: left input | arrow right | center | arrow right | output */}
+      <div className={styles.hubCellRight}>
         {left && (
           <>
-            <div className={styles.hubInputBoxA}>
-              <svg className={styles.hubInputPattern}><rect width="100%" height="100%" fill="url(#hub-stripe)" opacity="0.15" /></svg>
-              <span className={styles.hubInputLabel}>{left}</span>
+            <div className={styles.hubBoxA}>
+              <svg className={styles.hubBoxPattern}><rect width="100%" height="100%" fill="url(#hub-stripe)" opacity="0.15" /></svg>
+              <span className={styles.hubBoxLabel}>{left}</span>
             </div>
-            <div className={styles.hubArrowRight}>→</div>
-          </>
-        )}
-
-        {/* Center column: top + center + bottom stacked */}
-        <div className={styles.hubCenterColumn}>
-          {top && (
-            <>
-              <div className={styles.hubInputBoxB}>
-                <svg className={styles.hubInputPattern}><rect width="100%" height="100%" fill="url(#hub-dot)" opacity="0.15" /></svg>
-                <span className={styles.hubInputLabel}>{top}</span>
-              </div>
-              <div className={styles.hubArrowDown}>↓</div>
-            </>
-          )}
-
-          <div className={styles.hubCenterBox}>
-            <svg className={styles.hubCenterPattern} xmlns="http://www.w3.org/2000/svg">
-              <rect width="100%" height="100%" fill="url(#hub-grid)" opacity="0.15" />
-            </svg>
-            <span className={styles.hubCenterLabel}>{center}</span>
-          </div>
-
-          {bottom && (
-            <>
-              <div className={styles.hubArrowUp}>↑</div>
-              <div className={styles.hubInputBoxA}>
-                <svg className={styles.hubInputPattern}><rect width="100%" height="100%" fill="url(#hub-stripe)" opacity="0.15" /></svg>
-                <span className={styles.hubInputLabel}>{bottom}</span>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Right output */}
-        {right && (
-          <>
-            <div className={styles.hubArrowRight}>→</div>
-            <div className={styles.hubOutputEnd}>
-              <div className={styles.hubOutputLabel}>{right}</div>
-              {rightSub && <div className={styles.hubOutputSub}>{rightSub}</div>}
-            </div>
+            <span className={styles.hubArrow}>→</span>
           </>
         )}
       </div>
+      <div className={styles.hubCellCenter}>
+        <div className={styles.hubCenterBox}>
+          <svg className={styles.hubBoxPattern} xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="url(#hub-grid)" opacity="0.15" />
+          </svg>
+          <span className={styles.hubCenterLabel}>{center}</span>
+        </div>
+      </div>
+      <div className={styles.hubCellCenter}>
+        {right && <span className={styles.hubArrow}>→</span>}
+      </div>
+      <div className={styles.hubCellLeft}>
+        {right && (
+          <div className={styles.hubOutputEnd}>
+            <div className={styles.hubOutputLabel}>{right}</div>
+            {rightSub && <div className={styles.hubOutputSub}>{rightSub}</div>}
+          </div>
+        )}
+      </div>
+
+      {/* Row 4: empty | arrow up | empty | empty */}
+      <div className={styles.hubCell} />
+      <div className={styles.hubCellCenter}>
+        {bottom && <span className={styles.hubArrow}>↑</span>}
+      </div>
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell} />
+
+      {/* Row 5: empty | bottom input | empty | empty */}
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell}>
+        {bottom && (
+          <div className={styles.hubBoxA}>
+            <svg className={styles.hubBoxPattern}><rect width="100%" height="100%" fill="url(#hub-stripe)" opacity="0.15" /></svg>
+            <span className={styles.hubBoxLabel}>{bottom}</span>
+          </div>
+        )}
+      </div>
+      <div className={styles.hubCell} />
+      <div className={styles.hubCell} />
     </div>
   );
 }
