@@ -321,17 +321,7 @@ If you've practiced Test-Driven Development, you already know this:
 
 ## Live Demo — Manual DDC Cycle
 
-<Callout type="tip">
-
-**What you're about to see:**
-
-Left pane — an AI agent attempting a domain problem with zero context.
-Right top — the knowledge base before (what the agent knows).
-Right bottom — entities created during this cycle (what it learned).
-
-Watch the **quality gap** between the first answer and the second.
-
-</Callout>
+<ContentCard title="WHAT YOU'RE ABOUT TO SEE" accent="amber" items="Left pane — agent attempting a domain problem with zero context, Right top — knowledge base before (what the agent knows), Right bottom — entities created during this cycle (what it learned), Watch the quality gap between the first answer and the second" />
 
 *Switching to terminal*
 
@@ -364,42 +354,17 @@ If the demo breaks: switch to pre-run screenshots. Never spend more than 60 seco
 
 ## The Honest Bit
 
-<Split ratio="2:1">
+<Split ratio="1:1">
 <div>
 
-That was one cycle. 30 minutes.
+<CodeBlock title="proof.tex" code="T(manual) = n × (45min + human_patience)&#10;&#10;where:&#10;  n = number of DDC cycles&#10;  human_patience → 0  as  n → ∞&#10;&#10;∴ lim(n→∞) T(manual) = ∞&#10;&#10;Manual DDC does not scale.  ▪" />
 
-**Now imagine doing that 50 times.**
-
-Nobody will sit and chat back and forth with an agent for 45 minutes just to teach it context.
-
-I did 15 of these cycles. By cycle 10, I was questioning my life choices.
-
-Manual DDC works. The methodology is sound. The results are real.
-
-**But it doesn't scale.**
+> *"I did 15 of these cycles. By cycle 10, I was questioning my life choices."*
 
 </div>
 <div>
 
-
-<pre style={{fontFamily: "var(--font-mono)", fontSize: "11px", lineHeight: "1.3", color: "var(--color-text-muted)", textAlign: "center"}}>
-{`
-  CYCLE 1   ░░░░░░░░░░░░ ☕
-  CYCLE 5   ████░░░░░░░░ ☕☕
-  CYCLE 10  ████████░░░░ ☕☕☕
-  CYCLE 15  ██████████░░ ☕☕☕☕
-
-  ━━━━━━━━━━━━━━━━━━━━━━━━
-  ░ = gaps remaining
-  █ = context curated
-  ☕ = sanity consumed
-
-  methodology: sound
-  scalability: nope
-`}
-</pre>
-
+<SlideImage src="/grok.webp" alt="The honest bit — is your AI companion actually useful?" />
 
 </div>
 </Split>
