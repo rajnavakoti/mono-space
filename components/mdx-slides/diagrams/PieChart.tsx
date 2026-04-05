@@ -139,16 +139,16 @@ export function PieChart({ slices, annotations }: PieChartProps) {
               />
               <text
                 x={labelX}
-                y={edgeY - ((lines.length - 1) * 9)}
+                y={edgeY - ((lines.length - 1) * 13)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="17"
+                fontSize="22"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
               >
                 {lines.map((line, li) => (
-                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : 18}>{line}</tspan>
+                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : 26}>{line}</tspan>
                 ))}
               </text>
             </g>
