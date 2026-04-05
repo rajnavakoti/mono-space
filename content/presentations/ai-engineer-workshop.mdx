@@ -387,7 +387,7 @@ If the demo breaks: switch to pre-run screenshots. Never spend more than 60 seco
 
 ## What If You Already Had the Demand Signal?
 
-<HubDiagram top="Historical Work Items (Jira tickets, incidents, PRs)" left="Existing Knowledge Base (Confluence, wikis, docs)" center="DDC Framework" right="Curated Context" rightSub="Structured entities, prioritized by severity, classified by quality. Ready for agent consumption." />
+<PipelineDiagram columns='Monolith::Confluence,Wikis,Docs,Tribal knowledge::[bottom]your enterprise KB||Historical Work::Jira tickets,Incidents,PRs,Resolved problems::[top]demand signal already exists||DDC Framework::Extract,Consolidate,Curate::[bottom]agent pulls + human curates' endLabel="Curated Context" endText="Structured entities, prioritized by severity, classified by quality. Ready for agent consumption." />
 
 <Notes>
 "Here's the insight that changed everything. You don't need to chat with the agent. Your team already has two goldmines of demand signal: the historical work items your engineers already solved, and the existing knowledge base — messy as it is. Feed both into DDC. It extracts what matters, consolidates overlaps, and produces curated context. The work already happened. The context discovery is free."
