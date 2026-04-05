@@ -52,13 +52,11 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const marginLeft = 360;
-  const marginRight = 300;
-  const marginY = 60;
-  const totalWidth = pieSize + marginLeft + marginRight;
-  const totalHeight = pieSize + marginY * 2;
-  const pieOffsetX = marginLeft;
-  const pieOffsetY = marginY;
+  const margin = 300;
+  const totalWidth = pieSize + margin * 2;
+  const totalHeight = pieSize + margin * 2;
+  const pieOffsetX = margin;
+  const pieOffsetY = margin;
 
   return (
     <div className={styles.pieContainer}>
