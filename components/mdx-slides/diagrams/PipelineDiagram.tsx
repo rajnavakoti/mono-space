@@ -38,13 +38,10 @@ function parseColumns(input: string): PipelineColumn[] {
         annotation = annotationRaw;
       }
     }
-    let cleanLabel = label;
-    const blocks = cleanLabel.startsWith("[blocks]");
-    if (blocks) cleanLabel = cleanLabel.replace("[blocks]", "").trim();
-    const highlight = cleanLabel.startsWith("[highlight]");
-    if (highlight) cleanLabel = cleanLabel.replace("[highlight]", "").trim();
-    const connector = cleanLabel.startsWith("[+]") ? "+" : undefined;
-    if (connector) cleanLabel = cleanLabel.replace("[+]", "").trim();
+    const blocks = label.includes("[blocks]");
+    const highlight = label.includes("[highlight]");
+    const connector = label.includes("[+]") ? "+" : undefined;
+    const cleanLabel = label.replace(/\[blocks\]|\[highlight\]|\[\+\]/g, "").trim();
     return { label: cleanLabel, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos, blocks, highlight, connector };
   });
 }
