@@ -301,8 +301,8 @@
 .barChartAnnotation {
   position: absolute;
   top: -110px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20%;
+  transform: none;
   display: flex;
   flex-direction: column;
   align-items: center;
