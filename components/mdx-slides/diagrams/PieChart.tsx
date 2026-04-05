@@ -31,7 +31,7 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const pieSize = 300;
+  const pieSize = 360;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
@@ -52,7 +52,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const margin = 320;
+  const margin = 380;
   const totalWidth = pieSize + margin * 2;
   const totalHeight = pieSize + 40;
   const pieOffsetX = margin;
@@ -64,7 +64,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
         className={styles.pieChartSvg}
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", maxWidth: "900px", height: "auto", overflow: "visible" }}
+        style={{ width: "100%", maxWidth: "1100px", height: "auto", overflow: "visible" }}
       >
         <defs>
           <pattern id="pie-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -142,7 +142,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
                 y={edgeY - ((lines.length - 1) * 9)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="17"
+                fontSize="20"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
