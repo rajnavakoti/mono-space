@@ -31,7 +31,7 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const pieSize = 360;
+  const pieSize = 440;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
@@ -52,7 +52,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const margin = 380;
+  const margin = 440;
   const totalWidth = pieSize + margin * 2;
   const totalHeight = pieSize + 40;
   const pieOffsetX = margin;
@@ -142,7 +142,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
                 y={edgeY - ((lines.length - 1) * 9)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="20"
+                fontSize="24"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
