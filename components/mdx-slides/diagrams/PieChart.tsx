@@ -52,11 +52,13 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const margin = 300;
-  const totalWidth = pieSize + margin * 2;
-  const totalHeight = pieSize + margin * 2;
-  const pieOffsetX = margin;
-  const pieOffsetY = margin;
+  const marginLeft = 360;
+  const marginRight = 300;
+  const marginY = 60;
+  const totalWidth = pieSize + marginLeft + marginRight;
+  const totalHeight = pieSize + marginY * 2;
+  const pieOffsetX = marginLeft;
+  const pieOffsetY = marginY;
 
   return (
     <div className={styles.pieContainer}>
@@ -145,7 +147,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
                 y={edgeY - ((lines.length - 1) * lineHeight / 2)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="20"
+                fontSize="24"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
