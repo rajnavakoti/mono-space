@@ -16,8 +16,9 @@ function parseSteps(input: string): StepData[] {
 }
 
 export function LifecycleDiagram({ steps, centerText }: LifecycleDiagramProps) {
-  const items = parseSteps(steps);
+  const items = steps ? parseSteps(steps) : [];
   const count = items.length;
+  if (count === 0) return null;
   const size = 380;
   const cx = size / 2;
   const cy = size / 2;

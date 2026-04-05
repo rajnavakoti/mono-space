@@ -2,29 +2,23 @@ import { render, screen } from "@testing-library/react";
 import { LifecycleDiagram } from "./LifecycleDiagram";
 
 describe("LifecycleDiagram", () => {
-  const nodes = [
-    { label: "STEP 1" },
-    { label: "STEP 2", color: "#B55A5A" },
-    { label: "STEP 3", color: "#5AB55A" },
-  ];
-
-  it("renders all node labels", () => {
-    render(<LifecycleDiagram nodes={nodes} />);
+  it("renders all step labels", () => {
+    render(<LifecycleDiagram steps="STEP 1|STEP 2|STEP 3" />);
     expect(screen.getByText("STEP 1")).toBeInTheDocument();
     expect(screen.getByText("STEP 2")).toBeInTheDocument();
     expect(screen.getByText("STEP 3")).toBeInTheDocument();
   });
 
   it("renders center text when provided", () => {
-    render(<LifecycleDiagram nodes={nodes} centerText="30 min" />);
+    render(<LifecycleDiagram steps="A|B|C" centerText="30 min" />);
     expect(screen.getByText("30 min")).toBeInTheDocument();
   });
 
-  it("renders without crashing when nodes is empty", () => {
-    render(<LifecycleDiagram nodes={[]} />);
+  it("renders without crashing when steps is empty", () => {
+    render(<LifecycleDiagram steps="" />);
   });
 
-  it("renders without crashing when nodes is undefined", () => {
-    render(<LifecycleDiagram nodes={undefined as unknown as []} />);
+  it("renders without crashing when steps is undefined", () => {
+    render(<LifecycleDiagram steps={undefined as unknown as string} />);
   });
 });

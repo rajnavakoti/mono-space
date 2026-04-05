@@ -29,8 +29,9 @@ function parseAnnotations(input: string): string[] {
 }
 
 export function PieChart({ slices, annotations }: PieChartProps) {
-  const items = parseSlices(slices);
+  const items = slices ? parseSlices(slices) : [];
   const notes = annotations ? parseAnnotations(annotations) : [];
+  if (items.length === 0) return null;
   const pieSize = 300;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
