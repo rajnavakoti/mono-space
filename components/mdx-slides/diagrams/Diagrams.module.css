@@ -675,8 +675,8 @@
 }
 
 .timelineHBottom {
-  font-family: "Comic Sans MS", "Segoe Print", cursive;
-  font-size: var(--text-base);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
   font-style: italic;
   color: var(--color-text-muted);
   text-align: center;
