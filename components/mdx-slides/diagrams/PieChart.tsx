@@ -31,7 +31,7 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const pieSize = 440;
+  const pieSize = 520;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
@@ -52,7 +52,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const margin = 440;
+  const margin = 500;
   const totalWidth = pieSize + margin * 2;
   const totalHeight = pieSize + 40;
   const pieOffsetX = margin;
@@ -113,18 +113,21 @@ export function PieChart({ slices, annotations }: PieChartProps) {
           const anchor = isRight ? "start" : "end";
 
           const typeLabel = `(${item.label.toLowerCase()})`;
-          const noteWords = notes[i].split(" ");
+          const fullText = `${typeLabel} ${notes[i]}`;
           const lines: string[] = [];
-          let currentLine = typeLabel;
-          for (const word of noteWords) {
-            if ((currentLine + " " + word).length > 28) {
+          const words = fullText.split(" ");
+          let currentLine = "";
+          for (const word of words) {
+            if (currentLine && (currentLine + " " + word).length > 36) {
               lines.push(currentLine);
               currentLine = word;
             } else {
-              currentLine += " " + word;
+              currentLine = currentLine ? currentLine + " " + word : word;
             }
           }
           lines.push(currentLine);
+
+          const lineHeight = 28;
 
           return (
             <g key={`ann-${i}`}>
@@ -139,7 +142,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
               />
               <text
                 x={labelX}
-                y={edgeY - ((lines.length - 1) * 9)}
+                y={edgeY - ((lines.length - 1) * lineHeight / 2)}
                 textAnchor={anchor}
                 fill="#B55A5A"
                 fontSize="24"
@@ -148,7 +151,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
                 fontStyle="italic"
               >
                 {lines.map((line, li) => (
-                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : 18}>{line}</tspan>
+                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : lineHeight}>{line}</tspan>
                 ))}
               </text>
             </g>
