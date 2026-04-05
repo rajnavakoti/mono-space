@@ -31,7 +31,7 @@ function parseAnnotations(input: string): string[] {
 export function PieChart({ slices, annotations }: PieChartProps) {
   const items = parseSlices(slices);
   const notes = annotations ? parseAnnotations(annotations) : [];
-  const pieSize = 280;
+  const pieSize = 300;
   const cx = pieSize / 2;
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
@@ -52,13 +52,11 @@ export function PieChart({ slices, annotations }: PieChartProps) {
     return { ...item, d, midAngle };
   });
 
-  const marginLeft = 360;
-  const marginRight = 300;
-  const marginY = 60;
-  const totalWidth = pieSize + marginLeft + marginRight;
-  const totalHeight = pieSize + marginY * 2;
-  const pieOffsetX = marginLeft;
-  const pieOffsetY = marginY;
+  const margin = 320;
+  const totalWidth = pieSize + margin * 2;
+  const totalHeight = pieSize + 40;
+  const pieOffsetX = margin;
+  const pieOffsetY = 20;
 
   return (
     <div className={styles.pieContainer}>
@@ -66,7 +64,7 @@ export function PieChart({ slices, annotations }: PieChartProps) {
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
         className={styles.pieChartSvg}
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", maxWidth: "1100px", height: "auto", overflow: "visible" }}
+        style={{ width: "100%", maxWidth: "900px", height: "auto", overflow: "visible" }}
       >
         <defs>
           <pattern id="pie-stripe" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -115,21 +113,18 @@ export function PieChart({ slices, annotations }: PieChartProps) {
           const anchor = isRight ? "start" : "end";
 
           const typeLabel = `(${item.label.toLowerCase()})`;
-          const fullText = `${typeLabel} ${notes[i]}`;
+          const noteWords = notes[i].split(" ");
           const lines: string[] = [];
-          const words = fullText.split(" ");
-          let currentLine = "";
-          for (const word of words) {
-            if (currentLine && (currentLine + " " + word).length > 36) {
+          let currentLine = typeLabel;
+          for (const word of noteWords) {
+            if ((currentLine + " " + word).length > 28) {
               lines.push(currentLine);
               currentLine = word;
             } else {
-              currentLine = currentLine ? currentLine + " " + word : word;
+              currentLine += " " + word;
             }
           }
           lines.push(currentLine);
-
-          const lineHeight = 28;
 
           return (
             <g key={`ann-${i}`}>
@@ -144,16 +139,16 @@ export function PieChart({ slices, annotations }: PieChartProps) {
               />
               <text
                 x={labelX}
-                y={edgeY - ((lines.length - 1) * lineHeight / 2)}
+                y={edgeY - ((lines.length - 1) * 9)}
                 textAnchor={anchor}
                 fill="#B55A5A"
-                fontSize="24"
+                fontSize="17"
                 fontFamily="Comic Sans MS, Segoe Print, cursive"
                 fontWeight="700"
                 fontStyle="italic"
               >
                 {lines.map((line, li) => (
-                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : lineHeight}>{line}</tspan>
+                  <tspan key={li} x={labelX} dy={li === 0 ? 0 : 18}>{line}</tspan>
                 ))}
               </text>
             </g>
