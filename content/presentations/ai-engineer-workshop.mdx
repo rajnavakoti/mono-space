@@ -1,0 +1,593 @@
+---
+title: "Build Your First Demand-Driven Context Base"
+event: "AI.engineer Europe 2026"
+date: "2026-04-08"
+description: "Let AI Agents Tell You What They Need — a hands-on workshop on demand-driven context curation for enterprise AI agents."
+---
+
+<TitleCard badge="AI.ENGINEER EUROPE 2026 — WORKSHOP" subtitle="Let AI Agents Tell You What They Need">Build Your First Demand-Driven Context Base</TitleCard>
+
+<Notes>
+Title slide. Let it sit for a moment while people settle in. Don't start talking immediately.
+</Notes>
+
+---
+
+<SpeakerCard name="Raj Navakoti" photo="/profile pic.png" role="Staff Software Engineer" org="@Ingka Digital, IKEA" interests="AI Architecture, Neuroscience, Linguistics" link1="WEB — rajnavakoti.dev" link2="LI — linkedin.com/in/rajnavakoti" link3="GH — github.com/rajnavakoti" qrUrl="https://rajnavakoti.dev" />
+
+<Notes>
+Welcome everyone. I'm Raj — I work at IKEA Digital on supply chain logistics. For the past few months I've been obsessed with one question: why do our AI agents fail on domain-specific work? This workshop is the answer I found. Let's go.
+</Notes>
+
+---
+
+## Before we start
+
+<Split ratio="1:1">
+<div>
+
+**Q1 — Who's first time in London?**
+*(welcome, the city is confusing — just like your knowledge base)*
+
+**Q2 — Who here is an engineer?**
+*(vibe coding and prototyping counts)*
+
+</div>
+<div>
+
+**Q3 — Who's actively working with AI agents?**
+*(Claude, Copilot, Cursor, custom — anything)*
+
+**Q4 — Who uses agent extensions?**
+*(skills, rules, MCP servers, RAG pipelines)*
+
+</div>
+</Split>
+
+<Notes>
+Quick audience pulse. Hands up for each one. The last question matters most — if you're already extending agents, you've probably hit the wall this workshop is about. If you haven't, you will.
+</Notes>
+
+---
+
+## What you'll see in the next 1+ hour?
+
+> *"A story of **an agent** discovering and curating his own **context**."*
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="SITUATION" accent="amber" items="AI to agents evolution, What agents can and can't do, The extensions landscape" />
+
+<ContentCard title="PROBLEM" accent="red" items="Why epics aren't moving, The retrieval illusion, The 40% tribal knowledge gap" />
+
+<ContentCard title="RESOLUTION" accent="green" items="Demand-Driven Context, Live demos: manual + scanner, Context lake and meta model" />
+
+</div>
+<div>
+
+<SlideImage src="/hamlet-skull.webp" alt="To know or not to know" />
+
+</div>
+</Split>
+
+<Notes>
+Walk through the three acts. Don't read every bullet — just give the shape: "First we'll look at where we are with agents. Then the problem nobody's solving. Then what I built to solve it, with two live demos. Roughly 90 minutes plus Q&A. Let's start."
+</Notes>
+
+---
+
+<TitleCard badge="Act 1" subtitle="Where we are — and how we got here">The Situation</TitleCard>
+
+<Notes>
+Short act. The audience knows most of this — we're setting shared vocabulary, not teaching. Two slides, five minutes.
+</Notes>
+
+---
+
+## The New Kid — Meet LEO
+
+<Split ratio="1:1">
+<div>
+
+<BarChart bars="Reasoning:9:10|Computation:10:10|General Knowledge:8:10|Code Generation:9:10|YOUR Domain:0:10:danger" annotation="this is the gap\nthis workshop is about" />
+
+</div>
+<div>
+
+<SlideImage src="/memento.png" alt="LEO — like Memento, brilliant but can't remember" />
+
+</div>
+</Split>
+
+<Notes>
+"Meet LEO. Claude Opus 4.6, the current frontier model, scores 80.8% on SWE-bench Verified — about 80% of real GitHub issues resolved. On your domain: 0/10. The smarter the model, the more painfully obvious the domain gap. RAG improves factual accuracy by up to 40% — which confirms the gap is real and fixable, but only if you feed it the right context. That red bar? That's the gap."
+</Notes>
+
+
+---
+
+## AI to Agent — The Evolution
+
+<Timeline points='2023::Everyone had a different definition. Heated debates everywhere.::"Wait... what IS an agent exactly?"|2024::Tools, memory, rules, MCP. The extension era begins.::"So agents and workflows are the same thing?"|2025::Agent teams, orchestration, delegation. The system starts to scale.::"Can someone PLEASE define agentic?"|2026::From chat to execution: agents become part of real workflows.::"Ohhh... the model was only one layer."::highlight' />
+
+<Notes>
+"To put this in perspective: in early 2024, Devin solved 14% of real GitHub issues independently. By 2026, agent teams score over 80% on the same benchmark. AI agent capability has been doubling every 7 months. Replit's Agent built a full production app — database, auth, real-time UI, deployed — in under 10 minutes from plain English. The capability leap is undeniable."
+</Notes>
+
+---
+
+<TitleCard badge="Act 2" subtitle="What's actually blocking enterprise AI">The Problem</TitleCard>
+
+<Notes>
+Now we get to it. This is the meat. If they only remember one thing from the workshop, it should be from the next 15 minutes.
+</Notes>
+
+---
+
+## A Queen's Dilemma
+
+> *"If **AI agents** are that smart, why are my **Jira epics** not moving?"*
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="CODE & OPS" accent="green" items="Writing code from specs, Refactoring and reviewing, Generating tests, Monitoring and auto-resolving incidents" />
+
+<ContentCard title="BUSINESS & KNOWLEDGE" accent="green" items="Processing documents end-to-end, Handling complex support tickets 24/7, Summarizing large document sets, Detecting anomalies and fraud" />
+
+</div>
+<div>
+
+<SlideImage src="/queen.jpg" alt="The queen wants ROI" />
+
+</div>
+</Split>
+
+<Notes>
+"MIT found 95% of enterprise AI pilots failing — not because models are weak, but integration. McKinsey: 88% use AI, only 6% capture real value. Gartner: 40% of agentic projects won't reach production. Agents can do all of this."
+</Notes>
+
+---
+
+## Code != Development
+
+<Legend items="#5AB55A::Agent knows this|#B5955A::Teachable via skill or rule|#B55A5A::Institutional knowledge — scattered, outdated, or undocumented" />
+
+<Split ratio="1:1">
+<div>
+
+<TicketCard id="DLVR-2891" type="Story" title="Publish API contracts to partner portal" items="g All v4 contracts published to portal|o OpenAPI spec follows REST standards|r Partner access levels mapped per tier|r Deprecation notice sent for v2 endpoints" />
+
+<TicketCard id="SRE-0099" type="Incident" title="Settlement batches arriving 6 hours late" items="g Root cause identified and documented|o Monitoring alert added for batch SLA|r Silent retry mechanism in reconciliation documented|r Upstream KYC provider throttle limit confirmed" />
+
+</div>
+<div>
+
+<TicketCard id="PLAT-0312" type="Task" title="Migrate capacity service to new platform" items="g Zero-downtime deployment strategy|o Infra-as-code follows platform conventions|r Capacity template validation rules preserved|r Custom market overrides for 3 markets carried over" />
+
+<TicketCard id="CUST-0415" type="Bug" title="Dual-eligible members getting wrong copay" items="g Copay correct for Medicare+Medicaid|o Unit tests cover all 4 COB methods|r State-specific regulation applied|r Priority order matches retired analyst config" />
+
+</div>
+</Split>
+
+<Notes>
+"Look at these tickets. Each has 4 acceptance criteria. The green ones — the agent handles those. The orange ones — you can teach it with a skill or rule. But the red ones? Those are domain knowledge. Tribal. Undocumented. Dependent on people who may not be around anymore. That's the pattern. The red items are always the blockers."
+</Notes>
+
+---
+
+## The "Kind Of" Solution
+
+<PipelineDiagram columns='Context::Confluence,Jira,SharePoint,GitHub,Slack::[left]enterprise knowledge base||Retrieval::RAG,Graph RAG,MCP,API::[bottom]retrieval layer||Agent::Skills,Hooks,Rules,Specs,Instructions::[top]agent & harness' endLabel="ROI" endText="Code, designs, decisions, artifacts. Works for documented knowledge." />
+
+<Notes>
+"RAG now dominates 51% of enterprise AI implementations, up from 31% a year earlier. 65% of Fortune 500 companies are piloting RAG-based knowledge bases. The vector DB market is growing at 27.5% CAGR — $2.7B to $8.9B by 2030. Gartner predicts 75% of API gateway vendors will have MCP features by 2026. Everyone built this stack. And it works — for documented knowledge."
+</Notes>
+
+---
+
+## What Everyone Is Doing About It
+
+> *"First **RAG**, then **MCP**, now it's a **data entry** job."*
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="ATTEMPT 1: DUMP EVERYTHING" accent="red" items="2M tokens of irrelevance, Agent drowned in noise" />
+
+<ContentCard title="ATTEMPT 2: RAG" accent="red" items="Chunked embedded retrieved, RAG can't retrieve what was never written down" />
+
+<ContentCard title="ATTEMPT 3: KNOWLEDGE GRAPH" accent="red" items="Entities and relationships, Went stale in 3 weeks — nobody maintains it" />
+
+<ContentCard title="ATTEMPT 4: MANUAL CURATION" accent="red" items="Blank page — started documenting, Burned out at 15% — I was guessing what to document" />
+
+</div>
+<div>
+
+<SlideImage src="/data entry.webp" alt="We became the data entry" />
+
+</div>
+</Split>
+
+<Notes>
+"Knowledge silos cost organizations 11.6 hours per week per employee in search time. 50% of employees witness separate teams unknowingly working on the same thing. RAG can't retrieve what was never written down — and 42% of company knowledge simply disappears when an employee leaves. Only 39% of companies have any formal knowledge retention strategy. I tried everything — dump, RAG, knowledge graph, manual curation. All failed for the same reason: I was pushing knowledge at the system. Guessing what the agent needs."
+
+Pause. "And then I looked at the actual data."
+</Notes>
+
+---
+
+## The Real Problem
+
+> *"Your enterprise context is a **monolith**."*
+
+<Split ratio="1:1">
+<div>
+
+<PieChart slices="CLEAN::10|OUTDATED::20|UNRELIABLE::20|DUPLICATED::10|TRIBAL::40::highlight" annotations="some useful info|last_updated_1997.pdf|final_real_final.doc|copy_of_copy.xlsx|I know a guy who knows a guy and he knows how it works" />
+
+</div>
+<div>
+
+<SlideImage src="/MONOLITH.png" alt="Your enterprise context is a monolith" />
+
+</div>
+</Split>
+
+<Notes>
+"70% of critical enterprise knowledge is undocumented — living entirely in people's heads. With 25% of the workforce over 55, that knowledge is walking out the door. Replacing it costs up to 213% of the employee's salary. The average large enterprise loses $47 million annually from inefficient knowledge sharing."
+
+Pause. "THIS is the problem. Not retrieval. Not storage. Discovery."
+</Notes>
+
+---
+
+<TitleCard badge="Act 3" subtitle="Demand-Driven Context">The Resolution</TitleCard>
+
+<Notes>
+"OK. So how do you solve a problem where 40% of the knowledge is invisible? You don't go looking for it. You let the agent tell you what's missing."
+</Notes>
+
+---
+
+## What is DDC?
+
+> *"Don't push knowledge. Let **agents** tell you what they need."*
+
+When a new team member joins, you don't hand them a 500-page doc. You give them a **problem**. They fail. They ask. They learn. **DDC does the same for agents.**
+
+<PipelineDiagram columns='Monolith::tribal knowledge,outdated docs,undocumented processes::[bottom]what you have||Agent::fails on real problems,generates demand checklist,identifies exactly what is missing::[top]agent pulls||Human::fills knowledge gaps,validates with domain experts,curates into structured entities::[bottom]human curates||[blocks]Context Blocks::systems,apis,processes,jargon,data-models,decisions::[top]what you get' />
+
+<Notes>
+"Think about how you onboard a new team member. You don't hand them a 500-page document. You give them a problem. They try. They fail. They ask questions. You answer. They learn exactly what they needed — nothing more, nothing less. DDC does the same thing for agents. Instead of documenting everything upfront, you let the agent's failures tell you what to curate."
+</Notes>
+
+---
+
+## One DDC Cycle
+
+<Split ratio="1:2">
+<div>
+
+<ContentCard title="THE 6 STEPS" accent="green" items="Give the agent a real problem, Watch it fail — it generates a demand checklist, Fill only the gaps it identified, Curate into structured reusable entities, Re-run — agent succeeds with domain reasoning, Repeat — knowledge compounds across problems" />
+
+</div>
+<div>
+
+<LifecycleDiagram steps="PROBLEM|AGENT FAILS|CHECKLIST|FILL GAPS|CURATE|SUCCEEDS" centerText="30-60 min / cycle" />
+
+</div>
+</Split>
+
+<Notes>
+"Here's one cycle. Give the agent a real problem — an incident, a Jira ticket. It fails. But it doesn't just fail — it produces a demand checklist of exactly what's missing. A domain expert fills those gaps. The knowledge gets curated into structured entities. The agent re-runs and succeeds. Each cycle takes 30 to 60 minutes. And the knowledge compounds — each new problem needs less new context."
+</Notes>
+
+---
+
+## The TDD Parallel
+
+> *"You don't write all the **tests** upfront. You don't curate all the **context** upfront."*
+
+<CompareTable headers="TDD|DDC" rows="Write a failing test|Give agent a failing problem||Write minimum code to pass|Curate minimum context to succeed||Test passes|Agent produces correct output||Refactor|Validate and tighten entities||Next test|Next problem" />
+
+<Notes>
+"Who here practices TDD? Good. You already understand DDC. In TDD, a failing test tells you what code to write. In DDC, a failing agent tells you what knowledge to curate. Same principle. Different domain. You don't write all the tests upfront — and you don't curate all the context upfront. Failures drive both."
+</Notes>
+
+---
+
+## The Paper
+
+<Split ratio="1:1">
+<div>
+
+> *"Demand-Driven Context: A Methodology for Building Enterprise Knowledge Bases Through **Agent Failure**"*
+
+**Raj Navakoti and Saideep Navakoti**
+
+*arxiv — March 2026*
+
+</div>
+<div>
+
+<SlideImage src="/arxiv.png" alt="DDC Paper on arxiv" />
+
+</div>
+</Split>
+
+<Notes>
+"Before we jump into the demo — I published this methodology as a paper on arxiv in March. It covers the formal methodology, the entity meta-model, and data from 15 real DDC cycles. I'll share the link with anyone who wants it after the workshop. For now, let me show you what it looks like in practice."
+</Notes>
+
+---
+
+## Live Demo — Manual DDC Cycle
+
+<ContentCard title="WHAT YOU'RE ABOUT TO SEE" accent="amber" items="Left pane — agent attempting a domain problem with zero context, Right top — knowledge base before (what the agent knows), Right bottom — entities created during this cycle (what it learned), Watch the quality gap between the first answer and the second" />
+
+*Switching to terminal*
+
+<Notes>
+LIVE DEMO — 10 minutes. Switch to tmux.
+
+Talk through:
+1. "Here's the problem — an incident in a synthetic retail domain."
+2. "The agent tries with zero context. Watch the output... generic, vague, useless."
+3. "Now look at the demand checklist it generated — these are specific knowledge gaps."
+4. "I'm going to fill three of these gaps. Watch the entities appear on the right."
+5. "Now the agent re-answers... and look at the difference. Named systems. Traced flows. Specific root cause."
+
+The delta is the whole point. Don't rush it. Let the audience see the before/after.
+</Notes>
+
+---
+
+## [TMUX — Live DDC Cycle]
+
+*Live demo placeholder — switch to terminal*
+
+*Duration: ~10 minutes*
+
+<Notes>
+If the demo breaks: switch to pre-run screenshots. Never spend more than 60 seconds debugging on stage. Say: "Let me show you the pre-recorded version" and move to backup screenshots.
+</Notes>
+
+---
+
+## The Honest Bit
+
+> *"I did 15 of these conversations. By cycle 10, I was questioning my life choices."*
+
+<Split ratio="1:1">
+<div>
+
+<CodeBlock title="proof.tex" code="T(manual) = n × (45min + human_patience)&#10;&#10;where:&#10;  n = number of DDC cycles&#10;  human_patience → 0  as  n → ∞&#10;&#10;∴ lim(n→∞) T(manual) = ∞&#10;&#10;Manual DDC does not scale.  ▪" />
+
+</div>
+<div>
+
+<SlideImage src="/grok.webp" alt="The honest bit — is your AI companion actually useful?" />
+
+</div>
+</Split>
+
+<Notes>
+"Employees spend 2.5 hours per day just searching for information — a 30% productivity loss. Even when knowledge bases exist, 52% of employees say there's no easy way to share knowledge. Manual curation consistently stalls. Organizations that actively manage knowledge are 4.5x more likely to be industry leaders — but only 39% have a formal strategy. So yes, manual DDC works. But would you do it 50 times? The question became: can this be automated?"
+</Notes>
+
+---
+
+## What If You Already Had the Demand Signal?
+
+<PipelineDiagram columns='Monolith::Confluence,Wikis,Docs,Tribal knowledge::[bottom]your enterprise KB||[+][highlight]Historical Work::Jira tickets,Incidents,PRs,Resolved problems::[top]demand signal already exists||DDC Framework::Extract,Consolidate,Curate::[bottom]agent pulls + human curates' endLabel="Curated Context" endText="Structured entities, prioritized by severity, classified by quality. Ready for agent consumption." />
+
+<Notes>
+"Here's the insight that changed everything. You don't need to chat with the agent. Your team already has two goldmines of demand signal: the historical work items your engineers already solved, and the existing knowledge base — messy as it is. Feed both into DDC. It extracts what matters, consolidates overlaps, and produces curated context. The work already happened. The context discovery is free."
+</Notes>
+
+---
+
+## Live Demo — Context Gap Scanner
+
+<ContentCard title="WHAT YOU'RE ABOUT TO SEE" accent="amber" items="A tool that probes your domain knowledge with AI agents, AI-Readiness Score (0-100), Quality classification per finding (clean / stale / tribal), Prioritized curation checklist — what to fix first" />
+
+*Switching to browser*
+
+<Notes>
+LIVE DEMO — 12 minutes.
+
+1. Open the scanner. Show the domain packages (SRE, Customer Support, etc.)
+2. Load the SRE preset — show the files appearing
+3. Hit scan. Talk while it processes: "6 probes running in parallel — incident diagnosis, integration design, data flow..."
+4. Results appear: "19 out of 100. This domain is flying blind."
+5. Walk through the category breakdown. Point at Tribal Knowledge: "8%. That's the 40% from the pie chart."
+6. Show the curation checklist: "These are the exact things to curate first."
+7. "Who wants to try their own domain?" — take 1-2 audience descriptions if time allows.
+</Notes>
+
+---
+
+## [SCANNER DEMO]
+
+*Live demo placeholder — switch to browser*
+
+*Duration: ~12 minutes including audience participation*
+
+<Notes>
+If scanner is slow or breaks: show pre-run screenshots. Have 3 domain results pre-captured as images. The results are the important part, not the live processing.
+</Notes>
+
+---
+
+## The Context Lake
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="WHY GIT?" accent="green" items="Version controlled — every change tracked, PRs for human review — no unchecked additions, Your engineers already know the workflow, Machine-readable AND human-readable, Branching — experiment safely" />
+
+<CodeBlock title="context-lake/" code="entities/&#10;  systems/         → 34 entities&#10;  apis/            → 89 entities&#10;  processes/       → 20 entities&#10;  jargon-business/ → 22 entities&#10;  data-models/     → 45 entities&#10;meta/&#10;  entity-types.yaml&#10;  relationship-types.yaml" />
+
+</div>
+<div>
+
+<SlideImage src="/Filing cabinet.webp" alt="The old way of storing knowledge" />
+
+</div>
+</Split>
+
+<Notes>
+"Where does curated knowledge live? A Git repo. Simple as that. Markdown files with YAML frontmatter for relationships. Every entity is a file. Every update is a commit. Every new piece of knowledge goes through a PR — a domain expert reviews it before it goes live. Your engineers already know this workflow."
+</Notes>
+
+---
+
+## The Meta Model — Your Store Map
+
+> *"Think of it like the map at the entrance of an **IKEA** store."*
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="13 ENTITY TYPES" accent="amber" items="Systems, APIs, Platforms, Processes, Business Events, Data Models, Data Products, Teams, Personas, Capabilities, Offerings, Business Jargon, Tech Jargon" />
+
+<CodeBlock title="relationships.yaml" code="related_systems: [fleet-mgmt, payment-gateway]&#10;implements_capability: last-mile-delivery&#10;depends_on: [carrier-api, capacity-service]&#10;owned_by: delivery-platform-team" />
+
+</div>
+<div>
+
+<CodeBlock title="entity-map" code="  TEAM ---owns---> SYSTEM&#10;                     |&#10;                depends_on&#10;                     |&#10;                     v&#10;  PROCESS <--uses-- API&#10;     |&#10;  implements&#10;     |&#10;     v&#10;  CAPABILITY         JARGON&#10;  (business)         (domain)" />
+
+</div>
+</Split>
+
+<Notes>
+"You know the map at the entrance of IKEA? Shows where everything is and how departments connect. The meta model is the same thing for your domain. 13 entity types. Relationships between them. An agent working on an incident can trace from a system to its dependencies to the team that owns it. Not mandatory to start — you can begin with just systems and jargon — but powerful as the knowledge base grows."
+</Notes>
+
+---
+
+<TitleCard badge="Last Act">What I Learned</TitleCard>
+
+<Notes>
+"Let's come back together. I want to share what worked, what didn't, and where this is going."
+</Notes>
+
+---
+
+## What Value This Created
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="FOR THE AGENT" accent="green" items="Generic advice → domain-expert reasoning, Names specific systems and traces flows, Recognizes failure patterns across problems, Actually useful on real Jira tickets" />
+
+<ContentCard title="FOR THE KNOWLEDGE BASE" accent="amber" items="46 structured entities that didn't exist before, Reusable across agents and roles, Best onboarding document the team ever had" />
+
+</div>
+<div>
+
+<ContentCard title="FOR THE TEAM" accent="blue" items="New joiners (human and AI) ramp on the same KB, Domain expertise democratized, Discovered knowledge nobody knew was undocumented" />
+
+<ContentCard title="THE NUMBERS" accent="red" items="15 cycles completed, Demand checklist shrinks each cycle, Entity reuse: 0% → 60%+, Agent confidence: 1/5 → 4.5/5" />
+
+</div>
+</Split>
+
+<Notes>
+"RAG improves factual accuracy by up to 40% over base model — we saw exactly this. Stanford's ACE framework showed +10.6% performance gains and 86.9% lower adaptation latency when agents accumulated domain context. Smaller models began matching GPT-4 on complex tasks with the right context. Three things we got: the agent reasons about our domain now. 46 entities that didn't exist before — best onboarding doc the team ever had. And we discovered knowledge nobody knew was undocumented."
+</Notes>
+
+---
+
+## Where It Breaks
+
+> *"No sugar coating."*
+
+<ContentCard title="HONEST LIMITATIONS" accent="red" items="Small teams don't need this — just talk to each other, Manual curation is painful — automation helps but it's early, Getting domain experts to curate is the hardest part — people problem not tech, 15 cycles on one domain is evidence not proof, We're early — this is a direction not a destination" />
+
+<Notes>
+"Small teams don't need this — they can just talk. IBM's research confirms: AI agent failures in enterprise are almost never about model capability — they're about integration, governance, and who owns the context. 74% of organizations report at least 20% productivity improvement when KM works — but only when someone owns curation. The bottleneck is always people, not the tool. I'm showing you a direction, not a destination."
+</Notes>
+
+---
+
+## The Positioning — The Complete Picture
+
+<PipelineDiagram columns='Context::Confluence,Jira,SharePoint,GitHub,Slack::[bottom]messy, tribal, outdated||DDC::Extract,Consolidate,Curate::[top]the missing piece||[blocks]Curated Blocks::systems,apis,processes,jargon,data-models,decisions,teams,capabilities,events::[bottom]structured, agent-ready||Retrieval::RAG,Graph RAG,MCP,API||Agent::Skills,Hooks,Rules,Specs' endLabel="ROI" endText="Domain-expert reasoning. Not just code — business delivery." />
+
+<Notes>
+"This is the complete picture. Remember slide 11 — the pipeline that works for documented knowledge? Now it's complete. DDC sits between your messy context and the retrieval layer. It extracts, consolidates, curates — produces structured context blocks. Those blocks flow through RAG, MCP, into the agent. And the agent doesn't just write code — it reasons about your domain."
+</Notes>
+
+---
+
+## What You Take Home
+
+> *"Don't push knowledge. Let **agents** pull. 30 real problems beat 6 months of **documentation**."*
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="THE FRAMEWORK" accent="amber" items="DDC methodology — TDD for knowledge, Entity meta model — 13 types with relationships, Context lake — Git-based knowledge repo" />
+
+<ContentCard title="THE PROCESS" accent="green" items="Give agent a problem → let it fail, Demand checklist reveals gaps, Curate minimum → agent succeeds, Knowledge compounds across cycles" />
+
+</div>
+<div>
+
+<ContentCard title="THE TOOLS" accent="blue" items="Context Gap Scanner — scan your domain, Template repo — entity formats and starter structure, GETTING-STARTED guide" />
+
+</div>
+</Split>
+
+<Notes>
+"What you take home. The framework. The process. The tools — scanner is live, template repo is public. And the insight: don't push knowledge into your agents. Let them pull. 30 real problems will build a better knowledge base than 6 months of documentation."
+</Notes>
+
+---
+
+## Thank You
+
+**Raj Navakoti** — IKEA Digital, Delivery & Services
+
+<ContentCard title="RESOURCES" accent="amber" items="Paper: Demand-Driven Context — ask me for the arxiv link, Scanner: URL on screen, Template: github.com/ea-toolkit/ddc → GETTING-STARTED.md, Find me during the networking — happy to chat" />
+
+<Notes>
+"Thank you. I'm around for the rest of the day. If you want the paper link, the scanner URL, or want to talk about whether DDC would work for your domain — come find me. The template repo is public. You can clone it tonight."
+</Notes>
+
+---
+
+## Your Turn (Optional)
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="OPTION A: USE THE SCANNER" accent="green" items="Open the URL on your laptop or phone, Type a paragraph describing your domain, See your AI-Readiness Score" />
+
+<ContentCard title="OPTION B: MENTAL DDC CYCLE" accent="amber" items="Think of a real problem from your domain, What would an agent need to know to solve it?, Write down the demand checklist" />
+
+</div>
+<div>
+
+<ContentCard title="OPTION C: PROBLEM CARDS" accent="blue" items="Pick a card from the table, Enterprise problems with hidden domain knowledge, Run a DDC cycle on it" />
+
+> *"15 minutes. I'll walk around and help."*
+
+</div>
+</Split>
+
+<Notes>
+"Your turn. Three options. If you have your laptop — open the scanner URL and type a paragraph about your domain. If you prefer pen and paper — think of a real problem from your work and write down what an agent would need to know. If you want something pre-made — grab a problem card. I'll walk around."
+</Notes>
+
+---
+
+<TitleCard badge="Q&A" subtitle="What did I get wrong? What would you do differently?">Questions</TitleCard>
+
+<Notes>
+Open Q&A. Don't be defensive. Engage honestly. "That's a good point — here's what I've seen, but I might be wrong." If someone describes their domain problem, run a quick mental DDC cycle: "What would the agent need to know to solve that?" The best outcome is a real conversation.
+</Notes>

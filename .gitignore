@@ -41,3 +41,6 @@ refs/
 .idea/
 .firebase/
 .claude/settings.local.json
+
+# staging area for cross-agent content handoff
+content/presentations/.staging/
