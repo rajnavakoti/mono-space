@@ -489,6 +489,26 @@
   gap: var(--space-sm);
 }
 
+.pipelineBoxHighlight {
+  border-color: var(--color-accent);
+  border-width: 3px;
+}
+
+.pipelineBoxHighlight .pipelineBoxLabel {
+  color: var(--color-accent);
+}
+
+.pipelinePlus {
+  font-family: var(--font-mono);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-black);
+  color: var(--color-text-muted);
+  padding: 0 var(--space-md);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
 .pipelineBoxLabel {
   font-family: var(--font-mono);
   font-size: var(--text-xs);

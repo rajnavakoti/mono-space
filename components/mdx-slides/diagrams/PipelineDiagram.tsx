@@ -9,6 +9,8 @@ interface PipelineColumn {
   annotation?: string;
   annotationPos?: string;
   blocks?: boolean;
+  highlight?: boolean;
+  connector?: string;
 }
 
 interface PipelineDiagramProps {
@@ -36,9 +38,14 @@ function parseColumns(input: string): PipelineColumn[] {
         annotation = annotationRaw;
       }
     }
-    const blocks = label.startsWith("[blocks]");
-    const cleanLabel = blocks ? label.replace("[blocks]", "").trim() : label;
-    return { label: cleanLabel, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos, blocks };
+    let cleanLabel = label;
+    const blocks = cleanLabel.startsWith("[blocks]");
+    if (blocks) cleanLabel = cleanLabel.replace("[blocks]", "").trim();
+    const highlight = cleanLabel.startsWith("[highlight]");
+    if (highlight) cleanLabel = cleanLabel.replace("[highlight]", "").trim();
+    const connector = cleanLabel.startsWith("[+]") ? "+" : undefined;
+    if (connector) cleanLabel = cleanLabel.replace("[+]", "").trim();
+    return { label: cleanLabel, items, pattern: PATTERNS[i % PATTERNS.length], annotation, annotationPos, blocks, highlight, connector };
   });
 }
 
@@ -68,13 +75,12 @@ export function PipelineDiagram({ columns, endLabel, endText }: PipelineDiagramP
       {cols.map((col, i) => (
         <div key={col.label} className={styles.pipelineStep}>
           {i > 0 && (
-            <div className={styles.pipelineArrow}>
-              <span>→</span>
-              <span>←</span>
+            <div className={col.connector === "+" ? styles.pipelinePlus : styles.pipelineArrow}>
+              {col.connector === "+" ? <span>+</span> : <><span>→</span><span>←</span></>}
             </div>
           )}
 
-          <div className={styles.pipelineBox}>
+          <div className={`${styles.pipelineBox} ${col.highlight ? styles.pipelineBoxHighlight : ""}`}>
             <div className={styles.pipelineBoxLabel}>{col.label}</div>
             <div className={styles.pipelineBoxFill}>
               <svg className={styles.pipelineBoxPattern}>
