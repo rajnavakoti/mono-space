@@ -40,12 +40,12 @@
     },
     {
       "type": "content",
-      "title": "IKEA vs Your Enterprise",
+      "title": "A Warehouse Store vs Your Enterprise",
       "body": [
         "Physical world: Clear pathways, numbered sections, you walk in with a list and walk out with exactly what you need.",
         "Digital world: Hundreds of systems, thousands of APIs, tribal knowledge locked in people's heads, docs scattered everywhere."
       ],
-      "notes": "Anyone who's shopped at IKEA knows how easy it is to navigate. But look at the digital side of any enterprise. No clear path. No numbered arrows."
+      "notes": "Anyone who's shopped at a well-organized warehouse store knows how easy it is to navigate. But look at the digital side of any enterprise. No clear path. No numbered arrows."
     },
     {
       "type": "content",
