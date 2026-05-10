@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://rajnavakoti.dev";
+const siteUrl = "https://rajnavakoti.com";
 
 export const metadata: Metadata = {
   title: {
