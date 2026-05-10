@@ -9,6 +9,7 @@ import {
 import { compileMdxSlides } from "@/lib/compile-mdx-slides";
 import { SlideRenderer } from "@/components/SlideRenderer";
 import { PresentationViewer } from "@/components/PresentationViewer";
+import { YouTubeEmbed } from "@/components/YouTubeEmbed";
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
@@ -58,9 +59,25 @@ export default async function PresentationPage({ params }: PageProps) {
     ));
     const notes = compiled.map((slide) => slide.notes);
     const hasPhotos = mdxPres.photos && mdxPres.photos.length > 0;
+    const hasVideo = !!mdxPres.videoId;
 
     return (
       <div className={styles.page}>
+        {hasVideo && (
+          <div className={styles.recording}>
+            <div className={styles.recordingHeader}>
+              <span className={styles.recordingLabel}>RECORDING</span>
+              <span className={styles.recordingMeta}>
+                {mdxPres.frontmatter.event} &mdash; {mdxPres.frontmatter.date}
+              </span>
+            </div>
+            <YouTubeEmbed
+              videoId={mdxPres.videoId!}
+              title={mdxPres.videoTitle ?? mdxPres.frontmatter.title}
+            />
+          </div>
+        )}
+
         {hasPhotos && (
           <div className={styles.gallery}>
             <div className={styles.galleryHeader}>

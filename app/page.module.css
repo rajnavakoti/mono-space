@@ -299,6 +299,23 @@
   min-height: 80px;
 }
 
+/* === VIDEO.mp4 === */
+.videoDeckLink {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  letter-spacing: 0.05em;
+  transition: color var(--transition-fast);
+}
+
+.videoDeckLink:hover {
+  color: var(--color-accent-hover);
+}
+
 /* ============================================
    ABOUT
    ============================================ */

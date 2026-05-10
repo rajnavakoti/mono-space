@@ -27,6 +27,15 @@ describe("Home", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders featured video section with play button", () => {
+    render(<Home />);
+    expect(screen.getByText("VIDEO.mp4")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /play video/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/View slides/)).toBeInTheDocument();
+  });
+
   it("renders speaking window with talks", () => {
     render(<Home />);
     expect(screen.getByText("TALKS.json")).toBeInTheDocument();

@@ -92,6 +92,8 @@ export interface MdxPresentationFrontmatter {
   date: string;
   description: string;
   photos?: string[];
+  videoId?: string;
+  videoTitle?: string;
 }
 
 export interface MdxPresentationRaw {
@@ -99,6 +101,8 @@ export interface MdxPresentationRaw {
   frontmatter: MdxPresentationFrontmatter;
   slideContents: string[];
   photos?: string[];
+  videoId?: string;
+  videoTitle?: string;
 }
 
 export interface Presentation {
@@ -224,6 +228,8 @@ export function getMdxPresentationBySlug(
     frontmatter: fm,
     slideContents: splitMdxSlides(content),
     photos: fm.photos,
+    videoId: fm.videoId,
+    videoTitle: fm.videoTitle,
   };
 }
 
