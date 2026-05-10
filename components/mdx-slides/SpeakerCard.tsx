@@ -4,7 +4,7 @@ interface SpeakerCardProps {
   name: string;
   photo: string;
   role: string;
-  org: string;
+  org?: string;
   interests?: string;
   link1?: string;
   link2?: string;
@@ -41,7 +41,7 @@ export function SpeakerCard({
           </div>
           <div className={styles.speakerInfo}>
             <div className={styles.speakerRole}>{role}</div>
-            <div className={styles.speakerOrg}>{org}</div>
+            {org && <div className={styles.speakerOrg}>{org}</div>}
             {interestList.length > 0 && (
               <div className={styles.speakerInterests}>
                 {interestList.map((item, i) => (
