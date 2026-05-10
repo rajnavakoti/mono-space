@@ -6,6 +6,7 @@ import { TerminalSnippet } from "@/components/TerminalSnippet";
 import { GeoPattern } from "@/components/GeoPattern";
 import { DotMatrix } from "@/components/DotMatrix";
 import { SkillsChart } from "@/components/SkillsChart";
+import { YouTubeEmbed } from "@/components/YouTubeEmbed";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -158,8 +159,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Featured Video */}
+      {profile.featuredVideo && (
+        <section aria-labelledby="video-heading" className="fade-in fade-in-4">
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel} id="video-heading">
+              VIDEO.mp4
+            </span>
+            <span className={styles.sectionControls} aria-hidden="true">
+              [&minus;] [&square;] [&times;]
+            </span>
+          </div>
+          <div className={styles.sectionBody}>
+            <YouTubeEmbed
+              videoId={profile.featuredVideo.videoId}
+              title={profile.featuredVideo.title}
+              caption={`${profile.featuredVideo.event} — ${profile.featuredVideo.date}`}
+            />
+            <a href={profile.featuredVideo.href} className={styles.videoDeckLink}>
+              View slides &rarr;
+            </a>
+          </div>
+        </section>
+      )}
+
       {/* Speaking — with geo pattern background */}
-      <section aria-labelledby="speaking-heading" className="fade-in fade-in-4">
+      <section aria-labelledby="speaking-heading" className="fade-in fade-in-5">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="speaking-heading">
             TALKS.json
@@ -256,7 +281,7 @@ export default function Home() {
       </section>
 
       {/* Connect — with network illustration */}
-      <section aria-labelledby="connect-heading" className="fade-in fade-in-5">
+      <section aria-labelledby="connect-heading" className="fade-in fade-in-6">
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel} id="connect-heading">
             LINKS.sh

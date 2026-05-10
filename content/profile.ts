@@ -4,6 +4,14 @@ export interface SkillGroup {
   items: { name: string; level: number }[];
 }
 
+export interface FeaturedVideo {
+  videoId: string;
+  title: string;
+  event: string;
+  date: string;
+  href: string;
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -14,6 +22,7 @@ export interface Profile {
   skills: SkillGroup[];
   links: ProfileLink[];
   speaking: SpeakingEngagement[];
+  featuredVideo?: FeaturedVideo;
 }
 
 export interface ProfileLink {
@@ -141,8 +150,8 @@ export const profile: Profile = {
       event: "AI.engineer",
       date: "2026-04-08",
       location: "London, UK",
-      upcoming: true,
-      url: "https://www.ai.engineer/europe#speakers",
+      upcoming: false,
+      url: "/presentations/ai-engineer-workshop",
       logo: "/talks/ai-engineer-logo.jpg",
     },
     {
@@ -155,4 +164,11 @@ export const profile: Profile = {
       logo: "/talks/ai-builders-logo.jpeg",
     },
   ],
+  featuredVideo: {
+    videoId: "_QAVExf_1uw",
+    title: "Build Your First Demand-Driven Context Base",
+    event: "AI.engineer Europe",
+    date: "2026-04-08",
+    href: "/presentations/ai-engineer-workshop",
+  },
 };
