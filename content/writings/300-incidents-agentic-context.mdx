@@ -1,0 +1,215 @@
+---
+title: "What 300 Incidents Taught Us About Agentic Context"
+date: "2026-05-08"
+tags: ["AI", "Context Engineering", "Incident Management", "Enterprise"]
+excerpt: "We fed 300 real incidents to an AI pipeline. The context patterns that emerged changed how we think about agent knowledge."
+published: true
+---
+
+*We fed 300 real incidents to an AI pipeline. The context patterns that emerged changed how we think about agent knowledge.*
+
+---
+
+## The Experiment
+
+We had a hypothesis: if you feed real operational incidents to an AI agent pipeline, the agent's failures would tell you exactly what context your enterprise is missing.
+
+Not what context you *think* you need. What context you *actually* need, proven by evidence.
+
+So we ran the experiment. 300 real incidents from a complex enterprise domain — 12 teams, 80+ microservices, multiple vendor systems, a 6-year transformation in progress. We built a pipeline that processed each incident and asked: what context did the agent need to resolve this? What context was available? Where did it fail?
+
+The results surprised us.
+
+---
+
+## How the Pipeline Works
+
+The setup is straightforward:
+
+```
+INCIDENT IN
+    │
+    ▼
+┌─────────────────────────┐
+│ Agent: Incident Analyst  │
+│                          │
+│ Reads: incident report   │
+│ Attempts: root cause     │
+│         analysis         │
+│                          │
+│ When stuck:              │
+│ "I need [X] to proceed" │
+└─────────────┬────────────┘
+              │
+              ▼
+┌─────────────────────────┐
+│ Context Gap Logger       │
+│                          │
+│ Records:                 │
+│ - What the agent asked   │
+│ - What was available     │
+│ - What was missing       │
+│ - How the agent coped    │
+└─────────────┬────────────┘
+              │
+              ▼
+┌─────────────────────────┐
+│ Context Curator          │
+│                          │
+│ Aggregates gaps across   │
+│ all 300 incidents        │
+│ Identifies patterns      │
+│ Prioritises what to      │
+│ curate next              │
+└─────────────────────────┘
+```
+
+The key insight: we didn't tell the agent what context to use. We gave it the incident and let it ask for what it needed. Every question it asked — every "I need the system dependency map" or "I need the last 5 incidents for this service" — became a data point.
+
+This is Demand-Driven Context (DDC) in action. Instead of curating knowledge top-down ("let's document everything"), we let real problems drive what gets documented. The agent's failures are the curriculum.
+
+---
+
+## The Numbers
+
+After processing 300 incidents:
+
+```
+Total context requests by the agent:     1,847
+Unique context types requested:            43
+Context available on first request:        31%
+Context curated after agent requested it:  52%
+Context still missing:                     17%
+
+Resolution accuracy:
+  With full context available:             89%
+  With partial context:                    61%
+  With minimal context:                    23%
+```
+
+That gap — 89% vs 23% — is the entire argument for investing in your knowledge layer. Same model. Same prompts. Same agent. The only variable is whether the context exists.
+
+---
+
+## The Five Patterns That Emerged
+
+### Pattern 1: System Relationships Are the Most Requested Context
+
+Out of 1,847 context requests, 34% were about system relationships. "What depends on this service?" "What's upstream?" "Who owns this data?" "What happens if this goes down?"
+
+The agent didn't ask for code. It didn't ask for architecture diagrams. It asked for the meta-model — the map of how things connect.
+
+This confirmed what we suspected: the enterprise meta-model is the single highest-value knowledge asset you can build for AI. Before runbooks, before API docs, before anything else — document the relationships.
+
+### Pattern 2: Recent Incident History Predicts Current Incidents
+
+22% of context requests were for previous incidents. "Has this happened before?" "What was the root cause last time?" "Is this a recurring issue?"
+
+When the agent had access to templated postmortems from previous incidents, its resolution accuracy jumped from 61% to 84% for recurring issues. It could pattern-match: "This looks like INCIDENT-2024-0847, which was caused by connection pool exhaustion after a traffic spike. Checking if the same conditions are present..."
+
+When postmortems were inconsistent or missing, the agent was flying blind. Same symptom, no historical context, starting from scratch every time.
+
+The lesson: standardised postmortem templates aren't just good practice. They're training data for your future AI operations.
+
+### Pattern 3: The Agent Asks "Why" More Than "What"
+
+This was the surprise. 18% of context requests were about decisions and reasoning. "Why was this architecture chosen?" "Why is this service on a different platform?" "Why does this API behave differently for market X vs market Y?"
+
+The "what" was often available — API docs, system descriptions, config files. The "why" almost never was.
+
+This is where meeting transcripts become gold. The decision to use Kafka over RabbitMQ wasn't documented in any ADR. But it was discussed in an architecture review meeting in 2024. The reasoning — "we need the replay capability for the regulatory audit trail" — was spoken once, heard by eight people, and never written down.
+
+Agents that had access to meeting transcripts could answer "why" questions 3x more often than agents without them.
+
+### Pattern 4: Context Freshness Matters More Than Completeness
+
+We assumed the agent would need comprehensive documentation. It didn't. What it needed was *current* documentation.
+
+12% of failures came from stale context — the agent read a system description that was accurate six months ago but wrong today. A service had been migrated, an API version had changed, a team had been reorganised. The document said one thing; reality said another.
+
+The agent trusted the document. The document was wrong. The resolution was wrong.
+
+This taught us that a small, current knowledge base beats a large, stale one. 50 up-to-date YAML files are more valuable than 500 Confluence pages that nobody's reviewed since 2024.
+
+Freshness signals we now track:
+
+```yaml
+meta:
+  last_verified: 2026-03-15
+  verified_by: @team-checkout
+  confidence: high
+  next_review: 2026-06-15
+```
+
+If `last_verified` is older than 90 days, the agent flags the context as potentially stale and includes a caveat in its analysis.
+
+### Pattern 5: The Agent Builds Its Own Learning Path
+
+After about 150 incidents, something unexpected happened. The agent started developing reasoning patterns we didn't program.
+
+When it encountered a P1 incident for a service it hadn't seen before, it would first check:
+
+1. The meta-model for system relationships
+2. Recent incidents for the same service
+3. The runbook (if one existed)
+4. The owning team's recent postmortems
+
+This order wasn't specified anywhere. The agent learned it from pattern — these four sources, in this order, gave it the highest resolution accuracy. It had effectively built its own onboarding playbook for new services.
+
+When we showed this to a senior engineer, he said: "That's exactly how I investigate an incident for a system I don't know." The agent had reverse-engineered the tribal knowledge of an experienced incident responder — not from documentation, but from 150 repetitions of the same investigation pattern.
+
+---
+
+## What We Curated (And What We Didn't)
+
+After 300 incidents, the demand-driven curation produced:
+
+```
+CURATED (because agents kept asking for it):
+  ✓ Meta-model: 80+ services, relationships, data ownership
+  ✓ Postmortem templates: standardised across all teams
+  ✓ Runbooks: top 30 services by incident frequency
+  ✓ API contracts: critical path services only
+  ✓ Meeting transcript index: architecture decisions
+
+NOT CURATED (because agents never asked for it):
+  ✗ Detailed code documentation
+  ✗ Sprint planning artifacts
+  ✗ Team org charts
+  ✗ Infrastructure provisioning guides
+  ✗ Test strategy documents
+```
+
+That second list is revealing. These are all things that traditional "documentation initiatives" would prioritise. The agent didn't care about any of them. Not once in 300 incidents did it ask for a sprint planning artifact or a test strategy.
+
+The demand signal was clear: relationships, history, reasoning, and operational playbooks. Everything else is noise — at least for incident resolution.
+
+---
+
+## The Broader Lesson
+
+This experiment started as a way to build a better incident response agent. It ended up teaching us something bigger: the fastest way to build a useful enterprise knowledge base isn't to document everything top-down. It's to let real problems tell you what to document.
+
+We call this Demand-Driven Context — DDC. The framework is simple:
+
+1. Give an agent a real problem
+2. Watch where it fails
+3. Curate the context it needed
+4. Repeat with the next problem
+5. After 20-30 problems, a knowledge base emerges organically
+
+The 300-incident experiment was DDC at scale. Instead of 20-30 problems, we ran 300. The patterns were clearer, the priorities were sharper, and the resulting knowledge base was precisely what agents actually need — not what we assumed they'd need.
+
+---
+
+## One Takeaway
+
+Your incidents already contain the blueprint for your AI knowledge base. Every failed agent response is a signal pointing at missing context. Every recurring question is a curation priority. Every resolved incident with full context is proof that the system works.
+
+Stop guessing what to document. Start listening to what your agents ask for. 300 incidents taught us more about enterprise knowledge than any documentation initiative ever did.
+
+---
+
+*Have you tried letting agent failures drive your knowledge curation? Or are you still doing top-down documentation sprints? I'd like to hear what's working. The 300-incident experiment changed how we think about context — and I suspect every enterprise would find similar patterns in their own incident data.*
+
+*Originally published on [Medium](https://medium.com/@rajnavakoti/what-300-incidents-taught-us-about-agentic-context-4ce9933eae12).*
