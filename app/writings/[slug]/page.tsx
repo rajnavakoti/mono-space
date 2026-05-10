@@ -21,7 +21,7 @@ export async function generateMetadata({
   const writing = getWritingBySlug(slug);
   if (!writing) return {};
 
-  const url = `https://rajnavakoti.dev/writings/${slug}`;
+  const url = `https://rajnavakoti.com/writings/${slug}`;
 
   return {
     title: writing.frontmatter.title,

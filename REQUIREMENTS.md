@@ -112,7 +112,7 @@ Built with neo-brutalist monochrome design. Deployable to Vercel (primary) and G
 - Connect GitHub repo to Vercel
 - Auto-deploy on push to main
 - Preview deployments on PRs
-- Custom domain: rajnavakoti.dev (or similar, TBD)
+- Custom domain: rajnavakoti.com
 
 ### Phase 3: GCP (future, optional)
 - Cloud Run or Firebase Hosting

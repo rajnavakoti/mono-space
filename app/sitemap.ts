@@ -5,7 +5,7 @@ export const dynamic = "force-static";
 import { getAllSlugs } from "@/lib/writings";
 import { getAllPresentationSlugs } from "@/lib/presentations";
 
-const siteUrl = "https://rajnavakoti.dev";
+const siteUrl = "https://rajnavakoti.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const writingSlugs = getAllSlugs();
