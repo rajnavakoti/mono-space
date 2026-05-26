@@ -1,0 +1,640 @@
+---
+title: "Reverse-Engineering DDD: Discovering Domains in Legacy Systems Without the Textbook"
+event: "DDD Europe 2026"
+date: "2026-06-09"
+description: "Forensic DDD: treating a legacy system like an archaeological site and using production artefacts to reverse-engineer the domain model that nobody ever documented."
+---
+
+<TitleCard badge="DDD EUROPE 2026 — ANTWERP" subtitle="Discovering Domains in Legacy Systems Without the Textbook">Reverse-Engineering DDD</TitleCard>
+
+<Notes>
+Title slide. Let it sit for a moment. Don't rush. Take a breath.
+</Notes>
+
+---
+
+<SpeakerCard name="Raj Navakoti" photo="/profile pic.png" role="Staff Software Engineer" interests="Domain-Driven Design, Enterprise Architecture, AI Systems" link1="WEB — rajnavakoti.com" link2="PAPER — arxiv.org/abs/2603.14057" link3="TOOLKIT — github.com/rajnavakoti/ddd-archaeology" qrUrl="https://rajnavakoti.com" />
+
+<Notes>
+"I'm Raj. I work in a large delivery domain — logistics, carriers, warehouses, the full complexity of getting things from A to B at enterprise scale. I've spent the past few years navigating domain complexity in systems where the original architects are long gone. Today I want to share what I've found."
+</Notes>
+
+---
+
+<TitleCard badge="ACT 1" subtitle="A corroded lump of bronze">The Artifact</TitleCard>
+
+<Notes>
+Transition to Act 1. Pause before the next slide.
+</Notes>
+
+---
+
+## The Antikythera Mechanism
+
+<Split ratio="1:1">
+<div>
+
+In 1900, divers pulled a **corroded lump of bronze** from a Greek shipwreck.
+
+It sat in a museum for **two years**. Nobody knew what it was.
+
+Then someone looked inside — and found **precision gear wheels**, a millimetre apart, encoding **2,000 years of astronomical knowledge**.
+
+The builders were gone. The documentation was gone. But **the machine remembered everything.**
+
+</div>
+<div>
+
+<SlideImage src="/antikythera.webp" alt="The Antikythera Mechanism — the world's first known computer" />
+
+</div>
+</Split>
+
+<Notes>
+"In 1900, archaeologists pulled a corroded lump of bronze from a Greek shipwreck. It looked like junk. It turned out to be a 2,000-year-old computer — and the user guide was hidden inside the bronze the whole time. Researchers spent 120 years reading it — X-rays in the 70s, 3D imaging in the 2000s. Each new technique revealed another layer of what the builders encoded."
+</Notes>
+
+---
+
+<Callout>
+Legacy systems are the same. They look like technical debt. They're actually dense archives of domain knowledge — written under deadline pressure, tested by millions of real transactions, validated over decades.
+
+**The architects left. The documentation went stale. But the system kept running. And it remembers everything.**
+</Callout>
+
+<Notes>
+"Legacy systems are the Antikythera mechanism of our industry. They look like corroded bronze — technical debt, legacy code nobody wants to touch. But inside, encoded in the schemas, the contracts, the error codes, the git history — is everything the original builders knew about the domain. This talk is about how to read what the system has been trying to tell you."
+</Notes>
+
+---
+
+## What is "Legacy"?
+
+<Callout>
+Legacy isn't about age.
+
+**It's about lost knowledge.**
+
+A system is legacy when the people who understood it are no longer available to explain it.
+</Callout>
+
+<Notes>
+"Before we go further — let me define legacy. I don't mean old code. A 6-year-old microservice can be legacy if the team that built it has turned over. A 30-year-old monolith might not be legacy if the original team still maintains it. Legacy is about KNOWLEDGE DECAY — when the understanding of why the system works the way it does has left the building."
+</Notes>
+
+---
+
+## Every system has a domain model
+
+<Split ratio="1:1">
+<div>
+
+> *"A domain model is not a particular diagram. It is the idea that the diagram is intended to convey."*
+>
+> — **Eric Evans**
+
+Most domain models were **never designed on a whiteboard**.
+
+They were built into the code, the schemas, the contracts — **decision by decision, over years**.
+
+The model is there. It was just never written down.
+
+</div>
+<div>
+
+<SlideImage src="/evans-model.webp" alt="Eric Evans on domain models" />
+
+</div>
+</Split>
+
+<Notes>
+"Eric Evans himself says it — the model is the idea, not the diagram. In most legacy systems, nobody drew the diagram. But the model exists. It's encoded in every API contract, every database table, every error code. Developers embedded domain knowledge into the system without realizing they were building a model. Our job is to read it."
+</Notes>
+
+---
+
+## My story
+
+<Split ratio="1:1">
+<div>
+
+A data architect was trying to build **canonical data models** for a large delivery domain.
+
+**Top-down, from domain knowledge.** The right approach — but the domain was too large. It was taking months.
+
+I had a question:
+
+> *"The API specs already exist. The contracts are already written. Why start from scratch?"*
+
+</div>
+<div>
+
+We took the spec files. Laid them side by side. Started extracting: **data concepts, entities, value objects, relationships.**
+
+In **weeks**, not months.
+
+Then she left the company. The work died. Because it was **manual**.
+
+</div>
+</Split>
+
+<Notes>
+"Here's how this started for me. I was working with a data architect in a large delivery domain. She was trying to build canonical data models — top-down, the textbook way. But the domain was enormous. Dozens of teams, vendor integrations, legacy platforms. After months, the models were still incomplete. So I asked: the APIs already exist. Why aren't we reading what's already there? We tried it. In weeks we had a working draft model. Then she left the company, and the manual work died with her."
+</Notes>
+
+---
+
+## Meanwhile...
+
+<Split ratio="1:1">
+<div>
+
+A technology architect did **strategic DDD** — the textbook way.
+
+Event Storming. Domain storytelling. Stakeholder interviews.
+
+**It worked.** But it took multiple sessions, merged outputs, and over **2 years** to produce a current and target state architecture.
+
+</div>
+<div>
+
+And the moment the architecture was documented...
+
+**...the system kept evolving.**
+
+The gap between what people remembered and what the system actually does started growing immediately.
+
+</div>
+</Split>
+
+<Notes>
+"Meanwhile, I watched a technology architect do strategic DDD properly. Event Storming, domain storytelling, the full textbook approach. It worked — beautifully. But in a domain this large, it took multiple sessions, dozens of people, and over two years. And the moment the architecture was documented, the system kept evolving. The documentation started drifting from reality on day one."
+</Notes>
+
+---
+
+## The question that started this talk
+
+<Callout>
+What if you could **extract a draft domain model** from the artifacts the system already produces — **before** you run your first Event Storming session?
+
+Not to replace the workshop. To **give it a head start.**
+
+To ask *"is this how it works?"* instead of *"how does this work?"*
+</Callout>
+
+<Notes>
+"That experience left me with a question: what if you could combine both approaches? Start with what the system already knows — the artifacts — then bring the experts in to validate and extend? Not replace Event Storming. Give it a head start. Arrive with evidence instead of blank sticky notes. Ask 'is this how it works?' instead of 'how does this work?' — because people are MUCH faster at reacting to evidence than creating from scratch."
+</Notes>
+
+---
+
+## A domain I know well
+
+<Split ratio="1:1">
+<div>
+
+**A delivery domain. 30 years in operation.**
+
+<ContentCard title="4 LAYERS" accent="amber" items="Core services — 6 years of modern microservices, Neighboring domains — 30-year-old order management monolith, Vendor platforms — operational backbone for 25+ years, External carriers — automated APIs to Excel spreadsheets" />
+
+</div>
+<div>
+
+Nobody designed this landscape holistically.
+
+**It grew.** Vendors came and went. Systems were added. Contracts ended. Markets have different processes.
+
+Some teams have real-time telemetry. Others operate on **phone calls and spreadsheets**.
+
+</div>
+</Split>
+
+<Notes>
+"Let me show you the domain I'll use as our case study. A delivery domain I know well. 30 years in operation. Four layers: core services built in the last 6 years — modern, microservices, Kubernetes. Neighboring domains running on order management systems that predate most of this room. Vendor platforms that have been the operational backbone for 25 years. And external carriers ranging from fully automated APIs to suppliers who still send data in Excel. Nobody designed this holistically. It grew."
+</Notes>
+
+---
+
+## Where the knowledge lives
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="KNOWLEDGE SCATTERED ACROSS" accent="red" items="Event Storming output from 2 years ago — already partially wrong, Confluence page last updated in 2022 — everyone still links to it, One ops person who understands the carrier integration — leaving next month, Slack threads from 2019 that explain why certain rules exist, Error codes nobody documented but everyone works around" />
+
+</div>
+<div>
+
+> *"We don't see what we don't intend to see."*
+>
+> — **Dave Snowden**, DDD Europe 2018
+
+This isn't a dysfunctional team. This is **every large enterprise delivery domain**.
+
+</div>
+</Split>
+
+<Notes>
+"And here's where the knowledge about this domain actually lives. An Event Storming output from 2 years ago — already partially wrong because half the team turned over. A Confluence page from 2022 that everyone still links to. One ops person who understands the carrier integration — she's leaving next month. Slack threads from 2019 that nobody can find. Dave Snowden said it at this conference: we don't see what we don't intend to see. Even Event Storming can only capture what the room remembers. But the system? The system remembers everything."
+</Notes>
+
+---
+
+<Callout>
+**The system remembers everything. We're the ones who forgot.**
+
+Eight forensic techniques. Eight lenses on the same system. Each reveals something the others can't.
+
+Together, they produce a **draft domain model** — extracted from artifacts, not from memory.
+</Callout>
+
+<Notes>
+"So here's what I'm going to show you. Eight forensic techniques — each one reads a different artifact the system produces. API contracts. Database schemas. Transaction logs. Production logs. Incidents. Data lineage. Error codes. Git history. Each reveals something the others can't see. Together, they produce a draft model that you can take into your next Event Storming session — or use to validate the one you already have. I'm calling it Forensic DDD. Let's start."
+</Notes>
+
+---
+
+<TitleCard badge="ACT 2" subtitle="Eight lenses. One emerging model.">The Investigation</TitleCard>
+
+<Notes>
+Pause. Act 2 begins. The investigation. From here, every exhibit adds to the emerging model.
+</Notes>
+
+---
+
+## Exhibit A — Contract Archaeology
+
+<Split ratio="1:1">
+<div>
+
+**Read the API contracts. What did teams declare?**
+
+6 OpenAPI specs. 2 AsyncAPI event schemas. 1 GraphQL BFF.
+
+3 services have **no contracts at all** — black boxes.
+
+> *"Teams are polite in workshops. Contracts are honest."*
+
+</div>
+<div>
+
+<ContentCard title="WHAT THE CONTRACTS REVEAL" accent="amber" items="6 names for the same person — buyer / customer / user / recipient / account / consignee, One schema coupled to 4 other contexts — god entity, Two services that reference each other — dead boundary, Two services publish ZERO events — synchronous bottleneck" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit A. We start with what teams declared — their API contracts. 6 REST APIs, 2 event schemas, 1 GraphQL BFF. We also know 3 services exist that have no contracts at all — black boxes. The findings are immediate: 6 different names for the same person across services. One schema — the shipment entity — reaches into 4 other contexts. That's a god entity. Two services reference each other bidirectionally — a dead boundary. And two services publish zero events, forcing everyone to call them synchronously. Teams are polite in workshops. Contracts are honest."
+</Notes>
+
+---
+
+## Exhibit A — The Address Problem
+
+<CompareTable headers="Field Concept|Shipment|Consignee|Carrier|Invoicing" rows="Street line 1|line1|streetAddress|street|addressLine1||Street line 2|line2|apartmentUnit|street2|addressLine2||Postal code|postalCode|zipCode|postal|postalCode||Country|country|countryCode|countryCode|country" />
+
+4 services. 4 address schemas. 4 different field names for the same things.
+
+> Different fields = correct DDD. Different **names** for same fields = **vocabulary drift**.
+
+<Notes>
+"Look at the Address concept across 4 services. Four different names for 'street line 1'. Four different names for postal code. Now — different FIELDS across contexts is CORRECT DDD. Shipping needs access codes, invoicing needs VAT numbers. But different NAMES for the same fields? That's vocabulary drift. The ubiquitous language fractured in implementation. Nobody noticed because each service is correct in its own context."
+</Notes>
+
+---
+
+## Exhibit B — Schema Archaeology
+
+<Split ratio="1:1">
+<div>
+
+**Go deeper. What does the database actually show?**
+
+The contracts declared boundaries. The database shows whether those boundaries are real.
+
+> *"The API says 'I own this.' The database says 'so does he.'"*
+
+</div>
+<div>
+
+<ContentCard title="WHAT THE DATABASE REVEALS" accent="red" items="orders table read by 4 services — de facto shared kernel, inventory_reserved has 2 WRITERS — boundary violation, customer_addresses read by 3 services bypassing the API, shipment_status shared between Shipment + Carrier — dead boundary confirmed, Ghost database users — processes nobody knows about" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit B. The contracts declared boundaries. Now let's check if those boundaries are real. The database doesn't have opinions — it just records who accessed what. The orders table is read by 4 services directly. inventory_reserved has TWO writers — that's a boundary violation. Two services believe they own reservation logic. And customer_addresses is read by 3 services that bypassed the API entirely. The API boundary looked clean. The database says it's a facade."
+</Notes>
+
+---
+
+## Exhibit C — Transaction Boundaries
+
+<Split ratio="1:1">
+<div>
+
+**What commits together, belongs together.**
+
+Mine the transaction logs. Which tables are always written in the same database commit?
+
+Those clusters ARE your aggregates — whether anyone designed them or not.
+
+</div>
+<div>
+
+<ContentCard title="TRANSACTION CLUSTERS" accent="amber" items="{orders + order_lines + order_audit} — 84K/week — Order aggregate ✓, {shipments + tracking_events} — 31K/week — Shipment aggregate ✓, {orders + shipments} — 2103/week — ⚠ CROSS-CONTEXT, {orders + inventory_reserved} — 4512/week at 580ms — ⚠ BOUNDARY VIOLATION" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit C. If multiple tables are always written in the same transaction, they belong to the same aggregate. The database already knows this. We mined 7 days of transactions. Clean aggregates emerge immediately — orders with order_lines, 84,000 times a week. But then: orders and shipments committed together 2,103 times. The Shipment service is writing to Carrier's table in the same commit. And orders with inventory_reserved — 4,512 times at 580 milliseconds average. That's a distributed concern handled locally. It works in a monolith. It breaks the moment you try to extract."
+</Notes>
+
+---
+
+## Exhibit D — Log Mining
+
+<Split ratio="1:1">
+<div>
+
+**The system narrates itself in real time.**
+
+Every `logger.info("Order confirmed")` is a **fossilized domain event** — published to nobody, preserved in plain text.
+
+Trace one entity across all services. Compare to what Event Storming documented.
+
+</div>
+<div>
+
+**Event Storming said:**
+Payment → Inventory → Shipment
+
+**Production logs say:**
+Inventory → Confirmation → Invoice
+
+> *"The gap between what people remember and what the system does — that's the most dangerous kind of technical debt."*
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit D. Every log line is a fossilized domain event — the events the system was designed to publish but nobody wired up. We traced one order across all services. The Event Storming from 2 years ago said: Payment, then Inventory, then Shipment. The production logs say: Inventory reserved FIRST, then order confirmed, then invoice generated. Different sequence. Different participants. The team's mental model was wrong. And that gap — between what people remember and what the system does — is the most dangerous kind of technical debt. It's not in the code. It's in the team's understanding."
+</Notes>
+
+---
+
+<Callout>
+**— MIDPOINT —**
+
+The documented model said **3 clean bounded contexts**.
+
+The artifacts are telling a different story.
+
+Let's keep reading.
+</Callout>
+
+<Notes>
+"We're halfway through the investigation. Four exhibits in. And the documented model — 3 clean bounded contexts from Event Storming — is already contradicted by every artifact we've read. The contracts show coupling. The database shows shared tables. The transactions show cross-context commits. The logs show a different sequence. Let's keep reading. It gets more revealing."
+</Notes>
+
+---
+
+## Exhibit E — Incident Clustering
+
+<Split ratio="1:1">
+<div>
+
+**Where failures cluster is where boundaries are wrong.**
+
+83 incidents in 12 months. 64 at service boundaries.
+
+**77% of all failures are cross-boundary.**
+
+> *"The architecture is the bug."*
+
+</div>
+<div>
+
+<ContentCard title="TOP BOUNDARY CLUSTERS" accent="red" items="Shipment ↔ Inventory: 23 incidents (4 SEV1) — race conditions + timeouts, Shipment ↔ Carrier: 17 incidents — the dead boundary hurts, Invoicing ↔ Shipment: 14 incidents — sync chain in critical path, Consignee boundary: 0 incidents — confirmed clean ✓" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit E. 83 production incidents in 12 months. 64 of them — 77% — occurred at service boundaries. The system isn't failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places. The top cluster: Shipment to Inventory — 23 incidents, 4 of them SEV1. Race conditions from the two-writer violation we found in Exhibit B. Timeouts from the synchronous co-write we found in Exhibit C. The coupling we found in artifacts is now costing real engineering hours and real customer impact. The architecture is the bug."
+</Notes>
+
+---
+
+## Exhibit F — Data Lineage
+
+<Split ratio="1:1">
+<div>
+
+**Follow one entity. Find who owns the truth.**
+
+The delivery address exists in **4 copies**. 4 formats. 4 update policies.
+
+**342 mismatches** in 90 days.
+
+When a customer calls: *"where is my order?"* — the answer depends on which service the agent looks at.
+
+</div>
+<div>
+
+<ContentCard title="EACH COPY = A CONTEXT BOUNDARY" accent="amber" items="Consignee: current address (customer-managed), Shipment: snapshot at order time (immutable), Carrier: operational — updatable before dispatch, Invoicing: concatenated string (lossy / unreconstructable), Warehouse: SCD Type 2 — has better history than the source" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit F. Pick one entity — the delivery address — and trace it everywhere. 4 copies. 4 formats. 4 different update policies. The carrier can update the address independently after the order is placed. The invoice stores it as one concatenated string you can't parse back. 342 mismatches in 90 days. Each copy with different rules IS a bounded context boundary. The fix isn't centralizing the data — it's acknowledging the context boundaries and building the propagation events that should exist."
+</Notes>
+
+---
+
+## Exhibit G — Error Code Reverse-Engineering
+
+<Split ratio="1:1">
+<div>
+
+**Error codes are fossilized business rules.**
+
+Every `ORD-E003: Price variance exceeded` encodes a domain invariant someone decided was important enough to validate and reject.
+
+The error code table is the **most honest business rules document** in the system.
+
+</div>
+<div>
+
+<ContentCard title="DECODED BUSINESS RULES" accent="amber" items="ORD-E003: 2% price tolerance — exists only in code, ORD-E031: split shipment at 3+ warehouses — hidden orchestration context, DEL-E011: return window per category — business rule in wrong service, ORD-E099: 891 validation bypasses/year — the escape hatch nobody governs" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit G. Nobody documents error codes. They accumulate over years. But each one is a fossilized business rule. ORD-E003: if the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation — only in code. It fires 11 times a day. DEL-E011: return window differs by product category. That's a business policy living in the wrong service — delivery, not returns. And ORD-E099: legacy override. 891 times a year, someone bypasses validation. What rules does it skip? Nobody knows completely. The errors aren't bugs — they're the system protecting itself."
+</Notes>
+
+---
+
+## Exhibit H — Change Velocity
+
+<Split ratio="1:1">
+<div>
+
+**Git knows which code actually co-evolves.**
+
+If files from two services change together **72% of the time**, the boundary between them is fiction — regardless of what the architecture diagram says.
+
+> *"Git records every architectural decision, whether you meant to make it or not."*
+
+</div>
+<div>
+
+<ContentCard title="CO-CHANGE EVIDENCE" accent="red" items="OrderController + ShipmentService: 72% — dead boundary at dev level, DeliveryScheduler + InventoryChecker: 68% — hidden dependency, PricingEngine + OrderValidator: 54% — extract LAST not first, CustomerAddressValidator: 89% solo — Consignee confirmed clean ✓" />
+
+</div>
+</Split>
+
+<Notes>
+"Exhibit H. The final lens. Git records which files change together. If OrderController and ShipmentService change together 72% of the time, the developers have been telling you the boundary is fictional — with every commit, for years. This overrides Exhibit C: Carrier Integration looked 'ready to extract' from transaction data. But git says 72% co-change. The runtime boundary is clean. The development reality isn't. Git is the tiebreaker. And CustomerAddressValidator changes alone 89% of the time — the Consignee context is genuinely independent. Confirmed by 8 exhibits."
+</Notes>
+
+---
+
+<TitleCard badge="ACT 3" subtitle="The Rosetta Stone moment">The Reconciliation</TitleCard>
+
+<Notes>
+"Eight exhibits. Eight lenses. The same couplings confirmed from independent sources. Like the Rosetta Stone — the same decree written in three scripts. When eight independent artifacts say the same thing, it's not an opinion. It's a diagnosis."
+</Notes>
+
+---
+
+## The Remembered Domain vs The Encoded Domain
+
+<Split ratio="1:1">
+<div>
+
+**What the team remembers: 3 contexts**
+
+<ContentCard title="FROM EVENT STORMING" accent="amber" items="ORDER CONTEXT — everything starts here: orders + delivery + inventory + pricing, WAREHOUSE CONTEXT — stock and location, CUSTOMER CONTEXT — profile and address" />
+
+</div>
+<div>
+
+**What the system encoded: 7 contexts**
+
+<ContentCard title="FROM FORENSIC EVIDENCE" accent="green" items="Order — lifecycle only, Delivery — independent lifecycle (Exhibits A + C), Invoicing — own lifecycle including dunning (Exhibit D), Inventory — needs its own transactional boundary (Exhibits C + E), Returns/Policy — rules scattered across services (Exhibit G), Customer — source of truth nobody uses properly (Exhibits B + F), Warehouse — split-shipment orchestration (Exhibit G)" />
+
+</div>
+</Split>
+
+<Notes>
+"Two models. Side by side. The team remembered 3 contexts. The system encoded 7. Delivery is its own context — not part of Order. Invoicing has its own lifecycle. Returns and Policy is a missing context — its rules are scattered. Customer is a source of truth nobody actually uses through its API. And Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year."
+</Notes>
+
+---
+
+## Extraction Playbook
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="THE DECISION" accent="amber" items="Causing incidents + shared by 3+ services → EXTRACT (high priority), Causing incidents + simpler coupling → EXTRACT (medium priority), Blocking team velocity but no incidents yet → WRAP with ACL first, Clean boundary confirmed by 3+ exhibits → LEAVE ALONE" />
+
+</div>
+<div>
+
+<ContentCard title="THE SEQUENCE" accent="green" items="1. Strangle reads — API gateway in front of shared tables, 2. Introduce events — replace synchronous co-writes, 3. Shadow traffic — run new path in parallel + compare, 4. Feature-flag cutover — 1% → 10% → 50% → 100%" />
+
+</div>
+</Split>
+
+<Notes>
+"Finding the boundaries is half the work. Extracting them safely is the other half. The decision: if it's causing incidents and shared by many services — extract. If it's blocking velocity but no incidents yet — wrap with an anti-corruption layer first. If it's clean — leave it alone. The sequence: strangle reads first, then introduce events, then shadow traffic, then feature-flag the cutover. You don't rewrite. You strangle. Incrementally. With evidence telling you exactly where to cut."
+</Notes>
+
+---
+
+## What Forensic DDD gives Event Storming
+
+<Split ratio="1:1">
+<div>
+
+**Without forensic evidence:**
+
+> *"How does the system work?"*
+
+Experts build the model **from memory**. Expensive. Incomplete. Immediately starts drifting.
+
+</div>
+<div>
+
+**With forensic evidence:**
+
+> *"Is this how the system works?"*
+
+Experts **react to evidence**. Faster. Grounded. Gaps are visible, not assumed.
+
+The system tells the domain story back to us.
+
+</div>
+</Split>
+
+<Notes>
+"Forensic DDD doesn't replace Event Storming. It changes the question. Without evidence, you ask 'how does this work?' and experts build from memory. With evidence, you ask 'is this how it works?' and experts react. People are much faster at reacting than creating. You arrive with a draft model extracted from 8 independent artifacts. The experts validate, correct, and extend it. The workshop is richer, faster, and grounded in evidence instead of memory."
+</Notes>
+
+---
+
+## The Forensic DDD Checklist
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="READ THE ARTIFACTS" accent="amber" items="A — API contracts: vocabulary drift + coupling, B — Database: shared tables + boundary violations, C — Transactions: aggregate boundaries, D — Logs: actual runtime behavior, E — Incidents: cost of wrong boundaries, F — Data lineage: who owns the truth, G — Error codes: undocumented business rules, H — Git: development coupling" />
+
+</div>
+<div>
+
+**The toolkit is open source.**
+
+`github.com/rajnavakoti/ddd-archaeology`
+
+8 CLI commands. Synthetic dataset. Chain-of-thought documentation.
+
+Point it at your own contracts, schemas, and logs.
+
+</div>
+</Split>
+
+<Notes>
+"Here's the checklist. Eight exhibits. Take this to your own systems. The toolkit is open source — 8 CLI commands, a synthetic delivery platform dataset, and the full chain-of-thought documentation for each technique. Point it at your own artifacts and see what the system tells you."
+</Notes>
+
+---
+
+<Callout>
+**The domain isn't in the documentation. It isn't in people's heads. It's in the system.**
+
+Encoded in transactions. Fossilized in logs. Buried in error codes. Revealed by the patterns of what breaks.
+
+Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. Incidents don't cluster randomly. Error codes are the most honest business rules document. And git records every architectural decision, whether you meant to make it or not.
+
+**Legacy systems aren't just technical debt. They're dense archives of domain knowledge, if you know how to read them.**
+</Callout>
+
+<Notes>
+SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain isn't in the documentation. It isn't in people's heads. It's in the system. Encoded in transactions. Fossilized in logs. Buried in error codes. [pause] Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. [pause] Legacy systems aren't just technical debt. They're dense archives of domain knowledge. If you know how to read them. [pause] Thank you."
+</Notes>
+
+---
+
+<TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/rajnavakoti/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
+
+<Notes>
+Final slide. Stay up while people clap or approach for questions. If time remains, take questions. If not: "I'll be outside — find me."
+</Notes>
