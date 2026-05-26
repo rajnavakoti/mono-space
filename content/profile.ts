@@ -142,7 +142,7 @@ export const profile: Profile = {
       date: "2026-06-09",
       location: "Antwerp, Belgium",
       upcoming: true,
-      url: "https://2026.dddeurope.com/",
+      url: "/presentations/ddd-europe-talk",
       logo: "/talks/ddd-europe-logo.jpeg",
     },
     {
