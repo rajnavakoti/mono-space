@@ -326,29 +326,37 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## The Address — Correct DDD vs Drift
+## Vocabulary — The Address Concept
 
-<CompareTable headers="Concept|Shipment|Consignee|Carrier|Invoicing" rows="Street|line1|streetAddress|street|addressLine1||Postal|postalCode|zipCode|postal|postalCode||Country|country|countryCode|countryCode|country" />
-
-<Split ratio="1:1">
+<Split ratio="3:1">
 <div>
 
-<Callout type="tip">
-**Different FIELDS = correct DDD.** Each context genuinely needs a different representation.
-</Callout>
+**Where do they deliver?**
+
+<CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|mixed concerns||Consignee|CustomerAddress|label, isDefault|10|customer-managed||Carrier|DeliveryAddress|accessCode, isResidential|11|operational||Invoicing|BillingAddress|vatNumber, companyName|10|legal document" />
 
 </div>
 <div>
 
-<Callout type="warning">
-**Different NAMES for same fields = vocabulary drift.** Not intentional — just inconsistent.
+<Callout type="tip">
+**✅ Correct DDD**
+
+Different names **AND** different fields. Each context adds fields for **ITS purpose**:
+
+**Carrier** needs `accessCode` → for the delivery driver
+
+**Invoicing** needs `vatNumber` → for the legal document
+
+**Consignee** needs `label` → "Home" / "Work"
+
+Each context **SHOULD own its own Address** representation.
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"But here's the nuance. Look at Address across the same 4 services. Different field names AND different fields. Shipment has deliveryInstructions. Carrier has accessCode. Invoicing has vatNumber. Different FIELDS means each context genuinely needs a different representation — that's CORRECT DDD. Different NAMES for the same fields — like the person concept earlier — that's drift. The contracts show you both. The distinction matters: you don't naively force everything to use the same name. You separate intentional boundaries from accidental drift."
+"Now compare with Address. Same four services. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look the same but they serve different purposes. This IS correct DDD — each bounded context should own its own Address. The contracts just proved it."
 </Notes>
 
 ---
