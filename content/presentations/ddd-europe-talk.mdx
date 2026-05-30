@@ -265,7 +265,7 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ## The hypothesis starts empty
 
-<ContextMap version={0} />
+<ContextMap version="0" />
 
 > The 6 services we know about. 3 black boxes we don't. No lines, no labels, no opinions yet. Every exhibit adds evidence.
 
@@ -277,7 +277,9 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 <TitleCard badge="EXHIBIT A" subtitle="What did teams declare about their services?">Contract Archaeology</TitleCard>
 
-> *"Teams are polite in workshops. Contracts are honest."*
+<Callout type="quote">
+**Teams are polite in workshops. Contracts are honest.**
+</Callout>
 
 <Notes>
 "First lens. We read the API contracts — what teams declared publicly. 6 OpenAPI specs, 2 AsyncAPI event schemas, 1 GraphQL BFF. Plus 3 services we know exist but have no contracts for — black boxes. Teams are polite in workshops. Contracts are honest."
@@ -329,7 +331,7 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 <Split ratio="3:2">
 <div>
 
-<HubDiagram center="Shipment" top="Consignee" left="Carrier" right="Invoicing" bottom="Inventory" />
+<CodeBlock title="coupling.hub" code="              Consignee&#10;                  ↑&#10;                  |&#10;Carrier  ↔  Shipment ⚠  →  Invoicing&#10;                  |&#10;                  ↓&#10;              Inventory" />
 
 </div>
 <div>
@@ -347,7 +349,7 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ## The model updates
 
-<ContextMap version={1} />
+<ContextMap version="1" />
 
 > Contracts can lie. Let's check the database.
 
