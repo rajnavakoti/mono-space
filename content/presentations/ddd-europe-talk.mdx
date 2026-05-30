@@ -283,6 +283,16 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
+## What do we have?
+
+<CompareTable headers="Service|Endpoints|Schemas|Events|Version|Last Modified|Confidence" rows="Shipment|7|10|6|v2|2 weeks ago|High||Consignee|6|9|NONE|v1|3 weeks ago|High||Inventory|7|8|—|v1|2 months ago|Medium||Carrier|7|10|7|v1|1 week ago|High||Invoicing|8|11|NONE|v1|6 months ago|Low||Tracking|4|8|—|v1|14 months ago|Very Low" />
+
+<Notes>
+"Quick inventory of the artifacts. 6 services. Most have schemas, most have endpoints. But look at the events column — Consignee says NONE explicitly. Tracking and Inventory have nothing. Look at versioning — Shipment is on v2 already, someone's invested there. And look at last-modified — Invoicing 6 months, Tracking 14 months. The confidence column is how much we trust each contract: high where teams actively maintain them, very low where they don't. This is the starting evidence."
+</Notes>
+
+---
+
 ## Vocabulary Drift
 
 <CompareTable headers="Service|They call them...|ID field" rows="Shipment|buyer|buyerId||Consignee|customer|customerId||Inventory|user|userId||Carrier|recipient|recipientId||Invoicing|account|accountId||Tracking|user|userId" />
