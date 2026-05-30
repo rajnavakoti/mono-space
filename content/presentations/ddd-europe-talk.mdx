@@ -263,43 +263,96 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## Exhibit A — Contract Archaeology
+## The hypothesis starts empty
+
+<ContextMap version={0} />
+
+> The 6 services we know about. 3 black boxes we don't. No lines, no labels, no opinions yet. Every exhibit adds evidence.
+
+<Notes>
+"Before we open any artifact — here's what we have. The 6 services we've heard mentioned by name. 3 black boxes we know exist but nothing's documented about. No lines between them. No verdicts. No colours. This is our baseline. Every exhibit from here adds evidence to this map."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT A" subtitle="What did teams declare about their services?">Contract Archaeology</TitleCard>
+
+> *"Teams are polite in workshops. Contracts are honest."*
+
+<Notes>
+"First lens. We read the API contracts — what teams declared publicly. 6 OpenAPI specs, 2 AsyncAPI event schemas, 1 GraphQL BFF. Plus 3 services we know exist but have no contracts for — black boxes. Teams are polite in workshops. Contracts are honest."
+</Notes>
+
+---
+
+## Vocabulary Drift
+
+<CompareTable headers="Service|They call them...|ID field" rows="Shipment|buyer|buyerId||Consignee|customer|customerId||Inventory|user|userId||Carrier|recipient|recipientId||Invoicing|account|accountId||Tracking|user|userId" />
+
+> *"Six services. Six names. Same person. The translation map between contexts is missing."*
+
+<Notes>
+"First check: what does each service call the person receiving the delivery? In a language, this is vocabulary. In DDD, this is the ubiquitous language. Shipment calls them 'buyer.' Consignee — 'customer.' Inventory — 'user.' Carrier — 'recipient.' Invoicing — 'account.' Tracking — 'user' again. Same fields. Different words. This isn't bounded context language. It's drift. The translation map is missing."
+</Notes>
+
+---
+
+## The Address — Correct DDD vs Drift
+
+<CompareTable headers="Concept|Shipment|Consignee|Carrier|Invoicing" rows="Street|line1|streetAddress|street|addressLine1||Postal|postalCode|zipCode|postal|postalCode||Country|country|countryCode|countryCode|country" />
 
 <Split ratio="1:1">
 <div>
 
-**Read the API contracts. What did teams declare?**
-
-6 OpenAPI specs. 2 AsyncAPI event schemas. 1 GraphQL BFF.
-
-3 services have **no contracts at all** — black boxes.
-
-> *"Teams are polite in workshops. Contracts are honest."*
+<Callout type="tip">
+**Different FIELDS = correct DDD.** Each context genuinely needs a different representation.
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="WHAT THE CONTRACTS REVEAL" accent="amber" items="6 names for the same person — buyer / customer / user / recipient / account / consignee, One schema coupled to 4 other contexts — god entity, Two services that reference each other — dead boundary, Two services publish ZERO events — synchronous bottleneck" />
+<Callout type="warning">
+**Different NAMES for same fields = vocabulary drift.** Not intentional — just inconsistent.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit A. We start with what teams declared — their API contracts. 6 REST APIs, 2 event schemas, 1 GraphQL BFF. We also know 3 services exist that have no contracts at all — black boxes. The findings are immediate: 6 different names for the same person across services. One schema — the shipment entity — reaches into 4 other contexts. That's a god entity. Two services reference each other bidirectionally — a dead boundary. And two services publish zero events, forcing everyone to call them synchronously. Teams are polite in workshops. Contracts are honest."
+"But here's the nuance. Look at Address across the same 4 services. Different field names AND different fields. Shipment has deliveryInstructions. Carrier has accessCode. Invoicing has vatNumber. Different FIELDS means each context genuinely needs a different representation — that's CORRECT DDD. Different NAMES for the same fields — like the person concept earlier — that's drift. The contracts show you both. The distinction matters: you don't naively force everything to use the same name. You separate intentional boundaries from accidental drift."
 </Notes>
 
 ---
 
-## Exhibit A — The Address Problem
+## The God Entity + Coupling
 
-<CompareTable headers="Field Concept|Shipment|Consignee|Carrier|Invoicing" rows="Street line 1|line1|streetAddress|street|addressLine1||Street line 2|line2|apartmentUnit|street2|addressLine2||Postal code|postalCode|zipCode|postal|postalCode||Country|country|countryCode|countryCode|country" />
+<Split ratio="3:2">
+<div>
 
-4 services. 4 address schemas. 4 different field names for the same things.
+<HubDiagram center="Shipment" top="Consignee" left="Carrier" right="Invoicing" bottom="Inventory" />
 
-> Different fields = correct DDD. Different **names** for same fields = **vocabulary drift**.
+</div>
+<div>
+
+<ContentCard title="WHAT THE HUB REVEALS" accent="amber" items="Shipment references everyone — god entity, Consignee referenced by all / references none — but 0 events, Carrier ↔ Shipment circular reference — dead boundary?, Tracking coupled to everything / owns nothing — infrastructure?" />
+
+</div>
+</Split>
 
 <Notes>
-"Look at the Address concept across 4 services. Four different names for 'street line 1'. Four different names for postal code. Now — different FIELDS across contexts is CORRECT DDD. Shipping needs access codes, invoicing needs VAT numbers. But different NAMES for the same fields? That's vocabulary drift. The ubiquitous language fractured in implementation. Nobody noticed because each service is correct in its own context."
+"Now look at the Shipment Service's Order schema. It contains buyerId, warehouseId, carrierId, invoiceId, paymentStatus, trackingNumber. One schema reaching into 4 other contexts. The hub shows it. Shipment in the centre, lines going everywhere. Consignee — referenced by everyone, references nobody — clean on paper, but zero events means everyone calls it synchronously. Shipment and Carrier reference each other — circular. Dead boundary suspected. Tracking is coupled to everything but owns no domain logic — infrastructure pretending to be domain. Four findings. One lens."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version={1} />
+
+> Contracts can lie. Let's check the database.
+
+<Notes>
+"Based on what the contracts declared, here's our first hypothesis. Same circles. Now with evidence. Shipment lit up amber as our god entity. Coupling lines outward — buyerId to Consignee, warehouseId to Inventory, invoiceId to Invoicing. The Shipment-Carrier line is dotted — dead boundary suspected. Consignee labelled '0 events' — sync bottleneck. The three black boxes still unknown. Hypothesis v0.1 — what the contracts declared. But contracts can lie. The database is next."
 </Notes>
 
 ---
