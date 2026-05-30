@@ -293,14 +293,35 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## Vocabulary Drift
+## Vocabulary — The Person Concept
 
-<CompareTable headers="Service|They call them...|ID field" rows="Shipment|buyer|buyerId||Consignee|customer|customerId||Inventory|user|userId||Carrier|recipient|recipientId||Invoicing|account|accountId||Tracking|user|userId" />
+<Split ratio="3:1">
+<div>
 
-> *"Six services. Six names. Same person. The translation map between contexts is missing."*
+**Who receives the delivery?**
+
+<CompareTable headers="Service|Term Used|ID Field|Fields|Infer" rows="Shipment|buyer|buyerId|3|the person placing the order?||Consignee|customer|customerId|20|the full customer profile?||Inventory|user|userId|1|who requested the reservation?||Carrier|recipient|recipientId|3|who receives the package?||Invoicing|account|accountId|3|billing entity — person or company?||Tracking|user|userId|2|who gets notified?" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 Validate with domain experts**
+
+Consignee has 20 fields for this concept (segments, loyalty, preferences, addresses). Everyone else has 3.
+
+→ Who is the system of record?
+
+→ Is "account" intentionally different (billing entity vs person)?
+
+→ 5 names, same fields — drift or design?
+</Callout>
+
+</div>
+</Split>
 
 <Notes>
-"First check: what does each service call the person receiving the delivery? In a language, this is vocabulary. In DDD, this is the ubiquitous language. Shipment calls them 'buyer.' Consignee — 'customer.' Inventory — 'user.' Carrier — 'recipient.' Invoicing — 'account.' Tracking — 'user' again. Same fields. Different words. This isn't bounded context language. It's drift. The translation map is missing."
+"Five names for what looks like the same concept. Same three fields — ID, name, email. But 'account' in Invoicing might mean the billing entity, not the person — that could be intentional. We flag it, we don't judge it. What we CAN say: Consignee has 20 fields. Everyone else has 3. Five thin copies of a concept one service owns richly. Who is the system of record? That's the question we take to the domain experts."
 </Notes>
 
 ---
