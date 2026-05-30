@@ -1,0 +1,183 @@
+/* ContextMap — CSS Grid for circle layout, SVG overlay for connection lines */
+
+.contextMap {
+  /* Tone palette — desaturated, theme-aware. */
+  --map-gray-bg: var(--color-bg-secondary, #222);
+  --map-gray-border: var(--color-border, #555);
+  --map-gray-text: var(--color-text, #E0E0E0);
+
+  --map-amber-bg: rgba(201, 169, 110, 0.10);
+  --map-amber-border: var(--color-accent, #C9A96E);
+  --map-amber-text: var(--color-accent, #C9A96E);
+
+  --map-red-bg: rgba(178, 100, 100, 0.10);
+  --map-red-border: #B26464;
+  --map-red-text: #C97878;
+
+  --map-green-bg: rgba(120, 158, 120, 0.10);
+  --map-green-border: #6E9B6E;
+  --map-green-text: #8FB58F;
+
+  --map-purple-bg: rgba(140, 120, 165, 0.10);
+  --map-purple-border: #8C78A5;
+  --map-purple-text: #A89AC2;
+
+  margin: 24px 0;
+  width: 100%;
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  padding: 0;
+}
+
+.svgOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  gap: 0;
+}
+
+/* Each circle is a flex-centered chip. The CSS Grid cell handles position. */
+.circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  /* Sized relative to viewport so it scales with slide width */
+  width: clamp(80px, 12vw, 130px);
+  height: clamp(80px, 12vw, 130px);
+  border: 2px solid var(--map-gray-border);
+  background: var(--map-gray-bg);
+  color: var(--map-gray-text);
+  border-radius: 50%;
+  text-align: center;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.circleName {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.sublabel {
+  font-size: 10px;
+  line-height: 1.15;
+  opacity: 0.9;
+  margin-top: 2px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Tone variants — apply to .circle directly */
+.toneGray {
+  /* default; matches base .circle */
+}
+
+.toneAmber.circle,
+.circle.toneAmber {
+  border-color: var(--map-amber-border);
+  background: var(--map-amber-bg);
+  color: var(--map-amber-text);
+}
+
+.toneRed.circle,
+.circle.toneRed {
+  border-color: var(--map-red-border);
+  background: var(--map-red-bg);
+  color: var(--map-red-text);
+}
+
+.toneGreen.circle,
+.circle.toneGreen {
+  border-color: var(--map-green-border);
+  background: var(--map-green-bg);
+  color: var(--map-green-text);
+}
+
+.tonePurple.circle,
+.circle.tonePurple {
+  border-color: var(--map-purple-border);
+  background: var(--map-purple-bg);
+  color: var(--map-purple-text);
+}
+
+/* SVG line tones (stroke + fill for arrowhead path) */
+.line {
+  fill: none;
+}
+.line.toneGray {
+  stroke: var(--map-gray-border);
+}
+.line.toneAmber {
+  stroke: var(--map-amber-border);
+}
+.line.toneRed {
+  stroke: var(--map-red-border);
+}
+.line.toneGreen {
+  stroke: var(--map-green-border);
+}
+.line.tonePurple {
+  stroke: var(--map-purple-border);
+}
+
+/* Arrowhead marker paths inherit fill from their group's tone class */
+.toneGray > path { fill: var(--map-gray-border); }
+.toneAmber > path { fill: var(--map-amber-border); }
+.toneRed > path { fill: var(--map-red-border); }
+.toneGreen > path { fill: var(--map-green-border); }
+.tonePurple > path { fill: var(--map-purple-border); }
+
+.lineLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 2.2px;
+  fill: var(--color-text-secondary, #BABABA);
+  letter-spacing: 0.04em;
+  paint-order: stroke;
+  stroke: var(--color-bg, #1A1A1A);
+  stroke-width: 0.6;
+}
+
+.caption {
+  margin-top: 16px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--color-text-secondary, #BABABA);
+  letter-spacing: 0.04em;
+}
+
+/* Light mode overrides */
+@media (prefers-color-scheme: light) {
+  .contextMap {
+    --map-gray-bg: #F5F5F5;
+    --map-gray-border: #444;
+    --map-gray-text: #111;
+  }
+}
+
+[data-theme="light"] .contextMap {
+  --map-gray-bg: #F5F5F5;
+  --map-gray-border: #444;
+  --map-gray-text: #111;
+}

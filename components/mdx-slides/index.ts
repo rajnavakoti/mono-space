@@ -20,6 +20,7 @@ export { LifecycleDiagram } from "./diagrams";
 export { Timeline } from "./diagrams";
 export { PipelineDiagram } from "./diagrams";
 export { HubDiagram } from "./diagrams";
+export { ContextMap } from "./ContextMap";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -43,6 +44,7 @@ import { LifecycleDiagram } from "./diagrams";
 import { Timeline } from "./diagrams";
 import { PipelineDiagram } from "./diagrams";
 import { HubDiagram } from "./diagrams";
+import { ContextMap } from "./ContextMap";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -73,4 +75,5 @@ export const mdxSlideComponents = {
   Timeline,
   PipelineDiagram,
   HubDiagram,
+  ContextMap,
 };
