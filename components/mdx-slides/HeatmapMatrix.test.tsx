@@ -43,9 +43,11 @@ describe("HeatmapMatrix", () => {
   });
 
   it("applies the col-highlight class to the matching col header", () => {
+    // Distinct rowNames so "Y" only appears once (as the col header).
     render(
       <HeatmapMatrix
         labels="X|Y|Z"
+        rowNames="One|Two|Three"
         cells="-|x|.||.|-|x||x|.|-"
         highlightCol="Y"
       />,
