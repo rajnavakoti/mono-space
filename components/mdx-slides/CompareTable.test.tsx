@@ -18,7 +18,7 @@ describe("CompareTable", () => {
 
     const header = container.querySelector('[class*="compareTableHeader"]') as HTMLElement;
     expect(header).not.toBeNull();
-    expect(header.style.gridTemplateColumns).toBe("repeat(3, 1fr)");
+    expect(header.style.gridTemplateColumns).toBe("1fr 1fr 1fr");
 
     // All 6 data cells render
     expect(screen.getByText("Shipment")).toBeInTheDocument();
@@ -37,6 +37,19 @@ describe("CompareTable", () => {
 
     const rows = container.querySelectorAll('[class*="compareTableRow"]') as NodeListOf<HTMLElement>;
     expect(rows).toHaveLength(1);
-    expect(rows[0].style.gridTemplateColumns).toBe("repeat(5, 1fr)");
+    expect(rows[0].style.gridTemplateColumns).toBe("1fr 1fr 1fr 1fr 1fr");
+  });
+
+  it("honors colWeights to make narrative columns wider", () => {
+    const { container } = render(
+      <CompareTable
+        headers="A|B|C"
+        rows="x|y|z"
+        colWeights="1|1|3"
+      />,
+    );
+
+    const header = container.querySelector('[class*="compareTableHeader"]') as HTMLElement;
+    expect(header.style.gridTemplateColumns).toBe("1fr 1fr 3fr");
   });
 });
