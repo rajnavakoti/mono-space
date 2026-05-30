@@ -40,4 +40,21 @@ describe("ContextMap", () => {
     expect(screen.getByText("NOT READY (72% co-change)")).toBeInTheDocument();
     expect(screen.getByText(/Hypothesis v0\.8/)).toBeInTheDocument();
   });
+
+  it("accepts version as a string (MDX prop interop)", () => {
+    // MDX passes string attribute values; the component must normalize them.
+    render(<ContextMap version={"1" as unknown as 1} />);
+
+    expect(screen.getByText("⚠ GOD")).toBeInTheDocument();
+    expect(screen.getByText("0 events")).toBeInTheDocument();
+    expect(screen.getByText(/Hypothesis v0\.1/)).toBeInTheDocument();
+  });
+
+  it("clamps out-of-range or non-numeric versions to v0", () => {
+    const { rerender } = render(<ContextMap version={"99" as unknown as 8} />);
+    expect(screen.getByText(/Hypothesis v0\.8/)).toBeInTheDocument(); // 99 → 8
+
+    rerender(<ContextMap version={"not-a-number" as unknown as 0} />);
+    expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument(); // NaN → 0
+  });
 });

@@ -228,14 +228,28 @@ function strokeDash(style: LineStyle): string | undefined {
 }
 
 interface ContextMapProps {
-  version: ContextMapVersion;
+  /**
+   * Hypothesis version 0-8. Accepts number or string so the component works
+   * both from TS callsites (`<ContextMap version={1} />`) and from MDX
+   * (`<ContextMap version="1" />`) — next-mdx-remote does not always forward
+   * JSX expression props reliably, so a string form is the safe MDX call.
+   */
+  version: ContextMapVersion | `${ContextMapVersion}` | number | string;
+}
+
+function normalizeVersion(raw: ContextMapProps["version"]): ContextMapVersion {
+  const n = typeof raw === "string" ? Number.parseInt(raw, 10) : raw;
+  if (!Number.isFinite(n) || n < 0) return 0;
+  if (n > 8) return 8;
+  return Math.floor(n) as ContextMapVersion;
 }
 
 export function ContextMap({ version }: ContextMapProps) {
-  const allLines = lines(version);
+  const v = normalizeVersion(version);
+  const allLines = lines(v);
 
   return (
-    <figure className={styles.contextMap} aria-label={`Domain context map — ${CAPTIONS[version]}`}>
+    <figure className={styles.contextMap} aria-label={`Domain context map — ${CAPTIONS[v]}`}>
       <div className={styles.canvas}>
         {/* SVG overlay: connection lines */}
         <svg
@@ -298,9 +312,9 @@ export function ContextMap({ version }: ContextMapProps) {
         {/* HTML grid: circles */}
         <div className={styles.grid}>
           {CIRCLES.map((c) => {
-            const tone = circleTone(c.id, version);
-            const label = circleLabel(c.id, version);
-            const sublabels = circleSublabels(c.id, version);
+            const tone = circleTone(c.id, v);
+            const label = circleLabel(c.id, v);
+            const sublabels = circleSublabels(c.id, v);
             return (
               <div
                 key={c.id}
@@ -318,7 +332,7 @@ export function ContextMap({ version }: ContextMapProps) {
         </div>
       </div>
 
-      <figcaption className={styles.caption}>{CAPTIONS[version]}</figcaption>
+      <figcaption className={styles.caption}>{CAPTIONS[v]}</figcaption>
     </figure>
   );
 }

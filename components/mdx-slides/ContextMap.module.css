@@ -22,14 +22,20 @@
   --map-purple-border: #8C78A5;
   --map-purple-text: #A89AC2;
 
-  margin: 24px 0;
+  margin: 12px auto;
   width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .canvas {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 11;
+  /* Height clamped so the figure plus caption fits inside a slide viewport
+     even when there's a heading and a blockquote sharing the slide. */
+  height: clamp(280px, 52vh, 520px);
   padding: 0;
 }
 
@@ -150,21 +156,25 @@
 
 .lineLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 2.2px;
-  fill: var(--color-text-secondary, #BABABA);
-  letter-spacing: 0.04em;
+  /* CSS pixel sizing (instead of viewBox units) so the label is not distorted
+     by the SVG's preserveAspectRatio="none" stretching. */
+  font-size: 11px;
+  fill: var(--color-text-secondary, #555);
+  letter-spacing: 0.02em;
   paint-order: stroke;
-  stroke: var(--color-bg, #1A1A1A);
-  stroke-width: 0.6;
+  stroke: var(--color-bg, #FFF);
+  stroke-width: 3px;
+  font-weight: 500;
 }
 
 .caption {
-  margin-top: 16px;
+  margin-top: 12px;
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
   font-size: 13px;
   text-align: center;
-  color: var(--color-text-secondary, #BABABA);
+  color: var(--color-text-secondary, #555);
   letter-spacing: 0.04em;
+  font-weight: 500;
 }
 
 /* Light mode overrides */
