@@ -15,8 +15,14 @@ export function CompareTable({ headers, rows }: CompareTableProps) {
   // is 2 columns; this inline override keeps any column count working.
   const gridStyle = { gridTemplateColumns: `repeat(${cols.length}, 1fr)` };
 
+  // The base CSS caps max-width at 700px (great for 2-3 col tables, clips
+  // anything wider). Allow ~140px per column past that cap so 5/7/9-col
+  // tables breathe without sacrificing the compact feel of narrow ones.
+  const minTableWidth = Math.max(700, cols.length * 140);
+  const tableStyle = { maxWidth: `${minTableWidth}px` };
+
   return (
-    <div className={styles.compareTable}>
+    <div className={styles.compareTable} style={tableStyle}>
       <div className={styles.compareTableHeader} style={gridStyle}>
         {cols.map((col) => (
           <div key={col} className={styles.compareTableHeaderCell}>{col}</div>
