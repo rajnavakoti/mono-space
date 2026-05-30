@@ -382,6 +382,37 @@ Each context **SHOULD own its own Address** representation.
 
 ---
 
+## Coupling Heatmap
+
+> *Who depends on whom?*
+
+<Split ratio="1:1">
+<div>
+
+<HeatmapMatrix labels="Ship|Cons|Inv|Car|Inv$|Track" rowNames="Shipment|Consignee|Inventory|Carrier|Invoicing|Tracking" cells="-|x|x|x|x|.||.|-|.|.|.|.||x|x|-|.|.|.||x|x|x|-|.|.||x|x|.|.|-|.||x|x|.|x|x|-" highlightRow="Shipment" highlightCol="Cons" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 Three signals**
+
+→ **Shipment** references **ALL 4** services. One service pulling from everywhere. **God service?**
+
+→ **Consignee** referenced by all, references nobody. Clean upstream — but **0 events**. **Sync bottleneck?**
+
+→ **Shipment ↔ Carrier**: circular. Both reference each other. **Dead boundary?**
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"The coupling heatmap. Trace which services reference each other's concepts through ID fields and shared schemas. Three signals jump out. First — Shipment's row has 4 crosses. It pulls data from every other service. That's a god service. Second — Consignee's column has 5 crosses. Everyone references it but it references nobody. That looks clean — but it publishes zero events, so every dependency is a synchronous API call. Third — Shipment and Carrier reference each other. Circular. That's a dead boundary signal."
+</Notes>
+
+---
+
 ## The model updates
 
 <ContextMap version="1" />
