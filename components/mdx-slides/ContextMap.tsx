@@ -280,8 +280,6 @@ export function ContextMap({ version }: ContextMapProps) {
             const toC = CIRCLE_BY_ID[ln.to];
             const start = endpoint(toC, fromC);
             const end = endpoint(fromC, toC);
-            const midX = (start.x + end.x) / 2;
-            const midY = (start.y + end.y) / 2;
             return (
               <g key={i} className={`${styles.line} ${toneClass(ln.tone)}`}>
                 <line
@@ -294,20 +292,31 @@ export function ContextMap({ version }: ContextMapProps) {
                   markerEnd={ln.arrowEnd ? `url(#arrow-${ln.tone})` : undefined}
                   markerStart={ln.arrowStart ? `url(#arrow-${ln.tone})` : undefined}
                 />
-                {ln.label && (
-                  <text
-                    x={midX}
-                    y={midY - 1.2}
-                    textAnchor="middle"
-                    className={styles.lineLabel}
-                  >
-                    {ln.label}
-                  </text>
-                )}
               </g>
             );
           })}
         </svg>
+
+        {/* HTML label overlay — labels rendered as positioned divs so they're
+            sized in real CSS pixels and don't get stretched by the SVG's
+            preserveAspectRatio="none" transform. */}
+        <div className={styles.labelOverlay} aria-hidden="true">
+          {allLines.filter((ln) => ln.label).map((ln, i) => {
+            const fromC = CIRCLE_BY_ID[ln.from];
+            const toC = CIRCLE_BY_ID[ln.to];
+            const midX = (fromC.cx + toC.cx) / 2;
+            const midY = (fromC.cy + toC.cy) / 2;
+            return (
+              <div
+                key={i}
+                className={`${styles.label} ${toneClass(ln.tone)}`}
+                style={{ left: `${midX}%`, top: `${midY}%` }}
+              >
+                {ln.label}
+              </div>
+            );
+          })}
+        </div>
 
         {/* HTML grid: circles */}
         <div className={styles.grid}>

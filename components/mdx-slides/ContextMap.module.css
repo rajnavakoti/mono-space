@@ -35,7 +35,7 @@
   width: 100%;
   /* Height clamped so the figure plus caption fits inside a slide viewport
      even when there's a heading and a blockquote sharing the slide. */
-  height: clamp(280px, 52vh, 520px);
+  height: clamp(260px, 46vh, 460px);
   padding: 0;
 }
 
@@ -154,17 +154,44 @@
 .toneGreen > path { fill: var(--map-green-border); }
 .tonePurple > path { fill: var(--map-purple-border); }
 
-.lineLabel {
+/* HTML label overlay — sits between SVG (z-index:1) and grid (z-index:2). */
+.labelOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.label {
+  position: absolute;
+  transform: translate(-50%, -50%);
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  /* CSS pixel sizing (instead of viewBox units) so the label is not distorted
-     by the SVG's preserveAspectRatio="none" stretching. */
   font-size: 11px;
-  fill: var(--color-text-secondary, #555);
-  letter-spacing: 0.02em;
-  paint-order: stroke;
-  stroke: var(--color-bg, #FFF);
-  stroke-width: 3px;
   font-weight: 500;
+  line-height: 1.1;
+  padding: 2px 6px;
+  background: var(--color-bg, #FFF);
+  border: 1px solid var(--map-gray-border);
+  color: var(--color-text-secondary, #555);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.label.toneAmber {
+  color: var(--map-amber-text);
+  border-color: var(--map-amber-border);
+}
+.label.toneRed {
+  color: var(--map-red-text);
+  border-color: var(--map-red-border);
+}
+.label.toneGreen {
+  color: var(--map-green-text);
+  border-color: var(--map-green-border);
+}
+.label.tonePurple {
+  color: var(--map-purple-text);
+  border-color: var(--map-purple-border);
 }
 
 .caption {
