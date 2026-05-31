@@ -1,0 +1,144 @@
+/* SchemaZoomedMap — schema-centric model view */
+
+.figure {
+  --szm-accent: var(--color-accent, #C9A96E);
+  --szm-bg: var(--color-bg, #FFF);
+  --szm-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --szm-text: var(--color-text, #111);
+  --szm-text-muted: var(--color-text-muted, #999);
+  --szm-border: var(--color-text, #111);
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  height: clamp(300px, 54vh, 520px);
+}
+
+.svgOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--szm-accent);
+}
+
+#szm-arrow > path {
+  fill: var(--szm-accent);
+}
+
+.grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.codeWindow {
+  margin: 6px;
+  border: 2px solid var(--szm-border);
+  background: var(--szm-bg);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--szm-text);
+  color: var(--szm-bg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dots {
+  display: flex;
+  gap: 3px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid var(--szm-bg);
+  display: inline-block;
+}
+
+.title {
+  text-transform: uppercase;
+}
+
+.code {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--szm-text);
+  background: var(--szm-bg-muted);
+  flex: 1;
+  white-space: pre;
+}
+
+.note {
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--szm-accent);
+  border-top: 1px solid var(--szm-text-muted);
+  background: rgba(201, 169, 110, 0.08);
+  letter-spacing: 0.02em;
+}
+
+/* Status variants */
+.statusNeutral { /* default */ }
+
+.statusAmber {
+  border-color: var(--szm-accent);
+}
+.statusAmber .titleBar {
+  background: var(--szm-accent);
+}
+
+.statusUnknown {
+  border-style: dashed;
+  border-color: var(--szm-text-muted);
+  opacity: 0.7;
+}
+.statusUnknown .titleBar {
+  background: var(--szm-text-muted);
+}
+.statusUnknown .code {
+  text-align: center;
+  font-style: italic;
+  color: var(--szm-text-muted);
+}
+
+.caption {
+  margin-top: 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--szm-text-muted);
+  letter-spacing: 0.03em;
+  font-weight: 500;
+}

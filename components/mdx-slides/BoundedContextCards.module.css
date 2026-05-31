@@ -1,0 +1,156 @@
+/* BoundedContextCards — DDD-style bounded-context map */
+
+.figure {
+  --bcc-accent: var(--color-accent, #C9A96E);
+  --bcc-bg: var(--color-bg, #FFF);
+  --bcc-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --bcc-text: var(--color-text, #111);
+  --bcc-text-muted: var(--color-text-muted, #999);
+  --bcc-border: var(--color-text, #111);
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 50vh, 480px);
+}
+
+.svgOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--bcc-accent);
+}
+
+#bcc-arrow > path {
+  fill: var(--bcc-accent);
+}
+
+.labelOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.lineLabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  background: var(--bcc-bg);
+  border: 1px solid var(--bcc-accent);
+  color: var(--bcc-accent);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  margin: 6px;
+  padding: 8px 12px;
+  border: 2px solid var(--bcc-border);
+  background: var(--bcc-bg);
+  color: var(--bcc-text);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  min-height: 60px;
+}
+
+.cardName {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardFinding {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 4px;
+  color: var(--bcc-text-muted);
+}
+
+/* Status variants — border and text colour shift */
+.statusNeutral { /* default */ }
+
+.statusAmber {
+  border-color: var(--bcc-accent);
+  background: rgba(201, 169, 110, 0.06);
+}
+.statusAmber .cardFinding {
+  color: var(--bcc-accent);
+  font-weight: 600;
+}
+
+.statusRed {
+  border-color: #B26464;
+  background: rgba(178, 100, 100, 0.06);
+}
+.statusRed .cardFinding {
+  color: #B26464;
+  font-weight: 600;
+}
+
+.statusGreen {
+  border-color: #6E9B6E;
+  background: rgba(110, 155, 110, 0.06);
+}
+.statusGreen .cardFinding {
+  color: #6E9B6E;
+  font-weight: 600;
+}
+
+.statusPurple {
+  border-color: #8C78A5;
+  background: rgba(140, 120, 165, 0.06);
+}
+
+.statusUnknown.cardUnknown {
+  border-style: dashed;
+  border-color: var(--bcc-text-muted);
+  background: transparent;
+  opacity: 0.7;
+}
+.statusUnknown.cardUnknown .cardName {
+  color: var(--bcc-text-muted);
+  font-weight: 400;
+}
+
+.caption {
+  margin-top: 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--bcc-text-muted);
+  letter-spacing: 0.03em;
+  font-weight: 500;
+}
