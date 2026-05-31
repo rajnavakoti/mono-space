@@ -723,49 +723,166 @@ These are the events the system **should be publishing but isn't**.
 
 ---
 
-## Exhibit D — Log Mining
+<TitleCard badge="EXHIBIT D" subtitle="Every logger.info is a fossilized domain event — published to nobody.">Log Mining</TitleCard>
+
+<Notes>
+"Fourth lens. We've read structure — contracts, database, transactions. All static artifacts. Now we go live. Production logs. The system narrating itself in real time. Remember the language analogy? The contracts are the written signs. The logs are the SPOKEN language — the system telling you what it actually does."
+</Notes>
+
+---
+
+## The Flow Trace
+
+> *Trace: order ORD-2024-881742*
+
+<CodeBlock title="production · log trace · order lifecycle" code="# SYNC chain (2 seconds) ↓&#10;09:14:02  Shipment        Order CREATED (DRAFT)&#10;09:14:02  Shipment        Inventory check requested&#10;09:14:03  Inventory       Reserve: SKU-1194, qty=3&#10;09:14:03  Shipment        Order CONFIRMED&#10;09:14:04  Invoicing       Invoice INV-39201 generated&#10;09:14:04  Tracking        Email sent: order_confirmed&#10;&#10;── 87 second gap ──&#10;&#10;# ASYNC boundary ↓&#10;09:15:31  Carrier         Shipment SHP-77012 created&#10;&#10;── 5 hours ──&#10;&#10;14:22:08  Carrier         Picked up by DHL&#10;&#10;── next day ──&#10;&#10;08:41:19  Carrier         Delivered, signed=J.SMITH&#10;08:41:20  Shipment        Order status=DELIVERED&#10;08:41:20  Tracking        Email sent: order_delivered" />
+
+<Notes>
+"We traced one order across all services. Sorted chronologically. Look at the timing. 09:14:02 to 09:14:04 — creation through invoice generation — 2 seconds. That's synchronous. Shipment calls Inventory, waits for the response, confirms the order, calls Invoicing, waits, then Tracking fires. A chain. Then — 87 second gap before Carrier creates the shipment. That's asynchronous. Carrier is already decoupled at runtime. The timing reveals the architecture: synchronous chain from creation through invoicing, asynchronous to carrier."
+</Notes>
+
+---
+
+## Sync vs Async Boundary
 
 <Split ratio="1:1">
 <div>
 
-**The system narrates itself in real time.**
+<Callout type="danger" label="SYNC CHAIN · 2 seconds">
+**🔴 Shipment → Inventory → Shipment → Invoicing → Tracking**
 
-Every `logger.info("Order confirmed")` is a **fossilized domain event** — published to nobody, preserved in plain text.
+Each step **WAITS** for the previous.
 
-Trace one entity across all services. Compare to what Event Storming documented.
+If Inventory is slow, **EVERYTHING** is slow. If Invoicing is down, orders **STOP**.
+
+This chain is the **extraction blocker**. Break any link = break the flow.
+
+→ Confirms **Exhibit C**: `{orders, inventory_reserved}` co-write. Same coupling, different evidence.
+</Callout>
 
 </div>
 <div>
 
-**Event Storming said:**
-Payment → Inventory → Shipment
+<Callout type="tip" label="ASYNC BOUNDARY · 87 seconds">
+**🟢 Invoicing ···87s gap··· Carrier**
 
-**Production logs say:**
-Inventory → Confirmation → Invoice
+Carrier picks up from a queue or poll.
 
-> *"The gap between what people remember and what the system does — that's the most dangerous kind of technical debt."*
+If Carrier is down, orders still get created.
+
+This boundary **ALREADY EXISTS**. Carrier is already decoupled at runtime — even though Exhibit A showed API coupling.
+
+→ This is your **easiest extraction point**.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit D. Every log line is a fossilized domain event — the events the system was designed to publish but nobody wired up. We traced one order across all services. The Event Storming from 2 years ago said: Payment, then Inventory, then Shipment. The production logs say: Inventory reserved FIRST, then order confirmed, then invoice generated. Different sequence. Different participants. The team's mental model was wrong. And that gap — between what people remember and what the system does — is the most dangerous kind of technical debt. It's not in the code. It's in the team's understanding."
+"Two architectural patterns in one trace. On the left — a synchronous chain. Shipment calls Inventory, waits, confirms, calls Invoicing, waits. Two seconds, four services, all blocking. If any service in that chain is slow, the whole order creation is slow. This confirms Exhibit C's transaction finding — the same coupling, different evidence. On the right — an 87-second gap before Carrier. That's async. Carrier is already decoupled at runtime. Even though Exhibit A showed API coupling between Shipment and Carrier, at runtime they're already separated by a queue. That's your easiest extraction point — the boundary already exists in practice."
 </Notes>
 
 ---
 
-<Callout>
-**— MIDPOINT —**
+## The Event Storming Comparison
 
-The documented model said **3 clean bounded contexts**.
-
-The artifacts are telling a different story.
-
-Let's keep reading.
-</Callout>
+<ContradictionReveal
+  earlierExhibit="Event Storming (2 years ago)"
+  earlierClaim="Payment → Inventory → Shipment"
+  laterExhibit="Production (today)"
+  laterFinding="Inventory → Confirmation → Invoice | Payment doesn't happen at order time at all. | The sequence is different. | The participants are different."
+  connector="but production says…"
+  punchline="The gap between what people remember and what the system does — that's the most dangerous kind of technical debt. | It's not in the code. It's in the team's understanding."
+/>
 
 <Notes>
-"We're halfway through the investigation. Four exhibits in. And the documented model — 3 clean bounded contexts from Event Storming — is already contradicted by every artifact we've read. The contracts show coupling. The database shows shared tables. The transactions show cross-context commits. The logs show a different sequence. Let's keep reading. It gets more revealing."
+SLOW DOWN. Pause before reading the comparison. Let the audience read it themselves first. Then: "The event storming from two years ago said: Payment, then Inventory, then Shipment. Production says: Inventory reserved FIRST, then order confirmed, then invoice generated. Payment doesn't happen at order time at all. The sequence is different. The participants are different. [PAUSE 3 SECONDS] The team's mental model was wrong. Not because they're bad at their jobs. Because the system evolved and the documentation didn't. The gap between what people remember and what the system does — that's the most dangerous kind of technical debt. It's not in the code. It's in the team's understanding."
+</Notes>
+
+---
+
+## The Silent Participant
+
+> *Who else is in the flow?*
+
+<Split ratio="3:2">
+<div>
+
+<CodeBlock title="trace · tracking appearances" code="09:14:04  Tracking   Email sent: order_confirmed&#10;08:41:20  Tracking   Email sent: order_delivered" />
+
+**Tracking Notifications appears TWICE.**
+
+Nobody mentioned it in Event Storming. Nobody put it on the context map.
+
+It owns no state transitions. It makes no domain decisions. But it participates in **every order lifecycle event**.
+
+</div>
+<div>
+
+<Callout type="warning" label="SILENT PARTICIPANT">
+**🚩 Tracking is triggered by status transitions it observes.**
+
+If CONFIRMED or DELIVERED transitions change — **Tracking breaks silently**.
+
+Confirms **Exhibit A**: coupled to everything, owns nothing.
+
+→ **Infrastructure pretending to be a domain service.**
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"One more finding from the logs. Tracking Notifications appears twice — at confirmation and at delivery. Nobody mentioned it in the event storming. Nobody put it on the context map. But it's silently participating in every order lifecycle transition. It owns no state. It makes no decisions. But if the confirmation or delivery transitions change, Tracking breaks — silently, because it's just sending emails. This confirms what Exhibit A suggested — Tracking is infrastructure pretending to be a domain service."
+</Notes>
+
+---
+
+## Fossilized Event Catalog
+
+> *Events the system publishes to nobody*
+
+<Split ratio="3:1">
+<div>
+
+<CompareTable colWeights="2|1|1|1" headers="Fossilized Event|Daily Count|Service|Category" rows="Order CREATED|12,034|Shipment|🟢 core||Inventory RESERVED|11,891|Inventory|🟢 core||Order CONFIRMED|11,756|Shipment|🟢 core||Invoice GENERATED|11,402|Invoicing|🟢 core||Shipment CREATED|10,877|Carrier|🟢 core||Shipment DELIVERED|9,234|Carrier|🟢 core||Order CANCELLED|278|Shipment|🟡 edge case||Refund PROCESSED|156|Invoicing|🟡 edge case||Shipment FAILED|89|Carrier|🔴 error" />
+
+</div>
+<div>
+
+<Callout type="tip" label="THESE ARE YOUR EVENTS">
+**💡 Every log line with a state transition** = a domain event the system never formalized.
+
+The **happy path**: ~11,000/day.
+
+The edge cases nobody mentioned in Event Storming:
+
+→ **278** cancellations/day
+
+→ **156** refunds/day
+
+→ **89** delivery failures/day
+
+🔗 **Remember Exhibit C:** The timestamps (`confirmed_at`, `shipped_at`) are set in the same transactions as these log events. **Same events. Two independent sources.**
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"When you trace 1,000 orders instead of one, you get the full event catalog. The system publishes these events to nobody — they exist only in log files. The happy path processes about 11,000 orders per day. But look at the bottom — 278 cancellations, 156 refunds, 89 delivery failures. Every day. Event storming rarely covers these edge cases. The logs show you every path the system actually takes, including the ones nobody remembers designing. And remember Exhibit C — the lifecycle timestamps? confirmed_at is set in the same transaction as this 'Order CONFIRMED' log event. Two independent sources showing the same events. The evidence is converging."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="4" />
+
+> *Incidents next. What does it cost when boundaries are wrong?*
+
+<Notes>
+"Update the model. Tracking's finding evolves from 'infra?' to 'silent participant' — observed in every order lifecycle, owns nothing. The sync chain (Shipment → Inventory → Invoicing) gets marked red. The async path (Shipment → Carrier, 87s gap) gets marked green — already decoupled. Plus we've named a whole catalogue of fossilized events the system publishes to nobody. The three black boxes still unknown. Hypothesis v0.4 — what actually happens at runtime. The Event Storming is contradicted. Incidents next."
 </Notes>
 
 ---

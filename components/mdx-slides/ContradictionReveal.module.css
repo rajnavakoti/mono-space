@@ -95,13 +95,21 @@
 }
 
 .punchline {
-  padding: 16px 24px;
+  padding: 18px 24px;
   border-top: 2px solid var(--cr-accent);
   background: var(--cr-bg);
-  font-size: 15px;
-  font-style: italic;
   text-align: center;
   color: var(--cr-text);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.punchlinePara {
+  margin: 0;
+  font-size: 14.5px;
+  font-style: italic;
   font-weight: 500;
   letter-spacing: 0.01em;
+  line-height: 1.45;
 }

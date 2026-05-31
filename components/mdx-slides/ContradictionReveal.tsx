@@ -27,7 +27,8 @@ interface ContradictionRevealProps {
   laterExhibit: string;
   /** Pipe-separated statements from the later exhibit (the active finding) */
   laterFinding: string;
-  /** Optional bottom punchline, integrated into the panel so it never orphans */
+  /** Optional bottom punchline, integrated into the panel so it never orphans.
+   *  Use "|" to split into paragraphs for dramatic line breaks. */
   punchline?: string;
   /** Label shown in the connector band. Defaults to "but the database says…" feel. */
   connector?: string;
@@ -70,7 +71,13 @@ export function ContradictionReveal({
       </section>
 
       {punchline && (
-        <footer className={styles.punchline}>{`"${punchline}"`}</footer>
+        <footer className={styles.punchline}>
+          {punchline.split("|").map((para, i, arr) => (
+            <p key={i} className={styles.punchlinePara}>
+              {`${i === 0 ? "“" : ""}${para.trim()}${i === arr.length - 1 ? "”" : ""}`}
+            </p>
+          ))}
+        </footer>
       )}
     </div>
   );
