@@ -363,12 +363,12 @@ Each context **SHOULD own its own Address** representation.
 
 ## The God Entity
 
-> *Shipment Service's "Order" schema*
+> *Shipment Service · openapi.yaml · components/schemas/Order*
 
 <Split ratio="2:1">
 <div>
 
-<CodeBlock title="shipment-service / Order.schema" code="class Order {&#10;&#10;  orderId,  status,  lines[],  totalAmount&#10;&#10;  // from CONSIGNEE&#10;  buyerId,  buyerName,  buyerEmail&#10;&#10;  // from INVENTORY&#10;  warehouseId,  warehouseName&#10;&#10;  // from CARRIER&#10;  carrierId,  carrierName,  trackingNumber&#10;&#10;  // from INVOICING&#10;  invoiceId,  invoiceNumber,  paymentMethod,  paymentStatus&#10;&#10;}" />
+<CodeBlock title="shipment-service · openapi.yaml" code="components:&#10;  schemas:&#10;    Order:&#10;      type: object&#10;      properties:&#10;        orderId: string&#10;        status: OrderStatus&#10;        lines: array&#10;        totalAmount: number&#10;        createdAt: date-time&#10;&#10;        # from CONSIGNEE&#10;        buyerId: string&#10;        buyerName: string&#10;        buyerEmail: string&#10;&#10;        # from INVENTORY&#10;        warehouseId: string&#10;        warehouseName: string&#10;&#10;        # from CARRIER&#10;        carrierId: string&#10;        carrierName: string&#10;        trackingNumber: string&#10;&#10;        # from INVOICING&#10;        invoiceId: string&#10;        invoiceNumber: string&#10;        paymentMethod: string&#10;        paymentStatus: string" />
 
 </div>
 <div>
