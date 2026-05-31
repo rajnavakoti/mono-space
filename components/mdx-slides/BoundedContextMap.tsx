@@ -354,9 +354,17 @@ export function BoundedContextMap({ version }: Props) {
           className={styles.svg}
           preserveAspectRatio="xMidYMid meet"
         >
-          {/* Region fills + strokes */}
+          {/* Region fills + strokes — each group scaled 1.1× around the
+              region's centroid so the larger 20px region labels and 14px
+              findings have breathing room inside the shape outline. The
+              labels themselves are rendered in a separate <g> below so
+              they stay at their original centroid (not double-scaled). */}
           {ordered.map((r) => (
-            <g key={`shape-${r.id}`} className={styles[STATUS_CLASS[r.status]]}>
+            <g
+              key={`shape-${r.id}`}
+              className={styles[STATUS_CLASS[r.status]]}
+              transform={`translate(${r.cx} ${r.cy}) scale(1.1) translate(${-r.cx} ${-r.cy})`}
+            >
               <path d={r.pathD} className={styles.regionPath} />
               {r.memoryLine && (
                 <line
