@@ -1,4 +1,17 @@
 /**
+ * TODO(ux, deferred): The visual UX of this component is parked. Known issues
+ * at v0.1 to fix in one pass once the rest of the Exhibit B–H slides are
+ * content-complete and the final model-viewport proportions are locked:
+ *   - Shipment→Invoicing curve routes around Consignee but the "invoiceId"
+ *     label apex still overlaps Consignee.
+ *   - The dotted dead-boundary line has both start + end arrowheads
+ *     (semantically correct for circular but visually busy).
+ *   - Arrowhead sizing (2.5×2.5) still reads slightly heavy on a wide canvas.
+ *   - Connection-label tones not stress-tested at higher versions (v0.5+
+ *     introduces multiple overlapping tones in close space).
+ * One template used nine times (slide 15 baseline + 8 exhibit closers) —
+ * fix once and all nine inherit. See memory/project_contextmap-ux-deferred.
+ *
  * <ContextMap version="0|1|2|3|4|5|6|7|8" />
  *
  * The recurring Model Update visual — a bounded-context map of the delivery
