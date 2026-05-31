@@ -381,30 +381,40 @@ export function BoundedContextMap({ version }: Props) {
           {/* Overlays */}
           {state.overlays.map((o, i) => {
             if (o.kind === "syncRibbon") {
+              // Translucent red band tracing the sync chain:
+              // Shipment (right edge) → Inventory (left edge) → curve down
+              // → Invoicing (right edge). One clean S-curve, no loops.
               return (
                 <g key={`ov-${i}`} className={styles.syncRibbon}>
                   <path
-                    d="M 285 240 C 400 260, 500 280, 600 320 C 680 350, 600 420, 460 470 C 380 490, 320 490, 320 470"
+                    d="M 370 220 C 470 240, 560 270, 600 310 C 660 380, 560 440, 470 470 C 430 480, 400 475, 380 470"
                     fill="none"
                     strokeWidth="22"
                   />
-                  <text x={500} y={395} className={styles.ribbonLabel} textAnchor="middle">
+                  {/* Label sits near the START of the ribbon, top-left */}
+                  <text x={400} y={195} className={styles.ribbonLabel} textAnchor="middle">
                     {o.label}
                   </text>
                 </g>
               );
             }
             if (o.kind === "asyncDotted") {
+              // Dotted line from Invoicing UP to Carrier, with arrowhead.
+              // Tilted right so it doesn't run through the same channel as
+              // the sync ribbon.
               return (
                 <g key={`ov-${i}`} className={styles.asyncDotted}>
                   <path
-                    d="M 400 500 C 500 480, 580 360, 620 290"
+                    d="M 470 470 C 530 400, 565 320, 590 240"
                     fill="none"
                     strokeWidth="2"
-                    strokeDasharray="3 4"
+                    strokeDasharray="4 5"
                   />
+                  {/* Arrowhead at the Carrier end of the dotted line */}
+                  <polygon points="582 245, 600 240, 593 256" />
                   {o.label && (
-                    <text x={530} y={400} className={styles.asyncLabel} textAnchor="middle">
+                    /* Label sits along the curve, lower-right of the SYNC label */
+                    <text x={610} y={360} className={styles.asyncLabel} textAnchor="start">
                       {o.label}
                     </text>
                   )}
