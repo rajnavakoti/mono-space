@@ -50,6 +50,9 @@ interface Region {
 
 interface Overlay {
   kind: "syncRibbon" | "asyncDotted" | "addressTendrils" | "returnsArrow";
+  /** Label rendered only at the version that introduces the finding;
+   *  passed as undefined on later versions where the line persists but
+   *  the label would be redundant clutter. */
   label?: string;
 }
 
@@ -275,7 +278,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       { id: "shipment-fulfilment", pathD: SHIP_FULFIL, status: "red",
         label: "SHIPMENT FULFILMENT",
         sublabel: "= Shipment ⊕ Carrier  (72% co-change)",
-        findings: ["⚠ god entity", "BLOCKED ✗", "⚠ 891 overrides"],
+        findings: ["⚠ god entity", "⚠ saga needed before extraction", "⚠ 891 overrides"],
         cx: 440, cy: 195, background: true,
         memoryLine: { x1: 442, y1: 110, x2: 442, y2: 320 } },
       { id: "inventory", pathD: INV_DEV, status: "red", label: "INVENTORY",
@@ -297,11 +300,13 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown", label: "???", cx: 965, cy: 622 },
   );
 
-  // Overlays per version
+  // Overlays per version — labels only appear at the version that
+  // introduces the finding; the lines themselves stay through later
+  // versions as visual memory.
   if (v === 4) overlays.push({ kind: "syncRibbon", label: "SYNC 2s" });
-  if (v >= 4) overlays.push({ kind: "asyncDotted", label: "ASYNC 87s" });
-  if (v >= 6) overlays.push({ kind: "addressTendrils", label: "342 mismatches" });
-  if (v >= 7) overlays.push({ kind: "returnsArrow", label: "DEL-E011" });
+  if (v >= 4) overlays.push({ kind: "asyncDotted", label: v === 4 ? "ASYNC 87s" : undefined });
+  if (v >= 6) overlays.push({ kind: "addressTendrils", label: v === 6 ? "342 mismatches" : undefined });
+  if (v >= 7) overlays.push({ kind: "returnsArrow", label: v === 7 ? "DEL-E011" : undefined });
 
   return {
     regions,
@@ -390,9 +395,11 @@ export function BoundedContextMap({ version }: Props) {
                     strokeWidth="2"
                     strokeDasharray="3 4"
                   />
-                  <text x={530} y={400} className={styles.asyncLabel} textAnchor="middle">
-                    {o.label}
-                  </text>
+                  {o.label && (
+                    <text x={530} y={400} className={styles.asyncLabel} textAnchor="middle">
+                      {o.label}
+                    </text>
+                  )}
                 </g>
               );
             }
@@ -402,20 +409,26 @@ export function BoundedContextMap({ version }: Props) {
                   <path d="M 200 460 C 260 380, 320 280, 285 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
                   <path d="M 215 445 C 350 320, 500 220, 620 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
                   <path d="M 195 490 C 250 480, 330 478, 380 480" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
-                  <text x={420} y={335} className={styles.addressLabel} textAnchor="middle">
-                    {o.label}
-                  </text>
+                  {o.label && (
+                    <text x={420} y={335} className={styles.addressLabel} textAnchor="middle">
+                      {o.label}
+                    </text>
+                  )}
                 </g>
               );
             }
             if (o.kind === "returnsArrow") {
+              // Starts clearly INSIDE Carrier (cy=210 is Carrier's centre)
+              // and arcs down to the top of the Returns/Policy blob.
               return (
                 <g key={`ov-${i}`} className={styles.returnsArrow}>
-                  <path d="M 620 290 C 640 380, 640 440, 620 480" fill="none" strokeWidth="1.5" />
-                  <polygon points="615,478 625,478 620,490" />
-                  <text x={665} y={395} className={styles.returnsLabel} textAnchor="middle">
-                    {o.label}
-                  </text>
+                  <path d="M 605 225 C 625 320, 630 410, 610 478" fill="none" strokeWidth="2" />
+                  <polygon points="603,476 617,476 610,490" />
+                  {o.label && (
+                    <text x={665} y={395} className={styles.returnsLabel} textAnchor="middle">
+                      {o.label}
+                    </text>
+                  )}
                 </g>
               );
             }
@@ -461,6 +474,14 @@ export function BoundedContextMap({ version }: Props) {
                 <tspan className={styles.mergedStrike}>Carrier</tspan>
               </text>
             </g>
+          )}
+
+          {/* Exhibit tag in the top-right corner of the canvas — small
+              anchor so the audience always knows which exhibit just landed. */}
+          {v >= 1 && (
+            <text x={1060} y={50} className={styles.exhibitTag} textAnchor="end">
+              {`[${["A", "B", "C", "D", "E", "F", "G", "H"][v - 1]}]`}
+            </text>
           )}
         </svg>
       </div>

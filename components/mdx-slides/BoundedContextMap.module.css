@@ -22,7 +22,6 @@
 .canvas {
   width: 100%;
   background: var(--bcm-bg);
-  border: 1px solid var(--color-border-muted, #DDD);
 }
 
 .svg {
@@ -84,11 +83,22 @@
 /* Ghost-of-formerly-separate-context labels inside the merged blob */
 .mergedGhostLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 11px;
+  font-size: 15px;
   font-style: italic;
   fill: var(--bcm-red);
   opacity: 0.7;
   letter-spacing: 0.04em;
+}
+
+/* Exhibit tag in canvas corner — anchors the audience to which exhibit
+   the current model state corresponds to. */
+.exhibitTag {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 22px;
+  font-weight: 800;
+  fill: var(--bcm-text-muted);
+  letter-spacing: 0.18em;
+  opacity: 0.45;
 }
 
 .mergedStrike {
@@ -96,10 +106,10 @@
   text-decoration-thickness: 1px;
 }
 
-/* Labels */
+/* Labels — sized for back-of-room readability at a DDD-Europe-style projection */
 .regionLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -107,14 +117,14 @@
 
 .regionSublabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 10px;
+  font-size: 14px;
   font-style: italic;
   letter-spacing: 0.04em;
 }
 
 .regionFinding {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.04em;
 }
@@ -226,7 +236,7 @@
 
 .ribbonLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 800;
   fill: var(--bcm-red);
   letter-spacing: 0.08em;
@@ -240,7 +250,7 @@
 
 .asyncLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
   fill: var(--bcm-green);
   letter-spacing: 0.08em;
@@ -254,7 +264,7 @@
 
 .addressLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
   fill: var(--bcm-accent);
   letter-spacing: 0.06em;
@@ -270,7 +280,7 @@
 
 .returnsLabel {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
   fill: var(--bcm-purple);
   letter-spacing: 0.06em;
