@@ -26,6 +26,7 @@ export { ContradictionReveal } from "./ContradictionReveal";
 export { BigStat } from "./BigStat";
 export { RankedBars } from "./RankedBars";
 export { LineageTree } from "./LineageTree";
+export { BoundedContextMap } from "./BoundedContextMap";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -55,6 +56,7 @@ import { ContradictionReveal } from "./ContradictionReveal";
 import { BigStat } from "./BigStat";
 import { RankedBars } from "./RankedBars";
 import { LineageTree } from "./LineageTree";
+import { BoundedContextMap } from "./BoundedContextMap";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -91,4 +93,5 @@ export const mdxSlideComponents = {
   BigStat,
   RankedBars,
   LineageTree,
+  BoundedContextMap,
 };

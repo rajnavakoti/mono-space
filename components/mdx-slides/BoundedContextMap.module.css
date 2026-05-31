@@ -1,0 +1,201 @@
+/* BoundedContextMap — overlapping bounded-context regions. */
+
+.figure {
+  --bcm-accent: var(--color-accent, #C9A96E);
+  --bcm-bg: var(--color-bg, #FFF);
+  --bcm-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --bcm-text: var(--color-text, #111);
+  --bcm-text-muted: var(--color-text-muted, #999);
+  --bcm-red: #B26464;
+  --bcm-green: #6E9B6E;
+  --bcm-purple: #8C78A5;
+  --bcm-gray: #888;
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.canvas {
+  width: 100%;
+  background: var(--bcm-bg);
+  border: 1px solid var(--color-border-muted, #DDD);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Region paths — fill is semi-transparent, stroke carries the status colour. */
+.regionPath {
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 200ms ease;
+}
+
+.statusRed .regionPath {
+  fill: rgba(178, 100, 100, 0.16);
+  stroke: var(--bcm-red);
+}
+
+.statusAmber .regionPath {
+  fill: rgba(201, 169, 110, 0.16);
+  stroke: var(--bcm-accent);
+  stroke-width: 2.5;
+}
+
+.statusGreen .regionPath {
+  fill: rgba(110, 155, 110, 0.16);
+  stroke: var(--bcm-green);
+}
+
+.statusPurple .regionPath {
+  fill: rgba(140, 120, 165, 0.16);
+  stroke: var(--bcm-purple);
+}
+
+.statusGray .regionPath {
+  fill: rgba(136, 136, 136, 0.10);
+  stroke: var(--bcm-gray);
+}
+
+.statusUnknown .regionPath {
+  fill: rgba(150, 150, 150, 0.06);
+  stroke: var(--bcm-text-muted);
+  stroke-dasharray: 8 5;
+  stroke-width: 2;
+  opacity: 0.65;
+}
+
+/* The faint internal line that marks the Shipment+Carrier fusion */
+.memoryLine {
+  stroke: var(--bcm-red);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Labels */
+.regionLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.regionSublabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 10px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.regionFinding {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* Label fills per status — labels mirror the border colour for emphasis. */
+.statusRed .regionLabel,
+.statusRed .regionSublabel,
+.statusRed .regionFinding {
+  fill: var(--bcm-red);
+}
+
+.statusAmber .regionLabel,
+.statusAmber .regionSublabel,
+.statusAmber .regionFinding {
+  fill: var(--bcm-accent);
+}
+
+.statusGreen .regionLabel,
+.statusGreen .regionSublabel,
+.statusGreen .regionFinding {
+  fill: var(--bcm-green);
+}
+
+.statusPurple .regionLabel,
+.statusPurple .regionSublabel,
+.statusPurple .regionFinding {
+  fill: var(--bcm-purple);
+}
+
+.statusGray .regionLabel,
+.statusGray .regionSublabel,
+.statusGray .regionFinding {
+  fill: var(--bcm-gray);
+}
+
+.statusUnknown .regionLabel {
+  fill: var(--bcm-text-muted);
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Summary band — "Remembered 3 / Discovered 7" */
+.summaryBand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin: 16px auto 0;
+  padding: 16px 32px;
+  border-top: 2px solid var(--bcm-accent);
+  background: var(--bcm-bg-muted);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  max-width: 800px;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--bcm-text-muted);
+  font-weight: 600;
+}
+
+.summaryValue {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--bcm-text);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.summaryDetail {
+  font-size: 11px;
+  color: var(--bcm-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.summaryDivider {
+  font-size: 28px;
+  color: var(--bcm-text-muted);
+  font-weight: 300;
+}
+
+.caption {
+  margin-top: 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--bcm-text-muted);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
