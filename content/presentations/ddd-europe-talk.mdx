@@ -1032,29 +1032,98 @@ This is a **ticking clock**, not a fire.
 
 ---
 
-## Exhibit F — Data Lineage
+<TitleCard badge="EXHIBIT F" subtitle="Each copy with different rules is a bounded context boundary.">Data Lineage</TitleCard>
+
+<Notes>
+"Sixth lens. We've mapped structure, behavior, cost. Now we trace one specific piece of data — the delivery address — through every place it's stored. Because in a legacy system, data doesn't live in one place. It lives in four. Maybe six."
+</Notes>
+
+---
+
+## The Copy Chain
+
+> *Who owns the truth when there are four copies?*
+
+<LineageTree
+  source="CONSIGNEE::source of truth · customer-managed"
+  branches="SHIPMENT::📸::Snapshot::ORDER CONTEXT::Frozen at order time·Never refreshed|CARRIER::🔄::Mutable::DELIVERY CONTEXT::Updated by dispatch independently·Without telling source|INVOICING::📄::Lossy::FINANCIAL CONTEXT::Concatenated string·Can't parse fields back|WAREHOUSE::📚::Archive::ANALYTICS CONTEXT::Full history (SCD Type 2)·Better data than source"
+  footer="342 mismatches in 90 days"
+/>
+
+<Notes>
+"We traced the delivery address from source to every copy. Consignee is the source of truth — customer-managed. Four copies. Shipment snapshots it at order time — never updates it. Carrier can update it independently if the customer calls dispatch — without telling anyone. Invoicing stores it as one concatenated string — lossy, can't be parsed back into fields. And the data warehouse — SCD Type 2 — actually has BETTER history than the source, because Consignee only stores current. 342 mismatches in 90 days between the copies."
+</Notes>
+
+---
+
+## The Mismatch
+
+> *Three answers. Same order. None wrong in their context.*
 
 <Split ratio="1:1">
 <div>
 
-**Follow one entity. Find who owns the truth.**
-
-The delivery address exists in **4 copies**. 4 formats. 4 update policies.
-
-**342 mismatches** in 90 days.
-
-When a customer calls: *"where is my order?"* — the answer depends on which service the agent looks at.
+<CodeBlock title="support · ORD-2024-881742" code="CUSTOMER:  Where is my order going?&#10;&#10;# Support checks Shipment Service&#10;  → 123 Old Street&#10;    (snapshot from order time)&#10;&#10;# Support checks Carrier Integration&#10;  → 456 New Street&#10;    (customer called dispatch)&#10;&#10;# Support checks Invoicing&#10;  → 'John Smith, 123 Old St, Amsterdam...'&#10;    (can't even parse the fields)&#10;&#10;# THREE ANSWERS. SAME ORDER.&#10;# None wrong in their context." />
 
 </div>
 <div>
 
-<ContentCard title="EACH COPY = A CONTEXT BOUNDARY" accent="amber" items="Consignee: current address (customer-managed), Shipment: snapshot at order time (immutable), Carrier: operational — updatable before dispatch, Invoicing: concatenated string (lossy / unreconstructable), Warehouse: SCD Type 2 — has better history than the source" />
+<Callout type="warning" label="THE REAL PROBLEM">
+**The copies aren't bugs.** Each has a legitimate purpose:
+
+→ **Shipment** = "address at order time"
+
+→ **Carrier** = "where to deliver today"
+
+→ **Invoicing** = "legal billing record"
+
+**The problem is NO PROPAGATION.**
+
+When the customer changes address:
+
+→ Carrier updates ✓
+
+→ Shipment doesn't know ✗
+
+→ Consignee doesn't know ✗
+
+→ Invoice can't be updated ✗
+
+**Missing event:** `DeliveryAddressChanged`
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit F. Pick one entity — the delivery address — and trace it everywhere. 4 copies. 4 formats. 4 different update policies. The carrier can update the address independently after the order is placed. The invoice stores it as one concatenated string you can't parse back. 342 mismatches in 90 days. Each copy with different rules IS a bounded context boundary. The fix isn't centralizing the data — it's acknowledging the context boundaries and building the propagation events that should exist."
+"When a customer calls support and asks 'where is my order going?' — the answer depends on which service the agent looks at. Shipment says the old address — snapshot from order time. Carrier says the new address — the customer called dispatch and changed it. Invoicing has it as one concatenated string you can't even parse. Three answers, same order, none wrong in their own context. The copies aren't bugs. Each serves a legitimate purpose. The problem is there's no propagation. When the address changes, nobody tells the others. The missing domain event — DeliveryAddressChanged — should exist but doesn't."
+</Notes>
+
+---
+
+## Each Copy = A Boundary
+
+> *Different format. Different update policy. Different purpose.*
+
+<LineageTree
+  branches="SHIPMENT::📸::Snapshot::ORDER CONTEXT::Frozen at order time·Never refreshed|CARRIER::🔄::Mutable::DELIVERY CONTEXT::Updated by dispatch independently·Without telling the source|INVOICING::📄::Lossy::FINANCIAL CONTEXT::Concatenated · immutable·Can't parse fields back|WAREHOUSE::📚::Archive::ANALYTICS CONTEXT::SCD Type 2 · full history·Better data than source"
+  footer="Each copy with different rules IS a bounded context"
+/>
+
+<Notes>
+"Four copies. Four completely different characters. Shipment freezes the address — a snapshot, never updated. Carrier keeps it mutable — operational, changes before dispatch. Invoicing concatenates it into a legal document — lossy, irreversible. The warehouse versions it with full history — accidentally has better data than the source. Different format. Different update policy. Different purpose. Each copy with different rules IS a bounded context boundary. The fix isn't centralizing the data. It's acknowledging these boundaries exist and building the propagation events between them."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="6" />
+
+> *Error codes next. What business rules has the system been quietly enforcing?*
+
+<Notes>
+"Update the model. Dotted blue lines now show data flow — the address copies radiating from Consignee outward. 342 mismatches labelled on the Consignee-Carrier line. A missing event flag — DeliveryAddressChanged — hovers between them. The three black boxes still unknown. Hypothesis v0.6 — where data drifts and events are missing. Error codes next."
 </Notes>
 
 ---
