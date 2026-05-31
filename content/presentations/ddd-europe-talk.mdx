@@ -1128,27 +1128,117 @@ When the customer changes address:
 
 ---
 
-## Exhibit G — Error Code Reverse-Engineering
+<TitleCard badge="EXHIBIT G" subtitle="The errors aren't bugs — they're the system protecting itself.">Error Code Reverse-Engineering</TitleCard>
+
+<Notes>
+"Seventh lens. Every legacy system has cryptic error codes that nobody fully understands but everyone works around. These codes are fossilized business rules. Each one is a domain invariant someone decided was important enough to validate and reject. The error code table is the most honest business rules document in the entire system."
+</Notes>
+
+---
+
+## The Decoded Rules
+
+> *Two error codes. Two undocumented business rules.*
+
+<Callout type="warning" label="ORD-E003 · 4,102/year 🟠">
+**"Price variance exceeded"**
+
+If price drifts more than **2%** between cart and checkout → reject the order.
+
+That **2% exists NOWHERE in documentation. Only in code.**
+
+Fires **11 times a day.** Does your pricing manager know it exists?
+</Callout>
+
+<Callout type="warning" label="ORD-E031 · 2,156/year 🟠">
+**"Split shipment threshold"**
+
+Items from **3+ warehouses** → triggers split-shipment logic.
+
+This error references **warehouses, carriers, AND orders** — an invariant validating across **3 contexts** = orchestration logic that nobody gave a name to.
+</Callout>
+
+<Notes>
+"Let me show you what the error codes decode to. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it."
+</Notes>
+
+---
+
+## The Misplaced Rule + The Escape Hatch
 
 <Split ratio="1:1">
 <div>
 
-**Error codes are fossilized business rules.**
+<Callout type="warning" label="DEL-E011 · 412/year 🟡">
+**"Return window validation"**
 
-Every `ORD-E003: Price variance exceeded` encodes a domain invariant someone decided was important enough to validate and reject.
+→ Electronics = 30 days
 
-The error code table is the **most honest business rules document** in the system.
+→ Clothing = 14 days
+
+→ Perishable = none
+
+**Lives in:** Carrier Service (`DEL-` prefix)
+
+**Should be:** Returns / Policy
+
+This is a business **POLICY**, not delivery **LOGISTICS**.
+
+The prefix shows where the rule **lives**. The content shows where it **belongs**.
+
+→ Move it to a new **Returns/Policy** context.
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="DECODED BUSINESS RULES" accent="amber" items="ORD-E003: 2% price tolerance — exists only in code, ORD-E031: split shipment at 3+ warehouses — hidden orchestration context, DEL-E011: return window per category — business rule in wrong service, ORD-E099: 891 validation bypasses/year — the escape hatch nobody governs" />
+<Callout type="danger" label="ORD-E099 · 891/year 🔴">
+**"Legacy override applied"**
+
+**891 times per year**, someone bypasses validation.
+
+**What rules does it skip?**
+
+**Nobody knows.**
+
+`skip_validation()` has grown over years.
+
+No documentation. No audit trail.
+
+🚩 **Audit this FIRST.**
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit G. Nobody documents error codes. They accumulate over years. But each one is a fossilized business rule. ORD-E003: if the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation — only in code. It fires 11 times a day. DEL-E011: return window differs by product category. That's a business policy living in the wrong service — delivery, not returns. And ORD-E099: legacy override. 891 times a year, someone bypasses validation. What rules does it skip? Nobody knows completely. The errors aren't bugs — they're the system protecting itself."
+"Two more findings. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just discovered a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. And ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone on the ops team bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
+</Notes>
+
+---
+
+## The Load-Bearing Ratio
+
+> *ORD-E001: "Insufficient allocation"*
+
+<BigStat value="12,847" label="error fires per year" tone="amber" />
+
+<BigStat value="23" label="actual incidents (from Exhibit E)" tone="red" punchline="The error handling is LOAD-BEARING. Remove this validation without understanding it → 12,847 failures instead of 23." />
+
+<Notes>
+"One more connection. Remember the 23 incidents at Shipment-Inventory from Exhibit E? ORD-E001 — insufficient allocation — fires 12,847 times per year. The error handling catches 12,824 cases successfully. Only 23 escape into incidents. The error code is load-bearing. It's not a bug — it's the system protecting itself. Remove this validation without understanding it and you get 12,847 failures per year instead of 23. That ratio tells you: the error handling is more important than you think. Understand what it protects before you touch it."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="7" />
+
+> *Last lens. What does git history reveal about our boundaries?*
+
+<Notes>
+"Update the model. A new context reveals itself — Returns/Policy — in purple, in place of the middle black box. DEL-E011 traces from Carrier into this new context. Shipment picks up the '⚠ 891 overrides' warning. The two remaining black boxes still unknown. Hypothesis v0.7 — business rules nobody documented. One new context discovered. Change velocity next."
 </Notes>
 
 ---
