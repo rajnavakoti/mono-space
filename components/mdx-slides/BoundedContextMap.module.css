@@ -227,30 +227,78 @@
 
 /* ── Overlays ─────────────────────────────────────────────────────────── */
 
-/* Note box (e.g. v0.4 runtime flow legend) — small annotation in the
-   top-right corner that explains the version's finding in words rather
-   than drawing labelled connection lines on the canvas. */
-.noteHeader {
+/* Sync chain ribbon (v0.4): translucent red band visualising the
+   synchronous flow Shipment → Inventory → Invoicing. No label on the
+   ribbon itself — the HTML legend below the canvas explains it. */
+.syncRibbon > path {
+  stroke: rgba(178, 100, 100, 0.35);
+}
+
+/* Async dotted line (v0.4+): green dotted line + arrowhead from
+   Invoicing toward Carrier. No label. */
+.asyncDotted > path {
+  stroke: var(--bcm-green);
+  opacity: 0.75;
+}
+.asyncDotted > polygon {
+  fill: var(--bcm-green);
+  opacity: 0.85;
+}
+
+/* Marker fills — used both by SVG circle markers and (.markerX as a
+   className) by HTML span markers in the HTML legend bar. */
+.markerRed { fill: var(--bcm-red); background: var(--bcm-red); }
+.markerGreen { fill: var(--bcm-green); background: var(--bcm-green); }
+.markerAmber { fill: var(--bcm-accent); background: var(--bcm-accent); }
+.markerPurple { fill: var(--bcm-purple); background: var(--bcm-purple); }
+
+/* ── HTML legend bar below the canvas ──────────────────────────────── */
+/* Lives below the SVG, above the figcaption. Always has room.
+   Never competes with shapes for canvas space. */
+.legendBar {
+  margin: 12px auto 0;
+  max-width: 1000px;
+  padding: 12px 24px;
+  background: var(--bcm-bg-muted);
+  border-left: 3px solid var(--bcm-accent);
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 14px;
+}
+
+.legendHeader {
+  font-size: 12px;
   font-weight: 800;
-  fill: var(--bcm-text-muted);
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--bcm-text-muted);
+  margin-bottom: 8px;
 }
 
-.noteItem {
-  font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 15px;
+.legendList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
   font-weight: 500;
-  fill: var(--bcm-text);
+  color: var(--bcm-text);
   letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
-.markerRed { fill: var(--bcm-red); }
-.markerGreen { fill: var(--bcm-green); }
-.markerAmber { fill: var(--bcm-accent); }
-.markerPurple { fill: var(--bcm-purple); }
+.legendMarker {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
 
 /* Address-drift tendrils from Consignee (v0.6+) — dotted amber arcs out */
 .addressTendrils > path {

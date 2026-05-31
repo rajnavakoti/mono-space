@@ -49,20 +49,25 @@ interface Region {
 }
 
 interface Overlay {
-  kind: "addressTendrils" | "returnsArrow" | "noteBox";
+  kind: "syncRibbon" | "asyncDotted" | "addressTendrils" | "returnsArrow";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
   label?: string;
-  /** For "noteBox" kind: structured legend items rendered as a small
-   *  annotation in the top-right corner of the canvas. */
-  noteHeader?: string;
-  noteItems?: { marker: "red" | "green" | "amber" | "purple"; text: string }[];
+}
+
+interface Legend {
+  header: string;
+  items: { marker: "red" | "green" | "amber" | "purple"; text: string }[];
 }
 
 interface ModelState {
   regions: Region[];
   overlays: Overlay[];
+  /** Optional HTML legend rendered below the canvas (between the SVG
+   *  and the figcaption). Lives outside the SVG so it never competes
+   *  with shapes for room. */
+  legend?: Legend;
   caption: string;
   showSummaryBand: boolean;
 }
@@ -304,26 +309,46 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown", label: "???", cx: 965, cy: 622 },
   );
 
-  // Overlays per version. Lines/paths only when they genuinely help
-  // (Returns arrow at v0.7, address tendrils at v0.6 to show fan-out).
-  // For v0.4 the sync/async narrative is carried by a small annotation
-  // note box rather than overlay paths — much easier to read.
+  // Overlays draw on the canvas — lines/ribbons/arrows that carry the
+  // *visual* signal. Their *meaning* is carried by an HTML legend below
+  // the canvas (state.legend) so we never have to find room inside the
+  // shape-packed SVG for explanatory text.
+  if (v === 4) overlays.push({ kind: "syncRibbon" });
+  if (v >= 4) overlays.push({ kind: "asyncDotted" });
+  if (v >= 6) overlays.push({ kind: "addressTendrils" });
+  if (v >= 7) overlays.push({ kind: "returnsArrow" });
+
+  // Legend per version — explains the overlays in words. Sits below
+  // the canvas as HTML, always has room, never overlaps shapes.
+  let legend: Legend | undefined;
   if (v === 4) {
-    overlays.push({
-      kind: "noteBox",
-      noteHeader: "RUNTIME FLOW",
-      noteItems: [
-        { marker: "red", text: "Shipment → Inventory → Invoicing · 2s  (sync chain)" },
-        { marker: "green", text: "→ Carrier · 87s  (async gap)" },
+    legend = {
+      header: "Runtime flow",
+      items: [
+        { marker: "red", text: "Sync chain · 2s — Shipment → Inventory → Invoicing" },
+        { marker: "green", text: "Async gap · 87s — → Carrier" },
       ],
-    });
+    };
+  } else if (v === 6) {
+    legend = {
+      header: "Data lineage",
+      items: [
+        { marker: "amber", text: "Address copies fan out from Consignee → Shipment · Carrier · Invoicing (342 mismatches)" },
+      ],
+    };
+  } else if (v === 7) {
+    legend = {
+      header: "Discovery",
+      items: [
+        { marker: "purple", text: "Returns / Policy revealed by DEL-E011 in Carrier — a new bounded context" },
+      ],
+    };
   }
-  if (v >= 6) overlays.push({ kind: "addressTendrils", label: v === 6 ? "342 mismatches" : undefined });
-  if (v >= 7) overlays.push({ kind: "returnsArrow", label: v === 7 ? "DEL-E011" : undefined });
 
   return {
     regions,
     overlays,
+    legend,
     caption: CAPTIONS[v],
     showSummaryBand: v === 8,
   };
@@ -391,45 +416,37 @@ export function BoundedContextMap({ version }: Props) {
             </g>
           ))}
 
-          {/* Overlays */}
+          {/* Overlays — draw lines/ribbons/arrows only. No text labels
+              on them. Their meaning is carried by the HTML legend below
+              the canvas. */}
           {state.overlays.map((o, i) => {
-            if (o.kind === "noteBox" && o.noteHeader && o.noteItems) {
-              // Small legend in the top-LEFT corner of the canvas (opposite
-              // the [exhibit] tag in top-right), well clear of the shapes.
-              // Names the participating shapes in the item text so the
-              // audience can SEE which contexts are connected without
-              // needing drawn lines.
-              const baseY = 80;
-              const baseX = 40;
+            if (o.kind === "syncRibbon") {
+              // Translucent red band tracing the sync chain:
+              // Shipment right-edge → Inventory left → curve down to
+              // Invoicing right-edge. Wide, semi-transparent, no text.
               return (
-                <g key={`ov-${i}`} className={styles.noteBox}>
-                  <text
-                    x={baseX}
-                    y={baseY}
-                    textAnchor="start"
-                    className={styles.noteHeader}
-                  >
-                    {o.noteHeader}
-                  </text>
-                  {o.noteItems.map((item, idx) => {
-                    const y = baseY + 32 + idx * 28;
-                    const markerClass =
-                      item.marker === "red"
-                        ? styles.markerRed
-                        : item.marker === "green"
-                          ? styles.markerGreen
-                          : item.marker === "amber"
-                            ? styles.markerAmber
-                            : styles.markerPurple;
-                    return (
-                      <g key={idx}>
-                        <circle cx={baseX + 8} cy={y - 5} r={6} className={markerClass} />
-                        <text x={baseX + 25} y={y} textAnchor="start" className={styles.noteItem}>
-                          {item.text}
-                        </text>
-                      </g>
-                    );
-                  })}
+                <g key={`ov-${i}`} className={styles.syncRibbon}>
+                  <path
+                    d="M 370 220 C 470 240, 560 270, 600 310 C 660 380, 560 440, 470 470 C 430 480, 400 475, 380 470"
+                    fill="none"
+                    strokeWidth="22"
+                  />
+                </g>
+              );
+            }
+            if (o.kind === "asyncDotted") {
+              // Green dotted line from Invoicing → Carrier with arrowhead
+              // at the Carrier end. Tilted right so it stays clear of
+              // the sync ribbon.
+              return (
+                <g key={`ov-${i}`} className={styles.asyncDotted}>
+                  <path
+                    d="M 470 470 C 530 400, 565 320, 590 240"
+                    fill="none"
+                    strokeWidth="2"
+                    strokeDasharray="4 5"
+                  />
+                  <polygon points="582 245, 600 240, 593 256" />
                 </g>
               );
             }
@@ -439,26 +456,16 @@ export function BoundedContextMap({ version }: Props) {
                   <path d="M 200 460 C 260 380, 320 280, 285 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
                   <path d="M 215 445 C 350 320, 500 220, 620 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
                   <path d="M 195 490 C 250 480, 330 478, 380 480" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
-                  {o.label && (
-                    <text x={420} y={335} className={styles.addressLabel} textAnchor="middle">
-                      {o.label}
-                    </text>
-                  )}
                 </g>
               );
             }
             if (o.kind === "returnsArrow") {
-              // Starts clearly INSIDE Carrier (cy=210 is Carrier's centre)
-              // and arcs down to the top of the Returns/Policy blob.
+              // Starts clearly INSIDE Carrier and arcs down to the top of
+              // the Returns/Policy blob.
               return (
                 <g key={`ov-${i}`} className={styles.returnsArrow}>
                   <path d="M 605 225 C 625 320, 630 410, 610 478" fill="none" strokeWidth="2" />
                   <polygon points="603,476 617,476 610,490" />
-                  {o.label && (
-                    <text x={665} y={395} className={styles.returnsLabel} textAnchor="middle">
-                      {o.label}
-                    </text>
-                  )}
                 </g>
               );
             }
@@ -515,6 +522,30 @@ export function BoundedContextMap({ version }: Props) {
           )}
         </svg>
       </div>
+
+      {state.legend && (
+        <div className={styles.legendBar}>
+          <div className={styles.legendHeader}>{state.legend.header}</div>
+          <ul className={styles.legendList}>
+            {state.legend.items.map((item, i) => {
+              const markerClass =
+                item.marker === "red"
+                  ? styles.markerRed
+                  : item.marker === "green"
+                    ? styles.markerGreen
+                    : item.marker === "amber"
+                      ? styles.markerAmber
+                      : styles.markerPurple;
+              return (
+                <li key={i} className={styles.legendItem}>
+                  <span className={`${styles.legendMarker} ${markerClass}`} />
+                  <span>{item.text}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
 
       {state.showSummaryBand && (
         <div className={styles.summaryBand}>
