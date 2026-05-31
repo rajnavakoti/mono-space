@@ -429,6 +429,56 @@ This is a **Big Ball of Mud** at the boundary level.
 
 ---
 
+## Dead Boundary vs Boundary Violation
+
+> *Not all coupling is the same*
+
+<Split ratio="2:1">
+<div>
+
+<CodeBlock title="shipment-carrier · coupling evidence" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string        # from Shipment&#10;    recipientId: string    # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;&#10;# Same concept. Two owners.&#10;# Circular references." />
+
+</div>
+<div>
+
+<Callout type="danger" label="DEAD BOUNDARY">
+Both services define **Shipment** schema. Both reference each other. **Circular.**
+
+**Duplicate ownership** of the same concept.
+
+→ **MERGE** into one context or build a proper **ACL**.
+</Callout>
+
+</div>
+</Split>
+
+<Split ratio="2:1">
+<div>
+
+<CodeBlock title="shipment-inventory · coupling evidence" code="# SHIPMENT SERVICE references:&#10;  Order:&#10;    warehouseId: string    # from Inventory&#10;&#10;# INVENTORY SERVICE references:&#10;  Reservation:&#10;    orderId: string        # from Shipment&#10;&#10;# Different concepts. Shared IDs only.&#10;# No schema duplication." />
+
+</div>
+<div>
+
+<Callout type="warning" label="BOUNDARY VIOLATION">
+Share IDs only. **No duplicate schemas.**
+
+**Order ≠ Reservation.** Different concepts.
+
+The **integration pattern is wrong**, not the boundary.
+
+→ **FIX the pattern** (replace co-write with saga/events)
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Not all coupling is the same. Look at the evidence side by side. Shipment and Carrier both define a Shipment schema — carrierId, trackingNumber, same fields, two owners. Circular references. That's a dead boundary — same concept, two services pretending to be separate. Either merge or build an ACL. Now Shipment and Inventory — they share IDs only. orderId and warehouseId. But Order is not the same concept as Reservation. These are genuinely different domains coupled by the wrong integration pattern. Don't merge — fix the pattern. Replace the shared transaction with events or a saga."
+</Notes>
+
+---
+
 ## The model updates
 
 <ContextMap version="1" />
