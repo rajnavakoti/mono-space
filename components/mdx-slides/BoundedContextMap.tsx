@@ -310,13 +310,15 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   );
 
   // Overlays draw on the canvas — lines/ribbons/arrows that carry the
-  // *visual* signal. Their *meaning* is carried by an HTML legend below
-  // the canvas (state.legend) so we never have to find room inside the
-  // shape-packed SVG for explanatory text.
+  // *visual* signal. Each overlay appears ONLY on the version that
+  // introduces the finding. The cumulative state of the model is
+  // carried by shape colours + findings inside the cards; persisting
+  // overlay paths without their legend (which appears only at the
+  // introducing version) would be unexplained noise.
   if (v === 4) overlays.push({ kind: "syncRibbon" });
-  if (v >= 4) overlays.push({ kind: "asyncDotted" });
-  if (v >= 6) overlays.push({ kind: "addressTendrils" });
-  if (v >= 7) overlays.push({ kind: "returnsArrow" });
+  if (v === 4) overlays.push({ kind: "asyncDotted" });
+  if (v === 6) overlays.push({ kind: "addressTendrils" });
+  if (v === 7) overlays.push({ kind: "returnsArrow" });
 
   // Legend per version — explains the overlays in words. Sits below
   // the canvas as HTML, always has room, never overlaps shapes.
