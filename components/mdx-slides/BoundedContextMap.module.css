@@ -72,13 +72,28 @@
   opacity: 0.65;
 }
 
-/* The faint internal line that marks the Shipment+Carrier fusion */
+/* The internal line that marks the Shipment+Carrier fusion */
 .memoryLine {
   stroke: var(--bcm-red);
-  stroke-width: 1;
-  stroke-dasharray: 3 4;
-  opacity: 0.45;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.65;
   vector-effect: non-scaling-stroke;
+}
+
+/* Ghost-of-formerly-separate-context labels inside the merged blob */
+.mergedGhostLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-style: italic;
+  fill: var(--bcm-red);
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+}
+
+.mergedStrike {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
 
 /* Labels */

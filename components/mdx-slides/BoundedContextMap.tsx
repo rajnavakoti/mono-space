@@ -48,10 +48,10 @@ const REGIONS: Region[] = [
       "C 310 320, 260 310, 220 290 C 195 270, 175 230, 175 200 " +
       "C 175 175, 195 150, 230 130 Z",
     label: "SHIPMENT FULFILMENT",
-    sublabel: "was Shipment + Carrier",
+    sublabel: "= Shipment ⊕ Carrier  (72% co-change)",
     findings: ["⚠ god entity", "BLOCKED ✗", "⚠ 891 overrides"],
     cx: 440,
-    cy: 205,
+    cy: 195,
     background: true,
     memoryLine: { x1: 442, y1: 110, x2: 442, y2: 320 },
   },
@@ -190,9 +190,8 @@ export function BoundedContextMap() {
 
           {/* Labels on top */}
           {allInDrawOrder.map((r) => {
-            const findingsCount = r.findings?.length ?? 0;
             const subOffset = r.sublabel ? 18 : 0;
-            const findingsStart = r.cy + subOffset + 18;
+            const findingsStart = r.cy + subOffset + 22;
             return (
               <g key={`label-${r.id}`} className={styles[STATUS_CLASS[r.status]]}>
                 <text
@@ -227,6 +226,18 @@ export function BoundedContextMap() {
               </g>
             );
           })}
+
+          {/* Explicit ghost-of-Shipment and ghost-of-Carrier labels inside the
+              merged blob so the audience sees what fused. Struck-through to
+              communicate "these were separate; not anymore." */}
+          <g className={styles.statusRed}>
+            <text x={290} y={155} className={styles.mergedGhostLabel} textAnchor="middle">
+              <tspan className={styles.mergedStrike}>Shipment</tspan>
+            </text>
+            <text x={590} y={155} className={styles.mergedGhostLabel} textAnchor="middle">
+              <tspan className={styles.mergedStrike}>Carrier</tspan>
+            </text>
+          </g>
         </svg>
       </div>
 
