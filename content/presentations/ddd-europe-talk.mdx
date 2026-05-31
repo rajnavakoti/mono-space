@@ -1243,27 +1243,132 @@ No documentation. No audit trail.
 
 ---
 
-## Exhibit H — Change Velocity
+<TitleCard badge="EXHIBIT H" subtitle="Git records every architectural decision, whether you meant to make it or not.">Change Velocity</TitleCard>
+
+<Notes>
+"Eighth and final lens. Seven exhibits mapped structure, data, behavior, cost, and rules. One lens left — the one that records every decision every developer ever made. Git history. If files from two services change together in the same commit, those services are coupled — regardless of what the architecture diagram says."
+</Notes>
+
+---
+
+## The Co-Change Evidence
+
+> *Which code actually co-evolves? (6 months of git history)*
+
+<RankedBars max="100" bars="OrderController + ShipmentService::72::red|DeliveryScheduler + InventoryChecker::68::red|PricingEngine + OrderValidator::54::amber|InvoiceGenerator + OrderEventHandler::41::yellow|CustomerAddressValidator (solo)::89::green" />
+
+<Notes>
+"Six months of git history. Which files change together across services? OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 8 exhibits."
+</Notes>
+
+---
+
+## The Override
+
+<ContradictionReveal
+  earlierExhibit="Exhibit C"
+  earlierClaim="Carrier Integration: 🟢 READY | Clean internal transactions. | Transaction boundary is clean. | Ready to extract."
+  laterExhibit="Exhibit H"
+  laterFinding="Carrier Integration: 🔴 NOT READY | 72% co-change with Shipment | Every PR that touches one requires changes in the other."
+  connector="but git overruled…"
+  punchline="The transaction boundary is clean. The development reality isn't. | Git overruled Exhibit C. | This is why you need 8 lenses — it took the eighth to catch what the third missed."
+/>
+
+<Notes>
+"One override. Exhibit C gave Carrier Integration a green light — clean transactions, ready to extract. We were confident. Then we opened the git history. 72% co-change with Shipment. Every PR that touches one requires changes in the other. The transaction boundary is clean. The development reality isn't. Git overruled Exhibit C. This is why you need 8 lenses — one artifact can mislead you. It took the eighth lens to catch what the third lens missed."
+</Notes>
+
+---
+
+## What Changes Alone = What's Truly Independent
 
 <Split ratio="1:1">
 <div>
 
-**Git knows which code actually co-evolves.**
+<Callout type="danger" label="COUPLED IN GIT">
+**OrderController + ShipmentService** — 72%
 
-If files from two services change together **72% of the time**, the boundary between them is fiction — regardless of what the architecture diagram says.
+→ dead boundary confirmed by **6 exhibits** now
 
-> *"Git records every architectural decision, whether you meant to make it or not."*
+**DeliveryScheduler + InventoryChecker** — 68%
+
+→ hidden dependency. Git found what contracts didn't.
+
+**PricingEngine + OrderValidator** — 54%
+
+→ extract **LAST**. Stabilize the interface before separating.
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="CO-CHANGE EVIDENCE" accent="red" items="OrderController + ShipmentService: 72% — dead boundary at dev level, DeliveryScheduler + InventoryChecker: 68% — hidden dependency, PricingEngine + OrderValidator: 54% — extract LAST not first, CustomerAddressValidator: 89% solo — Consignee confirmed clean ✓" />
+<Callout type="tip" label="INDEPENDENT IN GIT">
+**CustomerAddressValidator** — 89% solo
+
+→ Consignee IS independent. Confirmed: A, B, C, E, H.
+
+**CarrierRateCalculator** — 94% solo
+
+→ well-encapsulated, clean boundary
+
+**NotificationRenderer** — 91% solo
+
+→ infrastructure, correctly isolated
+
+These are your **reference points** for what good separation looks like.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit H. The final lens. Git records which files change together. If OrderController and ShipmentService change together 72% of the time, the developers have been telling you the boundary is fictional — with every commit, for years. This overrides Exhibit C: Carrier Integration looked 'ready to extract' from transaction data. But git says 72% co-change. The runtime boundary is clean. The development reality isn't. Git is the tiebreaker. And CustomerAddressValidator changes alone 89% of the time — the Consignee context is genuinely independent. Confirmed by 8 exhibits."
+"Two sides. On the left — coupled. OrderController and ShipmentService at 72% — the dead boundary, now confirmed by 6 independent exhibits. DeliveryScheduler and InventoryChecker at 68% — a hidden dependency that none of the previous 7 exhibits caught. Git found it. PricingEngine and OrderValidator at 54% — if you try to extract pricing first, you'll be changing two services in lockstep for every feature. Extract it last. On the right — what independence looks like. CustomerAddressValidator changes alone 89% of the time. CarrierRateCalculator 94%. NotificationRenderer 91%. These are your reference points. When you're deciding whether two things belong together, compare their co-change rate to these baselines."
+</Notes>
+
+---
+
+## The Extraction Order
+
+> *Start with the least coupled. End with the most entangled. Git tells you the order.*
+
+<Callout type="tip" label="1 · EXTRACT FIRST">
+**Consignee** — 89% solo 🟢
+
+Independent. Clean. **Go.**
+</Callout>
+
+<Callout type="warning" label="2 · STABILIZE FIRST">
+**Invoicing** — 41% co-change 🟡
+
+Moderate coupling. Stabilize the event contract first, then extract.
+</Callout>
+
+<Callout type="warning" label="3 · FIX BEFORE EXTRACTING">
+**Inventory** — 68% co-change 🟠
+
+Replace co-write with **saga** first. **Then** extract.
+</Callout>
+
+<Callout type="danger" label="4 · EXTRACT LAST">
+**Shipment + Carrier** — 72% co-change 🔴
+
+**Merge first.** Then decide if the merged context needs splitting differently.
+</Callout>
+
+<Notes>
+"Git gives you the extraction order. Start with Consignee — 89% solo, genuinely independent, extract tomorrow. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="8" />
+
+> *Eight lenses. One evidence-backed hypothesis. Now we reconcile.*
+
+<Notes>
+"Final update. Carrier flips from green READY (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them. The three black boxes — one of them is now Returns/Policy (purple), revealed by Exhibit G. The other two remain unknown. Hypothesis v0.8 — eight lenses. One evidence-backed hypothesis. The remembered domain said 3 contexts. The encoded domain shows 7."
 </Notes>
 
 ---
