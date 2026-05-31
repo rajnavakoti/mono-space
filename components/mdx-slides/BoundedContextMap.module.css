@@ -227,39 +227,30 @@
 
 /* ── Overlays ─────────────────────────────────────────────────────────── */
 
-/* Sync chain ribbon (v0.4): translucent red band tracing the synchronous flow
-   Shipment → Inventory → Invoicing. Wide stroke + low opacity reads as a
-   highlighted "current" rather than a line. */
-.syncRibbon > path {
-  stroke: rgba(178, 100, 100, 0.35);
-}
-
-.ribbonLabel {
+/* Note box (e.g. v0.4 runtime flow legend) — small annotation in the
+   top-right corner that explains the version's finding in words rather
+   than drawing labelled connection lines on the canvas. */
+.noteHeader {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 800;
-  fill: var(--bcm-red);
-  letter-spacing: 0.08em;
+  fill: var(--bcm-text-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-/* Async dotted line (v0.4+) — green dotted indicator of the 87s decoupled gap */
-.asyncDotted > path {
-  stroke: var(--bcm-green);
-  opacity: 0.7;
-}
-
-.asyncDotted > polygon {
-  fill: var(--bcm-green);
-  opacity: 0.85;
-}
-
-.asyncLabel {
+.noteItem {
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
   font-size: 15px;
-  font-weight: 700;
-  fill: var(--bcm-green);
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  fill: var(--bcm-text);
+  letter-spacing: 0.02em;
 }
+
+.markerRed { fill: var(--bcm-red); }
+.markerGreen { fill: var(--bcm-green); }
+.markerAmber { fill: var(--bcm-accent); }
+.markerPurple { fill: var(--bcm-purple); }
 
 /* Address-drift tendrils from Consignee (v0.6+) — dotted amber arcs out */
 .addressTendrils > path {

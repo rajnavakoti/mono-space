@@ -49,11 +49,15 @@ interface Region {
 }
 
 interface Overlay {
-  kind: "syncRibbon" | "asyncDotted" | "addressTendrils" | "returnsArrow";
+  kind: "addressTendrils" | "returnsArrow" | "noteBox";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
   label?: string;
+  /** For "noteBox" kind: structured legend items rendered as a small
+   *  annotation in the top-right corner of the canvas. */
+  noteHeader?: string;
+  noteItems?: { marker: "red" | "green" | "amber" | "purple"; text: string }[];
 }
 
 interface ModelState {
@@ -300,11 +304,20 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown", label: "???", cx: 965, cy: 622 },
   );
 
-  // Overlays per version — labels only appear at the version that
-  // introduces the finding; the lines themselves stay through later
-  // versions as visual memory.
-  if (v === 4) overlays.push({ kind: "syncRibbon", label: "SYNC 2s" });
-  if (v >= 4) overlays.push({ kind: "asyncDotted", label: v === 4 ? "ASYNC 87s" : undefined });
+  // Overlays per version. Lines/paths only when they genuinely help
+  // (Returns arrow at v0.7, address tendrils at v0.6 to show fan-out).
+  // For v0.4 the sync/async narrative is carried by a small annotation
+  // note box rather than overlay paths — much easier to read.
+  if (v === 4) {
+    overlays.push({
+      kind: "noteBox",
+      noteHeader: "RUNTIME FLOW",
+      noteItems: [
+        { marker: "red", text: "Sync chain · 2s" },
+        { marker: "green", text: "Async gap · 87s → Carrier" },
+      ],
+    });
+  }
   if (v >= 6) overlays.push({ kind: "addressTendrils", label: v === 6 ? "342 mismatches" : undefined });
   if (v >= 7) overlays.push({ kind: "returnsArrow", label: v === 7 ? "DEL-E011" : undefined });
 
@@ -380,44 +393,40 @@ export function BoundedContextMap({ version }: Props) {
 
           {/* Overlays */}
           {state.overlays.map((o, i) => {
-            if (o.kind === "syncRibbon") {
-              // Translucent red band tracing the sync chain:
-              // Shipment (right edge) → Inventory (left edge) → curve down
-              // → Invoicing (right edge). One clean S-curve, no loops.
+            if (o.kind === "noteBox" && o.noteHeader && o.noteItems) {
+              // Small legend in the top-right corner of the canvas —
+              // explains the version's finding in words rather than
+              // trying to draw labelled connection lines on the canvas.
+              const baseY = 90;
               return (
-                <g key={`ov-${i}`} className={styles.syncRibbon}>
-                  <path
-                    d="M 370 220 C 470 240, 560 270, 600 310 C 660 380, 560 440, 470 470 C 430 480, 400 475, 380 470"
-                    fill="none"
-                    strokeWidth="22"
-                  />
-                  {/* Label sits near the START of the ribbon, top-left */}
-                  <text x={400} y={195} className={styles.ribbonLabel} textAnchor="middle">
-                    {o.label}
+                <g key={`ov-${i}`} className={styles.noteBox}>
+                  <text
+                    x={1060}
+                    y={baseY}
+                    textAnchor="end"
+                    className={styles.noteHeader}
+                  >
+                    {o.noteHeader}
                   </text>
-                </g>
-              );
-            }
-            if (o.kind === "asyncDotted") {
-              // Dotted line from Invoicing UP to Carrier, with arrowhead.
-              // Tilted right so it doesn't run through the same channel as
-              // the sync ribbon.
-              return (
-                <g key={`ov-${i}`} className={styles.asyncDotted}>
-                  <path
-                    d="M 470 470 C 530 400, 565 320, 590 240"
-                    fill="none"
-                    strokeWidth="2"
-                    strokeDasharray="4 5"
-                  />
-                  {/* Arrowhead at the Carrier end of the dotted line */}
-                  <polygon points="582 245, 600 240, 593 256" />
-                  {o.label && (
-                    /* Label sits along the curve, lower-right of the SYNC label */
-                    <text x={610} y={360} className={styles.asyncLabel} textAnchor="start">
-                      {o.label}
-                    </text>
-                  )}
+                  {o.noteItems.map((item, idx) => {
+                    const y = baseY + 32 + idx * 28;
+                    const markerClass =
+                      item.marker === "red"
+                        ? styles.markerRed
+                        : item.marker === "green"
+                          ? styles.markerGreen
+                          : item.marker === "amber"
+                            ? styles.markerAmber
+                            : styles.markerPurple;
+                    return (
+                      <g key={idx}>
+                        <circle cx={760} cy={y - 5} r={6} className={markerClass} />
+                        <text x={775} y={y} className={styles.noteItem}>
+                          {item.text}
+                        </text>
+                      </g>
+                    );
+                  })}
                 </g>
               );
             }
