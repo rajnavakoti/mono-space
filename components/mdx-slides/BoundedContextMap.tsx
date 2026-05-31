@@ -197,6 +197,7 @@ function shipmentFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 1) f.push("⚠ god entity");
   if (v >= 3) f.push("BLOCKED ✗");
+  if (v >= 5) f.push("54 incidents · epicentre");
   if (v >= 7) f.push("⚠ 891 overrides");
   return f;
 }
@@ -204,6 +205,7 @@ function carrierFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
   if (v >= 3 && v <= 7) f.push("READY ✓");
+  if (v >= 5 && v <= 7) f.push("17 incidents · w/ Ship");
   return f;
 }
 function consigneeFindings(v: number): string[] {
@@ -220,10 +222,12 @@ function inventoryFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 2) f.push("2 writers");
   if (v >= 3) f.push("BLOCKED ✗");
+  if (v >= 5) f.push("23 incidents · w/ Ship");
   return f;
 }
 function invoicingFindings(v: number): string[] {
   const f: string[] = [];
+  if (v >= 5) f.push("14 incidents · w/ Ship");
   if (v >= 8) f.push("41% co-change");
   return f;
 }
@@ -329,6 +333,14 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       items: [
         { marker: "red", text: "Sync chain · 2s — Shipment → Inventory → Invoicing" },
         { marker: "green", text: "Async gap · 87s — → Carrier" },
+      ],
+    };
+  } else if (v === 5) {
+    legend = {
+      header: "Incident clustering",
+      items: [
+        { marker: "red", text: "77% of failures at service boundaries (64 of 83 incidents · 10 of 11 SEV1)" },
+        { marker: "green", text: "Consignee boundary · 0 incidents · confirmed clean" },
       ],
     };
   } else if (v === 6) {
