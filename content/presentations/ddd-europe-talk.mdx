@@ -491,6 +491,18 @@ The **integration pattern is wrong**, not the boundary.
 
 ---
 
+## The translation map starts here
+
+<TranslationMap version="1" />
+
+> Five services. One human. Five names.
+
+<Notes>
+"Alongside the context map, a second artifact starts here. The translation map. What does each service call the same thing? Six contracts gave us two concepts. The person — buyer, customer, recipient, account, user. Five names for one human being. The address — four flavours, no Inventory column. That's it. Sparse. Just the contracts. We'll add a row every time a new exhibit reveals one. By Act 3 this becomes the system's Rosetta Stone."
+</Notes>
+
+---
+
 <TitleCard badge="EXHIBIT B" subtitle="The API says 'I own this.' The database says 'so does he.'">Schema Archaeology</TitleCard>
 
 <Notes>
@@ -1243,6 +1255,18 @@ No documentation. No audit trail.
 
 ---
 
+## The translation map fills in
+
+<TranslationMap version="2" />
+
+> Nine rules nobody wrote down. We just found them all.
+
+<Notes>
+"Same artifact, seven exhibits later. The translation map now has six rows. Delivery and bill have clear systems of record — Carrier owns Shipment with 9 states; Invoicing owns Invoice with 7. The reservation belongs to Inventory. The return — DEL-E011 — lives in Carrier and shouldn't. That's the misplaced concept. And below the table, the recovered business rules. Nine of them. Pulled out of error codes. Never written down. Price tolerance 2%, four-hour SLA, ten-thousand-euro cap, return windows by category. Production has run on these for years and none of them are in any spec. Next lens — change velocity."
+</Notes>
+
+---
+
 <TitleCard badge="EXHIBIT H" subtitle="Git records every architectural decision, whether you meant to make it or not.">Change Velocity</TitleCard>
 
 <Notes>
@@ -1377,6 +1401,18 @@ Replace co-write with **saga** first. **Then** extract.
 
 <Notes>
 "Eight exhibits. Eight lenses. The same couplings confirmed from independent sources. Like the Rosetta Stone — the same decree written in three scripts. When eight independent artifacts say the same thing, it's not an opinion. It's a diagnosis."
+</Notes>
+
+---
+
+## The System's Rosetta Stone
+
+<TranslationMap version="3" />
+
+> Same concepts. Different names. No translation map existed — until now.
+
+<Notes>
+"This is what the translation map becomes when you've worked all eight lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And the three cards at the bottom say it plain. Five names for one person. Nine rules that never made it into a spec. Eight domain events the system tracks but never publishes. No translation map existed in this organisation. This is it. From here we draw the new map."
 </Notes>
 
 ---

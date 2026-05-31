@@ -1,0 +1,248 @@
+/* TranslationMap — the system's vocabulary, evolving across 3 versions */
+
+.figure {
+  --tm-accent: var(--color-accent, #C9A96E);
+  --tm-bg: var(--color-bg, #FFF);
+  --tm-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --tm-text: var(--color-text, #111);
+  --tm-text-muted: var(--color-text-muted, #999);
+  --tm-border: var(--color-text, #111);
+  --tm-border-muted: var(--color-border-muted, #DDD);
+  --tm-green: #6E9B6E;
+  --tm-red: #B26464;
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tm-text);
+}
+
+.subtitle {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--tm-text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Table ──────────────────────────────────────────────────────────── */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--tm-border-muted);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.conceptHeader,
+.serviceHeader {
+  background: var(--tm-text);
+  color: var(--tm-bg);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+}
+
+.conceptCell {
+  font-weight: 700;
+  background: var(--tm-bg-muted);
+  white-space: nowrap;
+}
+
+.dataCell {
+  position: relative;
+}
+
+.cellContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cellText {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cellSub {
+  font-size: 11px;
+  color: var(--tm-text-muted);
+  font-style: italic;
+}
+
+.cellRecord {
+  background: rgba(110, 155, 110, 0.10);
+}
+
+.recordMark {
+  color: var(--tm-green);
+  font-weight: 800;
+}
+
+.cellWarning {
+  background: rgba(178, 100, 100, 0.08);
+}
+
+.warningMark {
+  color: var(--tm-red);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+.emptyDash {
+  color: var(--tm-text-muted);
+  opacity: 0.5;
+}
+
+.legend {
+  font-size: 12px;
+  color: var(--tm-text-muted);
+  margin-top: 12px;
+}
+
+/* ── Recovered business rules box (v0.2+) ──────────────────────────── */
+
+.rulesBox {
+  margin-top: 24px;
+  border: 2px solid var(--tm-accent);
+  border-left-width: 6px;
+  padding: 16px 22px;
+  background: var(--tm-bg-muted);
+}
+
+.rulesHeader {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--tm-accent);
+  margin-bottom: 14px;
+}
+
+.rulesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ruleItem {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  font-size: 13px;
+  line-height: 1.4;
+  align-items: baseline;
+}
+
+.ruleName {
+  color: var(--tm-text);
+}
+
+.ruleValue {
+  font-weight: 700;
+  color: var(--tm-text);
+}
+
+.ruleCode {
+  color: var(--tm-text-muted);
+  font-size: 11px;
+  font-style: italic;
+}
+
+.rulesQuote {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--tm-text-muted);
+  font-style: italic;
+  text-align: center;
+  font-size: 13px;
+  color: var(--tm-text);
+}
+
+/* ── Summary cards (v0.3 only) ─────────────────────────────────────── */
+
+.summaryRow {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.summaryCard {
+  border: 2px solid var(--tm-text);
+  padding: 22px 20px;
+  text-align: center;
+  background: var(--tm-bg);
+}
+
+.summaryNumber {
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--tm-accent);
+  letter-spacing: -0.04em;
+  margin-bottom: 10px;
+}
+
+.summaryTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tm-text-muted);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.summaryList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--tm-text);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.summaryList li {
+  padding: 2px 0;
+}
+
+/* ── Caption ───────────────────────────────────────────────────────── */
+
+.caption {
+  margin-top: 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--tm-text-muted);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}

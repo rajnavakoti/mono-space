@@ -26,6 +26,7 @@ export { BigStat } from "./BigStat";
 export { RankedBars } from "./RankedBars";
 export { LineageTree } from "./LineageTree";
 export { BoundedContextMap } from "./BoundedContextMap";
+export { TranslationMap } from "./TranslationMap";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -55,6 +56,7 @@ import { BigStat } from "./BigStat";
 import { RankedBars } from "./RankedBars";
 import { LineageTree } from "./LineageTree";
 import { BoundedContextMap } from "./BoundedContextMap";
+import { TranslationMap } from "./TranslationMap";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -91,4 +93,5 @@ export const mdxSlideComponents = {
   RankedBars,
   LineageTree,
   BoundedContextMap,
+  TranslationMap,
 };
