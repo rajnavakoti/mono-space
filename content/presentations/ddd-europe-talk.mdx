@@ -592,27 +592,133 @@ A ghost user with **WRITE** access would be the most dangerous finding of all.
 
 ---
 
-## Exhibit C — Transaction Boundaries
+<TitleCard badge="EXHIBIT C" subtitle="What commits together, belongs together.">Transaction Boundaries</TitleCard>
 
-<Split ratio="1:1">
+<Notes>
+"Third lens. The contracts showed what teams declared. The database showed real coupling. Now we go one layer deeper — what the database COMMITS TOGETHER. Because every BEGIN...COMMIT block is a consistency boundary. In DDD terms — that's an aggregate. Whether anyone designed it or not."
+</Notes>
+
+---
+
+## Transaction Clusters
+
+> *Which tables commit together?*
+
+<Split ratio="3:1">
 <div>
 
-**What commits together, belongs together.**
-
-Mine the transaction logs. Which tables are always written in the same database commit?
-
-Those clusters ARE your aggregates — whether anyone designed them or not.
+<CompareTable colWeights="3|1|1|2" headers="Tables in same transaction|Frequency|Service|Verdict" rows="{orders · order_lines · order_audit}|84,219/wk|Shipment|✅ Order Aggregate||{shipments · tracking_events}|31,445/wk|Carrier|✅ Shipment Aggregate||{payment_ledger · payment_events}|9,877/wk|Invoicing|✅ Payment Aggregate||{orders · shipments}|2,103/wk|Shipment|⚠️ CROSS-CONTEXT||{orders · inventory_reserved}|4,512/wk|Shipment|⚠️ BOUNDARY VIOLATION" />
 
 </div>
 <div>
 
-<ContentCard title="TRANSACTION CLUSTERS" accent="amber" items="{orders + order_lines + order_audit} — 84K/week — Order aggregate ✓, {shipments + tracking_events} — 31K/week — Shipment aggregate ✓, {orders + shipments} — 2103/week — ⚠ CROSS-CONTEXT, {orders + inventory_reserved} — 4512/week at 580ms — ⚠ BOUNDARY VIOLATION" />
+<Callout type="warning" label="TWO WARNINGS">
+**`{orders · shipments}` — 2,103/wk**
+
+**300× per day.** Not noise. Shipment auto-creates a carrier record in the same commit.
+
+→ **Dead boundary confirmed** at the transaction level.
+
+**`{orders · inventory_reserved}` — 4,512/wk**
+
+Average duration: **580ms.** Holding locks on 2 tables for over half a second.
+
+→ Boundary violation **AND** a performance problem.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit C. If multiple tables are always written in the same transaction, they belong to the same aggregate. The database already knows this. We mined 7 days of transactions. Clean aggregates emerge immediately — orders with order_lines, 84,000 times a week. But then: orders and shipments committed together 2,103 times. The Shipment service is writing to Carrier's table in the same commit. And orders with inventory_reserved — 4,512 times at 580 milliseconds average. That's a distributed concern handled locally. It works in a monolith. It breaks the moment you try to extract."
+"We mined 7 days of transactions. Clean aggregates emerge immediately — orders with order_lines, 84,000 times a week. That's the Order aggregate. Solid. Shipments with tracking_events — the Shipment aggregate in the Carrier context. Clean. But then — orders and shipments committed together 2,103 times per week. 300 times a day. The Shipment Service writes to Carrier's table in the same commit. That's the dead boundary from Exhibit A, confirmed at the transaction level. You cannot split these services without breaking this transaction. And orders with inventory_reserved — 4,512 times at 580 milliseconds average. That's a distributed concern handled locally. Works in a monolith. Breaks the moment you try to extract."
+</Notes>
+
+---
+
+## Extraction Readiness
+
+> *Can we extract these services?*
+
+<Split ratio="2:1">
+<div>
+
+<ContentCard title="Carrier Integration · 🟢 READY" accent="green" items="Clean internal transactions, No cross-context co-writes" />
+
+<ContentCard title="Consignee · 🟢 READY" accent="green" items="Clean internal transactions, No cross-context co-writes" />
+
+<ContentCard title="Shipment Service · 🔴 BLOCKED" accent="red" items="Co-writes to Carrier: 2103/wk, Co-writes to Inventory: 4512/wk" />
+
+<ContentCard title="Inventory · 🔴 BLOCKED" accent="red" items="Shared writes with Shipment" />
+
+</div>
+<div>
+
+<Callout type="warning" label="THE RULE">
+**High-frequency co-writes WITHIN a service** = aggregate. The system designed it.
+
+**Cross-service co-writes** = boundary violation. Blocks extraction.
+
+→ **Fix the co-write FIRST** (saga, events), **THEN** extract.
+
+**⚠️ But Exhibit H will override one of these green lights…**
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"From the transaction data we can already assess extraction readiness. Carrier Integration — clean, all transactions internal, ready to extract. Consignee — same, clean and ready. Shipment — blocked. It co-writes to Carrier's table 2,103 times a week and to Inventory's table 4,512 times. You cannot extract Shipment without breaking those transactions. Inventory — blocked for the same reason. The rule is simple: high-frequency co-writes within a service is a designed aggregate. Cross-service co-writes block extraction. Fix the co-write first — replace it with a saga or events — then extract. But keep an eye on those green lights — Exhibit H has something to say about one of them."
+</Notes>
+
+---
+
+## The Timestamp Connection
+
+> *Hidden domain events the system tracks but never publishes*
+
+<Split ratio="2:1">
+<div>
+
+<CodeBlock title="orders · table schema (from Exhibit B)" code="created_at:    timestamp    # implicit: OrderCreated&#10;confirmed_at:  timestamp    # implicit: OrderConfirmed&#10;shipped_at:    timestamp    # implicit: OrderShipped&#10;delivered_at:  timestamp    # implicit: OrderDelivered&#10;cancelled_at:  timestamp    # implicit: OrderCancelled&#10;&#10;# Each timestamp is set WITHIN a transaction cluster.&#10;# The transaction that sets confirmed_at&#10;# IS the OrderConfirmed event." />
+
+</div>
+<div>
+
+<Callout type="tip" label="HIDDEN DOMAIN EVENTS">
+**Every lifecycle timestamp** = an implicit domain event that nobody publishes.
+
+The transaction cluster tells you:
+
+→ **WHAT** changed (which tables)
+
+→ **WHEN** it changed (the timestamp)
+
+→ **TOGETHER** with what (the aggregate)
+
+That's the **event payload**.
+
+These are the events the system **should be publishing but isn't**.
+
+🔗 **Exhibit D** will show us these events fossilized in the logs.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"One more connection before we move on. Remember the lifecycle timestamps from Exhibit B — confirmed_at, shipped_at, delivered_at? Each of those timestamps is set INSIDE a transaction cluster. The transaction that sets confirmed_at on the order IS the OrderConfirmed event. The tables modified in that transaction ARE the event payload. The system has been tracking these state changes for years — it just never announced them. These are the domain events the system should be publishing. Exhibit D will show us these exact events, fossilized in the production logs."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="3" />
+
+> *Runtime next. What actually happens when an order flows through?*
+
+<Notes>
+"Update the model. Carrier turns green — clean internal transactions, ready to extract. Shipment picks up the BLOCKED label — cross-context co-writes block extraction. The Shipment-Inventory line now carries the perf cost: 4,512 per week at 580 milliseconds. The three black boxes still unknown. Hypothesis v0.3 — what commits together. What blocks extraction. Runtime next."
 </Notes>
 
 ---
