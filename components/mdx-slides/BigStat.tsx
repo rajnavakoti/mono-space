@@ -19,6 +19,10 @@ interface BigStatProps {
   label?: string;
   /** Colour tint for the value */
   tone?: Tone;
+  /** Optional italic punchline rendered below the label, anchored to this stat
+   *  so it never orphans as a floating blockquote in slide flex layouts.
+   *  Use on the last stat in a sequence. */
+  punchline?: string;
 }
 
 const TONE_CLASS: Record<Tone, string> = {
@@ -28,11 +32,12 @@ const TONE_CLASS: Record<Tone, string> = {
   green: "toneGreen",
 };
 
-export function BigStat({ value, label, tone = "neutral" }: BigStatProps) {
+export function BigStat({ value, label, tone = "neutral", punchline }: BigStatProps) {
   return (
     <div className={`${styles.container} ${styles[TONE_CLASS[tone]]}`}>
       <div className={styles.value}>{value}</div>
       {label && <div className={styles.label}>{label}</div>}
+      {punchline && <div className={styles.punchline}>{`“${punchline}”`}</div>}
     </div>
   );
 }

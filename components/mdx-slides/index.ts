@@ -24,6 +24,7 @@ export { ContextMap } from "./ContextMap";
 export { HeatmapMatrix } from "./HeatmapMatrix";
 export { ContradictionReveal } from "./ContradictionReveal";
 export { BigStat } from "./BigStat";
+export { RankedBars } from "./RankedBars";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -51,6 +52,7 @@ import { ContextMap } from "./ContextMap";
 import { HeatmapMatrix } from "./HeatmapMatrix";
 import { ContradictionReveal } from "./ContradictionReveal";
 import { BigStat } from "./BigStat";
+import { RankedBars } from "./RankedBars";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -85,4 +87,5 @@ export const mdxSlideComponents = {
   HeatmapMatrix,
   ContradictionReveal,
   BigStat,
+  RankedBars,
 };

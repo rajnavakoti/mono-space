@@ -901,9 +901,7 @@ The edge cases nobody mentioned in Event Storming:
 
 <BigStat value="64" label="at service boundaries" />
 
-<BigStat value="77%" tone="amber" label="of all failures are cross-boundary" />
-
-> *"The system isn't failing because services are buggy. It's failing because the boundaries are wrong."*
+<BigStat value="77%" tone="amber" label="of all failures are cross-boundary" punchline="The system isn't failing because services are buggy. It's failing because the boundaries are wrong." />
 
 <Notes>
 "83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every 4 days. 10 of them SEV1 — 10 nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
@@ -918,7 +916,7 @@ The edge cases nobody mentioned in Event Storming:
 <Split ratio="3:1">
 <div>
 
-<CompareTable colWeights="3|1|1|1|1|2" headers="Boundary|Incidents|SEV1|SEV2|SEV3|Weighted" rows="Shipment ↔ Inventory|23|4|11|8|🔴 81||Shipment ↔ Carrier|17|2|8|7|🟠 47||Invoicing ↔ Shipment|14|3|5|6|🟠 51||Carrier ↔ Tracking|6|0|2|4|🟡 10||Inventory ↔ Warehouse|4|1|1|2|🟡 15||Within single service|19|1|5|13|🟢 28" />
+<RankedBars bars="Shipment ↔ Inventory::23::red|Within single service::19::green|Shipment ↔ Carrier::17::amber|Invoicing ↔ Shipment::14::amber|Carrier ↔ Tracking::6::yellow|Inventory ↔ Warehouse::4::yellow" />
 
 </div>
 <div>
@@ -951,7 +949,7 @@ Internal incidents: only **1 SEV1**. Boundary incidents: **10 SEV1s**.
 <Split ratio="3:2">
 <div>
 
-<CompareTable colWeights="2|0.5|3" headers="Pattern|Count|Root Cause from Earlier Exhibits" rows="Race condition|7|Exhibit B: 2 writers to inventory_reserved||Timeout|6|Exhibit C: 580ms synchronous co-write under load||Stale read|5|Read replica lag — Shipment reads replica · Inventory writes primary||Orphaned reservation|5|Exhibit C: no compensating transaction (saga needed)" />
+<PieChart slices="Race condition::30::highlight|Timeout::26|Stale read::22|Orphaned reservation::22" annotations="Exhibit B: 2 writers to inventory_reserved (7 races)|Exhibit C: 580ms co-write under load (6 timeouts)|Read replica lag (5 stale reads)|Exhibit C: missing saga (5 orphans)" />
 
 </div>
 <div>

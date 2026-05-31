@@ -1,0 +1,101 @@
+/* RankedBars — horizontal ranking visualization */
+
+.container {
+  --rb-accent: var(--color-accent, #C9A96E);
+  --rb-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --rb-text: var(--color-text, #111);
+  --rb-text-muted: var(--color-text-muted, #999);
+  --rb-border: var(--color-border-muted, #DDD);
+  --rb-red: #B26464;
+  --rb-green: #6E9B6E;
+  --rb-yellow: #C9B05A;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  max-width: 1000px;
+  margin: 18px auto;
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr 64px;
+  align-items: center;
+  gap: 16px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  color: var(--rb-text);
+  letter-spacing: 0.04em;
+}
+
+.track {
+  height: 28px;
+  background: var(--rb-bg-muted);
+  border: 1px solid var(--rb-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  transition: width 240ms ease;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 800;
+  text-align: left;
+  letter-spacing: -0.02em;
+}
+
+/* Tone variants applied to both the fill and the value */
+.toneRed.fill,
+.fill.toneRed {
+  background: var(--rb-red);
+}
+.toneRed.value,
+.value.toneRed {
+  color: var(--rb-red);
+}
+
+.toneAmber.fill,
+.fill.toneAmber {
+  background: var(--rb-accent);
+}
+.toneAmber.value,
+.value.toneAmber {
+  color: var(--rb-accent);
+}
+
+.toneYellow.fill,
+.fill.toneYellow {
+  background: var(--rb-yellow);
+}
+.toneYellow.value,
+.value.toneYellow {
+  color: var(--rb-yellow);
+}
+
+.toneGreen.fill,
+.fill.toneGreen {
+  background: var(--rb-green);
+}
+.toneGreen.value,
+.value.toneGreen {
+  color: var(--rb-green);
+}
+
+.toneNeutral.fill,
+.fill.toneNeutral {
+  background: var(--rb-text-muted);
+}
+.toneNeutral.value,
+.value.toneNeutral {
+  color: var(--rb-text-muted);
+}
