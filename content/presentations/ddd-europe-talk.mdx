@@ -491,27 +491,123 @@ The **integration pattern is wrong**, not the boundary.
 
 ---
 
-## Exhibit B — Schema Archaeology
+<TitleCard badge="EXHIBIT B" subtitle="The API says 'I own this.' The database says 'so does he.'">Schema Archaeology</TitleCard>
 
-<Split ratio="1:1">
+<Notes>
+"Second lens. The contracts showed us what teams declared. Now let's check if those declarations are real. The database doesn't have opinions. It just records who accessed what."
+</Notes>
+
+---
+
+## The Shared Table Map
+
+> *Which tables do multiple services access?*
+
+<Split ratio="3:1">
 <div>
 
-**Go deeper. What does the database actually show?**
-
-The contracts declared boundaries. The database shows whether those boundaries are real.
-
-> *"The API says 'I own this.' The database says 'so does he.'"*
+<CompareTable colWeights="2|2|3|1" headers="Table|Writers|Readers|Severity" rows="orders|Shipment|Carrier · Invoicing · Reporting|🟠 HIGH||inventory_reserved|Shipment · Inventory|—|🔴 CRITICAL||customer_addresses|Consignee|Shipment · Carrier · Invoicing|🟠 HIGH||shipment_status|Carrier|Shipment|🟡 MEDIUM||payment_ledger|Invoicing|Reporting|🟢 CLEAN" />
 
 </div>
 <div>
 
-<ContentCard title="WHAT THE DATABASE REVEALS" accent="red" items="orders table read by 4 services — de facto shared kernel, inventory_reserved has 2 WRITERS — boundary violation, customer_addresses read by 3 services bypassing the API, shipment_status shared between Shipment + Carrier — dead boundary confirmed, Ghost database users — processes nobody knows about" />
+<Callout type="warning" label="KEY DISTINCTION">
+**Read coupling = dependency**
+
+Service A needs Service B's data. **Manageable.**
+
+**Write coupling = boundary violation**
+
+Two services believe they own the same data. This is where **3 AM pages** come from.
+
+→ `inventory_reserved` has **2 WRITERS**. Two services think they own reservation logic.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit B. The contracts declared boundaries. Now let's check if those boundaries are real. The database doesn't have opinions — it just records who accessed what. The orders table is read by 4 services directly. inventory_reserved has TWO writers — that's a boundary violation. Two services believe they own reservation logic. And customer_addresses is read by 3 services that bypassed the API entirely. The API boundary looked clean. The database says it's a facade."
+"Five shared tables. The critical distinction: reading someone else's table is a dependency — manageable. Two services WRITING to the same table is a boundary violation — two aggregate owners. inventory_reserved has two writers — Shipment and Inventory both write to it. Two services believe they own reservation logic. That's where your race conditions come from. And look at payment_ledger — one writer, one reader. That's clean. That's how it should work."
+</Notes>
+
+---
+
+## The Facade Reveal
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="tip" label="EXHIBIT A SAID">
+**Consignee Service**
+
+~~✓ Clean boundary~~
+
+~~Referenced by all. References nobody. Published language.~~
+</Callout>
+
+</div>
+<div>
+
+<Callout type="danger" label="EXHIBIT B SAYS">
+**Consignee's `customer_addresses` table**
+
+✗ Read directly by **3 services**
+
+**Shipment, Carrier, Invoicing** — all bypass the API.
+
+The boundary is clean at the API level. The database says it's a **facade**.
+</Callout>
+
+</div>
+</Split>
+
+> *"Contracts declared a boundary. The database showed it doesn't exist."*
+
+<Notes>
+"Remember Exhibit A? Consignee looked clean — referenced by everyone, references nobody. A textbook published language. Now look at the database. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."
+</Notes>
+
+---
+
+## Ghost Users
+
+> *Two database accounts with no corresponding running service*
+
+<Split ratio="2:1">
+<div>
+
+<CodeBlock title="database-users · access audit" code="# Active service users:&#10;  svc_shipment     → orders, order_lines       (READ/WRITE)&#10;  svc_consignee    → customers, addresses     (READ/WRITE)&#10;  svc_inventory    → stock_levels, reservations (READ/WRITE)&#10;  svc_carrier      → shipments, tracking      (READ/WRITE)&#10;  svc_invoicing    → invoices, payments       (READ/WRITE)&#10;&#10;# Unknown users:&#10;  svc_etl_legacy   → orders                   (READ)   # ??? no known service&#10;  svc_vendor_sync  → orders                   (READ)   # ??? no known service" />
+
+</div>
+<div>
+
+<Callout type="warning" label="GHOST USERS">
+**⚠️ Two database users with no corresponding running service.**
+
+Decommissioned processes? ETL pipelines nobody documented? Vendor tools "turned off" but **credentials still work**?
+
+Both are **read-only** — manageable.
+
+A ghost user with **WRITE** access would be the most dangerous finding of all.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"One more thing the database shows — ghost users. Two database accounts with no corresponding running service. svc_etl_legacy and svc_vendor_sync. Both read-only against the orders table. Probably decommissioned processes whose scheduled jobs still run, or vendor tools that were turned off but the credentials still work. Both are read-only, so manageable. But imagine a ghost user with WRITE access — a process nobody knows about, modifying data in your production database. The database sees everything, including the ghosts."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="2" />
+
+> *Transactions next. What commits together belongs together.*
+
+<Notes>
+"Update the model. Inventory turns red — two writers, boundary violation. Consignee gains the 'facade' finding — clean API but bypassed by the database. The dashed red line between Shipment and Inventory marks the shared-write coupling. The three black boxes still unknown. Hypothesis v0.2 — what the database reveals beneath. Transactions next."
 </Notes>
 
 ---
