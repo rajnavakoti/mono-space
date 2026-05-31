@@ -361,23 +361,39 @@ Each context **SHOULD own its own Address** representation.
 
 ---
 
-## The God Entity + Coupling
+## The God Entity
 
-<Split ratio="3:2">
+> *Shipment Service's "Order" schema*
+
+<Split ratio="2:1">
 <div>
 
-<CodeBlock title="coupling.hub" code="              Consignee&#10;                  ↑&#10;                  |&#10;Carrier  ↔  Shipment ⚠  →  Invoicing&#10;                  |&#10;                  ↓&#10;              Inventory" />
+<CodeBlock title="shipment-service / Order.schema" code="class Order {&#10;&#10;  orderId,  status,  lines[],  totalAmount&#10;&#10;  // from CONSIGNEE&#10;  buyerId,  buyerName,  buyerEmail&#10;&#10;  // from INVENTORY&#10;  warehouseId,  warehouseName&#10;&#10;  // from CARRIER&#10;  carrierId,  carrierName,  trackingNumber&#10;&#10;  // from INVOICING&#10;  invoiceId,  invoiceNumber,  paymentMethod,  paymentStatus&#10;&#10;}" />
 
 </div>
 <div>
 
-<ContentCard title="WHAT THE HUB REVEALS" accent="amber" items="Shipment references everyone — god entity, Consignee referenced by all / references none — but 0 events, Carrier ↔ Shipment circular reference — dead boundary?, Tracking coupled to everything / owns nothing — infrastructure?" />
+<Callout type="warning">
+**⚠️ One schema. Four other contexts.**
+
+**5 own fields. 12 borrowed from 4 contexts.**
+
+Every change in Consignee, Inventory, Carrier, or Invoicing **potentially breaks this schema**.
+
+This is a **Big Ball of Mud** at the boundary level.
+
+**🚩 Validate**
+
+→ Does Shipment **NEED** all these fields, or is it just convenient?
+
+→ Can any be replaced with an **ID-only** reference?
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Now look at the Shipment Service's Order schema. It contains buyerId, warehouseId, carrierId, invoiceId, paymentStatus, trackingNumber. One schema reaching into 4 other contexts. The hub shows it. Shipment in the centre, lines going everywhere. Consignee — referenced by everyone, references nobody — clean on paper, but zero events means everyone calls it synchronously. Shipment and Carrier reference each other — circular. Dead boundary suspected. Tracking is coupled to everything but owns no domain logic — infrastructure pretending to be domain. Four findings. One lens."
+"Here's why it's a god entity. Look at the Order schema. 5 fields are its own — orderId, status, lines, total. Fine. But then — buyerId, buyerName, buyerEmail from Consignee. warehouseId, warehouseName from Inventory. carrierId, carrierName, trackingNumber from Carrier. invoiceId, invoiceNumber, paymentMethod, paymentStatus from Invoicing. 12 fields from 4 other contexts embedded in one schema. Every change in any of those contexts potentially breaks this one schema. The question for domain experts: does Shipment actually NEED all this, or did it just accumulate over time?"
 </Notes>
 
 ---
