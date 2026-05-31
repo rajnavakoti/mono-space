@@ -1,0 +1,41 @@
+/* BigStat — headline number visual. */
+
+.container {
+  --bs-accent: var(--color-accent, #C9A96E);
+  --bs-text: var(--color-text, #111);
+  --bs-text-muted: var(--color-text-muted, #999);
+  --bs-red: #B26464;
+  --bs-green: #6E9B6E;
+
+  text-align: center;
+  margin: 18px auto;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  max-width: 700px;
+}
+
+.value {
+  font-size: clamp(64px, 10vw, 112px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--bs-text);
+}
+
+.toneAmber .value {
+  color: var(--bs-accent);
+}
+.toneRed .value {
+  color: var(--bs-red);
+}
+.toneGreen .value {
+  color: var(--bs-green);
+}
+
+.label {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bs-text-muted);
+  font-weight: 500;
+}

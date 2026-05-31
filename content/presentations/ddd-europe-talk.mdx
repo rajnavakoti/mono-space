@@ -887,29 +887,149 @@ The edge cases nobody mentioned in Event Storming:
 
 ---
 
-## Exhibit E — Incident Clustering
+<TitleCard badge="EXHIBIT E" subtitle="The architecture is the bug.">Incident Clustering</TitleCard>
 
-<Split ratio="1:1">
+<Notes>
+"Fifth lens. We've mapped structure — contracts, database, transactions. We've seen behavior — the logs. Now the question every engineering manager asks: so what? What does this COST us? Let's look at where the system breaks."
+</Notes>
+
+---
+
+## The Headline Number
+
+<BigStat value="83" label="incidents in 12 months" />
+
+<BigStat value="64" label="at service boundaries" />
+
+<BigStat value="77%" tone="amber" label="of all failures are cross-boundary" />
+
+> *"The system isn't failing because services are buggy. It's failing because the boundaries are wrong."*
+
+<Notes>
+"83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every 4 days. 10 of them SEV1 — 10 nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
+</Notes>
+
+---
+
+## Boundary Incident Map
+
+> *Where do failures cluster?*
+
+<Split ratio="3:1">
 <div>
 
-**Where failures cluster is where boundaries are wrong.**
-
-83 incidents in 12 months. 64 at service boundaries.
-
-**77% of all failures are cross-boundary.**
-
-> *"The architecture is the bug."*
+<CompareTable colWeights="3|1|1|1|1|2" headers="Boundary|Incidents|SEV1|SEV2|SEV3|Weighted" rows="Shipment ↔ Inventory|23|4|11|8|🔴 81||Shipment ↔ Carrier|17|2|8|7|🟠 47||Invoicing ↔ Shipment|14|3|5|6|🟠 51||Carrier ↔ Tracking|6|0|2|4|🟡 10||Inventory ↔ Warehouse|4|1|1|2|🟡 15||Within single service|19|1|5|13|🟢 28" />
 
 </div>
 <div>
 
-<ContentCard title="TOP BOUNDARY CLUSTERS" accent="red" items="Shipment ↔ Inventory: 23 incidents (4 SEV1) — race conditions + timeouts, Shipment ↔ Carrier: 17 incidents — the dead boundary hurts, Invoicing ↔ Shipment: 14 incidents — sync chain in critical path, Consignee boundary: 0 incidents — confirmed clean ✓" />
+<Callout type="warning" label="READ THE PATTERN">
+**Incidents don't cluster randomly.**
+
+**23** at Shipment ↔ Inventory = not bad luck. = **structural coupling**.
+
+**0** at Consignee boundary = **confirmed clean**.
+
+Internal incidents: only **1 SEV1**. Boundary incidents: **10 SEV1s**.
+
+→ The **severity** skews to boundaries, not just the count.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit E. 83 production incidents in 12 months. 64 of them — 77% — occurred at service boundaries. The system isn't failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places. The top cluster: Shipment to Inventory — 23 incidents, 4 of them SEV1. Race conditions from the two-writer violation we found in Exhibit B. Timeouts from the synchronous co-write we found in Exhibit C. The coupling we found in artifacts is now costing real engineering hours and real customer impact. The architecture is the bug."
+"The boundary incident map. 23 incidents at Shipment-Inventory — the most. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-boundary. The most damaging failures are overwhelmingly at boundaries. And 19 internal incidents — only 1 SEV1. The boundaries are where the pain is."
+</Notes>
+
+---
+
+## The Top Cluster Decomposed
+
+> *Shipment ↔ Inventory: 23 incidents*
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="2|0.5|3" headers="Pattern|Count|Root Cause from Earlier Exhibits" rows="Race condition|7|Exhibit B: 2 writers to inventory_reserved||Timeout|6|Exhibit C: 580ms synchronous co-write under load||Stale read|5|Read replica lag — Shipment reads replica · Inventory writes primary||Orphaned reservation|5|Exhibit C: no compensating transaction (saga needed)" />
+
+</div>
+<div>
+
+<Callout type="danger" label="EVERY INCIDENT TRACES BACK">
+The **2-writer violation** (Exhibit B) → **7 race conditions**
+
+The **580ms co-write** (Exhibit C) → **6 timeouts**
+
+The **missing saga** (Exhibit C) → **5 orphaned reservations**
+
+The coupling isn't theoretical. It has a cost:
+
+**4 SEV1s. 4 nights someone got paged. 4 war rooms.**
+
+The evidence is converging.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Let me decompose the top cluster. 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's two-writer violation, now costing us real pages. 6 timeouts — the 580-millisecond synchronous co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a finding from a previous exhibit. The coupling we found in artifacts now has a measurable cost. 4 SEV1s. 4 nights someone got paged at 3 AM because of a boundary problem."
+</Notes>
+
+---
+
+## What's Not Clustering
+
+> *Urgent vs important*
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="danger" label="WHERE IT BREAKS">
+**Shipment ↔ Inventory** — 23 incidents
+
+**Shipment ↔ Carrier** — 17 incidents
+
+**Invoicing ↔ Shipment** — 14 incidents
+
+These boundaries are in the wrong place or using the wrong integration pattern.
+
+→ **Fix these FIRST.**
+</Callout>
+
+</div>
+<div>
+
+<Callout type="tip" label="WHERE IT DOESN'T">
+**Consignee boundary** — 0 incidents
+
+The boundary IS clean. The data access isn't (**Exhibit B**: 3 direct readers).
+
+But **zero incidents** means the coupling hasn't HURT yet.
+
+→ **Fix later.** Not urgent.
+
+This is a **ticking clock**, not a fire.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"But not everything is broken. Consignee boundary — zero incidents. Zero. The boundary IS clean — even though Exhibit B showed 3 services reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you what hurts NOW. The other exhibits tell you what will hurt NEXT."
+</Notes>
+
+---
+
+## The model updates
+
+<ContextMap version="5" />
+
+> *Data lineage next. Who owns the truth when there are four copies of the address?*
+
+<Notes>
+"Update the model. The Shipment-Inventory line gets thicker — 23 incidents, the worst cluster. Shipment-Carrier thicker too — 17 incidents. Consignee turns green — confirmed clean by the incident data, zero failures. The three black boxes still unknown. Hypothesis v0.5 — what it costs when boundaries are wrong. The pattern is now quantitative. Data lineage next."
 </Notes>
 
 ---
