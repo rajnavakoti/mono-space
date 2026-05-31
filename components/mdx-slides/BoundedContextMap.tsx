@@ -49,7 +49,12 @@ interface Region {
 }
 
 interface Overlay {
-  kind: "syncRibbon" | "asyncDotted" | "addressTendrils" | "returnsArrow";
+  kind:
+    | "syncRibbon"
+    | "asyncDotted"
+    | "addressTendrils"
+    | "returnsArrow"
+    | "incidentFan";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
@@ -321,6 +326,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   // introducing version) would be unexplained noise.
   if (v === 4) overlays.push({ kind: "syncRibbon" });
   if (v === 4) overlays.push({ kind: "asyncDotted" });
+  if (v === 5) overlays.push({ kind: "incidentFan" });
   if (v === 6) overlays.push({ kind: "addressTendrils" });
   if (v === 7) overlays.push({ kind: "returnsArrow" });
 
@@ -339,7 +345,9 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     legend = {
       header: "Incident clustering",
       items: [
-        { marker: "red", text: "77% of failures at service boundaries (64 of 83 incidents · 10 of 11 SEV1)" },
+        { marker: "red", text: "Shipment ↔ Inventory · 23 incidents · 4 SEV1  (worst cluster)" },
+        { marker: "red", text: "Shipment ↔ Carrier · 17 incidents  (dead boundary hurts)" },
+        { marker: "red", text: "Shipment ↔ Invoicing · 14 incidents  (sync chain in critical path)" },
         { marker: "green", text: "Consignee boundary · 0 incidents · confirmed clean" },
       ],
     };
@@ -463,6 +471,22 @@ export function BoundedContextMap({ version }: Props) {
                     strokeDasharray="4 5"
                   />
                   <polygon points="582 245, 600 240, 593 256" />
+                </g>
+              );
+            }
+            if (o.kind === "incidentFan") {
+              // Three red lines radiating from Shipment (the epicentre) to
+              // Inventory, Carrier, and Invoicing — stroke widths
+              // proportional to incident count. Makes the "Shipment is the
+              // centre of the boundary failures" finding visceral.
+              return (
+                <g key={`ov-${i}`} className={styles.incidentFan}>
+                  {/* Shipment → Inventory · 23 incidents (worst — thickest) */}
+                  <path d="M 380 245 C 460 280, 555 305, 615 320" fill="none" strokeWidth="7" />
+                  {/* Shipment → Carrier · 17 incidents — through their overlap zone */}
+                  <path d="M 385 190 C 440 188, 475 188, 510 192" fill="none" strokeWidth="5" />
+                  {/* Shipment → Invoicing · 14 incidents */}
+                  <path d="M 295 295 C 305 360, 340 415, 365 445" fill="none" strokeWidth="4" />
                 </g>
               );
             }

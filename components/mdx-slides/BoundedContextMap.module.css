@@ -246,6 +246,15 @@
   opacity: 0.85;
 }
 
+/* Incident fan (v0.5): three red lines radiating from Shipment
+   (the epicentre) to Inventory, Carrier, Invoicing. Stroke widths
+   set inline per line, proportional to incident count. */
+.incidentFan > path {
+  stroke: var(--bcm-red);
+  opacity: 0.55;
+  stroke-linecap: round;
+}
+
 /* Marker fills — used both by SVG circle markers and (.markerX as a
    className) by HTML span markers in the HTML legend bar. */
 .markerRed { fill: var(--bcm-red); background: var(--bcm-red); }
