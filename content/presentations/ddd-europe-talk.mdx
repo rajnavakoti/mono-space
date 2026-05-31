@@ -534,34 +534,14 @@ Two services believe they own the same data. This is where **3 AM pages** come f
 
 ## The Facade Reveal
 
-<Split ratio="1:1">
-<div>
-
-<Callout type="tip" label="EXHIBIT A SAID">
-**Consignee Service**
-
-~~✓ Clean boundary~~
-
-~~Referenced by all. References nobody. Published language.~~
-</Callout>
-
-</div>
-<div>
-
-<Callout type="danger" label="EXHIBIT B SAYS">
-**Consignee's `customer_addresses` table**
-
-✗ Read directly by **3 services**
-
-**Shipment, Carrier, Invoicing** — all bypass the API.
-
-The boundary is clean at the API level. The database says it's a **facade**.
-</Callout>
-
-</div>
-</Split>
-
-> *"Contracts declared a boundary. The database showed it doesn't exist."*
+<ContradictionReveal
+  earlierExhibit="Exhibit A"
+  earlierClaim="Consignee Service: clean boundary ✓ | Referenced by all. References nobody. | Published language."
+  laterExhibit="Exhibit B"
+  laterFinding="Consignee's customer_addresses table | Read directly by 3 services | Shipment, Carrier, Invoicing — all bypass the API | The boundary is a facade ✗"
+  connector="but the database says…"
+  punchline="Contracts declared a boundary. The database showed it doesn't exist."
+/>
 
 <Notes>
 "Remember Exhibit A? Consignee looked clean — referenced by everyone, references nobody. A textbook published language. Now look at the database. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."

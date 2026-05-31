@@ -22,6 +22,7 @@ export { PipelineDiagram } from "./diagrams";
 export { HubDiagram } from "./diagrams";
 export { ContextMap } from "./ContextMap";
 export { HeatmapMatrix } from "./HeatmapMatrix";
+export { ContradictionReveal } from "./ContradictionReveal";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -47,6 +48,7 @@ import { PipelineDiagram } from "./diagrams";
 import { HubDiagram } from "./diagrams";
 import { ContextMap } from "./ContextMap";
 import { HeatmapMatrix } from "./HeatmapMatrix";
+import { ContradictionReveal } from "./ContradictionReveal";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -79,4 +81,5 @@ export const mdxSlideComponents = {
   HubDiagram,
   ContextMap,
   HeatmapMatrix,
+  ContradictionReveal,
 };
