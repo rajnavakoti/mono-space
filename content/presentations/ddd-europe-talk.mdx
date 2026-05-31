@@ -265,7 +265,7 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ## The hypothesis starts empty
 
-<ContextMap version="0" />
+<BoundedContextMap version="0" />
 
 > The 6 services we know about. 3 black boxes we don't. No lines, no labels, no opinions yet. Every exhibit adds evidence.
 
@@ -481,7 +481,7 @@ The **integration pattern is wrong**, not the boundary.
 
 ## The model updates
 
-<ContextMap version="1" />
+<BoundedContextMap version="1" />
 
 > Contracts can lie. Let's check the database.
 
@@ -582,7 +582,7 @@ A ghost user with **WRITE** access would be the most dangerous finding of all.
 
 ## The model updates
 
-<ContextMap version="2" />
+<BoundedContextMap version="2" />
 
 > *Transactions next. What commits together belongs together.*
 
@@ -713,7 +713,7 @@ These are the events the system **should be publishing but isn't**.
 
 ## The model updates
 
-<ContextMap version="3" />
+<BoundedContextMap version="3" />
 
 > *Runtime next. What actually happens when an order flows through?*
 
@@ -877,7 +877,7 @@ The edge cases nobody mentioned in Event Storming:
 
 ## The model updates
 
-<ContextMap version="4" />
+<BoundedContextMap version="4" />
 
 > *Incidents next. What does it cost when boundaries are wrong?*
 
@@ -1022,7 +1022,7 @@ This is a **ticking clock**, not a fire.
 
 ## The model updates
 
-<ContextMap version="5" />
+<BoundedContextMap version="5" />
 
 > *Data lineage next. Who owns the truth when there are four copies of the address?*
 
@@ -1118,7 +1118,7 @@ When the customer changes address:
 
 ## The model updates
 
-<ContextMap version="6" />
+<BoundedContextMap version="6" />
 
 > *Error codes next. What business rules has the system been quietly enforcing?*
 
@@ -1233,7 +1233,7 @@ No documentation. No audit trail.
 
 ## The model updates
 
-<ContextMap version="7" />
+<BoundedContextMap version="7" />
 
 > *Last lens. What does git history reveal about our boundaries?*
 
@@ -1363,22 +1363,12 @@ Replace co-write with **saga** first. **Then** extract.
 
 ## The model updates
 
-<ContextMap version="8" />
+<BoundedContextMap version="8" />
 
 > *Eight lenses. One evidence-backed hypothesis. Now we reconcile.*
 
 <Notes>
 "Final update. Carrier flips from green READY (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them. The three black boxes — one of them is now Returns/Policy (purple), revealed by Exhibit G. The other two remain unknown. Hypothesis v0.8 — eight lenses. One evidence-backed hypothesis. The remembered domain said 3 contexts. The encoded domain shows 7."
-</Notes>
-
----
-
-## The model updates — v0.8 proof (blob approach)
-
-<BoundedContextMap />
-
-<Notes>
-Proof of concept for the alternative model visualization. Same v0.8 state — Shipment+Carrier merged, Returns/Policy revealed, 2 remaining unknowns — but rendered as overlapping bounded-context regions instead of the rectangular grid. Compare to the previous slide. If this lands, it replaces ContextMap for all 9 versions (v0.0-v0.8).
 </Notes>
 
 ---

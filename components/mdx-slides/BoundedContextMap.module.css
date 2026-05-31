@@ -214,3 +214,64 @@
   letter-spacing: 0.04em;
   font-weight: 500;
 }
+
+/* ── Overlays ─────────────────────────────────────────────────────────── */
+
+/* Sync chain ribbon (v0.4): translucent red band tracing the synchronous flow
+   Shipment → Inventory → Invoicing. Wide stroke + low opacity reads as a
+   highlighted "current" rather than a line. */
+.syncRibbon > path {
+  stroke: rgba(178, 100, 100, 0.35);
+}
+
+.ribbonLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 14px;
+  font-weight: 800;
+  fill: var(--bcm-red);
+  letter-spacing: 0.08em;
+}
+
+/* Async dotted line (v0.4+) — green dotted indicator of the 87s decoupled gap */
+.asyncDotted > path {
+  stroke: var(--bcm-green);
+  opacity: 0.7;
+}
+
+.asyncLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--bcm-green);
+  letter-spacing: 0.08em;
+}
+
+/* Address-drift tendrils from Consignee (v0.6+) — dotted amber arcs out */
+.addressTendrils > path {
+  stroke: var(--bcm-accent);
+  opacity: 0.55;
+}
+
+.addressLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--bcm-accent);
+  letter-spacing: 0.06em;
+}
+
+/* Returns-delegation arrow (v0.7+) — purple from Carrier to Returns/Policy */
+.returnsArrow > path,
+.returnsArrow > polygon {
+  stroke: var(--bcm-purple);
+  fill: var(--bcm-purple);
+  opacity: 0.85;
+}
+
+.returnsLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--bcm-purple);
+  letter-spacing: 0.06em;
+}

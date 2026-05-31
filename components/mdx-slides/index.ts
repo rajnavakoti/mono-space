@@ -20,7 +20,6 @@ export { LifecycleDiagram } from "./diagrams";
 export { Timeline } from "./diagrams";
 export { PipelineDiagram } from "./diagrams";
 export { HubDiagram } from "./diagrams";
-export { ContextMap } from "./ContextMap";
 export { HeatmapMatrix } from "./HeatmapMatrix";
 export { ContradictionReveal } from "./ContradictionReveal";
 export { BigStat } from "./BigStat";
@@ -50,7 +49,6 @@ import { LifecycleDiagram } from "./diagrams";
 import { Timeline } from "./diagrams";
 import { PipelineDiagram } from "./diagrams";
 import { HubDiagram } from "./diagrams";
-import { ContextMap } from "./ContextMap";
 import { HeatmapMatrix } from "./HeatmapMatrix";
 import { ContradictionReveal } from "./ContradictionReveal";
 import { BigStat } from "./BigStat";
@@ -87,7 +85,6 @@ export const mdxSlideComponents = {
   Timeline,
   PipelineDiagram,
   HubDiagram,
-  ContextMap,
   HeatmapMatrix,
   ContradictionReveal,
   BigStat,
