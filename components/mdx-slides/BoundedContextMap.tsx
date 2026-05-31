@@ -421,15 +421,17 @@ export function BoundedContextMap({ version }: Props) {
               the canvas. */}
           {state.overlays.map((o, i) => {
             if (o.kind === "syncRibbon") {
-              // Translucent red band tracing the sync chain:
-              // Shipment right-edge → Inventory left → curve down to
-              // Invoicing right-edge. Wide, semi-transparent, no text.
+              // Translucent red band tracing the sync chain
+              // Shipment → Inventory → Invoicing. Routed BELOW Carrier
+              // because Carrier is intentionally NOT on the sync chain.
+              // Thinner stroke (12) so it reads as a connection without
+              // dominating the canvas.
               return (
                 <g key={`ov-${i}`} className={styles.syncRibbon}>
                   <path
-                    d="M 370 220 C 470 240, 560 270, 600 310 C 660 380, 560 440, 470 470 C 430 480, 400 475, 380 470"
+                    d="M 365 290 C 480 360, 580 395, 660 395 C 650 425, 570 470, 480 482 C 440 487, 405 484, 385 480"
                     fill="none"
-                    strokeWidth="22"
+                    strokeWidth="12"
                   />
                 </g>
               );

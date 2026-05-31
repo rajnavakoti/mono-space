@@ -228,10 +228,11 @@
 /* ── Overlays ─────────────────────────────────────────────────────────── */
 
 /* Sync chain ribbon (v0.4): translucent red band visualising the
-   synchronous flow Shipment → Inventory → Invoicing. No label on the
-   ribbon itself — the HTML legend below the canvas explains it. */
+   synchronous flow Shipment → Inventory → Invoicing. Routed below
+   Carrier (Carrier is async, not part of this chain). No label —
+   the HTML legend below the canvas explains it. */
 .syncRibbon > path {
-  stroke: rgba(178, 100, 100, 0.35);
+  stroke: rgba(178, 100, 100, 0.45);
 }
 
 /* Async dotted line (v0.4+): green dotted line + arrowhead from
