@@ -313,8 +313,8 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       kind: "noteBox",
       noteHeader: "RUNTIME FLOW",
       noteItems: [
-        { marker: "red", text: "Sync chain · 2s" },
-        { marker: "green", text: "Async gap · 87s → Carrier" },
+        { marker: "red", text: "Shipment → Inventory → Invoicing · 2s  (sync chain)" },
+        { marker: "green", text: "→ Carrier · 87s  (async gap)" },
       ],
     });
   }
@@ -394,16 +394,19 @@ export function BoundedContextMap({ version }: Props) {
           {/* Overlays */}
           {state.overlays.map((o, i) => {
             if (o.kind === "noteBox" && o.noteHeader && o.noteItems) {
-              // Small legend in the top-right corner of the canvas —
-              // explains the version's finding in words rather than
-              // trying to draw labelled connection lines on the canvas.
-              const baseY = 90;
+              // Small legend in the top-LEFT corner of the canvas (opposite
+              // the [exhibit] tag in top-right), well clear of the shapes.
+              // Names the participating shapes in the item text so the
+              // audience can SEE which contexts are connected without
+              // needing drawn lines.
+              const baseY = 80;
+              const baseX = 40;
               return (
                 <g key={`ov-${i}`} className={styles.noteBox}>
                   <text
-                    x={1060}
+                    x={baseX}
                     y={baseY}
-                    textAnchor="end"
+                    textAnchor="start"
                     className={styles.noteHeader}
                   >
                     {o.noteHeader}
@@ -420,8 +423,8 @@ export function BoundedContextMap({ version }: Props) {
                             : styles.markerPurple;
                     return (
                       <g key={idx}>
-                        <circle cx={760} cy={y - 5} r={6} className={markerClass} />
-                        <text x={775} y={y} className={styles.noteItem}>
+                        <circle cx={baseX + 8} cy={y - 5} r={6} className={markerClass} />
+                        <text x={baseX + 25} y={y} textAnchor="start" className={styles.noteItem}>
                           {item.text}
                         </text>
                       </g>
