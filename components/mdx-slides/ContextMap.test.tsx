@@ -2,59 +2,54 @@ import { render, screen } from "@testing-library/react";
 import { ContextMap } from "./ContextMap";
 
 describe("ContextMap", () => {
-  it("renders all baseline circles at v0 with no extra labels", () => {
-    render(<ContextMap version={0} />);
-
-    // The six known service circles
-    for (const name of ["Shipment", "Carrier", "Consignee", "Inventory", "Invoicing", "Tracking"]) {
-      expect(screen.getByText(name)).toBeInTheDocument();
+  it("at v0 renders all 6 known contexts + 3 unknowns with no findings", () => {
+    render(<ContextMap version="0" />);
+    for (const n of ["Shipment", "Carrier", "Consignee", "Inventory", "Invoicing", "Tracking"]) {
+      expect(screen.getByText(n)).toBeInTheDocument();
     }
-    // Three ??? bottom-row circles
     expect(screen.getAllByText("???")).toHaveLength(3);
-    // v0 caption
+    expect(screen.queryByText("⚠ god entity")).not.toBeInTheDocument();
     expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument();
-    // No sublabels yet
-    expect(screen.queryByText("⚠ GOD")).not.toBeInTheDocument();
-    expect(screen.queryByText("0 events")).not.toBeInTheDocument();
   });
 
-  it("at v1 shows GOD label on Shipment and '0 events' on Consignee", () => {
-    render(<ContextMap version={1} />);
-
-    expect(screen.getByText("⚠ GOD")).toBeInTheDocument();
+  it("at v1 shows contract-archaeology findings inside cards", () => {
+    render(<ContextMap version="1" />);
+    expect(screen.getByText("⚠ god entity")).toBeInTheDocument();
     expect(screen.getByText("0 events")).toBeInTheDocument();
+    expect(screen.getByText("↔ circular")).toBeInTheDocument();
+    expect(screen.getByText("infra?")).toBeInTheDocument();
     expect(screen.getByText(/Hypothesis v0\.1/)).toBeInTheDocument();
   });
 
-  it("at v7 reveals Returns/Policy and leaves two ??? circles", () => {
-    render(<ContextMap version={7} />);
+  it("at v2 marks Inventory red (2 writers) and adds facade to Consignee", () => {
+    render(<ContextMap version="2" />);
+    expect(screen.getByText("2 writers")).toBeInTheDocument();
+    expect(screen.getByText("facade")).toBeInTheDocument();
+  });
 
+  it("at v7 reveals Returns/Policy in place of the middle unknown", () => {
+    render(<ContextMap version="7" />);
     expect(screen.getByText("Returns/Policy")).toBeInTheDocument();
     expect(screen.getAllByText("???")).toHaveLength(2);
     expect(screen.getByText(/Hypothesis v0\.7/)).toBeInTheDocument();
   });
 
-  it("at v8 shows MERGE label and surfaces NOT READY override on Carrier", () => {
-    render(<ContextMap version={8} />);
-
-    expect(screen.getByText("NOT READY (72% co-change)")).toBeInTheDocument();
+  it("at v8 Carrier flips from READY to NOT READY (Exhibit H override)", () => {
+    render(<ContextMap version="8" />);
+    expect(screen.getByText(/NOT READY/)).toBeInTheDocument();
+    expect(screen.queryByText("READY ✓")).not.toBeInTheDocument();
     expect(screen.getByText(/Hypothesis v0\.8/)).toBeInTheDocument();
   });
 
-  it("accepts version as a string (MDX prop interop)", () => {
-    // MDX passes string attribute values; the component must normalize them.
-    render(<ContextMap version={"1" as unknown as 1} />);
-
-    expect(screen.getByText("⚠ GOD")).toBeInTheDocument();
-    expect(screen.getByText("0 events")).toBeInTheDocument();
-    expect(screen.getByText(/Hypothesis v0\.1/)).toBeInTheDocument();
+  it("accepts version as a number for TS callsites (MDX uses string)", () => {
+    render(<ContextMap version={1 as unknown as "1"} />);
+    expect(screen.getByText("⚠ god entity")).toBeInTheDocument();
   });
 
-  it("clamps out-of-range or non-numeric versions to v0", () => {
-    const { rerender } = render(<ContextMap version={"99" as unknown as 8} />);
-    expect(screen.getByText(/Hypothesis v0\.8/)).toBeInTheDocument(); // 99 → 8
-
-    rerender(<ContextMap version={"not-a-number" as unknown as 0} />);
-    expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument(); // NaN → 0
+  it("clamps out-of-range versions to v0 and v8", () => {
+    const { rerender } = render(<ContextMap version="99" />);
+    expect(screen.getByText(/Hypothesis v0\.8/)).toBeInTheDocument();
+    rerender(<ContextMap version="bogus" />);
+    expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument();
   });
 });

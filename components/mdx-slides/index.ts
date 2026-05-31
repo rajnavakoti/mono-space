@@ -22,9 +22,6 @@ export { PipelineDiagram } from "./diagrams";
 export { HubDiagram } from "./diagrams";
 export { ContextMap } from "./ContextMap";
 export { HeatmapMatrix } from "./HeatmapMatrix";
-export { BoundedContextCards } from "./BoundedContextCards";
-export { WhiteboardSketch } from "./WhiteboardSketch";
-export { SchemaZoomedMap } from "./SchemaZoomedMap";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -50,9 +47,6 @@ import { PipelineDiagram } from "./diagrams";
 import { HubDiagram } from "./diagrams";
 import { ContextMap } from "./ContextMap";
 import { HeatmapMatrix } from "./HeatmapMatrix";
-import { BoundedContextCards } from "./BoundedContextCards";
-import { WhiteboardSketch } from "./WhiteboardSketch";
-import { SchemaZoomedMap } from "./SchemaZoomedMap";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -85,7 +79,4 @@ export const mdxSlideComponents = {
   HubDiagram,
   ContextMap,
   HeatmapMatrix,
-  BoundedContextCards,
-  WhiteboardSketch,
-  SchemaZoomedMap,
 };
