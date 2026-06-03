@@ -1314,14 +1314,12 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ---
 
-## The model updates
+## Hypothesis v0.6 — business rules nobody documented. One new context discovered.
 
 <BoundedContextMap version="6" />
 
-> *Last lens. What does git history reveal about our boundaries?*
-
 <Notes>
-"Update the model. A new context reveals itself — Returns/Policy — in purple, in place of the middle black box. DEL-E011 traces from Carrier into this new context. Shipment picks up the '⚠ 891 overrides' warning. The two remaining black boxes still unknown. Hypothesis v0.6 — business rules nobody documented. One new context discovered. Change velocity next."
+"Update the model after the error-code lens. A new context materialises — Returns / Policy — in purple, in place of the middle unknown blob. DEL-E011 traces from Carrier into this new context: the return-window policy lives in Carrier but belongs in Returns / Policy. Nobody designed Returns / Policy as a context. The error code told us the concern exists. Shipment carries forward its god-entity verdict; the high-frequency invariants from Exhibit F — price tolerance, split-shipment logic, the override escape hatch — back it up. The two remaining unknown blobs still don't have evidence. Six lenses done. One left — the one that records every decision every developer ever made. Change velocity next."
 </Notes>
 
 ---
