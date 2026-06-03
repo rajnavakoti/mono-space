@@ -669,37 +669,33 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ---
 
-## Transaction Clusters
+## Find clean aggregates
 
 > *Which tables commit together?*
 
-<Split ratio="3:1">
+Find what commits together within one service — because <mark>high-frequency co-writes within one service are your aggregates.</mark>
+
+<Split ratio="3:2">
 <div>
 
-<CompareTable colWeights="3|1|1|2" headers="Tables in same transaction|Frequency|Service|Verdict" rows="{orders · order_lines · order_audit}|84,219/wk|Shipment|✅ Order Aggregate||{shipments · tracking_events}|31,445/wk|Carrier|✅ Shipment Aggregate||{payment_ledger · payment_events}|9,877/wk|Invoicing|✅ Payment Aggregate||{orders · shipments}|2,103/wk|Shipment|⚠️ CROSS-CONTEXT||{orders · inventory_reserved}|4,512/wk|Shipment|⚠️ BOUNDARY VIOLATION" />
+<CompareTable colWeights="3|1|1|2" headers="Tables in same transaction|Frequency|Service|Infer" rows="{orders · order_lines · order_audit}|**84,219/wk**|Shipment|✅ Order Aggregate||{shipments · tracking_events}|31,445/wk|Carrier|✅ Shipment Aggregate||{payment_ledger · payment_events}|9,877/wk|Invoicing|✅ Payment Aggregate||{inventory_reserved · stock_levels}|3,298/wk|Inventory|✅ Reservation Aggregate" />
 
 </div>
 <div>
 
-<Callout type="warning" label="TWO WARNINGS">
-**`{orders · shipments}` — 2,103/wk**
+<Callout type="tip">
+**💡 Aggregates emerge**
 
-**300× per day.** Not noise. Shipment auto-creates a carrier record in the same commit.
+**84,219 times per week**, `orders` + `order_lines` + `order_audit` commit together. Not accidental — that's the Order aggregate.
 
-→ **Dead boundary confirmed** at the transaction level.
-
-**`{orders · inventory_reserved}` — 4,512/wk**
-
-Average duration: **580ms.** Holding locks on 2 tables for over half a second.
-
-→ Boundary violation **AND** a performance problem.
+The database has been enforcing these consistency boundaries for years. Nobody drew them on a whiteboard. *The code decided.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"We mined 7 days of transactions. Clean aggregates emerge immediately — orders with order_lines, 84,000 times a week. That's the Order aggregate. Solid. Shipments with tracking_events — the Shipment aggregate in the Carrier context. Clean. But then — orders and shipments committed together 2,103 times per week. 300 times a day. The Shipment Service writes to Carrier's table in the same commit. That's the dead boundary from Exhibit A, confirmed at the transaction level. You cannot split these services without breaking this transaction. And orders with inventory_reserved — 4,512 times at 580 milliseconds average. That's a distributed concern handled locally. Works in a monolith. Breaks the moment you try to extract."
+"Find what commits together within one service — because high-frequency co-writes within one service are your aggregates. Top row: orders, order_lines, order_audit commit together 84,000 times a week. Not accidental — that's the Order aggregate. Shipments with tracking_events — the Shipment aggregate in Carrier. Payment_ledger with payment_events — the Payment aggregate in Invoicing. Inventory's reservation cluster — clean within Inventory's own writes. Shipment writing to it is a separate story coming next. Four aggregates the database has been enforcing for years. Nobody drew them on a whiteboard. The code decided."
 </Notes>
 
 ---
