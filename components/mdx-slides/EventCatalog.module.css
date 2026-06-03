@@ -153,19 +153,3 @@
   border-bottom: none;
 }
 
-/* ── Punchline ── */
-
-.punchline {
-  margin: 24px 0 0 0;
-  padding-top: 16px;
-  border-top: 2px solid var(--ec-border);
-  text-align: center;
-  font-size: 15px;
-  color: var(--ec-text);
-  letter-spacing: 0.02em;
-}
-
-.punchline strong {
-  font-weight: 800;
-  color: var(--ec-accent);
-}

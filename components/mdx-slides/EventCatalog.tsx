@@ -152,11 +152,6 @@ export function EventCatalog({ version }: EventCatalogProps = {}) {
           </ul>
         </section>
       </div>
-
-      <p className={styles.punchline}>
-        <strong>{declaredCount} declared.</strong>{" "}
-        {data.silent.length} services publish nothing.
-      </p>
     </figure>
   );
 }

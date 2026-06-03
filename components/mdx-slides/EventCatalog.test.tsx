@@ -43,12 +43,6 @@ describe("EventCatalog", () => {
     expect(screen.getAllByText("4").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("at v1 renders the punchline", () => {
-    render(<EventCatalog version="1" />);
-    expect(screen.getByText(/declared\./)).toBeInTheDocument();
-    expect(screen.getByText(/publish nothing/i)).toBeInTheDocument();
-  });
-
   it("falls back to v1 data when no version prop is passed", () => {
     render(<EventCatalog />);
     expect(screen.getByText("Event Catalog v0.1")).toBeInTheDocument();
