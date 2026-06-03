@@ -55,17 +55,17 @@ describe("BoundedContextMap", () => {
     expect(screen.getByText("0 incidents")).toBeInTheDocument();
   });
 
-  it("at v7 Returns/Policy reveals + shipment gains 891 overrides", () => {
-    render(<BoundedContextMap version="7" />);
+  it("at v6 Returns/Policy reveals + shipment gains 891 overrides (was v7 before Exhibit F removed)", () => {
+    render(<BoundedContextMap version="6" />);
     expect(screen.getByText("RETURNS")).toBeInTheDocument();
-    // DEL-E011 appears twice at v7: once as a Returns finding, once as the
-    // returnsArrow overlay label. Both are intended.
+    // DEL-E011 appears at v6: once as a Returns finding, once as the
+    // returnsArrow overlay label.
     expect(screen.getAllByText("DEL-E011").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("⚠ 891 overrides").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("at v8 Shipment + Carrier merge into one Shipment Fulfilment blob with summary band", () => {
-    render(<BoundedContextMap version="8" />);
+  it("at v7 Shipment + Carrier merge into Shipment Fulfilment blob with summary band (was v8)", () => {
+    render(<BoundedContextMap version="7" />);
     expect(screen.getByText("SHIPMENT FULFILMENT")).toBeInTheDocument();
     expect(screen.getByText(/Shipment ⊕ Carrier/)).toBeInTheDocument();
     expect(screen.getByText("Remembered")).toBeInTheDocument();

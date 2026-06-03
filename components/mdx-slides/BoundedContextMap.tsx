@@ -29,7 +29,7 @@
  */
 import styles from "./BoundedContextMap.module.css";
 
-export type BoundedContextMapVersion = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type BoundedContextMapVersion = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 type Status = "red" | "amber" | "green" | "purple" | "gray" | "unknown";
 
@@ -52,7 +52,6 @@ interface Overlay {
   kind:
     | "syncRibbon"
     | "asyncDotted"
-    | "addressTendrils"
     | "returnsArrow"
     | "incidentFan"
     | "deadBoundaryLine"
@@ -60,6 +59,10 @@ interface Overlay {
     | "sharedKernel"
     | "deadBoundaryProved"
     | "extractionBlocker";
+// Note: 'addressTendrils' was the v=6 data-lineage overlay used by the
+// now-removed Exhibit F (Data Lineage). After F was cut, the overlay
+// kind is removed from the union. CSS class lingers as dead code; safe
+// to prune in a later pass.
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
@@ -188,21 +191,20 @@ const CAPTIONS: Record<BoundedContextMapVersion, string> = {
   3: "Hypothesis v0.3 — What commits together. What blocks extraction.",
   4: "Hypothesis v0.4 — What actually happens at runtime.",
   5: "Hypothesis v0.5 — The cost of wrong boundaries.",
-  6: "Hypothesis v0.6 — Where data drifts and events are missing.",
-  7: "Hypothesis v0.7 — Business rules nobody documented. One new context.",
-  8: "Hypothesis v0.8 — Eight lenses. One evidence-backed hypothesis.",
+  6: "Hypothesis v0.6 — Business rules nobody documented. One new context.",
+  7: "Hypothesis v0.7 — Seven lenses. One evidence-backed hypothesis.",
 };
 
 /** Helpers — status accumulates across versions. */
 function shipmentStatus(v: number): Status {
   if (v === 0) return "gray";
-  return "amber"; // v0.1+ remains amber until merged into Shipment Fulfilment at v0.8
+  return "amber"; // v0.1+ remains amber until merged into Shipment Fulfilment at v0.7
 }
 function carrierStatus(v: number): Status {
   if (v === 0) return "gray";
   if (v === 1 || v === 2) return "amber"; // dead boundary suspicion
-  if (v >= 3 && v <= 7) return "green";   // extractable from v0.3 transactions onward
-  return "red";                            // v0.8: not actually rendered as separate; merge happens
+  if (v >= 3 && v <= 6) return "green";   // extractable from v0.3 transactions onward
+  return "red";                            // v0.7: not actually rendered as separate; merge happens
 }
 function consigneeStatus(v: number): Status {
   if (v === 0) return "gray";
@@ -232,7 +234,7 @@ function shipmentFindings(v: number): string[] {
   if (v >= 1) f.push("⚠ god entity");
   if (v >= 3) f.push("BLOCKED ✗");
   if (v >= 5) f.push("54 incidents · epicentre");
-  if (v >= 7) f.push("⚠ 891 overrides");
+  if (v >= 6) f.push("⚠ 891 overrides");
   return f;
 }
 function carrierFindings(v: number): string[] {
@@ -244,8 +246,8 @@ function carrierFindings(v: number): string[] {
   if (v === 3) return ["Delivery Aggregate", "↔ circular", "extractable ✓"];
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
-  if (v >= 3 && v <= 7) f.push("extractable ✓");
-  if (v >= 5 && v <= 7) f.push("17 incidents · w/ Ship");
+  if (v >= 3 && v <= 6) f.push("extractable ✓");
+  if (v >= 5 && v <= 6) f.push("17 incidents · w/ Ship");
   return f;
 }
 function consigneeFindings(v: number): string[] {
@@ -287,7 +289,7 @@ function invoicingFindings(v: number): string[] {
   if (v === 3) return ["Payment Aggregate"];
   const f: string[] = [];
   if (v >= 5) f.push("14 incidents · w/ Ship");
-  if (v >= 8) f.push("41% co-change");
+  if (v >= 7) f.push("41% co-change");
   return f;
 }
 function trackingFindings(v: number): string[] {
@@ -315,8 +317,8 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       { id: "tracking", pathD: TRACK_SMALL, status: "gray", label: "Tracking", cx: 970, cy: 478 },
     );
   }
-  // v0.1-v0.7 — developed shapes (Shipment now god entity, etc.)
-  else if (v <= 7) {
+  // v0.1-v0.6 — developed shapes (Shipment now god entity, etc.)
+  else if (v <= 6) {
     regions.push(
       // Shipment background, then Carrier so it overlaps Shipment on the right
       { id: "shipment", pathD: SHIP_DEV, status: shipmentStatus(v), label: "Shipment",
@@ -334,20 +336,20 @@ function buildState(v: BoundedContextMapVersion): ModelState {
         findings: trackingFindings(v), cx: 968, cy: 502 },
     );
 
-    if (v >= 7) {
+    if (v >= 6) {
       regions.push({
         id: "returns",
         pathD: RETURNS_PATH,
         status: "purple",
         label: "RETURNS",
         sublabel: "/ POLICY",
-        findings: ["NEW · from G", "DEL-E011"],
+        findings: ["NEW · from F", "DEL-E011"],
         cx: 608,
         cy: 525,
       });
     }
   }
-  // v0.8 — merged blob, Returns visible, final state
+  // v0.7 — merged blob, Returns visible, final state
   else {
     regions.push(
       { id: "shipment-fulfilment", pathD: SHIP_FULFIL, status: "red",
@@ -363,20 +365,20 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       { id: "invoicing", pathD: INVOICING_DEV, status: "amber", label: "INVOICING",
         findings: ["41% co-change"], cx: 370, cy: 480 },
       { id: "returns", pathD: RETURNS_PATH, status: "purple", label: "RETURNS",
-        sublabel: "/ POLICY", findings: ["NEW · from G", "DEL-E011"], cx: 608, cy: 525 },
+        sublabel: "/ POLICY", findings: ["NEW · from F", "DEL-E011"], cx: 608, cy: 525 },
       { id: "tracking", pathD: TRACK_DEV, status: "gray", label: "TRACKING",
         findings: ["silent participant"], cx: 968, cy: 502 },
     );
   }
 
   // Unknowns — internal contexts we know about but have no contracts for
-  // (left), and third-party / external integrations (right). At v0.7+ the
+  // (left), and third-party / external integrations (right). At v0.6+ the
   // left blob drops 'Returns' from its sublabel because Returns/Policy
   // materialises as its own purple shape via DEL-E011 evidence.
   regions.push(
     { id: "unknown-left", pathD: UNK_LEFT, status: "unknown",
       label: "Carrier Routing",
-      sublabel: v >= 7 ? "· Customs" : "· Customs · Returns",
+      sublabel: v >= 6 ? "· Customs" : "· Customs · Returns",
       cx: 122, cy: 605 },
     { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown",
       label: "External Systems", cx: 965, cy: 614 },
@@ -396,8 +398,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   if (v === 4) overlays.push({ kind: "syncRibbon" });
   if (v === 4) overlays.push({ kind: "asyncDotted" });
   if (v === 5) overlays.push({ kind: "incidentFan" });
-  if (v === 6) overlays.push({ kind: "addressTendrils" });
-  if (v === 7) overlays.push({ kind: "returnsArrow" });
+  if (v === 6) overlays.push({ kind: "returnsArrow" });
 
   // Legend per version — explains the overlays in words. Sits below
   // the canvas as HTML, always has room, never overlaps shapes.
@@ -445,14 +446,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     };
   } else if (v === 6) {
     legend = {
-      header: "Data lineage",
-      items: [
-        { marker: "amber", text: "Address copies fan out from Consignee → Shipment · Carrier · Invoicing (342 mismatches)" },
-      ],
-    };
-  } else if (v === 7) {
-    legend = {
-      header: "Discovery",
+      header: "Discovery · from Exhibit F",
       items: [
         { marker: "purple", text: "Returns / Policy revealed by DEL-E011 in Carrier — a new bounded context" },
       ],
@@ -464,7 +458,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     overlays,
     legend,
     caption: CAPTIONS[v],
-    showSummaryBand: v === 8,
+    showSummaryBand: v === 7,
   };
 }
 
@@ -581,15 +575,6 @@ export function BoundedContextMap({ version }: Props) {
                   <path d="M 385 190 C 440 188, 475 188, 510 192" fill="none" strokeWidth="5" />
                   {/* Shipment → Invoicing · 14 incidents */}
                   <path d="M 295 295 C 305 360, 340 415, 365 445" fill="none" strokeWidth="4" />
-                </g>
-              );
-            }
-            if (o.kind === "addressTendrils") {
-              return (
-                <g key={`ov-${i}`} className={styles.addressTendrils}>
-                  <path d="M 200 460 C 260 380, 320 280, 285 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
-                  <path d="M 215 445 C 350 320, 500 220, 620 210" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
-                  <path d="M 195 490 C 250 480, 330 478, 380 480" fill="none" strokeDasharray="2 3" strokeWidth="1.5" />
                 </g>
               );
             }
