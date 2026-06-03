@@ -554,35 +554,35 @@ Look for duplicate schemas — because same concept with two owners means the <m
 
 ---
 
-## The Shared Table Map
+## Find tables with multiple writers
 
 > *Which tables do multiple services access?*
 
-<Split ratio="3:1">
+Find tables with multiple writers — because two writers to the same table means <mark>two services believe they own the same aggregate</mark>.
+
+<Split ratio="3:2">
 <div>
 
-<CompareTable colWeights="2|2|3|1" headers="Table|Writers|Readers|Severity" rows="orders|Shipment|Carrier · Invoicing · Reporting|🟠 HIGH||inventory_reserved|Shipment · Inventory|—|🔴 CRITICAL||customer_addresses|Consignee|Shipment · Carrier · Invoicing|🟠 HIGH||shipment_status|Carrier|Shipment|🟡 MEDIUM||payment_ledger|Invoicing|Reporting|🟢 CLEAN" />
+<CompareTable colWeights="2|2|3|2" headers="Table|Writers|Readers|Severity" rows="orders|Shipment|Carrier · Invoicing · Reporting|🟠 4 readers bypass API||inventory_reserved|**Shipment · Inventory**|—|**🔴 2 WRITERS**||customer_addresses|Consignee|Shipment · Carrier · Invoicing|🟠 3 readers bypass API||shipment_status|Carrier|Shipment|**🟡 supports dead boundary**||payment_ledger|Invoicing|Reporting|🟢 clean" />
 
 </div>
 <div>
 
-<Callout type="warning" label="KEY DISTINCTION">
-**Read coupling = dependency**
+<Callout type="warning">
+**🚩 The key distinction**
 
-Service A needs Service B's data. **Manageable.**
+**READ coupling = dependency.** Manageable. No data corruption.
 
-**Write coupling = boundary violation**
+**WRITE coupling = boundary violation.** Two aggregate owners. Race conditions. 3 AM pages.
 
-Two services believe they own the same data. This is where **3 AM pages** come from.
-
-→ `inventory_reserved` has **2 WRITERS**. Two services think they own reservation logic.
+→ `inventory_reserved` has **2 WRITERS**. Shipment and Inventory both believe they own reservations.
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Five shared tables. The critical distinction: reading someone else's table is a dependency — manageable. Two services WRITING to the same table is a boundary violation — two aggregate owners. inventory_reserved has two writers — Shipment and Inventory both write to it. Two services believe they own reservation logic. That's where your race conditions come from. And look at payment_ledger — one writer, one reader. That's clean. That's how it should work."
+"Find tables with multiple writers — because two writers to the same table means two services believe they own the same aggregate. Five tables in the shared map. inventory_reserved has two writers — Shipment and Inventory both write to it. Two services believe they own reservation logic. That's where race conditions come from. shipment_status — Carrier writes, Shipment reads. That supports the dead-boundary hypothesis from Exhibit A. The git lens will confirm it later. Now look at payment_ledger — one writer, one reader. That's clean. That's how it should work. The distinction the audience should walk away with: reading is dependency, writing is violation."
 </Notes>
 
 ---
