@@ -444,52 +444,37 @@ Map who references whom — because the service that references everyone is your
 
 ---
 
-## Dead Boundary vs Boundary Violation
+## Look for duplicate schemas
 
 > *Not all coupling is the same*
 
-<Split ratio="2:1">
+Look for duplicate schemas — because same concept with two owners means the boundary between them is <mark>fictional</mark>.
+
+<Split ratio="3:2">
 <div>
 
-<CodeBlock title="shipment-carrier · coupling evidence" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string        # from Shipment&#10;    recipientId: string    # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;&#10;# Same concept. Two owners.&#10;# Circular references." />
+<CodeBlock title="shipment-carrier · duplicate-schema evidence" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string         # from Shipment&#10;    recipientId: string     # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;    status: [created, picked_up, in_transit,&#10;             out_for_delivery, delivered,&#10;             failed, returned, lost, damaged]" />
 
 </div>
 <div>
 
-<Callout type="danger" label="DEAD BOUNDARY">
-Both services define **Shipment** schema. Both reference each other. **Circular.**
+<Callout type="danger">
+**🔴 Dead boundary signal**
 
-**Duplicate ownership** of the same concept.
+→ **Both services define Shipment schema**. Both reference each other. Circular.
 
-→ **MERGE** into one context or build a proper **ACL**.
-</Callout>
+→ **Shipment also defines Invoice (5 states)**. Invoicing owns Invoice (7 states). Stale copy, missing states.
 
-</div>
-</Split>
+→ **Two duplicate schemas**: `Shipment` / `ShipmentInfo` and `Invoice` / `Invoice`.
 
-<Split ratio="2:1">
-<div>
-
-<CodeBlock title="shipment-inventory · coupling evidence" code="# SHIPMENT SERVICE references:&#10;  Order:&#10;    warehouseId: string    # from Inventory&#10;&#10;# INVENTORY SERVICE references:&#10;  Reservation:&#10;    orderId: string        # from Shipment&#10;&#10;# Different concepts. Shared IDs only.&#10;# No schema duplication." />
-
-</div>
-<div>
-
-<Callout type="warning" label="BOUNDARY VIOLATION">
-Share IDs only. **No duplicate schemas.**
-
-**Order ≠ Reservation.** Different concepts.
-
-The **integration pattern is wrong**, not the boundary.
-
-→ **FIX the pattern** (replace co-write with saga/events)
+→ Merge or build an ACL.
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Not all coupling is the same. Look at the evidence side by side. Shipment and Carrier both define a Shipment schema — carrierId, trackingNumber, same fields, two owners. Circular references. That's a dead boundary — same concept, two services pretending to be separate. Either merge or build an ACL. Now Shipment and Inventory — they share IDs only. orderId and warehouseId. But Order is not the same concept as Reservation. These are genuinely different domains coupled by the wrong integration pattern. Don't merge — fix the pattern. Replace the shared transaction with events or a saga."
+"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'disputed' and 'overdue.' Two duplicate schemas. Two fictional boundaries. Merge into one context or build a proper anti-corruption layer."
 </Notes>
 
 ---
