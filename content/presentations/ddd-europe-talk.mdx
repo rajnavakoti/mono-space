@@ -1080,9 +1080,11 @@ Internal incidents: 1 SEV1. Boundary incidents: 10 SEV1s.
 
 ---
 
-## The Top Cluster Decomposed
+## Connect each cluster to previous exhibits
 
 > *Shipment ↔ Inventory: 23 incidents*
+
+Connect each cluster back to your earlier exhibits — because <mark>each failure pattern should trace to a coupling you already identified.</mark>
 
 <Split ratio="3:2">
 <div>
@@ -1092,25 +1094,25 @@ Internal incidents: 1 SEV1. Boundary incidents: 10 SEV1s.
 </div>
 <div>
 
-<Callout type="danger" label="EVERY INCIDENT TRACES BACK">
-The **2-writer violation** (Exhibit B) → **7 race conditions**
+<Callout type="danger">
+**🔴 Every incident traces back**
 
-The **580ms co-write** (Exhibit C) → **6 timeouts**
+2-writer violation (Exhibit B) → **7 race conditions**
 
-The **missing saga** (Exhibit C) → **5 orphaned reservations**
+580ms co-write (Exhibit C) → **6 timeouts**
 
-The coupling isn't theoretical. It has a cost:
+Missing saga (Exhibit C) → **5 orphaned reservations**
 
-**4 SEV1s. 4 nights someone got paged. 4 war rooms.**
+→ 4 SEV1s. 4 nights someone got paged. 4 war rooms.
 
-The evidence is converging.
+*The evidence is converging.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Let me decompose the top cluster. 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's two-writer violation, now costing us real pages. 6 timeouts — the 580-millisecond synchronous co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a finding from a previous exhibit. The coupling we found in artifacts now has a measurable cost. 4 SEV1s. 4 nights someone got paged at 3 AM because of a boundary problem."
+"Connect each cluster back to your earlier exhibits — because each failure pattern should trace to a coupling you already identified. Take the top cluster — 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's two-writer violation, now costing real pages. 6 timeouts — the 580-millisecond synchronous co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a finding from a previous exhibit. The coupling we found in artifacts now has a measurable cost. 4 SEV1s. 4 nights someone got paged at 3 AM because of a boundary problem."
 </Notes>
 
 ---
