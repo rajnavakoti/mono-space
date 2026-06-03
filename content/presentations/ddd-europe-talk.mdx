@@ -1215,30 +1215,38 @@ Carrier owns `DEL-E011` (3,420/year) but it's a returns rule — **misplaced con
 
 ---
 
-## The Decoded Rules
+## Decode the top error codes
 
 > *Two error codes. Two undocumented business rules.*
 
-<Callout type="warning" label="ORD-E003 · 4,102/year 🟠">
-**"Price variance exceeded"**
+Decode the top error codes — because <mark>high-frequency codes are domain invariants that exist only in code — thresholds, SLAs, policies nobody wrote down.</mark>
 
-If price drifts more than **2%** between cart and checkout → reject the order.
+<Callout type="warning">
+**🟠 ORD-E003 · 4,102/year**
 
-That **2% exists NOWHERE in documentation. Only in code.**
+"Price variance exceeded"
 
-Fires **11 times a day.** Does your pricing manager know it exists?
+If price drifts more than **2%** between cart and checkout, reject the order.
+
+That 2% exists nowhere in documentation. Only in code. Fires 11 times a day.
+
+*Does your pricing manager know it exists?*
 </Callout>
 
-<Callout type="warning" label="ORD-E031 · 2,156/year 🟠">
-**"Split shipment threshold"**
+<Callout type="warning">
+**🟠 ORD-E031 · 2,156/year**
 
-Items from **3+ warehouses** → triggers split-shipment logic.
+"Split shipment threshold"
 
-This error references **warehouses, carriers, AND orders** — an invariant validating across **3 contexts** = orchestration logic that nobody gave a name to.
+Items from **3+ warehouses** triggers split-shipment logic.
+
+This error references warehouses, carriers, and orders — an invariant validating across 3 contexts.
+
+*Orchestration logic that nobody gave a name to.*
 </Callout>
 
 <Notes>
-"Let me show you what the error codes decode to. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it."
+"Decode the top error codes — because high-frequency codes are domain invariants that exist only in code: thresholds, SLAs, policies nobody wrote down. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it."
 </Notes>
 
 ---
