@@ -653,6 +653,22 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ---
 
+## What do transactions reveal?
+
+> Mine `pg_stat_statements` — because every commit pattern is a <mark>consistency boundary the code has been enforcing for years.</mark>
+
+<BigStat value="847" label="transaction clusters · 7 days" tone="neutral" />
+
+<BigStat value="812" label="single-service commits · 96% — clean aggregates" tone="green" />
+
+<BigStat value="35" label="cross-service co-writes · 4% — boundary violations" tone="red" punchline="96% stay within one service. 4% cross boundaries. That 4% is where the problems live." />
+
+<Notes>
+"Mine pg_stat_statements — because every BEGIN...COMMIT block is a consistency boundary. In DDD terms, an aggregate, whether anyone designed it or not. Seven days of transactions analysed. 847 distinct commit patterns. 812 of them stay within a single service — clean aggregates, 96% of the volume. 35 cross service boundaries — only 4%. That 4% is where the problems live. The next slides decompose those 35 commits — three clean aggregates we'll surface first, then two cross-service co-writes that block extraction."
+</Notes>
+
+---
+
 ## Transaction Clusters
 
 > *Which tables commit together?*
