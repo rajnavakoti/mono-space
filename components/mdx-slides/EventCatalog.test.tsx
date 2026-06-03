@@ -48,4 +48,57 @@ describe("EventCatalog", () => {
     expect(screen.getByText("Event Catalog v0.1")).toBeInTheDocument();
     expect(screen.getByText("OrderPlaced")).toBeInTheDocument();
   });
+
+  describe("at v2 (Exhibit C)", () => {
+    it("renders the v0.2 title and subtitle", () => {
+      render(<EventCatalog version="2" />);
+      expect(screen.getByText("Event Catalog v0.2")).toBeInTheDocument();
+      expect(
+        screen.getByText("What the database tracks but never publishes"),
+      ).toBeInTheDocument();
+    });
+
+    it("drops Invoicing from the silent list (DB surfaces 2 events for it)", () => {
+      render(<EventCatalog version="2" />);
+      expect(screen.queryByText("Invoicing")).not.toBeInTheDocument();
+      // The other 3 remain silent at v0.2
+      expect(screen.getByText("Consignee")).toBeInTheDocument();
+      expect(screen.getByText("Inventory")).toBeInTheDocument();
+      expect(screen.getByText("Tracking")).toBeInTheDocument();
+    });
+
+    it("renders the fossilized section with 6 events grouped by table", () => {
+      render(<EventCatalog version="2" />);
+      expect(
+        screen.getByText(/fossilized in database/i),
+      ).toBeInTheDocument();
+      // OrderConfirmed / OrderCancelled appear BOTH in the declared list
+      // (carried from v0.1) AND in the fossilized list — that's the
+      // punch: 'we already declared this, the DB now proves it'.
+      // The InvoicePaid / InvoiceIssued events are new at v0.2 (Invoicing
+      // didn't declare them in v0.1).
+      expect(screen.getAllByText("OrderConfirmed").length).toBeGreaterThanOrEqual(2);
+      expect(screen.getByText("OrderShipped")).toBeInTheDocument();
+      expect(screen.getByText("OrderDelivered")).toBeInTheDocument();
+      expect(screen.getAllByText("OrderCancelled").length).toBeGreaterThanOrEqual(2);
+      expect(screen.getByText("InvoicePaid")).toBeInTheDocument();
+      expect(screen.getByText("InvoiceIssued")).toBeInTheDocument();
+    });
+
+    it("flags Invoicing events with the 'tracks internally' annotation", () => {
+      render(<EventCatalog version="2" />);
+      // Flag appears on both Invoicing events.
+      expect(
+        screen.getAllByText(/Invoicing declared 0 events/i).length,
+      ).toBeGreaterThanOrEqual(2);
+    });
+
+    it("renders the 4 still-missing events footnote", () => {
+      render(<EventCatalog version="2" />);
+      expect(screen.getByText(/still have no evidence/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/ConsigneeRegistered.*AddressChanged.*LoyaltyTierUpgraded.*InventoryReserved/),
+      ).toBeInTheDocument();
+    });
+  });
 });

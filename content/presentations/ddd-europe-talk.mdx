@@ -792,6 +792,18 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
 ---
 
+## Event catalog v0.2 — what the database tracks but never publishes
+
+> 6 fossilized. Invoicing tracks but never tells.
+
+<EventCatalog version="2" />
+
+<Notes>
+"Event catalog grew. Six events fossilized in the database — four from orders timestamps: confirmed_at to OrderConfirmed, shipped_at to OrderShipped, delivered_at to OrderDelivered, cancelled_at to OrderCancelled. Two from invoices timestamps: paid_at to InvoicePaid, issued_at to InvoiceIssued. And look at Invoicing — it declared zero events in its contracts, but it has paid_at and issued_at. It tracks when payments and invoices happen — it just never tells anyone. The database knew. The contracts didn't. Four events we still have no evidence for anywhere — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded, InventoryReserved. Exhibit D will surface some of those in the logs."
+</Notes>
+
+---
+
 <TitleCard badge="EXHIBIT D" subtitle="Every logger.info is a fossilized domain event — published to nobody.">Log Mining</TitleCard>
 
 <Notes>

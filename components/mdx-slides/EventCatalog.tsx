@@ -25,9 +25,25 @@ interface DeclaredDomain {
   events: string[];
 }
 
+interface FossilizedEvent {
+  /** The DB column or log signal that surfaced it (e.g. 'confirmed_at') */
+  source: string;
+  /** The DDD event name it implies (e.g. 'OrderConfirmed') */
+  event: string;
+  /** Owning table for grouping (e.g. 'orders', 'invoices') */
+  table: string;
+  /** Optional annotation, e.g. 'Invoicing tracks internally' */
+  flag?: string;
+}
+
 interface CatalogData {
   declared: DeclaredDomain[];
   silent: string[];
+  /** v0.2+ — events surfaced from sources other than contracts (DB / logs). */
+  fossilized?: FossilizedEvent[];
+  /** v0.2+ — domain events the activity suspects should exist but no
+   *  evidence yet supports. */
+  stillMissing?: string[];
 }
 
 interface TitleInfo {
@@ -85,6 +101,38 @@ const EXHIBIT_A_DEFAULTS: CatalogData = {
   silent: ["Consignee", "Invoicing", "Inventory", "Tracking"],
 };
 
+// v0.2 = Exhibit C extends v0.1 with DB-fossilized events. Invoicing
+// drops out of the silent list because the DB surfaces 2 events for it
+// (paid_at, issued_at) even though its contracts declared none.
+const EXHIBIT_C_DEFAULTS: CatalogData = {
+  declared: EXHIBIT_A_DEFAULTS.declared,
+  silent: ["Consignee", "Inventory", "Tracking"],
+  fossilized: [
+    { source: "confirmed_at", event: "OrderConfirmed", table: "orders" },
+    { source: "shipped_at", event: "OrderShipped", table: "orders" },
+    { source: "delivered_at", event: "OrderDelivered", table: "orders" },
+    { source: "cancelled_at", event: "OrderCancelled", table: "orders" },
+    {
+      source: "paid_at",
+      event: "InvoicePaid",
+      table: "invoices",
+      flag: "Invoicing declared 0 events — but tracks this",
+    },
+    {
+      source: "issued_at",
+      event: "InvoiceIssued",
+      table: "invoices",
+      flag: "Invoicing declared 0 events — but tracks this",
+    },
+  ],
+  stillMissing: [
+    "ConsigneeRegistered",
+    "AddressChanged",
+    "LoyaltyTierUpgraded",
+    "InventoryReserved",
+  ],
+};
+
 interface EventCatalogProps {
   version?: EventCatalogVersion | number | string;
 }
@@ -100,13 +148,20 @@ function parseVersion(raw: string | number | undefined): 1 | 2 | 3 {
 export function EventCatalog({ version }: EventCatalogProps = {}) {
   const v = parseVersion(version);
   const t = TITLES[v];
-  // For now: v0.1 data is the only catalog shipped. v0.2 / v0.3 data
-  // (fossilised + missing events) is added when Exhibits C and D land.
-  const data = EXHIBIT_A_DEFAULTS;
+  // v0.1 = Exhibit A baseline; v0.2 = Exhibit C adds fossilised + missing;
+  // v0.3 (Exhibit D-final) still uses the C dataset for now — extends in
+  // a later commit when we touch Exhibit D.
+  const data = v === 1 ? EXHIBIT_A_DEFAULTS : EXHIBIT_C_DEFAULTS;
   const declaredCount = data.declared.reduce(
     (n, d) => n + d.events.length,
     0,
   );
+  const fossilizedByTable = (data.fossilized ?? []).reduce<
+    Record<string, FossilizedEvent[]>
+  >((acc, f) => {
+    (acc[f.table] ??= []).push(f);
+    return acc;
+  }, {});
 
   return (
     <figure className={styles.figure}>
@@ -152,6 +207,51 @@ export function EventCatalog({ version }: EventCatalogProps = {}) {
           </ul>
         </section>
       </div>
+
+      {data.fossilized && data.fossilized.length > 0 && (
+        <section className={styles.fossilized}>
+          <header className={styles.sectionHeader}>
+            <span className={`${styles.sectionCount} ${styles.countFossilized}`}>
+              {data.fossilized.length}
+            </span>
+            <span className={styles.sectionLabel}>
+              fossilized in database · new from Exhibit C
+            </span>
+          </header>
+          <div className={styles.fossilizedGroups}>
+            {Object.entries(fossilizedByTable).map(([table, events]) => (
+              <div key={table} className={styles.fossilizedGroup}>
+                <div className={styles.fossilizedGroupHeader}>
+                  From <code>{table}</code> timestamps:
+                </div>
+                <ul className={styles.fossilizedList}>
+                  {events.map((f) => (
+                    <li key={f.source} className={styles.fossilizedItem}>
+                      <code className={styles.fossilizedSource}>{f.source}</code>
+                      <span className={styles.fossilizedArrow}>→</span>
+                      <span className={styles.fossilizedEvent}>{f.event}</span>
+                      {f.flag && (
+                        <span className={styles.fossilizedFlag}>⚠ {f.flag}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.stillMissing && data.stillMissing.length > 0 && (
+        <section className={styles.missing}>
+          <span className={styles.missingHeader}>
+            <strong>{data.stillMissing.length} events</strong> we still have no evidence for:
+          </span>
+          <span className={styles.missingList}>
+            {data.stillMissing.join(" · ")}
+          </span>
+        </section>
+      )}
     </figure>
   );
 }
