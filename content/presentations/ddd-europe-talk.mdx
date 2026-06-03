@@ -700,6 +700,43 @@ The database has been enforcing these consistency boundaries for years. Nobody d
 
 ---
 
+## Find cross-service co-writes
+
+> *Which services commit into each other's tables?*
+
+Find transactions that write to tables owned by different services — because <mark>cross-service co-writes mean you cannot extract those services independently.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="2|2|2|2" headers="Tables in same transaction|Frequency|Pattern|Verdict" rows="{orders · shipments}|**2,103/wk**|Shipment writes to Carrier|🔴 dead boundary confirmed||{orders · inventory_reserved}|**4,512/wk · 580ms**|Shipment writes to Inventory|🔴 shared kernel confirmed" />
+
+</div>
+<div>
+
+<Callout type="danger">
+**🔴 Each exhibit confirms the previous**
+
+**Shipment ↔ Carrier** · A: circular refs · B: shared tables · C: 2,103/wk same commit
+
+→ Cannot split without breaking the transaction.
+
+**Shipment ↔ Inventory** · B: 2 writers on `inventory_reserved` · C: same commit at 580ms
+
+→ Must fix the pattern before extracting.
+
+*The Extraction Readiness verdict comes next.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find transactions that write to tables owned by different services — because cross-service co-writes mean you cannot extract those services independently. Two violations. Shipment writes to Carrier's shipments table 2,103 times a week — the dead boundary from Exhibit A, proved at the transaction level. Shipment also writes to Inventory's inventory_reserved table 4,512 times, 580 milliseconds per transaction — the two-writer violation from Exhibit B, both services committing in the same transaction. Each exhibit confirms the previous. Extraction readiness verdict comes next."
+</Notes>
+
+---
+
 ## Extraction Readiness
 
 > *Can we extract these services?*
