@@ -341,14 +341,14 @@ Pick one concept across all services — because same fields with different name
 
 ---
 
-## Vocabulary — The Address Concept
+## The address — correct DDD
 
 > *Where do they deliver?*
 
 <Split ratio="3:1">
 <div>
 
-<CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|mixed concerns||Consignee|CustomerAddress|label, isDefault|10|customer-managed||Carrier|DeliveryAddress|accessCode, isResidential|11|operational||Invoicing|BillingAddress|vatNumber, companyName|10|legal document" />
+<CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|**mixed concerns**||Consignee|CustomerAddress|**label**, isDefault|10|customer-managed||Carrier|DeliveryAddress|**accessCode**, isResidential|11|operational||Invoicing|BillingAddress|**vatNumber**, companyName|10|legal document" />
 
 </div>
 <div>
@@ -356,15 +356,15 @@ Pick one concept across all services — because same fields with different name
 <Callout type="tip">
 **✅ Correct DDD**
 
-Different names **AND** different fields. Each context adds fields for **ITS purpose**:
+Different names *and* different fields. Each context adds fields for its purpose:
 
-**Carrier** needs `accessCode` → for the delivery driver
+Carrier needs `accessCode` → for the delivery driver
 
-**Invoicing** needs `vatNumber` → for the legal document
+Invoicing needs `vatNumber` → for the legal document
 
-**Consignee** needs `label` → "Home" / "Work"
+Consignee needs `label` → "Home" / "Work"
 
-Each context **SHOULD own its own Address** representation.
+*Each context should own its own Address representation.*
 </Callout>
 
 </div>
