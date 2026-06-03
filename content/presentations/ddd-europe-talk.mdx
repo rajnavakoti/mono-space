@@ -587,7 +587,9 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ---
 
-## The Facade Reveal
+## Check if API boundaries match DB access
+
+> Check if API boundaries match DB access — because services bypassing the API means the declared boundary is a <mark>facade</mark>.
 
 <ContradictionReveal
   earlierExhibit="Exhibit A"
@@ -599,7 +601,7 @@ Find tables with multiple writers — because two writers to the same table mean
 />
 
 <Notes>
-"Remember Exhibit A? Consignee looked clean — referenced by everyone, references nobody. A textbook published language. Now look at the database. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."
+"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by everyone, references nobody, a textbook published language. Now the database lens. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. Usually it happens because the API didn't exist when consumers needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. This is why you need multiple lenses — one artifact alone can mislead you."
 </Notes>
 
 ---
