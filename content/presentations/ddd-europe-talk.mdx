@@ -1251,55 +1251,49 @@ This error references warehouses, carriers, and orders — an invariant validati
 
 ---
 
-## The Misplaced Rule + The Escape Hatch
+## Check where rules live vs where they belong
+
+> Check which service owns the rule vs what domain it belongs to — because <mark>a business policy in the wrong service is a misplaced concern — a boundary signal.</mark>
 
 <Split ratio="1:1">
 <div>
 
-<Callout type="warning" label="DEL-E011 · 412/year 🟡">
-**"Return window validation"**
+<Callout type="warning">
+**🟡 DEL-E011 · 412/year**
+
+"Return window validation"
 
 → Electronics = 30 days
-
 → Clothing = 14 days
-
 → Perishable = none
 
-**Lives in:** Carrier Service (`DEL-` prefix)
+**Lives in `DEL-` (Carrier) · belongs in Returns / Policy.**
 
-**Should be:** Returns / Policy
+The prefix shows where the rule lives. The content shows where it belongs.
 
-This is a business **POLICY**, not delivery **LOGISTICS**.
-
-The prefix shows where the rule **lives**. The content shows where it **belongs**.
-
-→ Move it to a new **Returns/Policy** context.
+*Hypothesis — take it to domain experts.*
 </Callout>
 
 </div>
 <div>
 
-<Callout type="danger" label="ORD-E099 · 891/year 🔴">
-**"Legacy override applied"**
+<Callout type="danger">
+**🔴 ORD-E099 · 891/year**
+
+"Legacy override applied"
 
 **891 times per year**, someone bypasses validation.
 
-**What rules does it skip?**
+What rules does it skip? Nobody knows. `skip_validation()` has grown over years. No documentation. No audit trail.
 
-**Nobody knows.**
-
-`skip_validation()` has grown over years.
-
-No documentation. No audit trail.
-
-🚩 **Audit this FIRST.**
+*Audit this first.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Two more findings. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just discovered a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. And ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone on the ops team bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
+"Check which service owns the rule versus what domain it belongs to — because a business policy in the wrong service is a boundary signal. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just surfaced a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
 </Notes>
 
 ---
