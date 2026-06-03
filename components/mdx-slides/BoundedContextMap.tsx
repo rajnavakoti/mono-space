@@ -436,12 +436,12 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     };
   } else if (v === 5) {
     legend = {
-      header: "Incident clustering",
+      header: "Incident clustering · coupling strength",
       items: [
-        { marker: "red", text: "Shipment ↔ Inventory · 23 incidents · 4 SEV1  (worst cluster)" },
-        { marker: "red", text: "Shipment ↔ Carrier · 17 incidents  (dead boundary hurts)" },
-        { marker: "red", text: "Shipment ↔ Invoicing · 14 incidents  (sync chain in critical path)" },
-        { marker: "green", text: "Consignee boundary · 0 incidents · confirmed clean" },
+        { marker: "red", text: "Shipment ↔ Inventory · 23 incidents · 4 SEV1 · structural coupling" },
+        { marker: "red", text: "Shipment ↔ Carrier · 17 incidents · structural coupling" },
+        { marker: "red", text: "Shipment ↔ Invoicing · 14 incidents · moderate coupling" },
+        { marker: "green", text: "Consignee boundary · 0 incidents · clean" },
       ],
     };
   } else if (v === 6) {
