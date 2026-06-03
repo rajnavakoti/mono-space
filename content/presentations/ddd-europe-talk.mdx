@@ -859,43 +859,45 @@ Trace one entity end-to-end — because the <mark>actual sequence reveals sync c
 
 ---
 
-## Sync vs Async Boundary
+## Identify sync chains and async boundaries
+
+> Identify sync chains and async boundaries — because <mark>synchronous chains are extraction blockers and async gaps are boundaries that already exist.</mark>
 
 <Split ratio="1:1">
 <div>
 
-<Callout type="danger" label="SYNC CHAIN · 2 seconds">
-**🔴 Shipment → Inventory → Shipment → Invoicing → Tracking**
+<Callout type="danger">
+**🔴 Sync chain · 2 seconds**
 
-Each step **WAITS** for the previous.
+**Shipment → Inventory → Shipment → Invoicing → Tracking**
 
-If Inventory is slow, **EVERYTHING** is slow. If Invoicing is down, orders **STOP**.
+Each step waits for the previous. If Inventory is slow, everything is slow. If Invoicing is down, orders stop.
 
-This chain is the **extraction blocker**. Break any link = break the flow.
+→ Confirms Exhibit C: `{orders, inventory_reserved}` co-write. Same coupling, different evidence.
 
-→ Confirms **Exhibit C**: `{orders, inventory_reserved}` co-write. Same coupling, different evidence.
+*The extraction blocker.*
 </Callout>
 
 </div>
 <div>
 
-<Callout type="tip" label="ASYNC BOUNDARY · 87 seconds">
-**🟢 Invoicing ···87s gap··· Carrier**
+<Callout type="tip">
+**🟢 Async boundary · 87 seconds**
 
-Carrier picks up from a queue or poll.
+**Invoicing ···87s gap··· Carrier**
 
-If Carrier is down, orders still get created.
+Carrier picks up from a queue or poll. If Carrier is down, orders still get created.
 
-This boundary **ALREADY EXISTS**. Carrier is already decoupled at runtime — even though Exhibit A showed API coupling.
+→ This boundary already exists. Carrier is already decoupled at runtime — even though Exhibit A showed API coupling.
 
-→ This is your **easiest extraction point**.
+*Your easiest extraction point.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Two architectural patterns in one trace. On the left — a synchronous chain. Shipment calls Inventory, waits, confirms, calls Invoicing, waits. Two seconds, four services, all blocking. If any service in that chain is slow, the whole order creation is slow. This confirms Exhibit C's transaction finding — the same coupling, different evidence. On the right — an 87-second gap before Carrier. That's async. Carrier is already decoupled at runtime. Even though Exhibit A showed API coupling between Shipment and Carrier, at runtime they're already separated by a queue. That's your easiest extraction point — the boundary already exists in practice."
+"Identify sync chains and async boundaries — because synchronous chains are extraction blockers and async gaps are boundaries that already exist. On the left — a synchronous chain. Shipment calls Inventory, waits, confirms, calls Invoicing, waits. Two seconds, four services, all blocking. If any service in that chain is slow, the whole order creation is slow. Confirms Exhibit C's transaction finding — the same coupling, different evidence. On the right — an 87-second gap before Carrier. That's async. Carrier is already decoupled at runtime. Even though Exhibit A showed API coupling between Shipment and Carrier, at runtime they're already separated by a queue. That's your easiest extraction point — the boundary already exists in practice."
 </Notes>
 
 ---
