@@ -988,8 +988,6 @@ The edge cases nobody mentioned in Event Storming:
 → **89** delivery failures/day
 
 🔗 Exhibit C showed timestamps in the same transactions. *Same events. Two independent sources.*
-
-**v0.3 catalog: 13 declared + 9 fossilized = 22 known. 3 still missing.**
 </Callout>
 
 </div>
@@ -1006,7 +1004,19 @@ The edge cases nobody mentioned in Event Storming:
 <BoundedContextMap version="4" />
 
 <Notes>
-"Update the model after the runtime lens. Tracking's hypothesis from earlier — generic subdomain? — now confirmed as silent participant, observed in every order lifecycle, owns nothing. The sync chain Shipment → Inventory → Invoicing is the red ribbon — every step blocks the next, two seconds total. The 87-second async gap to Carrier is the green dotted line — already decoupled at runtime, easiest extraction point. And the Event Storming sequence from two years ago was wrong — production runs Inventory before Confirmation before Invoice, not Payment first. The team's mental model has been out of date. Plus we've named a catalog of fossilized events the system publishes to nobody — 22 known events total, 3 still missing. Three black boxes still unknown. Four lenses done — structure and behavior. Now — what does it cost when boundaries are wrong?"
+"Update the model after the runtime lens. Tracking's hypothesis from earlier — generic subdomain? — now confirmed as silent participant, observed in every order lifecycle, owns nothing. The sync chain Shipment → Inventory → Invoicing is the red ribbon — every step blocks the next, two seconds total. The 87-second async gap to Carrier is the green dotted line — already decoupled at runtime, easiest extraction point. And the Event Storming sequence from two years ago was wrong — production runs Inventory before Confirmation before Invoice, not Payment first. The team's mental model has been out of date. Three black boxes still unknown. Four lenses done — structure and behavior. Now — what does it cost when boundaries are wrong?"
+</Notes>
+
+---
+
+## Event catalog v0.3 — final
+
+> 22 known. 9 the system never published. 3 that should exist but don't.
+
+<EventCatalog version="3" />
+
+<Notes>
+"This is the event catalog after four lenses. Thirteen events declared in the AsyncAPI contracts at Exhibit A. Six fossilized in database timestamps from Exhibit C — Invoicing's paid_at and issued_at among them, despite contracts saying Invoicing publishes nothing. Three more fossilized in production logs from Exhibit D — InventoryReserved at 11,891 a day, InvoiceGenerated at 11,402, RefundProcessed at 156. Twenty-two known events total. Only thirteen of them are published anywhere. Nine the system records every single day and tells nobody. And three we still have no evidence for in any source — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded. Those go to the domain experts as 'should this exist? Who should own it?' That's the artifact the audience walks out of this exercise with."
 </Notes>
 
 ---

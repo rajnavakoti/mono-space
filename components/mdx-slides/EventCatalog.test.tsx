@@ -70,7 +70,7 @@ describe("EventCatalog", () => {
     it("renders the fossilized section with 6 events grouped by table", () => {
       render(<EventCatalog version="2" />);
       expect(
-        screen.getByText(/fossilized in database/i),
+        screen.getByText(/new from Exhibit C/i),
       ).toBeInTheDocument();
       // OrderConfirmed / OrderCancelled appear BOTH in the declared list
       // (carried from v0.1) AND in the fossilized list — that's the
@@ -99,6 +99,52 @@ describe("EventCatalog", () => {
       expect(
         screen.getByText(/ConsigneeRegistered.*AddressChanged.*LoyaltyTierUpgraded.*InventoryReserved/),
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("at v3 (Exhibit D — final)", () => {
+    it("renders the v0.3 title and subtitle", () => {
+      render(<EventCatalog version="3" />);
+      expect(screen.getByText("Event Catalog v0.3 — Final")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          /22 events.*9 the system never published.*3 that should exist but don't/i,
+        ),
+      ).toBeInTheDocument();
+    });
+
+    it("silent collapses to just Consignee", () => {
+      render(<EventCatalog version="3" />);
+      expect(screen.getByText("Consignee")).toBeInTheDocument();
+      // Invoicing, Inventory, Tracking all have events surfaced somewhere
+      expect(screen.queryByText("Invoicing")).not.toBeInTheDocument();
+      // Inventory appears only as a domain in the declared list — wait,
+      // no, declared = Shipment Domain / Carrier Domain only. So Inventory
+      // shouldn't appear here at all at v3.
+      expect(screen.queryByText("Inventory")).not.toBeInTheDocument();
+      expect(screen.queryByText("Tracking")).not.toBeInTheDocument();
+    });
+
+    it("renders 9 fossilized events including the 3 new log-sourced ones", () => {
+      render(<EventCatalog version="3" />);
+      // 3 NEW from D logs
+      expect(screen.getByText("InventoryReserved")).toBeInTheDocument();
+      expect(screen.getByText("InvoiceGenerated")).toBeInTheDocument();
+      expect(screen.getByText("RefundProcessed")).toBeInTheDocument();
+      // daily-count sources for the log events
+      expect(screen.getByText("11,891 / day")).toBeInTheDocument();
+      expect(screen.getByText("156 / day")).toBeInTheDocument();
+    });
+
+    it("drops InventoryReserved from still-missing (logs surfaced it)", () => {
+      render(<EventCatalog version="3" />);
+      // Still-missing drops to 3 — InventoryReserved was found in logs
+      expect(screen.getByText(/still have no evidence/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/ConsigneeRegistered.*AddressChanged.*LoyaltyTierUpgraded/),
+      ).toBeInTheDocument();
+      const missing = screen.getByText(/ConsigneeRegistered.*AddressChanged.*LoyaltyTierUpgraded/);
+      expect(missing.textContent).not.toMatch(/InventoryReserved/);
     });
   });
 });

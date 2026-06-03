@@ -133,6 +133,59 @@ const EXHIBIT_C_DEFAULTS: CatalogData = {
   ],
 };
 
+// v0.3 = Exhibit D adds 3 more fossilized events from production logs.
+// InventoryReserved (was missing at v0.2) is now found in logs and moves
+// out of stillMissing. Inventory + Tracking + Invoicing all surface at
+// least one event somewhere — only Consignee remains fully silent in
+// domain-event terms.
+const EXHIBIT_D_DEFAULTS: CatalogData = {
+  declared: EXHIBIT_A_DEFAULTS.declared,
+  silent: ["Consignee"],
+  fossilized: [
+    // From C — DB timestamps (6 events, carry forward)
+    { source: "confirmed_at", event: "OrderConfirmed", table: "orders" },
+    { source: "shipped_at", event: "OrderShipped", table: "orders" },
+    { source: "delivered_at", event: "OrderDelivered", table: "orders" },
+    { source: "cancelled_at", event: "OrderCancelled", table: "orders" },
+    {
+      source: "paid_at",
+      event: "InvoicePaid",
+      table: "invoices",
+      flag: "Invoicing declared 0 events — but tracks this",
+    },
+    {
+      source: "issued_at",
+      event: "InvoiceIssued",
+      table: "invoices",
+      flag: "Invoicing declared 0 events — but tracks this",
+    },
+    // NEW from D — log signals (3 events). The synthetic 'logs · new
+    // from D' table name groups these into a separate sub-section in
+    // the fossilized renderer.
+    {
+      source: "11,891 / day",
+      event: "InventoryReserved",
+      table: "logs · new from D",
+    },
+    {
+      source: "11,402 / day",
+      event: "InvoiceGenerated",
+      table: "logs · new from D",
+      flag: "Invoicing logs every invoice — and tells nobody",
+    },
+    {
+      source: "156 / day",
+      event: "RefundProcessed",
+      table: "logs · new from D",
+    },
+  ],
+  stillMissing: [
+    "ConsigneeRegistered",
+    "AddressChanged",
+    "LoyaltyTierUpgraded",
+  ],
+};
+
 interface EventCatalogProps {
   version?: EventCatalogVersion | number | string;
 }
@@ -148,10 +201,15 @@ function parseVersion(raw: string | number | undefined): 1 | 2 | 3 {
 export function EventCatalog({ version }: EventCatalogProps = {}) {
   const v = parseVersion(version);
   const t = TITLES[v];
-  // v0.1 = Exhibit A baseline; v0.2 = Exhibit C adds fossilised + missing;
-  // v0.3 (Exhibit D-final) still uses the C dataset for now — extends in
-  // a later commit when we touch Exhibit D.
-  const data = v === 1 ? EXHIBIT_A_DEFAULTS : EXHIBIT_C_DEFAULTS;
+  // v0.1 = Exhibit A baseline; v0.2 = Exhibit C adds DB-fossilised; v0.3 =
+  // Exhibit D adds log-fossilised + drops events from the stillMissing list
+  // that the logs surfaced.
+  const data =
+    v === 1
+      ? EXHIBIT_A_DEFAULTS
+      : v === 2
+        ? EXHIBIT_C_DEFAULTS
+        : EXHIBIT_D_DEFAULTS;
   const declaredCount = data.declared.reduce(
     (n, d) => n + d.events.length,
     0,
@@ -215,14 +273,17 @@ export function EventCatalog({ version }: EventCatalogProps = {}) {
               {data.fossilized.length}
             </span>
             <span className={styles.sectionLabel}>
-              fossilized in database · new from Exhibit C
+              fossilized ·{" "}
+              {v === 2
+                ? "new from Exhibit C"
+                : "system records, never publishes"}
             </span>
           </header>
           <div className={styles.fossilizedGroups}>
             {Object.entries(fossilizedByTable).map(([table, events]) => (
               <div key={table} className={styles.fossilizedGroup}>
                 <div className={styles.fossilizedGroupHeader}>
-                  From <code>{table}</code> timestamps:
+                  From <code>{table}</code>:
                 </div>
                 <ul className={styles.fossilizedList}>
                   {events.map((f) => (
