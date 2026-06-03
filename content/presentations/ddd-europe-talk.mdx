@@ -1377,14 +1377,16 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ---
 
-## The Co-Change Evidence
+## Measure co-change frequency
 
-> *Which code actually co-evolves? (6 months of git history)*
+> *Which code actually co-evolves?*
+
+Measure how often files from different services change in the same commit — because <mark>high cross-service co-change means developers can't work on one service without touching the other — coupling the architecture diagram won't show you.</mark>
 
 <RankedBars max="100" bars="OrderController + ShipmentService::72::red|DeliveryScheduler + InventoryChecker::68::red|PricingEngine + OrderValidator::54::amber|InvoiceGenerator + OrderEventHandler::41::yellow|CustomerAddressValidator (solo)::89::green" />
 
 <Notes>
-"Six months of git history. Which files change together across services? OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 8 exhibits."
+"Measure how often files from different services change in the same commit — because high cross-service co-change means developers can't work on one service without touching the other. OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 7 exhibits."
 </Notes>
 
 ---
