@@ -1298,16 +1298,18 @@ What rules does it skip? Nobody knows. `skip_validation()` has grown over years.
 
 ---
 
-## The Load-Bearing Ratio
+## Check the error-to-incident ratio
 
 > *ORD-E001: "Insufficient allocation"*
+
+Check how many errors become incidents — because <mark>the ratio tells you the error handling is load-bearing — understand it before you touch it.</mark>
 
 <BigStat value="12,847" label="error fires per year" tone="amber" />
 
 <BigStat value="23" label="actual incidents (from Exhibit E)" tone="red" punchline="The error handling is LOAD-BEARING. Remove this validation without understanding it → 12,847 failures instead of 23." />
 
 <Notes>
-"One more connection. Remember the 23 incidents at Shipment-Inventory from Exhibit E? ORD-E001 — insufficient allocation — fires 12,847 times per year. The error handling catches 12,824 cases successfully. Only 23 escape into incidents. The error code is load-bearing. It's not a bug — it's the system protecting itself. Remove this validation without understanding it and you get 12,847 failures per year instead of 23. That ratio tells you: the error handling is more important than you think. Understand what it protects before you touch it."
+"Check how many errors become incidents — because the ratio tells you the error handling is load-bearing. Remember the 23 incidents at Shipment-Inventory from Exhibit E? ORD-E001 — insufficient allocation — fires 12,847 times per year. The error handling catches 12,824 of them successfully. Only 23 escape into incidents. The error code is load-bearing. It's not a bug — it's the system protecting itself. Remove this validation without understanding it and you get 12,847 failures per year instead of 23. That ratio tells you the error handling is more important than you think. Understand what it protects before you touch it."
 </Notes>
 
 ---
