@@ -28,6 +28,7 @@ export { LineageTree } from "./LineageTree";
 export { BoundedContextMap } from "./BoundedContextMap";
 export { TranslationMap } from "./TranslationMap";
 export { ContractYield } from "./ContractYield";
+export { EventCatalog } from "./EventCatalog";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -59,6 +60,7 @@ import { LineageTree } from "./LineageTree";
 import { BoundedContextMap } from "./BoundedContextMap";
 import { TranslationMap } from "./TranslationMap";
 import { ContractYield } from "./ContractYield";
+import { EventCatalog } from "./EventCatalog";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -97,4 +99,5 @@ export const mdxSlideComponents = {
   BoundedContextMap,
   TranslationMap,
   ContractYield,
+  EventCatalog,
 };

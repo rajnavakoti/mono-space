@@ -496,7 +496,19 @@ Look for duplicate schemas — because same concept with two owners means the <m
 <TranslationMap version="1" />
 
 <Notes>
-"Translation map building in parallel with the context map. What does each service call the same concept? Six contracts gave us two rows. The person — buyer, customer, recipient, account, user. Five unique names across six services. Inventory and Tracking both say 'user' — but Inventory's user is who requested the reservation, Tracking's user is who gets notified. Same name, different concept. Consignee has twenty fields for its customer, everyone else has between one and three — that's the system-of-record signal. The address — four flavours, different fields per context. Sparse by design. This grows every time a new exhibit surfaces a concept. By Act 3 it becomes the system's Rosetta Stone. Contracts told us what they declare. Next we open the database to see what they hide."
+"Translation map building in parallel with the context map. What does each service call the same concept? Six contracts gave us two rows. The person — buyer, customer, recipient, account, user. Five unique names across six services. Inventory and Tracking both say 'user' — but Inventory's user is who requested the reservation, Tracking's user is who gets notified. Same name, different concept. Consignee has twenty fields for its customer, everyone else has between one and three — that's the system-of-record signal. The address — four flavours, different fields per context. Sparse by design. This grows every time a new exhibit surfaces a concept. By Act 3 it becomes the system's Rosetta Stone."
+</Notes>
+
+---
+
+## Event catalog v0.1 — what services chose to announce
+
+> 13 declared. 4 services silent.
+
+<EventCatalog version="1" />
+
+<Notes>
+"Third artifact building alongside the context map and translation map — the event catalog. Walk every AsyncAPI contract and list the events each service declares. Shipment's domain announces six — Order placed, confirmed, cancelled, lines added, fulfilment started, completed. Carrier's domain announces seven — Shipment created, picked up, in transit, out for delivery, delivered, failed, returned. Thirteen events total. Now look at who's silent. Consignee, Invoicing, Inventory, Tracking — zero events declared. Four out of six services publish nothing. That's not because they don't HAVE domain events. It's a choice about visibility. The next exhibit asks: what events do they track internally even when they don't publish? Contracts told us what they declare. Next we open the database to see what they hide."
 </Notes>
 
 ---

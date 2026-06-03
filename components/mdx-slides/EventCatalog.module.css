@@ -1,0 +1,171 @@
+/* EventCatalog — what services chose to announce vs. what they kept quiet */
+
+.figure {
+  --ec-accent: var(--color-accent, #C9A96E);
+  --ec-bg: var(--color-bg, #FFF);
+  --ec-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --ec-text: var(--color-text, #111);
+  --ec-text-muted: var(--color-text-muted, #999);
+  --ec-border: var(--color-text, #111);
+  --ec-border-muted: var(--color-border-muted, #DDD);
+  --ec-green: #6E9B6E;
+  --ec-red: #B26464;
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ec-text);
+}
+
+.subtitle {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ec-text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Two-column grid: declared (wider) on the left, silent on the right ── */
+
+.grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.declared,
+.silent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ec-border);
+}
+
+.sectionCount {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.countDeclared {
+  color: var(--ec-green);
+}
+
+.countSilent {
+  color: var(--ec-red);
+}
+
+.sectionLabel {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ec-text);
+  font-weight: 700;
+}
+
+/* ── Declared section: events grouped by domain ── */
+
+.domainBlock {
+  margin-top: 10px;
+}
+
+.domainBlock:first-of-type {
+  margin-top: 6px;
+}
+
+.domainName {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ec-text);
+  margin-bottom: 6px;
+}
+
+.domainCount {
+  font-size: 11px;
+  color: var(--ec-text-muted);
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.eventList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.eventItem {
+  font-size: 14px;
+  color: var(--ec-text);
+  padding: 2px 0;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* ── Silent section ── */
+
+.silentList {
+  list-style: none;
+  margin: 6px 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.silentItem {
+  font-size: 14px;
+  color: var(--ec-text);
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--ec-border-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.silentItem:last-child {
+  border-bottom: none;
+}
+
+/* ── Punchline ── */
+
+.punchline {
+  margin: 24px 0 0 0;
+  padding-top: 16px;
+  border-top: 2px solid var(--ec-border);
+  text-align: center;
+  font-size: 15px;
+  color: var(--ec-text);
+  letter-spacing: 0.02em;
+}
+
+.punchline strong {
+  font-weight: 800;
+  color: var(--ec-accent);
+}
