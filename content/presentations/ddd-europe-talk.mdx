@@ -1164,14 +1164,12 @@ But zero incidents means the coupling hasn't hurt yet.
 
 ---
 
-## The model updates
+## Hypothesis v0.5 — the cost of wrong boundaries
 
 <BoundedContextMap version="5" />
 
-> *Data lineage next. Who owns the truth when there are four copies of the address?*
-
 <Notes>
-"Update the model. The Shipment-Inventory line gets thicker — 23 incidents, the worst cluster. Shipment-Carrier thicker too — 17 incidents. Consignee turns green — confirmed clean by the incident data, zero failures. The three black boxes still unknown. Hypothesis v0.5 — what it costs when boundaries are wrong. The pattern is now quantitative. Data lineage next."
+"Update the model after the incident lens. The Shipment-Inventory line gets thicker — 23 incidents, the worst cluster, four SEV1s. Shipment-Carrier thicker too — 17 incidents from the dead boundary. Shipment-Invoicing carries the sync chain cost — 14 incidents under load. Consignee turns green — confirmed clean by the incident data, zero failures across all pairs. The three black boxes still unknown. Hypothesis v0.5 — the cost of wrong boundaries. Each architectural finding from previous exhibits now has a price tag attached. Data lineage next — who owns the truth when there are four copies of the address?"
 </Notes>
 
 ---
