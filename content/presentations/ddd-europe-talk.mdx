@@ -1117,14 +1117,18 @@ Missing saga (Exhibit C) → **5 orphaned reservations**
 
 ---
 
-## What's Not Clustering
+## Find what's not clustering
 
 > *Urgent vs important*
+
+Find what's not clustering — because <mark>confirming which interactions are clean is as valuable as finding which are broken.</mark>
 
 <Split ratio="1:1">
 <div>
 
-<Callout type="danger" label="WHERE IT BREAKS">
+<Callout type="danger">
+**🔴 Where it breaks**
+
 **Shipment ↔ Inventory** — 23 incidents
 
 **Shipment ↔ Carrier** — 17 incidents
@@ -1133,29 +1137,29 @@ Missing saga (Exhibit C) → **5 orphaned reservations**
 
 These boundaries are in the wrong place or using the wrong integration pattern.
 
-→ **Fix these FIRST.**
+→ *Fix these first.*
 </Callout>
 
 </div>
 <div>
 
-<Callout type="tip" label="WHERE IT DOESN'T">
+<Callout type="tip">
+**🟢 Where it doesn't**
+
 **Consignee boundary** — 0 incidents
 
-The boundary IS clean. The data access isn't (**Exhibit B**: 3 direct readers).
+The boundary IS clean. The data access isn't (Exhibit B: 3 direct readers).
 
-But **zero incidents** means the coupling hasn't HURT yet.
+But zero incidents means the coupling hasn't hurt yet.
 
-→ **Fix later.** Not urgent.
-
-This is a **ticking clock**, not a fire.
+→ *Fix later. Ticking clock, not a fire.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"But not everything is broken. Consignee boundary — zero incidents. Zero. The boundary IS clean — even though Exhibit B showed 3 services reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you what hurts NOW. The other exhibits tell you what will hurt NEXT."
+"Find what's not clustering — because confirming which interactions are clean is as valuable as finding which are broken. Consignee boundary — zero incidents. Zero. The boundary IS clean — even though Exhibit B showed 3 services reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you what hurts NOW. The other exhibits tell you what will hurt NEXT."
 </Notes>
 
 ---
