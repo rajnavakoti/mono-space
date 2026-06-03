@@ -21,7 +21,7 @@ Title slide. Let it sit for a moment. Don't rush. Take a breath.
 
 ---
 
-<TitleCard badge="ACT 1" subtitle="A corroded lump of bronze">The Artifact</TitleCard>
+<TitleCard badge="ACT 1" subtitle="How do you read a domain you didn't write?">The Artifact</TitleCard>
 
 <Notes>
 Transition to Act 1. Pause before the next slide.
@@ -29,228 +29,241 @@ Transition to Act 1. Pause before the next slide.
 
 ---
 
-## The Antikythera Mechanism
+## How many languages do you speak?
+
+> *Bilingual? Trilingual? Learned one without a textbook or a classroom?*
+
+<Notes>
+"Quick show of hands — how many of you speak more than one language? [pause, look around] Keep your hand up if you learned one of those languages without a textbook. Without a class. Without Duolingo. [pause] How many of you still have an active Duolingo streak? [hands drop dramatically] That's the book approach. Today is about the other way."
+</Notes>
+
+---
+
+## One country
 
 <Split ratio="1:1">
 <div>
 
-In 1900, divers pulled a **corroded lump of bronze** from a Greek shipwreck.
-
-It sat in a museum for **two years**. Nobody knew what it was.
-
-Then someone looked inside — and found **precision gear wheels**, a millimetre apart, encoding **2,000 years of astronomical knowledge**.
-
-The builders were gone. The documentation was gone. But **the machine remembered everything.**
+<SlideImage src="/india-language-map.webp" alt="India linguistic map — major language regions" />
 
 </div>
 <div>
 
-<SlideImage src="/antikythera.webp" alt="The Antikythera Mechanism — the world's first known computer" />
+<BigStat value="424" label="living languages" />
+
+<BigStat value="22" label="official" />
+
+**One country.**
 
 </div>
 </Split>
 
 <Notes>
-"In 1900, archaeologists pulled a corroded lump of bronze from a Greek shipwreck. It looked like junk. It turned out to be a 2,000-year-old computer — and the user guide was hidden inside the bronze the whole time. Researchers spent 120 years reading it — X-rays in the 70s, 3D imaging in the 2000s. Each new technique revealed another layer of what the builders encoded."
+"I'm from India. Whenever I travel to conferences like this, people ask me the same question — how do you manage? You have so many languages in one country. How does it even function? Four hundred and twenty-four living languages. Twenty-two official. One country. Actually it's simpler than you think. And I can explain it with DDD."
 </Notes>
 
 ---
 
-<Callout>
-Legacy systems are the same. They look like technical debt. They're actually dense archives of domain knowledge — written under deadline pressure, tested by millions of real transactions, validated over decades.
-
-**The architects left. The documentation went stale. But the system kept running. And it remembers everything.**
-</Callout>
-
-<Notes>
-"Legacy systems are the Antikythera mechanism of our industry. They look like corroded bronze — technical debt, legacy code nobody wants to touch. But inside, encoded in the schemas, the contracts, the error codes, the git history — is everything the original builders knew about the domain. This talk is about how to read what the system has been trying to tell you."
-</Notes>
-
----
-
-## What is "Legacy"?
-
-<Callout>
-Legacy isn't about age.
-
-**It's about lost knowledge.**
-
-A system is legacy when the people who understood it are no longer available to explain it.
-</Callout>
-
-<Notes>
-"Before we go further — let me define legacy. I don't mean old code. A 6-year-old microservice can be legacy if the team that built it has turned over. A 30-year-old monolith might not be legacy if the original team still maintains it. Legacy is about KNOWLEDGE DECAY — when the understanding of why the system works the way it does has left the building."
-</Notes>
-
----
-
-## Every system has a domain model
+## Each state · a bounded context
 
 <Split ratio="1:1">
 <div>
 
-> *"A domain model is not a particular diagram. It is the idea that the diagram is intended to convey."*
->
-> — **Eric Evans**
-
-Most domain models were **never designed on a whiteboard**.
-
-They were built into the code, the schemas, the contracts — **decision by decision, over years**.
-
-The model is there. It was just never written down.
+<SlideImage src="/india-language-map.webp" alt="India linguistic map — state borders follow languages" />
 
 </div>
 <div>
 
-<SlideImage src="/evans-model.webp" alt="Eric Evans on domain models" />
+The borders ended up following the languages.
+
+Each state has its own vocabulary. Its own way of naming things.
+
+**Each state = a bounded context.**
+
+**The language of the state = its <mark>ubiquitous language.</mark>**
 
 </div>
 </Split>
 
 <Notes>
-"Eric Evans himself says it — the model is the idea, not the diagram. In most legacy systems, nobody drew the diagram. But the model exists. It's encoded in every API contract, every database table, every error code. Developers embedded domain knowledge into the system without realizing they were building a model. Our job is to read it."
+"The borders ended up following the languages. Each state has its own language, its own vocabulary, its own way of naming things. In DDD terms — each state is a bounded context. The language of the state is its ubiquitous language. And when you cross the border, you switch contexts."
 </Notes>
 
 ---
 
-## My story
+## When you cross a boundary
 
 <Split ratio="1:1">
 <div>
 
-A data architect was trying to build **canonical data models** for a large delivery domain.
+**INSIDE THE STATE**
 
-**Top-down, from domain knowledge.** The right approach — but the domain was too large. It was taking months.
+→ Native language
 
-I had a question:
+→ Precise · nuanced
 
-> *"The API specs already exist. The contracts are already written. Why start from scratch?"*
+→ Local word for *glass*
+
+→ Local word for *sorry*
 
 </div>
 <div>
 
-We took the spec files. Laid them side by side. Started extracting: **data concepts, entities, value objects, relationships.**
+**CROSSING THE BOUNDARY**
 
-In **weeks**, not months.
+→ Shared vocabulary
 
-Then she left the company. The work died. Because it was **manual**.
+→ Lossy · approximate
+
+→ "glass"
+
+→ "sorry"
 
 </div>
 </Split>
 
+When you cross a boundary — you switch to the <mark>shared vocabulary. You lose nuance. You gain interoperability.</mark>
+
 <Notes>
-"Here's how this started for me. I was working with a data architect in a large delivery domain. She was trying to build canonical data models — top-down, the textbook way. But the domain was enormous. Dozens of teams, vendor integrations, legacy platforms. After months, the models were still incomplete. So I asked: the APIs already exist. Why aren't we reading what's already there? We tried it. In weeks we had a working draft model. Then she left the company, and the manual work died with her."
+"What do you speak when you cross into a state where you don't know the language? You use the shared vocabulary — English internationally, whatever works regionally. And something interesting happens. You lose precision. Some words don't even need translation back. When someone wrongs me, I don't say the word for sorry in my native language. I say sorry. When I ask for water, I say glass. The shared vocabulary just won. In your systems — what are those words? What concepts did every service just borrow from somewhere and nobody remembers the original?"
 </Notes>
 
 ---
 
-## Meanwhile...
+## How we actually learn
 
-<Split ratio="1:1">
-<div>
+<BigStat value="26%" tone="amber" label="of Indians are bilingual by formal education" />
 
-A technology architect did **strategic DDD** — the textbook way.
-
-Event Storming. Domain storytelling. Stakeholder interviews.
-
-**It worked.** But it took multiple sessions, merged outputs, and over **2 years** to produce a current and target state architecture.
-
-</div>
-<div>
-
-And the moment the architecture was documented...
-
-**...the system kept evolving.**
-
-The gap between what people remembered and what the system actually does started growing immediately.
-
-</div>
-</Split>
+**My father speaks 6 languages. He never went to school.**
 
 <Notes>
-"Meanwhile, I watched a technology architect do strategic DDD properly. Event Storming, domain storytelling, the full textbook approach. It worked — beautifully. But in a domain this large, it took multiple sessions, dozens of people, and over two years. And the moment the architecture was documented, the system kept evolving. The documentation started drifting from reality on day one."
+"Let me tell you something about how Indians actually learn languages. Because this is where it gets relevant. I'm from India. I speak four languages. I never had a formal language education for any of them — not a single class. Census 2011 — only twenty-six percent of Indians are bilingual by formal education. The rest learned another way. My father speaks six languages. He never went to school. So what is the other way?"
 </Notes>
 
 ---
 
-## The question that started this talk
-
-<Callout>
-What if you could **extract a draft domain model** from the artifacts the system already produces — **before** you run your first Event Storming session?
-
-Not to replace the workshop. To **give it a head start.**
-
-To ask *"is this how it works?"* instead of *"how does this work?"*
-</Callout>
-
-<Notes>
-"That experience left me with a question: what if you could combine both approaches? Start with what the system already knows — the artifacts — then bring the experts in to validate and extend? Not replace Event Storming. Give it a head start. Arrive with evidence instead of blank sticky notes. Ask 'is this how it works?' instead of 'how does this work?' — because people are MUCH faster at reacting to evidence than creating from scratch."
-</Notes>
-
----
-
-## A domain I know well
-
-<Split ratio="1:1">
-<div>
-
-**A delivery domain. 30 years in operation.**
-
-<ContentCard title="4 LAYERS" accent="amber" items="Core services — 6 years of modern microservices, Neighboring domains — 30-year-old order management monolith, Vendor platforms — operational backbone for 25+ years, External carriers — automated APIs to Excel spreadsheets" />
-
-</div>
-<div>
-
-Nobody designed this landscape holistically.
-
-**It grew.** Vendors came and went. Systems were added. Contracts ended. Markets have different processes.
-
-Some teams have real-time telemetry. Others operate on **phone calls and spreadsheets**.
-
-</div>
-</Split>
-
-<Notes>
-"Let me show you the domain I'll use as our case study. A delivery domain I know well. 30 years in operation. Four layers: core services built in the last 6 years — modern, microservices, Kubernetes. Neighboring domains running on order management systems that predate most of this room. Vendor platforms that have been the operational backbone for 25 years. And external carriers ranging from fully automated APIs to suppliers who still send data in Excel. Nobody designed this holistically. It grew."
-</Notes>
-
----
-
-## Where the knowledge lives
-
-<Split ratio="1:1">
-<div>
-
-<ContentCard title="KNOWLEDGE SCATTERED ACROSS" accent="red" items="Event Storming output from 2 years ago — already partially wrong, Confluence page last updated in 2022 — everyone still links to it, One ops person who understands the carrier integration — leaving next month, Slack threads from 2019 that explain why certain rules exist, Error codes nobody documented but everyone works around" />
-
-</div>
-<div>
+## The other way
 
 > *"We don't see what we don't intend to see."*
 >
 > — **Dave Snowden**, DDD Europe 2018
 
-This isn't a dysfunctional team. This is **every large enterprise delivery domain**.
-
-</div>
-</Split>
-
 <Notes>
-"And here's where the knowledge about this domain actually lives. An Event Storming output from 2 years ago — already partially wrong because half the team turned over. A Confluence page from 2022 that everyone still links to. One ops person who understands the carrier integration — she's leaving next month. Slack threads from 2019 that nobody can find. Dave Snowden said it at this conference: we don't see what we don't intend to see. Even Event Storming can only capture what the room remembers. But the system? The system remembers everything."
+[Hold the silence. Don't explain. Let the audience sit with it for three seconds. Then click forward.]
 </Notes>
 
 ---
 
-<Callout>
-**The system remembers everything. We're the ones who forgot.**
+## The menu
 
-Seven forensic techniques. Seven lenses on the same system. Each reveals something the others can't.
+<Split ratio="1:1">
+<div>
 
-Together, they produce a **draft domain model** — extracted from artifacts, not from memory.
-</Callout>
+<SlideImage src="/pollo-menu.webp" alt="Latin American restaurant menu — POLLO with chicken icon" />
+
+</div>
+<div>
+
+First visit. Latin American restaurant.
+
+Menu. Chicken symbol. One word: **POLLO**
+
+→ Inference: *pollo = chicken*
+
+"Pollo is chicken, right?"
+
+→ Validation: *"Yes. But it's pronounced polo. Double-L in Spanish is a Y sound."*
+
+</div>
+</Split>
+
+**OBSERVE → INFER → VALIDATE**
+
+*No grammar book. I was hungry.*
 
 <Notes>
-"So here's what I'm going to show you. Seven forensic techniques — each one reads a different artifact the system produces. API contracts. Database schemas. Transaction logs. Production logs. Incidents. Error codes. Git history. Each reveals something the others can't see. Together, they produce a draft model that you can take into your next Event Storming session — or use to validate the one you already have. I'm calling it Forensic DDD. Let's start."
+"First time I visited a Latin American country. I went to a restaurant. I looked at the menu. There's a little chicken symbol next to a word — pollo. I'd never studied Spanish. But I looked at the symbol, and I made a guess: pollo is chicken. Then I turned to my friend and said — pollo is chicken, right? She said — yes, but it's pronounced polo. Double-L in Spanish is a Y sound. Observe. Infer. Validate. I looked at an artifact — the menu. I made an assumption from the evidence. And I checked the assumption with someone who knew. I didn't read a grammar book. There wasn't time. I was hungry."
+</Notes>
+
+---
+
+## What the book gave us · what we needed
+
+<Split ratio="1:1">
+<div>
+
+**THE BOOK GAVE US:**
+
+→ the concepts
+
+→ bounded contexts
+
+→ ubiquitous language
+
+→ context maps
+
+</div>
+<div>
+
+**WHAT WE NEEDED:**
+
+→ a method for when domain experts have left
+
+→ documentation is wrong
+
+→ ownership is unclear
+
+→ no time for greenfield design
+
+</div>
+</Split>
+
+The book is the destination. <mark>This is how you find your way there when the map is missing.</mark>
+
+<Notes>
+"That's exactly the situation most of us are in when we join a large enterprise with a legacy domain. There's no time for a formal approach. The domain is 10, 15, 20 years old. The people who designed it have left. The documentation is wrong or missing. The book is on your shelf and you believe in it — but it gave us the concepts. What it didn't give us was a method for when the domain experts are gone, the documentation is wrong, the ownership is unclear. The book is the destination. Today is about how you find your way there when the map is missing."
+</Notes>
+
+---
+
+## A few years ago
+
+**Raj Navakoti** · engineer working on scale platforms in delivery and supply chain
+
+→ A legacy order-fulfilment system
+
+→ 15 years of accumulated complexity
+
+→ No documentation
+
+→ One data architect
+
+→ One question:
+
+> *"Can we rediscover the domain from what the system left behind?"*
+
+*Note — the system you'll see today is a composite. Drawn from real legacy systems, with names changed. The artifacts are what matter.*
+
+<Notes>
+"I'm Raj. I work on scale platforms in delivery and supply chain. A few years ago — a legacy order-fulfilment system. Fifteen years of accumulated complexity. No documentation. I was working alongside a data architect, and we had one question: can we rediscover the domain from what the system left behind? Without talking to a single domain expert first? Quick disclosure before we go further — the system you'll walk through today is a composite. Drawn from real legacy systems I've worked with, with names changed. The artifacts are what matter."
+</Notes>
+
+---
+
+## Seven lenses · one hypothesis
+
+<BigStat value="7" label="artifacts" />
+
+<BigStat value="7" label="lenses" />
+
+<BigStat value="1" label="hypothesis" />
+
+**Every exhibit adds evidence. Every slide moves the model.**
+
+> *Let's start with the most obvious artifact. The one hiding in plain sight.*
+
+<Notes>
+"Seven artifacts. Seven different lenses. Each one reveals what the others can't. Every exhibit adds evidence to a hypothesis about where the boundaries are. At the end, we reconcile what the system says with what the team remembers. Let's start with the most obvious artifact. The one hiding in plain sight. The API contracts. Exhibit A."
 </Notes>
 
 ---
@@ -1654,5 +1667,7 @@ SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain 
 <TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/rajnavakoti/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
 
 <Notes>
+BEFORE clicking to this card — deliver the pollo callback as the closing line: "We started with a restaurant menu and a guess about pollo. Seven artifacts later — we have evidence." Pause. Then click.
+
 Final slide. Stay up while people clap or approach for questions. If time remains, take questions. If not: "I'll be outside — find me."
 </Notes>
