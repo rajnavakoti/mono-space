@@ -33,24 +33,34 @@ type Cell = CellValue | null;
 
 interface Row {
   concept: string;
-  /** Cell order: Shipment, Consignee, Carrier, Invoicing, Inventory */
-  cells: [Cell, Cell, Cell, Cell, Cell];
+  /** Cell order: Shipment, Consignee, Carrier, Invoicing, Inventory, Tracking */
+  cells: [Cell, Cell, Cell, Cell, Cell, Cell];
 }
 
-const SERVICES = ["Shipment", "Consignee", "Carrier", "Invoicing", "Inventory"];
+const SERVICES = [
+  "Shipment",
+  "Consignee",
+  "Carrier",
+  "Invoicing",
+  "Inventory",
+  "Tracking",
+];
 
 function buildRows(v: number): Row[] {
   const rows: Row[] = [];
 
-  // v0.1+ baseline
+  // v0.1+ baseline. The Person row carries inline (N) field counts so the
+  // 'Consignee has 20 fields, everyone else has between 1 and 3' system-
+  // of-record signal lands without a separate column.
   rows.push({
     concept: "The person",
     cells: [
-      { text: "buyer" },
-      { text: "customer", isRecord: true },
-      { text: "recipient" },
-      { text: "account" },
-      { text: "user" },
+      { text: "buyer (3)" },
+      { text: "customer (20)", isRecord: true },
+      { text: "recipient (3)" },
+      { text: "account (3)" },
+      { text: "user (1)" },
+      { text: "user (2)" },
     ],
   });
 
@@ -61,6 +71,7 @@ function buildRows(v: number): Row[] {
       { text: "CustomerAddress" },
       { text: "DeliveryAddress" },
       { text: "BillingAddress" },
+      null,
       null,
     ],
   });
@@ -75,6 +86,7 @@ function buildRows(v: number): Row[] {
         { text: "Shipment", sub: "9 states", isRecord: true },
         null,
         null,
+        null,
       ],
     });
 
@@ -85,6 +97,7 @@ function buildRows(v: number): Row[] {
         null,
         null,
         { text: "Invoice", sub: "7 states", isRecord: true },
+        null,
         null,
       ],
     });
@@ -97,6 +110,7 @@ function buildRows(v: number): Row[] {
         null,
         null,
         { text: "Reservation", isRecord: true },
+        null,
       ],
     });
   }
@@ -110,6 +124,7 @@ function buildRows(v: number): Row[] {
         null,
         null,
         { text: "Payment", isRecord: true },
+        null,
         null,
       ],
     });
@@ -126,6 +141,7 @@ function buildRows(v: number): Row[] {
         v >= 3
           ? { text: "→ Returns / Policy", warning: "misplaced (was DEL-E011)" }
           : { text: "DEL-E011", warning: "misplaced" },
+        null,
         null,
         null,
       ],
@@ -318,7 +334,6 @@ export function TranslationMap({ version }: TranslationMapProps) {
         </div>
       )}
 
-      <figcaption className={styles.caption}>{t.caption}</figcaption>
     </figure>
   );
 }

@@ -14,9 +14,19 @@ describe("TranslationMap", () => {
 
   it("at v1 marks Consignee as the system of record for the person", () => {
     render(<TranslationMap version="1" />);
-    expect(screen.getByText("customer")).toBeInTheDocument();
-    // Record marker appears as part of the text node
+    // Inline field counts surface the 20-vs-3 system-of-record signal.
+    expect(screen.getByText("customer (20)")).toBeInTheDocument();
+    expect(screen.getByText("buyer (3)")).toBeInTheDocument();
     expect(screen.getAllByText(/✅/).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("at v1 surfaces the same-name-different-concept finding for Tracking + Inventory", () => {
+    render(<TranslationMap version="1" />);
+    // Both Inventory and Tracking call the person 'user', with different
+    // field counts — same name, different concept.
+    expect(screen.getByText("user (1)")).toBeInTheDocument();
+    expect(screen.getByText("user (2)")).toBeInTheDocument();
+    expect(screen.getByText("Tracking")).toBeInTheDocument();
   });
 
   it("at v2 adds delivery / bill / reservation / return rows + the business rules box", () => {
