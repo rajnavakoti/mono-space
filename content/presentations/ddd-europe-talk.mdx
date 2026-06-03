@@ -1457,36 +1457,46 @@ Measure how often files from different services change in the same commit — be
 
 ---
 
-## The Extraction Order
+## Determine extraction order
 
-> *Start with the least coupled. End with the most entangled. Git tells you the order.*
+> *Start with the least coupled. End with the most entangled.*
 
-<Callout type="tip" label="1 · EXTRACT FIRST">
-**Consignee** — 89% solo 🟢
+Determine extraction order — because <mark>git tells you which services to extract first (lowest coupling) and which to tackle last (highest coupling).</mark>
 
-Independent. Clean. **Go.**
+<Callout type="tip">
+**🟢 1 · Extract first**
+
+**Consignee** — 89% solo
+
+Independent. Clean. Go.
 </Callout>
 
-<Callout type="warning" label="2 · STABILIZE FIRST">
-**Invoicing** — 41% co-change 🟡
+<Callout type="warning">
+**🟡 2 · Stabilize first**
+
+**Invoicing** — 41% co-change
 
 Moderate coupling. Stabilize the event contract first, then extract.
 </Callout>
 
-<Callout type="warning" label="3 · FIX BEFORE EXTRACTING">
-**Inventory** — 68% co-change 🟠
+<Callout type="warning">
+**🟠 3 · Fix before extracting**
 
-Replace co-write with **saga** first. **Then** extract.
+**Inventory** — 68% co-change
+
+Replace co-write with a saga first. Then extract.
 </Callout>
 
-<Callout type="danger" label="4 · EXTRACT LAST">
-**Shipment + Carrier** — 72% co-change 🔴
+<Callout type="danger">
+**🔴 4 · Extract last**
 
-**Merge first.** Then decide if the merged context needs splitting differently.
+**Shipment + Carrier** — 72% co-change
+
+Merge first. Then decide if the merged context needs splitting differently.
 </Callout>
 
 <Notes>
-"Git gives you the extraction order. Start with Consignee — 89% solo, genuinely independent, extract tomorrow. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
+"Determine extraction order — because git tells you which services to extract first and which to tackle last. Start with Consignee — 89% solo, genuinely independent, extract first. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
 </Notes>
 
 ---
