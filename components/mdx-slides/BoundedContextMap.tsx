@@ -233,8 +233,10 @@ function shipmentFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 1) f.push("⚠ god entity");
   if (v >= 3) f.push("BLOCKED ✗");
-  if (v >= 5) f.push("54 incidents · epicentre");
-  if (v >= 6) f.push("⚠ 891 overrides");
+  // Incident counts ('54 incidents · epicentre' at v>=5) and override
+  // counts ('⚠ 891 overrides' at v>=6) deliberately NOT pushed —
+  // those are tech-debt metrics. The legend below the canvas carries
+  // them as evidence; the circles show only DDD verdicts.
   return f;
 }
 function carrierFindings(v: number): string[] {
@@ -247,7 +249,9 @@ function carrierFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
   if (v >= 3 && v <= 6) f.push("extractable ✓");
-  if (v >= 5 && v <= 6) f.push("17 incidents · w/ Ship");
+  // Incident count '17 incidents · w/ Ship' at v>=5 deliberately NOT
+  // pushed — tech-debt metric. The legend carries it as evidence;
+  // the circle shows only DDD verdicts.
   return f;
 }
 function consigneeFindings(v: number): string[] {
@@ -263,8 +267,9 @@ function consigneeFindings(v: number): string[] {
   // verdict — Consignee's internal commits are clean, so the context
   // can be extracted (the 3 consumer bypasses are a separate fix).
   if (v >= 3 && v <= 4) return ["0 events", "facade", "extractable ✓"];
-  // v0.5+ — confirmed clean (zero incidents across exhibits E onward).
-  return ["clean ✓", "0 incidents"];
+  // v0.5+ — confirmed clean. 'clean ✓' carries the DDD verdict; the
+  // raw '0 incidents' metric belongs in the legend, not the circle.
+  return ["clean ✓"];
 }
 function inventoryFindings(v: number): string[] {
   // v0.2 — Exhibit B surfaces the disputed-aggregate hypothesis from the
@@ -281,16 +286,19 @@ function inventoryFindings(v: number): string[] {
     f.push("2 writers");
     f.push("BLOCKED ✗");
   }
-  if (v >= 5) f.push("23 incidents · w/ Ship");
+  // Incident count '23 incidents · w/ Ship' at v>=5 deliberately NOT
+  // pushed — tech-debt metric. Legend carries it as evidence.
   return f;
 }
 function invoicingFindings(v: number): string[] {
   // v0.3 — C's transaction clustering names Invoicing's Payment Aggregate.
   if (v === 3) return ["Payment Aggregate"];
-  const f: string[] = [];
-  if (v >= 5) f.push("14 incidents · w/ Ship");
-  if (v >= 7) f.push("41% co-change");
-  return f;
+  // Tech-debt metrics deliberately NOT pushed:
+  //   '14 incidents · w/ Ship' (v>=5)
+  //   '41% co-change'          (v>=7)
+  // Both live in the relevant legends. The circle stays empty post-v=3
+  // — no DDD verdict to add until the final merge state at v=7.
+  return [];
 }
 function trackingFindings(v: number): string[] {
   if (v >= 4) return ["silent participant"];
@@ -355,15 +363,21 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       { id: "shipment-fulfilment", pathD: SHIP_FULFIL, status: "red",
         label: "SHIPMENT FULFILMENT",
         sublabel: "= Shipment ⊕ Carrier  (72% co-change)",
-        findings: ["⚠ god entity", "⚠ saga needed before extraction", "⚠ 891 overrides"],
+        // '⚠ 891 overrides' dropped — tech-debt count. The DDD verdicts
+        // (god entity + saga-needed) stay.
+        findings: ["⚠ god entity", "⚠ saga needed before extraction"],
         cx: 440, cy: 195, background: true,
         memoryLine: { x1: 442, y1: 110, x2: 442, y2: 320 } },
       { id: "inventory", pathD: INV_DEV, status: "red", label: "INVENTORY",
         findings: ["2 writers", "shared w/ Ship"], cx: 940, cy: 320 },
       { id: "consignee", pathD: CONS_DEV, status: "green", label: "CONSIGNEE",
-        findings: ["clean ✓", "89% solo"], cx: 140, cy: 478 },
+        // '89% solo' dropped — tech-debt git metric. 'clean ✓' carries
+        // the DDD verdict.
+        findings: ["clean ✓"], cx: 140, cy: 478 },
       { id: "invoicing", pathD: INVOICING_DEV, status: "amber", label: "INVOICING",
-        findings: ["41% co-change"], cx: 370, cy: 480 },
+        // '41% co-change' dropped — tech-debt git metric. Empty findings;
+        // the coupling shows visually + in the summary band.
+        cx: 370, cy: 480 },
       { id: "returns", pathD: RETURNS_PATH, status: "purple", label: "RETURNS",
         sublabel: "/ POLICY", findings: ["NEW · from F", "DEL-E011"], cx: 608, cy: 525 },
       { id: "tracking", pathD: TRACK_DEV, status: "gray", label: "TRACKING",

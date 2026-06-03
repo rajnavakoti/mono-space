@@ -49,19 +49,22 @@ describe("BoundedContextMap", () => {
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
 
-  it("at v5 Consignee flips to clean ✓ with 0 incidents", () => {
+  it("at v5 Consignee flips to clean ✓ (tech-debt '0 incidents' lives in legend, not circle)", () => {
     render(<BoundedContextMap version="5" />);
     expect(screen.getByText("clean ✓")).toBeInTheDocument();
-    expect(screen.getByText("0 incidents")).toBeInTheDocument();
+    // '0 incidents' is a tech-debt metric — should NOT appear inside
+    // the Consignee circle.
+    expect(screen.queryByText("0 incidents")).not.toBeInTheDocument();
   });
 
-  it("at v6 Returns/Policy reveals + shipment gains 891 overrides (was v7 before Exhibit F removed)", () => {
+  it("at v6 Returns/Policy reveals — tech-debt counts ('891 overrides') stripped", () => {
     render(<BoundedContextMap version="6" />);
     expect(screen.getByText("RETURNS")).toBeInTheDocument();
-    // DEL-E011 appears at v6: once as a Returns finding, once as the
-    // returnsArrow overlay label.
     expect(screen.getAllByText("DEL-E011").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText("⚠ 891 overrides").length).toBeGreaterThanOrEqual(1);
+    // '⚠ 891 overrides' is a tech-debt count — should NOT appear inside
+    // a circle. The escape-hatch rule itself stays in the speaker notes
+    // + the error-code slides.
+    expect(screen.queryByText("⚠ 891 overrides")).not.toBeInTheDocument();
   });
 
   it("at v7 Shipment + Carrier merge into Shipment Fulfilment blob with summary band (was v8)", () => {
