@@ -301,7 +301,7 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 </Split>
 
 <Notes>
-"Quick inventory on the left. 6 services. 39 endpoints. 56 schemas. 13 events declared in total — but look where they come from. Consignee and Invoicing say NONE explicitly. Tracking and Inventory have nothing. Versioning — Shipment is on v2 already, someone's invested there. Last-modified — Tracking hasn't been touched in 14 months, very low confidence. Now on the right — what those contracts actually yielded once we stripped the noise. 28 unique entities, grouped by service. Shipment holds a copy of Invoice — duplication signal. And 13 domain events implicit in the contract state machines themselves. That's an Event Storming starter pack you didn't pay for. We'll spend the rest of the talk validating what's real."
+"Count what you have — because services that publish zero events force every consumer into synchronous coupling. Silence is a boundary signal. 6 services on the left. 39 endpoints. 56 schemas. 13 events declared in total — but look where they come from. Consignee and Invoicing say NONE explicitly. Tracking and Inventory have nothing. Versioning — Shipment is on v2 already, someone's invested there. Last-modified — Tracking hasn't been touched in 14 months, very low confidence. Now on the right — what those contracts actually yielded once we stripped the noise. 28 unique entities, grouped by service. Shipment holds a copy of Invoice — duplication signal. And 13 domain events implicit in the contract state machines themselves. That's an Event Storming starter pack you didn't pay for. We'll spend the rest of the talk validating what's real."
 </Notes>
 
 ---
@@ -371,7 +371,7 @@ Consignee needs `label` → "Home" / "Work"
 </Split>
 
 <Notes>
-"Now compare with Address. Same four services. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look the same but they serve different purposes. This IS correct DDD — each bounded context should own its own Address. The contracts just proved it."
+"Now compare with Address. Same four services. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look the same but they serve different purposes. This IS correct DDD — each bounded context should own its own Address. So the test: same fields, different names — flag it. Different fields for different purposes — correct boundary separation."
 </Notes>
 
 ---
@@ -474,7 +474,7 @@ Look for duplicate schemas — because same concept with two owners means the <m
 </Split>
 
 <Notes>
-"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'disputed' and 'overdue.' Two duplicate schemas. Two fictional boundaries. Merge into one context or build a proper anti-corruption layer."
+"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'sent' and 'disputed.' Two duplicate schemas. Two fictional boundaries. Merge into one context or build a proper anti-corruption layer."
 </Notes>
 
 ---
