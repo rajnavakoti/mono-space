@@ -686,7 +686,7 @@ Find what commits together within one service — because <mark>high-frequency c
 <Callout type="tip">
 **💡 Aggregates emerge**
 
-**84,219 times per week**, `orders` + `order_lines` + `order_audit` commit together. Not accidental — that's the Order aggregate.
+**84,219 times per week**, `orders` + `order_lines` + `order_audit` commit together. Not accidental — that's the Order Aggregate.
 
 The database has been enforcing these consistency boundaries for years. Nobody drew them on a whiteboard. *The code decided.*
 </Callout>
@@ -695,7 +695,7 @@ The database has been enforcing these consistency boundaries for years. Nobody d
 </Split>
 
 <Notes>
-"Find what commits together within one service — because high-frequency co-writes within one service are your aggregates. Top row: orders, order_lines, order_audit commit together 84,000 times a week. Not accidental — that's the Order aggregate. Shipments with tracking_events — the Shipment aggregate in Carrier. Payment_ledger with payment_events — the Payment aggregate in Invoicing. Inventory's reservation cluster — clean within Inventory's own writes. Shipment writing to it is a separate story coming next. Four aggregates the database has been enforcing for years. Nobody drew them on a whiteboard. The code decided."
+"Find what commits together within one service — because high-frequency co-writes within one service are your aggregates. Top row: orders, order_lines, order_audit commit together 84,000 times a week. Not accidental — that's the Order Aggregate. Shipments with tracking_events — the Delivery Aggregate in Carrier. Payment_ledger with payment_events — the Payment Aggregate in Invoicing. Inventory's reservation cluster — clean within Inventory's own writes. Shipment writing to it is a separate story coming next. Four aggregates the database has been enforcing for years. Nobody drew them on a whiteboard. The code decided."
 </Notes>
 
 ---

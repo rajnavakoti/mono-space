@@ -48,7 +48,7 @@ describe("TranslationMap", () => {
     expect(screen.getByText("The payment")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.getByText("9")).toBeInTheDocument();
-    expect(screen.getByText("8")).toBeInTheDocument();
+    expect(screen.getByText("7")).toBeInTheDocument();
     expect(screen.getByText(/names for one person/i)).toBeInTheDocument();
     expect(screen.getByText(/rules never written down/i)).toBeInTheDocument();
     expect(screen.getByText(/events never published/i)).toBeInTheDocument();

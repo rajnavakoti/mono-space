@@ -218,15 +218,24 @@ const SUMMARY_CARDS: SummaryCard[] = [
     ],
   },
   {
-    number: "8",
+    // 7 = the fossilized-but-not-declared events the Event Catalog v0.3
+    // surfaces (4 from DB timestamps + 3 from log signals). Reconciled
+    // with EventCatalog component to match the canonical list:
+    //   OrderShipped, OrderDelivered, InvoicePaid, InvoiceIssued
+    //   (from DB) + InventoryReserved, InvoiceGenerated, RefundProcessed
+    //   (from logs). The 3 still-missing events (ConsigneeRegistered,
+    //   AddressChanged, LoyaltyTierUpgraded) are counted separately in
+    //   the catalog and don't belong here.
+    number: "7",
     title: "events never published",
     examples: [
-      "AddressChanged",
-      "PaymentCaptured",
+      "OrderShipped",
+      "OrderDelivered",
+      "InvoicePaid",
+      "InvoiceIssued",
       "InventoryReserved",
-      "CustomerRegistered",
-      "LoyaltyUpgraded",
-      "…",
+      "InvoiceGenerated",
+      "RefundProcessed",
     ],
   },
 ];
