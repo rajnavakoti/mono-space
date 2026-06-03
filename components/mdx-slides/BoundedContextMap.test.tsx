@@ -40,7 +40,7 @@ describe("BoundedContextMap", () => {
     // Four aggregates surfaced by C's transaction clustering — each
     // named as the first finding line on the owning context.
     expect(screen.getByText("Order Aggregate")).toBeInTheDocument();
-    expect(screen.getByText("Shipment Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Delivery Aggregate")).toBeInTheDocument();
     expect(screen.getByText("Payment Aggregate")).toBeInTheDocument();
     expect(screen.getByText("Reservation Aggregate")).toBeInTheDocument();
     // 'extractable ✓' appears on BOTH Carrier and Consignee.

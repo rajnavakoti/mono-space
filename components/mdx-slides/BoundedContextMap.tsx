@@ -237,7 +237,11 @@ function shipmentFindings(v: number): string[] {
 }
 function carrierFindings(v: number): string[] {
   // v0.3 — name Carrier's aggregate emerging from C; verdict carries.
-  if (v === 3) return ["Shipment Aggregate", "↔ circular", "extractable ✓"];
+  // Renamed from 'Shipment Aggregate' to 'Delivery Aggregate' — the
+  // underlying tables are called shipments/tracking_events but Carrier's
+  // job is physical delivery tracking, and 'Shipment Aggregate inside
+  // Carrier' reads broken on stage given there's also a Shipment service.
+  if (v === 3) return ["Delivery Aggregate", "↔ circular", "extractable ✓"];
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
   if (v >= 3 && v <= 7) f.push("extractable ✓");
