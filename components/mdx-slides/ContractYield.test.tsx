@@ -24,16 +24,16 @@ describe("ContractYield", () => {
     expect(screen.getByText("EntityZ")).toBeInTheDocument();
   });
 
-  it("renders every domain event as a chip", () => {
+  it("renders the events as a single comma-joined line", () => {
     render(<ContractYield {...fixture} />);
-    expect(screen.getByText("EventOne")).toBeInTheDocument();
-    expect(screen.getByText("EventTwo")).toBeInTheDocument();
-    expect(screen.getByText("EventThree")).toBeInTheDocument();
+    expect(
+      screen.getByText("EventOne, EventTwo, EventThree"),
+    ).toBeInTheDocument();
   });
 
-  it("renders the 'never published' footnote on the events section", () => {
+  it("does not render a 'never published' footnote", () => {
     render(<ContractYield {...fixture} />);
-    expect(screen.getByText(/never published/i)).toBeInTheDocument();
+    expect(screen.queryByText(/never published/i)).not.toBeInTheDocument();
   });
 
   it("falls back to Exhibit A defaults when no props are passed", () => {
@@ -41,6 +41,6 @@ describe("ContractYield", () => {
     // 28 entities total, 13 events
     expect(screen.getByText("28")).toBeInTheDocument();
     expect(screen.getByText("13")).toBeInTheDocument();
-    expect(screen.getByText("OrderPlaced")).toBeInTheDocument();
+    expect(screen.getByText(/OrderPlaced.*ShipmentReturned/)).toBeInTheDocument();
   });
 });

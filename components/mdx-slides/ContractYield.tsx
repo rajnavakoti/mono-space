@@ -15,7 +15,6 @@
  * because next-mdx-remote/rsc + remark doesn't reliably parse multi-line
  * array-of-object JSX expression props.
  */
-import type { CSSProperties } from "react";
 import styles from "./ContractYield.module.css";
 
 export interface ContractYieldService {
@@ -105,24 +104,9 @@ export function ContractYield({
       <section className={styles.section}>
         <header className={styles.sectionHeader}>
           <span className={styles.sectionCount}>{domainEvents.length}</span>
-          <span className={styles.sectionLabel}>
-            domain events · <em>never published</em>
-          </span>
+          <span className={styles.sectionLabel}>domain events</span>
         </header>
-        <ul className={styles.eventChips}>
-          {domainEvents.map((e, i) => {
-            const rot = (i % 2 === 0 ? -1 : 1) * (0.3 + (i % 3) * 0.3);
-            return (
-              <li
-                key={e}
-                className={styles.eventChip}
-                style={{ "--rot": `${rot}deg` } as CSSProperties}
-              >
-                {e}
-              </li>
-            );
-          })}
-        </ul>
+        <p className={styles.eventsLine}>{domainEvents.join(", ")}</p>
       </section>
     </figure>
   );

@@ -48,14 +48,6 @@
   font-weight: 700;
 }
 
-.sectionLabel em {
-  font-style: italic;
-  color: var(--cy-text-muted);
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0.02em;
-}
-
 /* ── Entities by service ──────────────────────────────────────────── */
 
 .serviceList {
@@ -95,29 +87,13 @@
   font-weight: 500;
 }
 
-/* ── Events strip ─────────────────────────────────────────────────── */
+/* ── Events line — plain comma-separated text, matches entity rows ── */
 
-.eventChips {
-  list-style: none;
+.eventsLine {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.eventChip {
-  background: var(--cy-event);
-  border: 2px solid var(--cy-border);
-  padding: 5px 9px;
-  font-size: 11px;
-  font-weight: 700;
+  padding: 4px 0;
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--cy-text);
-  transform: rotate(var(--rot, 0deg));
-  transition: transform 180ms ease;
-  letter-spacing: 0.02em;
-}
-
-.eventChip:hover {
-  transform: rotate(0deg) scale(1.03);
+  font-weight: 500;
 }

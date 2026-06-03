@@ -52,4 +52,32 @@ describe("CompareTable", () => {
     const header = container.querySelector('[class*="compareTableHeader"]') as HTMLElement;
     expect(header.style.gridTemplateColumns).toBe("1fr 1fr 3fr");
   });
+
+  it("highlights cell content wrapped in **markdown bold** via <mark>", () => {
+    const { container } = render(
+      <CompareTable headers="A|B" rows="ok|**flagged**" />,
+    );
+    const mark = container.querySelector("mark");
+    expect(mark).not.toBeNull();
+    expect(mark!.textContent).toBe("flagged");
+  });
+
+  it("renders a totals row when totalsRow is provided", () => {
+    const { container } = render(
+      <CompareTable
+        headers="Service|N"
+        rows="A|1||B|2"
+        totalsRow="TOTAL|**3**"
+      />,
+    );
+    expect(screen.getByText("TOTAL")).toBeInTheDocument();
+    // Totals row carries the dedicated class
+    const totalsRow = container.querySelector(
+      '[class*="compareTableTotalsRow"]',
+    );
+    expect(totalsRow).not.toBeNull();
+    // Highlighted total
+    const mark = totalsRow!.querySelector("mark");
+    expect(mark!.textContent).toBe("3");
+  });
 });
