@@ -958,9 +958,11 @@ Tracking is triggered by status transitions it observes. If CONFIRMED or DELIVER
 
 ---
 
-## Fossilized Event Catalog
+## Build the event catalog
 
 > *Events the system publishes to nobody*
+
+Build the event catalog from log patterns — because <mark>these are the domain events the system has been recording for years but never publishing.</mark>
 
 <Split ratio="3:1">
 <div>
@@ -970,10 +972,12 @@ Tracking is triggered by status transitions it observes. If CONFIRMED or DELIVER
 </div>
 <div>
 
-<Callout type="tip" label="THESE ARE YOUR EVENTS">
-**💡 Every log line with a state transition** = a domain event the system never formalized.
+<Callout type="tip">
+**💡 These are your events**
 
-The **happy path**: ~11,000/day.
+Every log line with a state transition = a domain event the system never formalized.
+
+The happy path: ~11,000/day.
 
 The edge cases nobody mentioned in Event Storming:
 
@@ -983,14 +987,16 @@ The edge cases nobody mentioned in Event Storming:
 
 → **89** delivery failures/day
 
-🔗 **Remember Exhibit C:** The timestamps (`confirmed_at`, `shipped_at`) are set in the same transactions as these log events. **Same events. Two independent sources.**
+🔗 Exhibit C showed timestamps in the same transactions. *Same events. Two independent sources.*
+
+**v0.3 catalog: 13 declared + 9 fossilized = 22 known. 3 still missing.**
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"When you trace 1,000 orders instead of one, you get the full event catalog. The system publishes these events to nobody — they exist only in log files. The happy path processes about 11,000 orders per day. But look at the bottom — 278 cancellations, 156 refunds, 89 delivery failures. Every day. Event storming rarely covers these edge cases. The logs show you every path the system actually takes, including the ones nobody remembers designing. And remember Exhibit C — the lifecycle timestamps? confirmed_at is set in the same transaction as this 'Order CONFIRMED' log event. Two independent sources showing the same events. The evidence is converging."
+"Build the event catalog from log patterns — because these are the domain events the system has been recording for years but never publishing. Trace 1,000 orders instead of one and you get the full picture. The happy path processes about 11,000 orders per day. But the edge cases nobody mentioned in Event Storming: 278 cancellations a day, 156 refunds, 89 delivery failures. The logs show you every path the system actually takes, including the ones nobody remembers designing. And remember Exhibit C — confirmed_at is set in the same transaction as the Order CONFIRMED log event. Two independent sources, same events. The evidence converges. This is the artifact v0.3 — thirteen events the contracts declared, nine more fossilized between the database timestamps and the logs, three we still have no evidence for anywhere. Twenty-two known events. Three missing — those go to the domain experts."
 </Notes>
 
 ---
