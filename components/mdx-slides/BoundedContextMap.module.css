@@ -263,6 +263,31 @@
   opacity: 0.85;
 }
 
+/* Three red dashed lines converging on Consignee (v0.2) — the services
+   that read its tables directly, bypassing the API. */
+.facadeBypass > path {
+  stroke: var(--bcm-red);
+  opacity: 0.65;
+  stroke-linecap: round;
+}
+
+/* Single red dashed line between Shipment and Inventory (v0.2) —
+   the inventory_reserved shared-write coupling. Slightly thicker than
+   facadeBypass because it's the worse kind of coupling (write, not read). */
+.sharedKernel > path {
+  stroke: var(--bcm-red);
+  opacity: 0.75;
+  stroke-linecap: round;
+}
+
+/* Strikethrough on a finding text when its label is wrapped in ~~markers~~.
+   Used to show a hypothesis that was refuted by the current version's
+   evidence — visible only on the version of refutation, then dropped. */
+.regionFindingStrike {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
 /* Marker fills — used both by SVG circle markers and (.markerX as a
    className) by HTML span markers in the HTML legend bar. */
 .markerRed { fill: var(--bcm-red); background: var(--bcm-red); }

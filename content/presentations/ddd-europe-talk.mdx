@@ -635,14 +635,12 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ---
 
-## The model updates
+## Hypothesis v0.2 — what the database reveals beneath
 
 <BoundedContextMap version="2" />
 
-> *Transactions next. What commits together belongs together.*
-
 <Notes>
-"Update the model. Inventory turns red — two writers, boundary violation. Consignee gains the 'facade' finding — clean API but bypassed by the database. The dashed red line between Shipment and Inventory marks the shared-write coupling. The three black boxes still unknown. Hypothesis v0.2 — what the database reveals beneath. Transactions next."
+"Update the model after the database lens. Consignee's published-language hypothesis from Exhibit A — struck through. Three services read its tables directly; the API boundary is a facade. Inventory turns red — two writers on inventory_reserved, disputed aggregate. The three dashed red lines visualise the database-layer read coupling that contracts hid. The line between Shipment and Inventory marks the shared-write boundary violation. The three black boxes still unknown. What commits together belongs together — transactions next."
 </Notes>
 
 ---

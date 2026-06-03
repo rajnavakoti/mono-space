@@ -55,7 +55,9 @@ interface Overlay {
     | "addressTendrils"
     | "returnsArrow"
     | "incidentFan"
-    | "deadBoundaryLine";
+    | "deadBoundaryLine"
+    | "facadeBypass"
+    | "sharedKernel";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
@@ -236,25 +238,30 @@ function carrierFindings(v: number): string[] {
   return f;
 }
 function consigneeFindings(v: number): string[] {
-  const f: string[] = [];
-  if (v >= 1) {
-    // Two-line v0.1 reading: the observation (evidence) + the hypothesis
-    // (the DDD reading the activity surfaces — phrased as a question per
-    // evidence-discipline).
-    f.push("0 events");
-    f.push("published language?");
-  }
-  if (v >= 2 && v <= 4) f.push("facade");
-  if (v >= 5) {
-    // replace earlier "0 events" with confirmed clean
-    return ["clean ✓", "0 incidents"];
-  }
-  return f;
+  // v0.1 — Exhibit A finds 0 events + published-language hypothesis.
+  if (v === 1) return ["0 events", "published language?"];
+  // v0.2 — Exhibit B refutes the hypothesis. The struck-through marker
+  // (~~text~~) renders with a line-through; visible only on this version
+  // to mark the moment of refutation, then dropped from v=3 onward to
+  // keep the model clean.
+  if (v === 2) return ["0 events", "~~published language?~~", "facade"];
+  // v0.3-v0.4 — facade verdict carries forward without the struck-through
+  // historical hypothesis.
+  if (v >= 3 && v <= 4) return ["0 events", "facade"];
+  // v0.5+ — confirmed clean (zero incidents across exhibits E onward).
+  return ["clean ✓", "0 incidents"];
 }
 function inventoryFindings(v: number): string[] {
+  // v0.2 — Exhibit B surfaces the disputed-aggregate hypothesis from the
+  // inventory_reserved 2-writer evidence.
+  if (v === 2) return ["2 writers", "disputed aggregate?"];
+  // v0.3+ — Exhibit C confirms the aggregate is blocked from extraction;
+  // hypothesis subsumed by the stronger BLOCKED verdict.
   const f: string[] = [];
-  if (v >= 2) f.push("2 writers");
-  if (v >= 3) f.push("BLOCKED ✗");
+  if (v >= 3) {
+    f.push("2 writers");
+    f.push("BLOCKED ✗");
+  }
   if (v >= 5) f.push("23 incidents · w/ Ship");
   return f;
 }
@@ -363,6 +370,8 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   // overlay paths without their legend (which appears only at the
   // introducing version) would be unexplained noise.
   if (v === 1) overlays.push({ kind: "deadBoundaryLine" });
+  if (v === 2) overlays.push({ kind: "facadeBypass" });
+  if (v === 2) overlays.push({ kind: "sharedKernel" });
   if (v === 4) overlays.push({ kind: "syncRibbon" });
   if (v === 4) overlays.push({ kind: "asyncDotted" });
   if (v === 5) overlays.push({ kind: "incidentFan" });
@@ -377,6 +386,14 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       header: "Hypothesis · from Exhibit A",
       items: [
         { marker: "amber", text: "Shipment ↔ Carrier · dead boundary?  (duplicate schema + circular refs)" },
+      ],
+    };
+  } else if (v === 2) {
+    legend = {
+      header: "Database-layer findings · from Exhibit B",
+      items: [
+        { marker: "red", text: "3 services bypass Consignee API · facade boundary confirmed" },
+        { marker: "red", text: "Shipment ↔ Inventory · shared write on inventory_reserved (2 writers)" },
       ],
     };
   } else if (v === 4) {
@@ -569,6 +586,36 @@ export function BoundedContextMap({ version }: Props) {
                 </g>
               );
             }
+            if (o.kind === "facadeBypass") {
+              // Three red dashed lines from Shipment / Carrier / Invoicing
+              // converging on Consignee's customer_addresses — the 3
+              // services that read the table directly, bypassing the
+              // Consignee API. v0.2 reveal.
+              return (
+                <g key={`ov-${i}`} className={styles.facadeBypass}>
+                  {/* Shipment → Consignee */}
+                  <path d="M 280 320 C 240 380, 200 420, 175 440"
+                    fill="none" strokeWidth="2" strokeDasharray="6 5" />
+                  {/* Carrier → Consignee (long diagonal across canvas) */}
+                  <path d="M 525 290 C 420 380, 320 430, 210 450"
+                    fill="none" strokeWidth="2" strokeDasharray="6 5" />
+                  {/* Invoicing → Consignee (short horizontal-ish) */}
+                  <path d="M 270 478 C 255 478, 240 478, 225 478"
+                    fill="none" strokeWidth="2" strokeDasharray="6 5" />
+                </g>
+              );
+            }
+            if (o.kind === "sharedKernel") {
+              // Single dashed line between Shipment and Inventory marking the
+              // inventory_reserved shared-write coupling. Routed over Carrier
+              // (above y 210) to avoid passing through it. v0.2 reveal.
+              return (
+                <g key={`ov-${i}`} className={styles.sharedKernel}>
+                  <path d="M 395 220 C 540 180, 720 180, 845 260"
+                    fill="none" strokeWidth="3" strokeDasharray="8 5" />
+                </g>
+              );
+            }
             return null;
           })}
 
@@ -586,17 +633,30 @@ export function BoundedContextMap({ version }: Props) {
                     {r.sublabel}
                   </text>
                 )}
-                {r.findings?.map((f, i) => (
-                  <text
-                    key={i}
-                    x={r.cx}
-                    y={findingsStart + i * 16}
-                    className={styles.regionFinding}
-                    textAnchor="middle"
-                  >
-                    {f}
-                  </text>
-                ))}
+                {r.findings?.map((f, i) => {
+                  // ~~text~~ marker → render with line-through. Used for
+                  // findings that were a hypothesis at the previous
+                  // version and got refuted by the current version's
+                  // evidence (e.g. Consignee 'published language?' at
+                  // v0.2 when the facade lens refutes it).
+                  const isStrike = f.startsWith("~~") && f.endsWith("~~");
+                  const text = isStrike ? f.slice(2, -2) : f;
+                  return (
+                    <text
+                      key={i}
+                      x={r.cx}
+                      y={findingsStart + i * 16}
+                      className={
+                        isStrike
+                          ? `${styles.regionFinding} ${styles.regionFindingStrike}`
+                          : styles.regionFinding
+                      }
+                      textAnchor="middle"
+                    >
+                      {text}
+                    </text>
+                  );
+                })}
               </g>
             );
           })}

@@ -23,10 +23,16 @@ describe("BoundedContextMap", () => {
     expect(screen.getByText("generic subdomain?")).toBeInTheDocument();
   });
 
-  it("at v2 Inventory turns red with '2 writers' and Consignee adds 'facade'", () => {
+  it("at v2 Exhibit B findings — facade, disputed aggregate, struck-through published language?", () => {
     render(<BoundedContextMap version="2" />);
     expect(screen.getByText("2 writers")).toBeInTheDocument();
+    expect(screen.getByText("disputed aggregate?")).toBeInTheDocument();
     expect(screen.getByText("facade")).toBeInTheDocument();
+    // 'published language?' is rendered with strike-through styling
+    // (the ~~markers~~ are stripped before render).
+    const stricken = screen.getByText("published language?");
+    expect(stricken).toBeInTheDocument();
+    expect(stricken.getAttribute("class")).toMatch(/regionFindingStrike/);
   });
 
   it("at v3 Carrier gets READY and the BLOCKED label appears (Shipment + Inventory both)", () => {
