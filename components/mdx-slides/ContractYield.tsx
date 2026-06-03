@@ -25,21 +25,87 @@ export interface ContractYieldService {
 
 export interface ContractYieldProps {
   /** Raw schema count in the contracts (before noise stripping). */
-  totalSchemas: number;
+  totalSchemas?: number;
   /** Schemas dropped as noise — req/resp wrappers, enums, summaries, paging. */
-  noiseStripped: number;
+  noiseStripped?: number;
   /** Service columns. The number of columns is derived from this array. */
-  services: ContractYieldService[];
+  services?: ContractYieldService[];
   /** Domain events extracted from contract state machines. */
-  domainEvents: string[];
+  domainEvents?: string[];
 }
 
+/**
+ * Default data = the Exhibit A baseline (six contracts in the talk).
+ * Reasons it lives here, not in MDX as a JSX expression prop:
+ *   - next-mdx-remote/rsc + remark/MDX doesn't reliably parse multi-line
+ *     array-of-object JSX expressions; existing components in this deck
+ *     all use pipe-encoded strings for the same reason.
+ *   - The data IS this exhibit. Override via props if you need to retell
+ *     a different exhibit with the same visual.
+ */
+const EXHIBIT_A_DEFAULTS: Required<ContractYieldProps> = {
+  totalSchemas: 54,
+  noiseStripped: 26,
+  services: [
+    {
+      name: "Shipment",
+      entities: ["Order", "OrderLine", "Address", "ShipmentInfo", "Invoice (copy)"],
+    },
+    {
+      name: "Carrier",
+      entities: ["Shipment", "DeliveryAddress", "TrackingEvent", "Carrier", "RateQuote"],
+    },
+    {
+      name: "Consignee",
+      entities: ["Customer", "CustomerAddress", "CustomerPreferences", "LoyaltyInfo"],
+      flag: { text: "NONE events", tone: "danger" },
+    },
+    {
+      name: "Invoicing",
+      entities: [
+        "Invoice",
+        "InvoiceLineItem",
+        "Payment",
+        "Refund",
+        "AccountBalance",
+        "BillingAddress",
+      ],
+      flag: { text: "NONE · 6 mo stale", tone: "danger" },
+    },
+    {
+      name: "Inventory",
+      entities: ["Warehouse", "WarehouseLocation", "StockLevel", "Product", "Reservation"],
+      flag: { text: "no event spec", tone: "warn" },
+    },
+    {
+      name: "Tracking",
+      entities: ["Notification", "Template", "UserNotificationPreferences"],
+      flag: { text: "14 mo · v.low conf", tone: "danger" },
+    },
+  ],
+  domainEvents: [
+    "OrderPlaced",
+    "OrderConfirmed",
+    "OrderCancelled",
+    "OrderLineAdded",
+    "FulfillmentStarted",
+    "OrderCompleted",
+    "ShipmentCreated",
+    "ShipmentPickedUp",
+    "ShipmentInTransit",
+    "ShipmentOutForDelivery",
+    "ShipmentDelivered",
+    "ShipmentFailed",
+    "ShipmentReturned",
+  ],
+};
+
 export function ContractYield({
-  totalSchemas,
-  noiseStripped,
-  services,
-  domainEvents,
-}: ContractYieldProps) {
+  totalSchemas = EXHIBIT_A_DEFAULTS.totalSchemas,
+  noiseStripped = EXHIBIT_A_DEFAULTS.noiseStripped,
+  services = EXHIBIT_A_DEFAULTS.services,
+  domainEvents = EXHIBIT_A_DEFAULTS.domainEvents,
+}: ContractYieldProps = {}) {
   const totalEntities = services.reduce((n, s) => n + s.entities.length, 0);
 
   return (
