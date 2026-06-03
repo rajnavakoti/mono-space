@@ -283,14 +283,23 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## What 6 contracts yielded
+## What do we have?
 
-> 28 entities + 13 domain events. Event Storming starter pack — free.
+<Split ratio="3:2">
+<div>
+
+<CompareTable headers="Service|Endpoints|Schemas|Events|Version|Last Modified|Confidence" rows="Shipment|7|10|6|v2|2 weeks ago|High||Consignee|6|9|NONE|v1|3 weeks ago|High||Inventory|7|8|—|v1|2 months ago|Medium||Carrier|7|10|7|v1|1 week ago|High||Invoicing|8|11|NONE|v1|6 months ago|Low||Tracking|4|8|—|v1|14 months ago|Very Low" />
+
+</div>
+<div>
 
 <ContractYield />
 
+</div>
+</Split>
+
 <Notes>
-"This is what six contracts yielded. Fifty-four schemas in the raw — strip the noise, the request and response wrappers, the enums, the summaries, the pagination shells — and you're left with 28 unique domain entities. Plus 13 domain events that live inside the contract state machines but no service publishes them as events. That's an Event Storming starter pack you didn't pay for. Look at the columns. Shipment owns five entities including a copy of Invoice — that duplication is a signal we'll come back to. Consignee and Invoicing are flagged red — NONE events, explicitly written in the contract. Invoicing hasn't been touched in six months. Tracking is fourteen months stale, very low confidence. Inventory has no event spec — silent boundary, we'll find out why in Exhibit C. And those thirteen orange chips at the bottom — every one is a moment in the domain that the code already knows about but the team has never declared. This slide is the holistic view of what one lens — contract archaeology — gives you. The next seven lenses sharpen this picture."
+"Quick inventory on the left. 6 services. Most have schemas, most have endpoints. But look at the events column — Consignee says NONE explicitly. Tracking and Inventory have nothing. Versioning — Shipment is on v2 already. Last-modified — Invoicing 6 months, Tracking 14 months. The confidence column tells you which contracts the team still trusts. Now on the right — what those contracts actually yielded once we stripped the noise. 28 unique entities, grouped by service. Shipment holds a copy of Invoice — duplication signal. And 13 domain events implicit in the contract state machines that nobody publishes. That's an Event Storming starter pack you didn't pay for. The orange chips are the gold. We'll spend the rest of the talk validating what's real."
 </Notes>
 
 ---
