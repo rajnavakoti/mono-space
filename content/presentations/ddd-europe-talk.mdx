@@ -919,9 +919,11 @@ SLOW DOWN. Pause before reading the comparison. Let the audience read it themsel
 
 ---
 
-## The Silent Participant
+## Identify silent participants
 
 > *Who else is in the flow?*
+
+Identify services that appear in the flow but were never mentioned — because <mark>silent participants are hidden dependencies that break when transitions change.</mark>
 
 <Split ratio="3:2">
 <div>
@@ -932,26 +934,26 @@ SLOW DOWN. Pause before reading the comparison. Let the audience read it themsel
 
 Nobody mentioned it in Event Storming. Nobody put it on the context map.
 
-It owns no state transitions. It makes no domain decisions. But it participates in **every order lifecycle event**.
+It owns no state transitions. It makes no domain decisions. But it participates in every order lifecycle event.
 
 </div>
 <div>
 
-<Callout type="warning" label="SILENT PARTICIPANT">
-**🚩 Tracking is triggered by status transitions it observes.**
+<Callout type="warning">
+**🚩 Silent participant**
 
-If CONFIRMED or DELIVERED transitions change — **Tracking breaks silently**.
+Tracking is triggered by status transitions it observes. If CONFIRMED or DELIVERED transitions change, **Tracking breaks silently**.
 
-Confirms **Exhibit A**: coupled to everything, owns nothing.
+→ Confirms Exhibit A: coupled to everything, owns nothing.
 
-→ **Infrastructure pretending to be a domain service.**
+*Infrastructure pretending to be a domain service.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"One more finding from the logs. Tracking Notifications appears twice — at confirmation and at delivery. Nobody mentioned it in the event storming. Nobody put it on the context map. But it's silently participating in every order lifecycle transition. It owns no state. It makes no decisions. But if the confirmation or delivery transitions change, Tracking breaks — silently, because it's just sending emails. This confirms what Exhibit A suggested — Tracking is infrastructure pretending to be a domain service."
+"Identify services that appear in the flow but were never mentioned — because silent participants are hidden dependencies that break when transitions change. Tracking Notifications appears twice in the trace — at confirmation and at delivery. Nobody mentioned it in the event storming. Nobody put it on the context map. But it's silently participating in every order lifecycle transition. It owns no state. It makes no decisions. But if the confirmation or delivery transitions change, Tracking breaks — silently, because it's just sending emails. Confirms what Exhibit A suggested — Tracking is infrastructure pretending to be a domain service."
 </Notes>
 
 ---
