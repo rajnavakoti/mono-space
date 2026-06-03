@@ -2,12 +2,15 @@ import { render, screen } from "@testing-library/react";
 import { BoundedContextMap } from "./BoundedContextMap";
 
 describe("BoundedContextMap", () => {
-  it("at v0 renders 6 small named contexts + 2 unknowns, no findings", () => {
+  it("at v0 renders 6 small named contexts + 2 labelled unknown blobs, no findings", () => {
     render(<BoundedContextMap version="0" />);
     for (const n of ["Shipment", "Carrier", "Consignee", "Inventory", "Invoicing", "Tracking"]) {
       expect(screen.getByText(n)).toBeInTheDocument();
     }
-    expect(screen.getAllByText("???")).toHaveLength(2);
+    // The two unknown blobs now carry descriptive labels instead of '???'.
+    expect(screen.getByText("Carrier Routing")).toBeInTheDocument();
+    expect(screen.getByText("· Customs · Returns")).toBeInTheDocument();
+    expect(screen.getByText("External Systems")).toBeInTheDocument();
     expect(screen.queryByText("⚠ god entity")).not.toBeInTheDocument();
   });
 

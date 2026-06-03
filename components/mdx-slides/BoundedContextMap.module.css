@@ -255,6 +255,14 @@
   stroke-linecap: round;
 }
 
+/* Dotted hypothesis line in the gap between Shipment and Carrier (v0.1).
+   Amber because it's a HYPOTHESIS earned by Exhibit A's duplicate schema
+   evidence — not a verdict. The legend below the canvas names it. */
+.deadBoundaryLine > line {
+  stroke: var(--bcm-accent, #C9A96E);
+  opacity: 0.85;
+}
+
 /* Marker fills — used both by SVG circle markers and (.markerX as a
    className) by HTML span markers in the HTML legend bar. */
 .markerRed { fill: var(--bcm-red); background: var(--bcm-red); }

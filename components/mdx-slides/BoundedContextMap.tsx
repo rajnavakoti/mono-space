@@ -54,7 +54,8 @@ interface Overlay {
     | "asyncDotted"
     | "addressTendrils"
     | "returnsArrow"
-    | "incidentFan";
+    | "incidentFan"
+    | "deadBoundaryLine";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
@@ -154,15 +155,25 @@ const RETURNS_PATH =
   "C 718 540, 705 568, 680 580 C 645 592, 605 595, 570 590 " +
   "C 535 583, 510 565, 505 540 C 503 515, 512 495, 530 480 Z";
 
-// Two unknown ??? blobs — dashed fuzzy
+// Two unknown blobs — dashed fuzzy. Enlarged from the original 150-wide
+// ??? placeholders so they can hold the descriptive labels we adopted
+// instead of '???'. Left blob = the internal contexts we know exist
+// but have no contracts for (Carrier Routing, Customs, Returns until
+// v0.7). Right blob = third-party / external integrations.
 const UNK_LEFT =
-  "M 50 600 C 70 588, 105 583, 138 588 C 168 593, 195 605, 200 620 " +
-  "C 203 638, 188 650, 165 652 C 130 656, 95 648, 72 638 " +
-  "C 55 630, 48 618, 50 608 C 48 602, 48 600, 50 600 Z";
+  "M 35 595 C 58 580, 95 575, 135 580 " +
+  "C 175 585, 205 598, 215 618 " +
+  "C 218 638, 200 655, 170 657 " +
+  "C 130 660, 88 655, 60 645 " +
+  "C 40 638, 30 624, 35 612 " +
+  "C 30 605, 30 600, 35 595 Z";
 const UNK_RIGHT =
-  "M 870 600 C 895 588, 935 583, 970 588 C 1010 593, 1045 605, 1055 620 " +
-  "C 1062 638, 1045 652, 1015 654 C 980 656, 940 648, 910 638 " +
-  "C 885 630, 870 618, 870 608 C 870 602, 870 600, 870 600 Z";
+  "M 875 595 C 898 580, 935 575, 975 580 " +
+  "C 1015 585, 1045 598, 1055 618 " +
+  "C 1058 638, 1040 655, 1010 657 " +
+  "C 970 660, 928 655, 900 645 " +
+  "C 880 638, 870 624, 875 612 " +
+  "C 870 605, 870 600, 875 595 Z";
 
 // ── PER-VERSION STATE ──────────────────────────────────────────────────────
 
@@ -332,10 +343,17 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     );
   }
 
-  // Unknowns (all versions — start tiny on v0.0, slightly bigger from v0.1)
+  // Unknowns — internal contexts we know about but have no contracts for
+  // (left), and third-party / external integrations (right). At v0.7+ the
+  // left blob drops 'Returns' from its sublabel because Returns/Policy
+  // materialises as its own purple shape via DEL-E011 evidence.
   regions.push(
-    { id: "unknown-left", pathD: UNK_LEFT, status: "unknown", label: "???", cx: 125, cy: 622 },
-    { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown", label: "???", cx: 965, cy: 622 },
+    { id: "unknown-left", pathD: UNK_LEFT, status: "unknown",
+      label: "Carrier Routing",
+      sublabel: v >= 7 ? "· Customs" : "· Customs · Returns",
+      cx: 122, cy: 605 },
+    { id: "unknown-right", pathD: UNK_RIGHT, status: "unknown",
+      label: "External Systems", cx: 965, cy: 614 },
   );
 
   // Overlays draw on the canvas — lines/ribbons/arrows that carry the
@@ -344,6 +362,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   // carried by shape colours + findings inside the cards; persisting
   // overlay paths without their legend (which appears only at the
   // introducing version) would be unexplained noise.
+  if (v === 1) overlays.push({ kind: "deadBoundaryLine" });
   if (v === 4) overlays.push({ kind: "syncRibbon" });
   if (v === 4) overlays.push({ kind: "asyncDotted" });
   if (v === 5) overlays.push({ kind: "incidentFan" });
@@ -353,7 +372,14 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   // Legend per version — explains the overlays in words. Sits below
   // the canvas as HTML, always has room, never overlaps shapes.
   let legend: Legend | undefined;
-  if (v === 4) {
+  if (v === 1) {
+    legend = {
+      header: "Hypothesis · from Exhibit A",
+      items: [
+        { marker: "amber", text: "Shipment ↔ Carrier · dead boundary?  (duplicate schema + circular refs)" },
+      ],
+    };
+  } else if (v === 4) {
     legend = {
       header: "Runtime flow",
       items: [
@@ -528,6 +554,18 @@ export function BoundedContextMap({ version }: Props) {
                 <g key={`ov-${i}`} className={styles.returnsArrow}>
                   <path d="M 605 225 C 625 320, 630 410, 610 478" fill="none" strokeWidth="2" />
                   <polygon points="603,476 617,476 610,490" />
+                </g>
+              );
+            }
+            if (o.kind === "deadBoundaryLine") {
+              // Amber dotted line in the gap between Shipment and Carrier.
+              // Visualises the v0.1 hypothesis 'dead boundary?', earned by
+              // Exhibit A's duplicate-schema evidence. Sits at the shared
+              // y-axis (~210) so the line reads as a direct link.
+              return (
+                <g key={`ov-${i}`} className={styles.deadBoundaryLine}>
+                  <line x1="440" y1="210" x2="495" y2="210"
+                    strokeDasharray="6 5" strokeWidth="3" strokeLinecap="round" />
                 </g>
               );
             }
