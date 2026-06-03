@@ -35,12 +35,17 @@ describe("BoundedContextMap", () => {
     expect(stricken.getAttribute("class")).toMatch(/regionFindingStrike/);
   });
 
-  it("at v3 Exhibit C findings — Carrier + Consignee extractable, Shipment + Inventory BLOCKED", () => {
+  it("at v3 Exhibit C findings — aggregates + extractable + BLOCKED verdicts", () => {
     render(<BoundedContextMap version="3" />);
-    // 'extractable ✓' appears on BOTH Carrier (clean internal commits)
-    // AND Consignee (clean internal commits, facade is a separate fix).
+    // Four aggregates surfaced by C's transaction clustering — each
+    // named as the first finding line on the owning context.
+    expect(screen.getByText("Order Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Shipment Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Payment Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Reservation Aggregate")).toBeInTheDocument();
+    // 'extractable ✓' appears on BOTH Carrier and Consignee.
     expect(screen.getAllByText("extractable ✓").length).toBeGreaterThanOrEqual(2);
-    // BLOCKED ✗ appears on Shipment AND Inventory (cross-context co-writes).
+    // BLOCKED ✗ appears on Shipment AND Inventory.
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
 

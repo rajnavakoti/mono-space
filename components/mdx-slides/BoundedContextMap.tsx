@@ -225,6 +225,9 @@ function trackingStatus(v: number): Status {
 }
 
 function shipmentFindings(v: number): string[] {
+  // v0.3 — name the aggregate that C's transaction clustering surfaced.
+  // Prepended as the first line; speaker notes carry the table membership.
+  if (v === 3) return ["Order Aggregate", "⚠ god entity", "BLOCKED ✗"];
   const f: string[] = [];
   if (v >= 1) f.push("⚠ god entity");
   if (v >= 3) f.push("BLOCKED ✗");
@@ -233,6 +236,8 @@ function shipmentFindings(v: number): string[] {
   return f;
 }
 function carrierFindings(v: number): string[] {
+  // v0.3 — name Carrier's aggregate emerging from C; verdict carries.
+  if (v === 3) return ["Shipment Aggregate", "↔ circular", "extractable ✓"];
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
   if (v >= 3 && v <= 7) f.push("extractable ✓");
@@ -261,10 +266,12 @@ function inventoryFindings(v: number): string[] {
   // makes the hypothesis concrete — points at the specific aggregate
   // boundary in question.
   if (v === 2) return ["2 writers", "disputed aggregate?", "(inventory_reserved)"];
-  // v0.3+ — Exhibit C confirms the aggregate is blocked from extraction;
-  // hypothesis subsumed by the stronger BLOCKED verdict.
+  // v0.3 — C's transaction clustering names Inventory's aggregate;
+  // BLOCKED verdict supersedes the v0.2 hypothesis.
+  if (v === 3) return ["Reservation Aggregate", "2 writers", "BLOCKED ✗"];
+  // v0.4+ — verdict carries forward without the aggregate label.
   const f: string[] = [];
-  if (v >= 3) {
+  if (v >= 4) {
     f.push("2 writers");
     f.push("BLOCKED ✗");
   }
@@ -272,6 +279,8 @@ function inventoryFindings(v: number): string[] {
   return f;
 }
 function invoicingFindings(v: number): string[] {
+  // v0.3 — C's transaction clustering names Invoicing's Payment Aggregate.
+  if (v === 3) return ["Payment Aggregate"];
   const f: string[] = [];
   if (v >= 5) f.push("14 incidents · w/ Ship");
   if (v >= 8) f.push("41% co-change");
