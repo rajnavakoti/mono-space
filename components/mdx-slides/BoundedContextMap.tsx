@@ -57,7 +57,9 @@ interface Overlay {
     | "incidentFan"
     | "deadBoundaryLine"
     | "facadeBypass"
-    | "sharedKernel";
+    | "sharedKernel"
+    | "deadBoundaryProved"
+    | "extractionBlocker";
   /** Label rendered only at the version that introduces the finding;
    *  passed as undefined on later versions where the line persists but
    *  the label would be redundant clutter. */
@@ -199,7 +201,7 @@ function shipmentStatus(v: number): Status {
 function carrierStatus(v: number): Status {
   if (v === 0) return "gray";
   if (v === 1 || v === 2) return "amber"; // dead boundary suspicion
-  if (v >= 3 && v <= 7) return "green";   // READY from v0.3 transactions onward
+  if (v >= 3 && v <= 7) return "green";   // extractable from v0.3 transactions onward
   return "red";                            // v0.8: not actually rendered as separate; merge happens
 }
 function consigneeStatus(v: number): Status {
@@ -233,7 +235,7 @@ function shipmentFindings(v: number): string[] {
 function carrierFindings(v: number): string[] {
   const f: string[] = [];
   if (v >= 1) f.push("↔ circular");
-  if (v >= 3 && v <= 7) f.push("READY ✓");
+  if (v >= 3 && v <= 7) f.push("extractable ✓");
   if (v >= 5 && v <= 7) f.push("17 incidents · w/ Ship");
   return f;
 }
@@ -246,8 +248,10 @@ function consigneeFindings(v: number): string[] {
   // keep the model clean.
   if (v === 2) return ["0 events", "~~published language?~~", "facade"];
   // v0.3-v0.4 — facade verdict carries forward without the struck-through
-  // historical hypothesis.
-  if (v >= 3 && v <= 4) return ["0 events", "facade"];
+  // historical hypothesis. C's transaction lens adds the extractable
+  // verdict — Consignee's internal commits are clean, so the context
+  // can be extracted (the 3 consumer bypasses are a separate fix).
+  if (v >= 3 && v <= 4) return ["0 events", "facade", "extractable ✓"];
   // v0.5+ — confirmed clean (zero incidents across exhibits E onward).
   return ["clean ✓", "0 incidents"];
 }
@@ -374,6 +378,8 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   if (v === 1) overlays.push({ kind: "deadBoundaryLine" });
   if (v === 2) overlays.push({ kind: "facadeBypass" });
   if (v === 2) overlays.push({ kind: "sharedKernel" });
+  if (v === 3) overlays.push({ kind: "deadBoundaryProved" });
+  if (v === 3) overlays.push({ kind: "extractionBlocker" });
   if (v === 4) overlays.push({ kind: "syncRibbon" });
   if (v === 4) overlays.push({ kind: "asyncDotted" });
   if (v === 5) overlays.push({ kind: "incidentFan" });
@@ -396,6 +402,14 @@ function buildState(v: BoundedContextMapVersion): ModelState {
       items: [
         { marker: "red", text: "3 services bypass Consignee API · facade boundary confirmed" },
         { marker: "red", text: "Shipment ↔ Inventory · shared write on inventory_reserved (2 writers)" },
+      ],
+    };
+  } else if (v === 3) {
+    legend = {
+      header: "Transaction-layer findings · from Exhibit C",
+      items: [
+        { marker: "red", text: "Shipment ↔ Carrier · dead boundary proved (2,103 co-writes/wk)" },
+        { marker: "red", text: "Shipment ↔ Inventory · extraction blocker (4,512/wk · 580ms same commit)" },
       ],
     };
   } else if (v === 4) {
@@ -615,6 +629,28 @@ export function BoundedContextMap({ version }: Props) {
                 <g key={`ov-${i}`} className={styles.sharedKernel}>
                   <path d="M 395 220 C 540 180, 720 180, 845 260"
                     fill="none" strokeWidth="3" strokeDasharray="8 5" />
+                </g>
+              );
+            }
+            if (o.kind === "deadBoundaryProved") {
+              // Red SOLID line in the gap between Shipment and Carrier (v0.3).
+              // Promotes the v0.1 amber dotted hypothesis to a confirmed
+              // verdict backed by Exhibit C's 2,103/wk co-write evidence.
+              return (
+                <g key={`ov-${i}`} className={styles.deadBoundaryProved}>
+                  <line x1="440" y1="210" x2="495" y2="210"
+                    strokeWidth="4" strokeLinecap="round" />
+                </g>
+              );
+            }
+            if (o.kind === "extractionBlocker") {
+              // Red SOLID line between Shipment and Inventory (v0.3). Confirms
+              // the v0.2 sharedKernel dashed link as an extraction blocker —
+              // both services committing in the same transaction at 580ms.
+              return (
+                <g key={`ov-${i}`} className={styles.extractionBlocker}>
+                  <path d="M 395 220 C 540 180, 720 180, 845 260"
+                    fill="none" strokeWidth="4" strokeLinecap="round" />
                 </g>
               );
             }

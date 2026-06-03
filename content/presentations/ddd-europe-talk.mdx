@@ -782,14 +782,12 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
 ---
 
-## The model updates
+## Hypothesis v0.3 — what commits together. What blocks extraction.
 
 <BoundedContextMap version="3" />
 
-> *Runtime next. What actually happens when an order flows through?*
-
 <Notes>
-"Update the model. Carrier turns green — clean internal transactions, ready to extract. Shipment picks up the BLOCKED label — cross-context co-writes block extraction. Inventory BLOCKED too. The Shipment-Inventory line now carries the perf cost: 4,512 per week at 580 milliseconds. The three black boxes still unknown. Hypothesis v0.3 — what commits together. What blocks extraction. Keep an eye on Carrier's green light though — Exhibit H has something to say about it later. Runtime next."
+"Update the model after the transaction lens. Carrier turns green — extractable, clean internal transactions. Consignee also extractable — facade aside, its own commits are clean (the 3 consumer bypasses are a separate fix). Shipment picks up the BLOCKED label — cross-context co-writes to Carrier 2,103 a week and to Inventory 4,512 a week. Inventory BLOCKED for the shared-write reason. The Shipment-Carrier line hardens — what was an amber dotted hypothesis in A is now a red solid 'dead boundary proved'. The Shipment-Inventory line also hardens — 580 milliseconds in the same commit, extraction blocker. The three black boxes still unknown. Hypothesis v0.3 — what commits together, what blocks extraction. Keep an eye on Carrier's green light though — Exhibit H has something to say about it later. Runtime next."
 </Notes>
 
 ---

@@ -288,6 +288,20 @@
   opacity: 0.55;
 }
 
+/* Red SOLID line Shipment <-> Carrier at v0.3 — promotes the v0.1 amber
+   dotted hypothesis to a transaction-proved verdict. */
+.deadBoundaryProved > line {
+  stroke: var(--bcm-red);
+  opacity: 0.9;
+}
+
+/* Red SOLID line Shipment <-> Inventory at v0.3 — confirms the v0.2
+   sharedKernel as an extraction blocker (4,512/wk, 580ms same commit). */
+.extractionBlocker > path {
+  stroke: var(--bcm-red);
+  opacity: 0.9;
+}
+
 /* Marker fills — used both by SVG circle markers and (.markerX as a
    className) by HTML span markers in the HTML legend bar. */
 .markerRed { fill: var(--bcm-red); background: var(--bcm-red); }

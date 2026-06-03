@@ -35,11 +35,13 @@ describe("BoundedContextMap", () => {
     expect(stricken.getAttribute("class")).toMatch(/regionFindingStrike/);
   });
 
-  it("at v3 Carrier gets READY and the BLOCKED label appears (Shipment + Inventory both)", () => {
+  it("at v3 Exhibit C findings — Carrier + Consignee extractable, Shipment + Inventory BLOCKED", () => {
     render(<BoundedContextMap version="3" />);
-    expect(screen.getByText("READY ✓")).toBeInTheDocument();
-    // BLOCKED ✗ deliberately appears on both Shipment and Inventory at v3+
-    expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(1);
+    // 'extractable ✓' appears on BOTH Carrier (clean internal commits)
+    // AND Consignee (clean internal commits, facade is a separate fix).
+    expect(screen.getAllByText("extractable ✓").length).toBeGreaterThanOrEqual(2);
+    // BLOCKED ✗ appears on Shipment AND Inventory (cross-context co-writes).
+    expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
 
   it("at v5 Consignee flips to clean ✓ with 0 incidents", () => {
