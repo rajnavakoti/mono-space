@@ -737,78 +737,47 @@ Find transactions that write to tables owned by different services — because <
 
 ---
 
-## Extraction Readiness
+## Connect timestamps to transactions
 
-> *Can we extract these services?*
+> *The transaction that sets a timestamp IS the event.*
 
-<Split ratio="2:1">
+Connect the timestamps from Exhibit B to the transactions — because <mark>the transaction that sets a timestamp IS the domain event, and the tables in that commit ARE the event payload.</mark>
+
+<Split ratio="3:2">
 <div>
 
-<ContentCard title="Carrier Integration · 🟢 READY" accent="green" items="Clean internal transactions, No cross-context co-writes" />
-
-<ContentCard title="Consignee · 🟢 READY" accent="green" items="Clean internal transactions, No cross-context co-writes" />
-
-<ContentCard title="Shipment Service · 🔴 BLOCKED" accent="red" items="Co-writes to Carrier: 2103/wk, Co-writes to Inventory: 4512/wk" />
-
-<ContentCard title="Inventory · 🔴 BLOCKED" accent="red" items="Shared writes with Shipment" />
+<CodeBlock title="example · confirmOrder()" code="When confirmOrder() runs:&#10;&#10;  BEGIN&#10;    UPDATE orders&#10;      SET status = 'confirmed'&#10;      SET confirmed_at = NOW()         ← the event&#10;&#10;    INSERT INTO inventory_reserved     ← what else&#10;      (order_id, sku, quantity)           changes&#10;&#10;  COMMIT&#10;&#10;  This transaction = OrderConfirmed event.&#10;&#10;  Payload:&#10;    order status changed to confirmed&#10;    + inventory was reserved&#10;&#10;  Published?    No.&#10;  Tracked?      Yes.&#10;  Announced?    Never." />
 
 </div>
 <div>
 
-<Callout type="warning" label="THE RULE">
-**High-frequency co-writes WITHIN a service** = aggregate. The system designed it.
+<Callout type="tip">
+**💡 Fossilized domain events**
 
-**Cross-service co-writes** = boundary violation. Blocks extraction.
+Exhibit B showed: timestamp columns EXIST in the `orders` table.
 
-→ **Fix the co-write FIRST** (saga, events), **THEN** extract.
+Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
-**⚠️ But Exhibit H will override one of these green lights…**
+→ `confirmed_at` → OrderConfirmed
+
+→ `shipped_at` → OrderShipped
+
+→ `delivered_at` → OrderDelivered
+
+→ `cancelled_at` → OrderCancelled
+
+→ `completed_at` → OrderCompleted
+
+**5 domain events the system has been recording for years but never publishing.**
+
+🔗 Exhibit D will find these same events fossilized in the logs. *Three independent sources.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"From the transaction data we can already assess extraction readiness. Carrier Integration — clean, all transactions internal, ready to extract. Consignee — same, clean and ready. Shipment — blocked. It co-writes to Carrier's table 2,103 times a week and to Inventory's table 4,512 times. You cannot extract Shipment without breaking those transactions. Inventory — blocked for the same reason. The rule is simple: high-frequency co-writes within a service is a designed aggregate. Cross-service co-writes block extraction. Fix the co-write first — replace it with a saga or events — then extract. But keep an eye on those green lights — Exhibit H has something to say about one of them."
-</Notes>
-
----
-
-## The Timestamp Connection
-
-> *Hidden domain events the system tracks but never publishes*
-
-<Split ratio="2:1">
-<div>
-
-<CodeBlock title="orders · table schema (from Exhibit B)" code="created_at:    timestamp    # implicit: OrderCreated&#10;confirmed_at:  timestamp    # implicit: OrderConfirmed&#10;shipped_at:    timestamp    # implicit: OrderShipped&#10;delivered_at:  timestamp    # implicit: OrderDelivered&#10;cancelled_at:  timestamp    # implicit: OrderCancelled&#10;&#10;# Each timestamp is set WITHIN a transaction cluster.&#10;# The transaction that sets confirmed_at&#10;# IS the OrderConfirmed event." />
-
-</div>
-<div>
-
-<Callout type="tip" label="HIDDEN DOMAIN EVENTS">
-**Every lifecycle timestamp** = an implicit domain event that nobody publishes.
-
-The transaction cluster tells you:
-
-→ **WHAT** changed (which tables)
-
-→ **WHEN** it changed (the timestamp)
-
-→ **TOGETHER** with what (the aggregate)
-
-That's the **event payload**.
-
-These are the events the system **should be publishing but isn't**.
-
-🔗 **Exhibit D** will show us these events fossilized in the logs.
-</Callout>
-
-</div>
-</Split>
-
-<Notes>
-"One more connection before we move on. Remember the lifecycle timestamps from Exhibit B — confirmed_at, shipped_at, delivered_at? Each of those timestamps is set INSIDE a transaction cluster. The transaction that sets confirmed_at on the order IS the OrderConfirmed event. The tables modified in that transaction ARE the event payload. The system has been tracking these state changes for years — it just never announced them. These are the domain events the system should be publishing. Exhibit D will show us these exact events, fossilized in the production logs."
+"Connect timestamps to transactions — because the transaction that sets a timestamp defines the domain event: what changed, what else changed with it, and the consistency boundary the change happened within. That's the event payload the system never published. When confirmOrder runs, confirmed_at is set on the order AND a row is inserted into inventory_reserved — in the same commit. That transaction IS the OrderConfirmed event. The payload is: order status changed plus inventory reserved. Five lifecycle timestamps, five domain events the system records but never announces. Exhibit D will find these same events fossilized in production logs. Three independent sources, one diagnosis."
 </Notes>
 
 ---
@@ -820,7 +789,7 @@ These are the events the system **should be publishing but isn't**.
 > *Runtime next. What actually happens when an order flows through?*
 
 <Notes>
-"Update the model. Carrier turns green — clean internal transactions, ready to extract. Shipment picks up the BLOCKED label — cross-context co-writes block extraction. The Shipment-Inventory line now carries the perf cost: 4,512 per week at 580 milliseconds. The three black boxes still unknown. Hypothesis v0.3 — what commits together. What blocks extraction. Runtime next."
+"Update the model. Carrier turns green — clean internal transactions, ready to extract. Shipment picks up the BLOCKED label — cross-context co-writes block extraction. Inventory BLOCKED too. The Shipment-Inventory line now carries the perf cost: 4,512 per week at 580 milliseconds. The three black boxes still unknown. Hypothesis v0.3 — what commits together. What blocks extraction. Keep an eye on Carrier's green light though — Exhibit H has something to say about it later. Runtime next."
 </Notes>
 
 ---
