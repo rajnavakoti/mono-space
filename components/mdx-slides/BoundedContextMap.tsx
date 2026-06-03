@@ -253,8 +253,10 @@ function consigneeFindings(v: number): string[] {
 }
 function inventoryFindings(v: number): string[] {
   // v0.2 — Exhibit B surfaces the disputed-aggregate hypothesis from the
-  // inventory_reserved 2-writer evidence.
-  if (v === 2) return ["2 writers", "disputed aggregate?"];
+  // inventory_reserved 2-writer evidence. The table name on its own line
+  // makes the hypothesis concrete — points at the specific aggregate
+  // boundary in question.
+  if (v === 2) return ["2 writers", "disputed aggregate?", "(inventory_reserved)"];
   // v0.3+ — Exhibit C confirms the aggregate is blocked from extraction;
   // hypothesis subsumed by the stronger BLOCKED verdict.
   const f: string[] = [];
