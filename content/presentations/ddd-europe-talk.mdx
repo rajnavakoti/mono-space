@@ -606,33 +606,31 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ---
 
-## Ghost Users
+## Look at table structure
 
-> *Two database accounts with no corresponding running service*
+> Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are <mark>hard coupling at the data layer.</mark>
 
-<Split ratio="2:1">
+<Split ratio="3:2">
 <div>
 
-<CodeBlock title="database-users · access audit" code="# Active service users:&#10;  svc_shipment     → orders, order_lines       (READ/WRITE)&#10;  svc_consignee    → customers, addresses     (READ/WRITE)&#10;  svc_inventory    → stock_levels, reservations (READ/WRITE)&#10;  svc_carrier      → shipments, tracking      (READ/WRITE)&#10;  svc_invoicing    → invoices, payments       (READ/WRITE)&#10;&#10;# Unknown users:&#10;  svc_etl_legacy   → orders                   (READ)   # ??? no known service&#10;  svc_vendor_sync  → orders                   (READ)   # ??? no known service" />
+<CodeBlock title="schema · orders table" code="orders table — 31 columns&#10;&#10;  # Cross-boundary foreign keys:&#10;    buyer_id         → customers     (Consignee)&#10;    warehouse_id     → warehouses    (Inventory)&#10;    carrier_id       → carriers      (Carrier)&#10;    invoice_id       → invoices      (Invoicing)&#10;&#10;  4 FKs pointing to 4 other services' tables.&#10;  31 columns total." />
 
 </div>
 <div>
 
-<Callout type="warning" label="GHOST USERS">
-**⚠️ Two database users with no corresponding running service.**
+<Callout type="warning">
+**💡 Two signals**
 
-Decommissioned processes? ETL pipelines nobody documented? Vendor tools "turned off" but **credentials still work**?
+→ **FAT TABLE — 31 columns.** God entity from Exhibit A confirmed at the database layer. Never properly decomposed.
 
-Both are **read-only** — manageable.
-
-A ghost user with **WRITE** access would be the most dangerous finding of all.
+→ **CROSS-BOUNDARY FOREIGN KEYS — 4 FKs to 4 other services' tables.** Can't delete a customer without handling their orders first. Can't migrate Consignee independently. Hard coupling at the data layer.
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"One more thing the database shows — ghost users. Two database accounts with no corresponding running service. svc_etl_legacy and svc_vendor_sync. Both read-only against the orders table. Probably decommissioned processes whose scheduled jobs still run, or vendor tools that were turned off but the credentials still work. Both are read-only, so manageable. But imagine a ghost user with WRITE access — a process nobody knows about, modifying data in your production database. The database sees everything, including the ghosts."
+"Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are hard coupling at the data layer. The orders table has 31 columns. The god entity from Exhibit A confirmed at the database — same fat schema, same accumulation, same problem persisted. And four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. That FK ties them together at the data layer. The contracts could have hidden this — the database can't."
 </Notes>
 
 ---
