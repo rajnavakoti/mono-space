@@ -786,6 +786,39 @@ These are the events the system **should be publishing but isn't**.
 
 ---
 
+## What's in the logs?
+
+> Pull a week of production logs — because every `logger.info` is a <mark>fossilized domain event the system narrates but never publishes</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|1|3|2" headers="Service|Lines / day|Top fossilized events|Notes" rows="Shipment|22,134|OrderPlaced · OrderConfirmed · OrderCompleted|published ✓||Carrier|16,892|ShipmentCreated · ShipmentDelivered|published ✓||Consignee|6,408|AddressChanged · ProfileUpdated|**never published**||Invoicing|14,205|InvoiceGenerated · PaymentCaptured · RefundProcessed|**never published**||Inventory|15,634|InventoryReserved · StockAdjusted|**never published**||Tracking|28,156|NotificationSent · EmailDelivered|**infra · not domain**" totalsRow="TOTAL|**~103k / day**|6 candidate events fossilized|7 days · ~720k lines" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Log inventory**
+
+7 days analyzed · ~720,000 log lines.
+
+**3 services** (Consignee · Invoicing · Inventory) narrate domain events they never publish anywhere.
+
+`Tracking` runs ~28k lines/day — the highest volume — but it's notification infrastructure, not domain. Confirms generic-subdomain hypothesis.
+
+6 candidate fossilized events emerging. Exhibit C cross-references the database to confirm which are real.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Pull a week of production logs — because every logger.info is a fossilized domain event the system narrates but never publishes. Seven days. About 720,000 log lines. Look at the per-service breakdown. Tracking has the highest volume — 28k a day — but it's all notification infrastructure, not domain events. That confirms the generic-subdomain hypothesis from Exhibit A. Shipment and Carrier publish what they log — domain events declared in their AsyncAPI contracts. But Consignee, Invoicing, Inventory — they're recording AddressChanged, InvoiceGenerated, InventoryReserved every single day. Tens of thousands of times. None of those events get published anywhere. The system already knows about these events. The publisher just isn't wired up. Six candidate events emerging from this lens. Cross-referencing with the database in Exhibit C confirms which are real."
+</Notes>
+
+---
+
 ## The Flow Trace
 
 > *Trace: order ORD-2024-881742*
@@ -1191,6 +1224,39 @@ When the customer changes address:
 
 ---
 
+## What error codes do we have?
+
+> Pull every error code and rank by frequency — because <mark>the most-thrown codes are the business rules nobody documented</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|1|3|2" headers="Service|Codes|Top codes · annual throws|Notes" rows="Shipment (ORD-)|47|ORD-E003 · **4,102** · price variance|**business rules**||Carrier (DEL-)|32|DEL-E011 · **3,420** · return window|**misplaced concern?**||Invoicing (INV-)|28|INV-E001 · 1,823 · invoice tolerance|**policies**||Inventory (STK-)|15|STK-E004 · 892 · stock threshold|resource limits||Consignee (CST-)|8|CST-E001 · 412 · validation|clean ✓||Tracking (TRK-)|4|TRK-E001 · 98 · delivery failure|infra only" totalsRow="TOTAL|**134 codes**|Top 10 = ~60% of throws|12 months data" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Error code inventory**
+
+134 codes across 6 services · 12 months data.
+
+**Top 10 codes alone** account for ~60% of all throws — those are the high-frequency invariants worth decoding first.
+
+Most codes have **no documentation** beyond the error message. The threshold lives only in code.
+
+Carrier owns `DEL-E011` (3,420/year) but it's a returns rule — **misplaced concern** worth flagging.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Pull every error code and rank by frequency — because the most-thrown codes are the business rules nobody documented. 134 codes across six services. Twelve months of data. The top ten codes account for about 60% of all throws — those are the high-frequency invariants worth decoding first. Most have no documentation beyond the error message itself. The threshold lives only in the code. Look at Carrier — DEL-E011 fires 3,420 times a year. It's a return window rule. But it lives in Carrier, not in any returns context. That's a misplaced concern worth flagging. The next slides decode the top codes one by one — what business rule each one encodes."
+</Notes>
+
+---
+
 ## The Decoded Rules
 
 > *Two error codes. Two undocumented business rules.*
@@ -1314,6 +1380,39 @@ No documentation. No audit trail.
 
 <Notes>
 "Eighth and final lens. Seven exhibits mapped structure, data, behavior, cost, and rules. One lens left — the one that records every decision every developer ever made. Git history. If files from two services change together in the same commit, those services are coupled — regardless of what the architecture diagram says."
+</Notes>
+
+---
+
+## What's in git history?
+
+> Pull six months of commits across all services — because <mark>files that change together are coupled, even if the architecture diagram doesn't show it</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|1|1|2" headers="Service|Commits|Files touched|Notes" rows="Shipment|412|89|**most active**||Inventory|312|71|active||Invoicing|248|64|active||Carrier|218|56|steady||Consignee|187|42|focused||Tracking|38|12|**low activity**" totalsRow="TOTAL|**1,415 commits**|334 files touched|6 months" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Git history inventory**
+
+6 months · 1,415 commits · 334 files touched across 6 services.
+
+**47 file pairs** co-change more than 10% of the time.
+
+**4 cross-service pairs** flagged > 40% — investigated in the next slide.
+
+**1 pair > 70%** — strongest dead-boundary signal yet. The architecture diagram never showed it.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Pull six months of commits across all services — because files that change together are coupled, even if the architecture diagram doesn't show it. About 1,400 commits. 334 files touched. Shipment is the most active codebase, Tracking the least — which lines up with the contract age signal from Exhibit A. Now the interesting number: 47 file pairs co-change more than 10% of the time. Four of those pairs cross service boundaries — that's where coupling lives that nobody declared. And one pair is above 70%. That's the strongest dead-boundary signal we've found anywhere. The next slide ranks the top cross-service pairs and shows which couplings the team has been carrying without realising it."
 </Notes>
 
 ---
