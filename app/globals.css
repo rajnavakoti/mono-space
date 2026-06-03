@@ -244,3 +244,15 @@ img {
 .fade-in-4 { animation-delay: 0.2s; }
 .fade-in-5 { animation-delay: 0.25s; }
 .fade-in-6 { animation-delay: 0.3s; }
+
+/* === Inline prose highlighter ===
+   <mark> in MDX prose gets the same subtle amber tint as the
+   compareTableHighlight pattern. Keeps the highlight register consistent
+   between table cells and body paragraphs. */
+mark {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  color: inherit;
+  padding: 1px 5px;
+  font-weight: 700;
+  border-radius: 0;
+}
