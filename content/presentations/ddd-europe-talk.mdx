@@ -283,12 +283,53 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## What do we have?
+## What 6 contracts yielded
 
-<CompareTable headers="Service|Endpoints|Schemas|Events|Version|Last Modified|Confidence" rows="Shipment|7|10|6|v2|2 weeks ago|High||Consignee|6|9|NONE|v1|3 weeks ago|High||Inventory|7|8|—|v1|2 months ago|Medium||Carrier|7|10|7|v1|1 week ago|High||Invoicing|8|11|NONE|v1|6 months ago|Low||Tracking|4|8|—|v1|14 months ago|Very Low" />
+> 28 entities + 13 domain events. Event Storming starter pack — free.
+
+<ContractYield
+  totalSchemas={54}
+  noiseStripped={26}
+  services={[
+    {
+      name: "Shipment",
+      entities: ["Order", "OrderLine", "Address", "ShipmentInfo", "Invoice (copy)"]
+    },
+    {
+      name: "Carrier",
+      entities: ["Shipment", "DeliveryAddress", "TrackingEvent", "Carrier", "RateQuote"]
+    },
+    {
+      name: "Consignee",
+      entities: ["Customer", "CustomerAddress", "CustomerPreferences", "LoyaltyInfo"],
+      flag: { text: "NONE events", tone: "danger" }
+    },
+    {
+      name: "Invoicing",
+      entities: ["Invoice", "InvoiceLineItem", "Payment", "Refund", "AccountBalance", "BillingAddress"],
+      flag: { text: "NONE · 6 mo stale", tone: "danger" }
+    },
+    {
+      name: "Inventory",
+      entities: ["Warehouse", "WarehouseLocation", "StockLevel", "Product", "Reservation"],
+      flag: { text: "no event spec", tone: "warn" }
+    },
+    {
+      name: "Tracking",
+      entities: ["Notification", "Template", "UserNotificationPreferences"],
+      flag: { text: "14 mo · v.low conf", tone: "danger" }
+    }
+  ]}
+  domainEvents={[
+    "OrderPlaced", "OrderConfirmed", "OrderCancelled", "OrderLineAdded",
+    "FulfillmentStarted", "OrderCompleted", "ShipmentCreated", "ShipmentPickedUp",
+    "ShipmentInTransit", "ShipmentOutForDelivery", "ShipmentDelivered",
+    "ShipmentFailed", "ShipmentReturned"
+  ]}
+/>
 
 <Notes>
-"Quick inventory of the artifacts. 6 services. Most have schemas, most have endpoints. But look at the events column — Consignee says NONE explicitly. Tracking and Inventory have nothing. Look at versioning — Shipment is on v2 already, someone's invested there. And look at last-modified — Invoicing 6 months, Tracking 14 months. The confidence column is how much we trust each contract: high where teams actively maintain them, very low where they don't. This is the starting evidence."
+"This is what six contracts yielded. Fifty-four schemas in the raw — strip the noise, the request and response wrappers, the enums, the summaries, the pagination shells — and you're left with 28 unique domain entities. Plus 13 domain events that live inside the contract state machines but no service publishes them as events. That's an Event Storming starter pack you didn't pay for. Look at the columns. Shipment owns five entities including a copy of Invoice — that duplication is a signal we'll come back to. Consignee and Invoicing are flagged red — NONE events, explicitly written in the contract. Invoicing hasn't been touched in six months. Tracking is fourteen months stale, very low confidence. Inventory has no event spec — silent boundary, we'll find out why in Exhibit C. And those thirteen orange chips at the bottom — every one is a moment in the domain that the code already knows about but the team has never declared. This slide is the holistic view of what one lens — contract archaeology — gives you. The next seven lenses sharpen this picture."
 </Notes>
 
 ---

@@ -1,0 +1,228 @@
+/* ContractYield — what 6 contracts yielded as DDD building blocks */
+
+.figure {
+  --cy-accent: var(--color-accent, #C9A96E);
+  --cy-bg: var(--color-bg, #FFF);
+  --cy-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --cy-text: var(--color-text, #111);
+  --cy-text-muted: var(--color-text-muted, #999);
+  --cy-border: var(--color-text, #111);
+  --cy-border-muted: var(--color-border-muted, #DDD);
+  --cy-warn: #C9A96E;
+  --cy-danger: #B26464;
+  --cy-event: #E6C36B;
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1200px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── 1. Extraction math ────────────────────────────────────────────── */
+
+.math {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+
+.pill {
+  border: 2px solid var(--cy-border);
+  background: var(--cy-bg);
+  padding: 12px 22px;
+  text-align: center;
+  min-width: 104px;
+}
+
+.pillMuted {
+  border-style: dashed;
+  color: var(--cy-text-muted);
+  background: var(--cy-bg-muted);
+}
+
+.pillAccent {
+  border-color: var(--cy-accent);
+  border-width: 3px;
+}
+
+.pillN {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cy-text);
+  letter-spacing: -0.02em;
+}
+
+.pillMuted .pillN {
+  color: var(--cy-text-muted);
+}
+
+.pillAccent .pillN {
+  color: var(--cy-accent);
+}
+
+.pillLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--cy-text-muted);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.op {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cy-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 0 2px;
+}
+
+/* ── 2. Service columns grid ───────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.col {
+  border: 2px solid var(--cy-border);
+  background: var(--cy-bg);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.colHeader {
+  background: var(--cy-text);
+  color: var(--cy-bg);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.colName {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.colCount {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--cy-bg-muted);
+  text-transform: uppercase;
+}
+
+.colFlag {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 6px;
+  margin-top: 5px;
+  width: fit-content;
+  background: var(--cy-bg);
+  color: var(--cy-text);
+  border: 1px solid var(--cy-bg);
+}
+
+.flagDanger {
+  background: var(--cy-danger);
+  color: var(--cy-bg);
+  border-color: var(--cy-danger);
+}
+
+.flagWarn {
+  background: var(--cy-warn);
+  color: var(--cy-text);
+  border-color: var(--cy-warn);
+}
+
+.entityList {
+  list-style: none;
+  margin: 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.entityItem {
+  font-size: 12px;
+  color: var(--cy-text);
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--cy-border-muted);
+  line-height: 1.4;
+}
+
+.entityItem:last-child {
+  border-bottom: none;
+}
+
+/* ── 3. Events strip (sticky-note style) ───────────────────────────── */
+
+.events {
+  border-top: 2px solid var(--cy-border);
+  padding-top: 18px;
+}
+
+.eventsHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.eventsTitle {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cy-text);
+}
+
+.eventsNote {
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--cy-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.eventChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+}
+
+.eventChip {
+  background: var(--cy-event);
+  border: 2px solid var(--cy-border);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cy-text);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 180ms ease;
+  letter-spacing: 0.02em;
+}
+
+.eventChip:hover {
+  transform: rotate(0deg) scale(1.03);
+}
