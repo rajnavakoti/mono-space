@@ -125,11 +125,15 @@ const INV_DEV =
   "C 985 410, 945 415, 915 412 C 885 408, 860 398, 850 380 " +
   "C 838 358, 832 325, 835 295 C 835 275, 842 255, 855 240 Z";
 
-// Consignee developed (v0.2+) — clean rounded oval, stays small
+// Consignee developed (v0.1+) — now carries 2-line v0.1 findings
+// ('0 events' + 'published language?') plus the label, so the shape
+// is significantly taller than the original. Width capped by the
+// gap to Invoicing on the right (after 1.1× scaling). Height grows
+// downward and upward.
 const CONS_DEV =
-  "M 60 460 C 75 435, 100 422, 130 420 C 165 418, 200 425, 215 445 " +
-  "C 230 465, 230 490, 215 510 C 195 530, 160 535, 130 532 " +
-  "C 100 530, 75 520, 60 505 C 50 490, 50 475, 60 460 Z";
+  "M 50 420 C 70 398, 100 390, 130 388 C 162 386, 195 396, 210 418 " +
+  "C 225 442, 225 515, 210 535 C 193 555, 162 562, 130 558 " +
+  "C 100 555, 70 543, 50 525 C 38 498, 38 445, 50 420 Z";
 
 // Invoicing developed (v0.2+) — medium oval, bottom-center-left
 const INVOICING_DEV =
@@ -621,7 +625,6 @@ export function BoundedContextMap({ version }: Props) {
         </div>
       )}
 
-      <figcaption className={styles.caption}>{state.caption}</figcaption>
     </figure>
   );
 }

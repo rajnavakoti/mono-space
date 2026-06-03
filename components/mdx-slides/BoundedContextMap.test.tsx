@@ -9,7 +9,6 @@ describe("BoundedContextMap", () => {
     }
     expect(screen.getAllByText("???")).toHaveLength(2);
     expect(screen.queryByText("⚠ god entity")).not.toBeInTheDocument();
-    expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument();
   });
 
   it("at v1 shows Exhibit A hypotheses — god entity, 0 events + published language?, circular, generic subdomain?", () => {

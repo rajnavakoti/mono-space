@@ -483,8 +483,6 @@ Look for duplicate schemas — because same concept with two owners means the <m
 
 <BoundedContextMap version="1" />
 
-> Contracts can lie. Let's check the database.
-
 <Notes>
 "First hypothesis from doing Exhibit A. The activities we just walked through — picking one concept, opening the biggest schema, mapping who references whom, looking for duplicate schemas — that's what produced this map. Shipment shows as god entity, because the activity surfaced 12 borrowed fields in one schema. Shipment↔Carrier looks like a possible dead boundary, because we found two services owning the same Shipment concept. Consignee might be a published language — referenced by all, references nobody, but zero events means every consumer is synchronously coupled. Tracking owns no domain entities — generic subdomain? Three black boxes — Carrier Routing, Customs, Returns Engine — no contracts surfaced for them, no evidence yet. Notice the language: 'might', 'looks like', 'could be'. Contracts alone don't confirm boundaries. They suggest hypotheses. The next exhibit checks them against the database."
 </Notes>
