@@ -1045,9 +1045,11 @@ The edge cases nobody mentioned in Event Storming:
 
 ---
 
-## Boundary Incident Map
+## Find where interactions cluster
 
 > *Where do failures cluster?*
+
+Find where interactions cluster — because <mark>repeated failures between the same two services means the coupling is structural, not accidental.</mark>
 
 <Split ratio="3:1">
 <div>
@@ -1057,23 +1059,23 @@ The edge cases nobody mentioned in Event Storming:
 </div>
 <div>
 
-<Callout type="warning" label="READ THE PATTERN">
-**Incidents don't cluster randomly.**
+<Callout type="warning">
+**🚩 Read the pattern**
 
-**23** at Shipment ↔ Inventory = not bad luck. = **structural coupling**.
+**23 at Shipment ↔ Inventory** = not bad luck. Structural coupling.
 
-**0** at Consignee boundary = **confirmed clean**.
+**0 at Consignee** = confirmed clean.
 
-Internal incidents: only **1 SEV1**. Boundary incidents: **10 SEV1s**.
+Internal incidents: 1 SEV1. Boundary incidents: 10 SEV1s.
 
-→ The **severity** skews to boundaries, not just the count.
+*The severity skews to boundaries, not just the count.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"The boundary incident map. 23 incidents at Shipment-Inventory — the most. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-boundary. The most damaging failures are overwhelmingly at boundaries. And 19 internal incidents — only 1 SEV1. The boundaries are where the pain is."
+"Find where interactions cluster — because repeated failures between the same two services means the coupling is structural, not accidental. 23 incidents at Shipment-Inventory — the top cluster. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-boundary. The most damaging failures are overwhelmingly at boundaries. And 19 internal incidents — only 1 SEV1. The boundaries are where the pain is."
 </Notes>
 
 ---
