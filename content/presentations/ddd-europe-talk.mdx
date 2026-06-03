@@ -845,14 +845,16 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
 ---
 
-## The Flow Trace
+## Trace one entity across all services
 
 > *Trace: order ORD-2024-881742*
+
+Trace one entity end-to-end — because the actual sequence reveals sync chains, async boundaries, and <mark>participants nobody mentioned.</mark>
 
 <CodeBlock title="production · log trace · order lifecycle" code="# SYNC chain (2 seconds) ↓&#10;09:14:02  Shipment        Order CREATED (DRAFT)&#10;09:14:02  Shipment        Inventory check requested&#10;09:14:03  Inventory       Reserve: SKU-1194, qty=3&#10;09:14:03  Shipment        Order CONFIRMED&#10;09:14:04  Invoicing       Invoice INV-39201 generated&#10;09:14:04  Tracking        Email sent: order_confirmed&#10;&#10;── 87 second gap ──&#10;&#10;# ASYNC boundary ↓&#10;09:15:31  Carrier         Shipment SHP-77012 created&#10;&#10;── 5 hours ──&#10;&#10;14:22:08  Carrier         Picked up by DHL&#10;&#10;── next day ──&#10;&#10;08:41:19  Carrier         Delivered, signed=J.SMITH&#10;08:41:20  Shipment        Order status=DELIVERED&#10;08:41:20  Tracking        Email sent: order_delivered" />
 
 <Notes>
-"We traced one order across all services. Sorted chronologically. Look at the timing. 09:14:02 to 09:14:04 — creation through invoice generation — 2 seconds. That's synchronous. Shipment calls Inventory, waits for the response, confirms the order, calls Invoicing, waits, then Tracking fires. A chain. Then — 87 second gap before Carrier creates the shipment. That's asynchronous. Carrier is already decoupled at runtime. The timing reveals the architecture: synchronous chain from creation through invoicing, asynchronous to carrier."
+"Trace one entity end-to-end — because the actual sequence reveals sync chains, async boundaries, and participants nobody mentioned in Event Storming. Sorted chronologically. Look at the timing. 09:14:02 to 09:14:04 — creation through invoice generation — 2 seconds. That's synchronous. Shipment calls Inventory, waits for the response, confirms the order, calls Invoicing, waits, then Tracking fires. A chain. Then — 87 second gap before Carrier creates the shipment. That's asynchronous. Carrier is already decoupled at runtime. The timing reveals the architecture: synchronous chain from creation through invoicing, asynchronous to carrier. And notice Tracking — appears twice, in both flows, nobody mentioned it."
 </Notes>
 
 ---
