@@ -1001,14 +1001,12 @@ The edge cases nobody mentioned in Event Storming:
 
 ---
 
-## The model updates
+## Hypothesis v0.4 — what actually happens at runtime
 
 <BoundedContextMap version="4" />
 
-> *Incidents next. What does it cost when boundaries are wrong?*
-
 <Notes>
-"Update the model. Tracking's finding evolves from 'infra?' to 'silent participant' — observed in every order lifecycle, owns nothing. The sync chain (Shipment → Inventory → Invoicing) gets marked red. The async path (Shipment → Carrier, 87s gap) gets marked green — already decoupled. Plus we've named a whole catalogue of fossilized events the system publishes to nobody. The three black boxes still unknown. Hypothesis v0.4 — what actually happens at runtime. The Event Storming is contradicted. Incidents next."
+"Update the model after the runtime lens. Tracking's hypothesis from earlier — generic subdomain? — now confirmed as silent participant, observed in every order lifecycle, owns nothing. The sync chain Shipment → Inventory → Invoicing is the red ribbon — every step blocks the next, two seconds total. The 87-second async gap to Carrier is the green dotted line — already decoupled at runtime, easiest extraction point. And the Event Storming sequence from two years ago was wrong — production runs Inventory before Confirmation before Invoice, not Payment first. The team's mental model has been out of date. Plus we've named a catalog of fossilized events the system publishes to nobody — 22 known events total, 3 still missing. Three black boxes still unknown. Four lenses done — structure and behavior. Now — what does it cost when boundaries are wrong?"
 </Notes>
 
 ---
