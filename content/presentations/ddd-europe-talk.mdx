@@ -1590,7 +1590,7 @@ Merge first. Then decide if the merged context needs splitting differently.
 
 ---
 
-## What Forensic DDD gives Event Storming
+## Not a replacement — a preparation
 
 <Split ratio="1:1">
 <div>
@@ -1616,7 +1616,86 @@ The system tells the domain story back to us.
 </Split>
 
 <Notes>
-"Forensic DDD doesn't replace Event Storming. It changes the question. Without evidence, you ask 'how does this work?' and experts build from memory. With evidence, you ask 'is this how it works?' and experts react. People are much faster at reacting than creating. You arrive with a draft model extracted from 7 independent artifacts. The experts validate, correct, and extend it. The workshop is richer, faster, and grounded in evidence instead of memory."
+"Before I close — let me be clear about what this is and isn't. Forensic DDD is not a replacement for Event Storming. It's a preparation for it. Event Storming is expensive — fifteen people in a room for two days costs real money. If you walk in with blank stickies and ask 'how does the system work?' — you get memory. Expensive, incomplete memory that immediately starts drifting. If you walk in with a hypothesis v0.7 and ask 'is THIS how it works?' — you get reactions to evidence. Faster. Grounded. The gaps are visible, not assumed. These two things complement each other. They don't compete."
+</Notes>
+
+---
+
+## You don't need all seven
+
+<Split ratio="1:1">
+<div>
+
+**If you only have 30 minutes:**
+
+→ Read the contracts (Exhibit A)
+
+You'll find the vocabulary drift. That alone tells you where boundaries fractured.
+
+**If you have a morning:**
+
+→ Add the database schema (Exhibit B)
+
+You'll find who actually owns what.
+
+</div>
+<div>
+
+**If you have a day:**
+
+→ Add transactions + logs (C + D)
+
+You'll have aggregates, runtime behaviour, and a fossilized event catalog.
+
+**All seven together:**
+
+→ Full hypothesis. Every lens reinforces the next.
+
+</div>
+</Split>
+
+<mark>One alone is still better than nothing.</mark>
+
+<Notes>
+"You don't need to run all seven exhibits. This isn't a checklist you complete before you're allowed to proceed. In some situations one artifact is enough. A new team joining a domain — read the contracts on day one. An architect asked to assess extraction readiness — add the database schema. A team preparing for Event Storming — add the logs. Every exhibit adds signal. Start with what you have. One alone is still better than nothing."
+</Notes>
+
+---
+
+<Callout>
+**The domain isn't in the documentation. It isn't in people's heads. It's in the system.**
+
+Encoded in transactions. Fossilized in logs. Buried in error codes. Revealed by the patterns of what breaks.
+
+Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. Incidents don't cluster randomly. Error codes are the most honest business rules document. And git records every architectural decision, whether you meant to make it or not.
+
+**Legacy systems aren't just technical debt. They're dense archives of domain knowledge, if you know how to read them.**
+</Callout>
+
+<Notes>
+SLOW DOWN. This is the thesis statement — the head of the close. Deliver each sentence with a pause. "The domain isn't in the documentation. It isn't in people's heads. It's in the system. Encoded in transactions. Fossilized in logs. Buried in error codes. [pause] Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. [pause] Legacy systems aren't just technical debt. They're dense archives of domain knowledge. If you know how to read them."
+</Notes>
+
+---
+
+> *A menu.*
+>
+> *A chicken symbol.*
+>
+> *A word you didn't know.*
+
+**You observed.**
+
+**You inferred.**
+
+**You validated.**
+
+Your legacy system has been leaving artifacts on the table for years.
+
+<mark>You already know how to read them.</mark>
+
+<Notes>
+"[Click to this slide. The minimal slide is the heart of the close — let the contrast with everything that came before do the work.] We started with a restaurant menu and a word I didn't know. The method I used to figure out that pollo was chicken — that's the same method you just watched applied to a fifteen-year-old delivery system. Observe the artifacts. Make inferences. Validate against evidence. Your system has been narrating itself the entire time. The domain is in there. You just need to know what to look for. [Pause. Let it land. Then click forward to the checklist for the practical takeaway.]"
 </Notes>
 
 ---
@@ -1639,27 +1718,13 @@ The system tells the domain story back to us.
 
 Point it at your own contracts, schemas, and logs.
 
+*The full toolkit also runs as a chain of reasoning agents — point it at your artifacts.*
+
 </div>
 </Split>
 
 <Notes>
-"Here's the checklist. Seven exhibits. Take this to your own systems. The toolkit is open source — 7 CLI commands, a synthetic delivery platform dataset, and the full chain-of-thought documentation for each technique. Point it at your own artifacts and see what the system tells you."
-</Notes>
-
----
-
-<Callout>
-**The domain isn't in the documentation. It isn't in people's heads. It's in the system.**
-
-Encoded in transactions. Fossilized in logs. Buried in error codes. Revealed by the patterns of what breaks.
-
-Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. Incidents don't cluster randomly. Error codes are the most honest business rules document. And git records every architectural decision, whether you meant to make it or not.
-
-**Legacy systems aren't just technical debt. They're dense archives of domain knowledge, if you know how to read them.**
-</Callout>
-
-<Notes>
-SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain isn't in the documentation. It isn't in people's heads. It's in the system. Encoded in transactions. Fossilized in logs. Buried in error codes. [pause] Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. [pause] Legacy systems aren't just technical debt. They're dense archives of domain knowledge. If you know how to read them. [pause] Thank you."
+"Here's the checklist. Seven exhibits. Take this to your own systems. The toolkit is open source — 7 CLI commands, a synthetic delivery platform dataset, and the full chain-of-thought documentation for each technique. It also runs as a chain of reasoning agents — point it at your artifacts and let it produce a structured hypothesis before a single human meeting is scheduled. Either way — start with what you have. [Stay on this slide for Q&A.]"
 </Notes>
 
 ---
@@ -1667,7 +1732,5 @@ SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain 
 <TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/rajnavakoti/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
 
 <Notes>
-BEFORE clicking to this card — deliver the pollo callback as the closing line: "We started with a restaurant menu and a guess about pollo. Seven artifacts later — we have evidence." Pause. Then click.
-
-Final slide. Stay up while people clap or approach for questions. If time remains, take questions. If not: "I'll be outside — find me."
+Final slide — the goodbye after the pollo callback + checklist Q&A. Stay up while people clap or approach for questions. If time remains, take questions from the checklist slide. If not: "I'll be outside — find me."
 </Notes>
