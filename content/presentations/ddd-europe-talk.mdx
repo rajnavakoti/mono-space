@@ -1029,7 +1029,9 @@ The edge cases nobody mentioned in Event Storming:
 
 ---
 
-## The Headline Number
+## Re-tag incidents by service pair
+
+> Re-tag your incidents by which two services were involved — because <mark>incidents classified as 'Service X failed' hide the coupling underneath.</mark>
 
 <BigStat value="83" label="incidents in 12 months" />
 
@@ -1038,7 +1040,7 @@ The edge cases nobody mentioned in Event Storming:
 <BigStat value="77%" tone="amber" label="of all failures are cross-boundary" punchline="The system isn't failing because services are buggy. It's failing because the boundaries are wrong." />
 
 <Notes>
-"83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every 4 days. 10 of them SEV1 — 10 nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
+"Re-tag your incidents by which two services were involved — because incidents classified as 'Inventory failed' or 'Carrier timed out' hide the coupling underneath. 83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every four days. Ten of them SEV1 — ten nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
 </Notes>
 
 ---
