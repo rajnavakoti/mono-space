@@ -512,11 +512,12 @@
   line-height: 1.4;
 }
 
-/* Highlighted cell content via `**text**` markdown-bold convention. */
+/* Highlighted cell content via `**text**` markdown-bold convention.
+   Light amber tint + bold reads like a subtle highlighter, not a censor box. */
 .compareTableHighlight {
-  background: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
   color: var(--color-text);
-  padding: 1px 5px;
+  padding: 1px 4px;
   font-weight: 800;
   border-radius: 0;
 }
