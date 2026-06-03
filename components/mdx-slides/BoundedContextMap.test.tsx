@@ -12,12 +12,13 @@ describe("BoundedContextMap", () => {
     expect(screen.getByText(/Hypothesis v0\.0/)).toBeInTheDocument();
   });
 
-  it("at v1 shows Exhibit A findings — god entity, 0 events, circular, infra?", () => {
+  it("at v1 shows Exhibit A hypotheses — god entity, 0 events + published language?, circular, generic subdomain?", () => {
     render(<BoundedContextMap version="1" />);
     expect(screen.getByText("⚠ god entity")).toBeInTheDocument();
     expect(screen.getByText("0 events")).toBeInTheDocument();
+    expect(screen.getByText("published language?")).toBeInTheDocument();
     expect(screen.getByText("↔ circular")).toBeInTheDocument();
-    expect(screen.getByText("infra?")).toBeInTheDocument();
+    expect(screen.getByText("generic subdomain?")).toBeInTheDocument();
   });
 
   it("at v2 Inventory turns red with '2 writers' and Consignee adds 'facade'", () => {

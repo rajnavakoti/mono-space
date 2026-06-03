@@ -83,7 +83,10 @@ interface ModelState {
 const SHIP_SMALL = "M 220 175 C 235 155, 265 145, 290 145 C 320 145, 345 155, 360 175 C 370 195, 365 215, 350 230 C 330 245, 295 248, 270 245 C 240 240, 215 225, 210 200 C 210 185, 215 178, 220 175 Z";
 const CARR_SMALL = "M 545 175 C 560 155, 590 145, 615 145 C 645 145, 670 155, 685 175 C 695 195, 690 215, 675 230 C 655 245, 620 248, 595 245 C 565 240, 540 225, 535 200 C 535 185, 540 178, 545 175 Z";
 const CONS_SMALL = "M 80 460 C 95 445, 120 438, 145 440 C 170 442, 190 452, 200 470 C 205 488, 200 502, 185 512 C 165 522, 135 522, 115 518 C 95 512, 78 500, 75 485 C 75 475, 78 465, 80 460 Z";
-const INV_SMALL = "M 730 175 C 745 155, 775 145, 800 145 C 830 145, 855 155, 870 175 C 880 195, 875 215, 860 230 C 840 245, 805 248, 780 245 C 750 240, 725 225, 720 200 C 720 185, 725 178, 730 175 Z";
+// Inventory v0.0/v0.1 — pushed to the right-hand corner so it stays
+// clear of Carrier. Earlier position (cx 795) sat too close to Carrier's
+// right edge and visually overlapped after the 1.1× shape scaling.
+const INV_SMALL = "M 810 175 C 825 155, 855 145, 880 145 C 910 145, 935 155, 950 175 C 960 195, 955 215, 940 230 C 920 245, 885 248, 860 245 C 830 240, 805 225, 800 200 C 800 185, 805 178, 810 175 Z";
 const INVOICING_SMALL = "M 285 460 C 300 445, 325 438, 350 440 C 375 442, 395 452, 405 470 C 410 488, 405 502, 390 512 C 370 522, 340 522, 320 518 C 300 512, 283 500, 280 485 C 280 475, 283 465, 285 460 Z";
 const TRACK_SMALL = "M 905 460 C 920 445, 950 438, 980 440 C 1010 442, 1035 452, 1045 470 C 1050 488, 1045 502, 1030 512 C 1005 522, 970 522, 945 518 C 920 512, 902 500, 900 485 C 900 475, 902 465, 905 460 Z";
 
@@ -111,12 +114,16 @@ const SHIP_FULFIL =
   "C 310 320, 260 310, 220 290 C 195 270, 175 230, 175 200 " +
   "C 175 175, 195 150, 230 130 Z";
 
-// Inventory developed (v0.2+) — bigger, with a corner that dips into Shipment
+// Inventory developed (v0.2+) — moved to the far right column so it
+// no longer overlaps Carrier. Previous shape stretched x 580–885 which
+// sat right inside Carrier's bounding box. New shape sits cleanly
+// between Carrier (right edge ~760) and the right viewBox edge (1100),
+// vertically at mid-height so Tracking stays clear below.
 const INV_DEV =
-  "M 600 230 C 660 220, 720 215, 770 225 C 820 235, 870 250, 880 280 " +
-  "C 885 320, 880 360, 870 385 C 850 415, 790 430, 750 432 " +
-  "C 700 430, 650 420, 615 405 C 590 385, 580 350, 580 320 " +
-  "C 580 290, 585 250, 600 230 Z";
+  "M 855 240 C 880 220, 910 210, 940 208 C 975 207, 1005 218, 1025 235 " +
+  "C 1045 258, 1052 290, 1048 320 C 1050 350, 1038 380, 1015 395 " +
+  "C 985 410, 945 415, 915 412 C 885 408, 860 398, 850 380 " +
+  "C 838 358, 832 325, 835 295 C 835 275, 842 255, 855 240 Z";
 
 // Consignee developed (v0.2+) — clean rounded oval, stays small
 const CONS_DEV =
@@ -215,7 +222,13 @@ function carrierFindings(v: number): string[] {
 }
 function consigneeFindings(v: number): string[] {
   const f: string[] = [];
-  if (v >= 1) f.push("0 events");
+  if (v >= 1) {
+    // Two-line v0.1 reading: the observation (evidence) + the hypothesis
+    // (the DDD reading the activity surfaces — phrased as a question per
+    // evidence-discipline).
+    f.push("0 events");
+    f.push("published language?");
+  }
   if (v >= 2 && v <= 4) f.push("facade");
   if (v >= 5) {
     // replace earlier "0 events" with confirmed clean
@@ -238,7 +251,10 @@ function invoicingFindings(v: number): string[] {
 }
 function trackingFindings(v: number): string[] {
   if (v >= 4) return ["silent participant"];
-  if (v >= 1) return ["infra?"];
+  // v0.1-v0.3 — the activity surfaces 'owns no domain entities' as the
+  // observation; 'generic subdomain?' is the hypothesis. Phrased as a
+  // question because contracts alone don't confirm it.
+  if (v >= 1) return ["generic subdomain?"];
   return [];
 }
 
@@ -252,7 +268,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     regions.push(
       { id: "shipment", pathD: SHIP_SMALL, status: "gray", label: "Shipment", cx: 280, cy: 195 },
       { id: "carrier", pathD: CARR_SMALL, status: "gray", label: "Carrier", cx: 610, cy: 195 },
-      { id: "inventory", pathD: INV_SMALL, status: "gray", label: "Inventory", cx: 795, cy: 195 },
+      { id: "inventory", pathD: INV_SMALL, status: "gray", label: "Inventory", cx: 875, cy: 195 },
       { id: "consignee", pathD: CONS_SMALL, status: "gray", label: "Consignee", cx: 140, cy: 478 },
       { id: "invoicing", pathD: INVOICING_SMALL, status: "gray", label: "Invoicing", cx: 345, cy: 478 },
       { id: "tracking", pathD: TRACK_SMALL, status: "gray", label: "Tracking", cx: 970, cy: 478 },
@@ -268,7 +284,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
         findings: carrierFindings(v), cx: 625, cy: 210 },
       { id: "inventory", pathD: v >= 2 ? INV_DEV : INV_SMALL,
         status: inventoryStatus(v), label: "Inventory",
-        findings: inventoryFindings(v), cx: v >= 2 ? 735 : 795, cy: v >= 2 ? 320 : 195 },
+        findings: inventoryFindings(v), cx: v >= 2 ? 940 : 875, cy: v >= 2 ? 320 : 195 },
       { id: "consignee", pathD: CONS_DEV, status: consigneeStatus(v), label: "Consignee",
         findings: consigneeFindings(v), cx: 140, cy: 478 },
       { id: "invoicing", pathD: INVOICING_DEV, status: invoicingStatus(v), label: "Invoicing",
@@ -300,7 +316,7 @@ function buildState(v: BoundedContextMapVersion): ModelState {
         cx: 440, cy: 195, background: true,
         memoryLine: { x1: 442, y1: 110, x2: 442, y2: 320 } },
       { id: "inventory", pathD: INV_DEV, status: "red", label: "INVENTORY",
-        findings: ["2 writers", "shared w/ Ship"], cx: 735, cy: 320 },
+        findings: ["2 writers", "shared w/ Ship"], cx: 940, cy: 320 },
       { id: "consignee", pathD: CONS_DEV, status: "green", label: "CONSIGNEE",
         findings: ["clean ✓", "89% solo"], cx: 140, cy: 478 },
       { id: "invoicing", pathD: INVOICING_DEV, status: "amber", label: "INVOICING",
@@ -446,12 +462,13 @@ export function BoundedContextMap({ version }: Props) {
               // Translucent red band tracing the sync chain
               // Shipment → Inventory → Invoicing. Routed BELOW Carrier
               // because Carrier is intentionally NOT on the sync chain.
-              // Thinner stroke (12) so it reads as a connection without
-              // dominating the canvas.
+              // Inventory now sits in the far-right column, so the
+              // ribbon arcs out wider to reach it and then loops back
+              // down-left to Invoicing.
               return (
                 <g key={`ov-${i}`} className={styles.syncRibbon}>
                   <path
-                    d="M 365 290 C 480 360, 580 395, 660 395 C 650 425, 570 470, 480 482 C 440 487, 405 484, 385 480"
+                    d="M 380 285 C 530 365, 720 365, 850 320 C 760 420, 580 470, 415 478"
                     fill="none"
                     strokeWidth="12"
                   />
@@ -481,8 +498,9 @@ export function BoundedContextMap({ version }: Props) {
               // centre of the boundary failures" finding visceral.
               return (
                 <g key={`ov-${i}`} className={styles.incidentFan}>
-                  {/* Shipment → Inventory · 23 incidents (worst — thickest) */}
-                  <path d="M 380 245 C 460 280, 555 305, 615 320" fill="none" strokeWidth="7" />
+                  {/* Shipment → Inventory · 23 incidents (worst — thickest).
+                      Inventory moved to far-right, so the arc reaches further. */}
+                  <path d="M 380 245 C 500 280, 680 305, 850 320" fill="none" strokeWidth="7" />
                   {/* Shipment → Carrier · 17 incidents — through their overlap zone */}
                   <path d="M 385 190 C 440 188, 475 188, 510 192" fill="none" strokeWidth="5" />
                   {/* Shipment → Invoicing · 14 incidents */}
