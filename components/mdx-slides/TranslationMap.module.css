@@ -286,23 +286,23 @@
   gap: 10px;
 }
 
-/* Stacked summary cards: big number column | (title + examples stacked
-   vertically). Sized for readability — the headline numbers stay
-   prominent and the example lists are large enough to read from the
-   back row. */
+/* Stacked summary cards: big number column | (title + examples on
+   single inline-dot line). Inline examples keep each card to ~2 lines
+   tall — the previous vertical 5-7 item list pushed the slide past the
+   viewport. Headline numbers stay big; example lists wrap if needed. */
 .colRight .summaryCard {
-  padding: 12px 16px;
+  padding: 10px 14px;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: 18px;
+  column-gap: 16px;
   row-gap: 4px;
   align-items: center;
   text-align: left;
 }
 
 .colRight .summaryNumber {
-  font-size: 52px;
+  font-size: 48px;
   margin-bottom: 0;
   grid-row: 1 / span 2;
   grid-column: 1;
@@ -323,17 +323,27 @@
   line-height: 1.4;
   grid-column: 2;
   grid-row: 2;
+  /* keep block display so the items can wrap; switch each li to inline
+     and separate with a middle dot via ::after. */
 }
 
 .colRight .summaryList li {
   padding: 0;
+  display: inline;
 }
 
-/* Kill the global ".mdxSlide ul li::before" '>' marker for these
-   cards — with padding: 0 it overlaps the first letter of every
-   example, and the cards already read clearly as a vertical list
-   without bullets. */
+/* Kill the global '>' bullet that would otherwise overlap each example. */
 .colRight .summaryList li::before {
   content: none;
   display: none;
+}
+
+/* Middle-dot separator between inline examples; suppressed on the last. */
+.colRight .summaryList li::after {
+  content: " · ";
+  color: var(--tm-text-muted);
+}
+
+.colRight .summaryList li:last-child::after {
+  content: "";
 }
