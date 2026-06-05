@@ -481,7 +481,7 @@ Look for duplicate schemas — because same concept with two owners means the <m
 <BoundedContextMap version="1" />
 
 <Notes>
-"First hypothesis from doing Exhibit A. The activities we just walked through — picking one concept, opening the biggest schema, mapping who references whom, looking for duplicate schemas — that's what produced this map. Shipment shows as god entity, because the activity surfaced 12 borrowed fields in one schema. Shipment↔Carrier looks like a possible dead boundary, because we found two services owning the same Shipment concept. Consignee might be a published language — referenced by all, references nobody, but zero events means every consumer is synchronously coupled. Tracking owns no domain entities — generic subdomain? Three black boxes — Carrier Routing, Customs, Returns Engine — no contracts surfaced for them, no evidence yet. Notice the language: 'might', 'looks like', 'could be'. Contracts alone don't confirm boundaries. They suggest hypotheses. The next exhibit checks them against the database."
+"First hypothesis from doing Exhibit A. The activities we just walked through — picking one concept, opening the biggest schema, mapping who references whom, looking for duplicate schemas — that's what produced this map. Shipment shows as god entity, because the activity surfaced 12 borrowed fields in one schema. Shipment↔Carrier looks like a possible dead boundary, because we found two services owning the same Shipment concept. Consignee might be a published language — referenced by all, references nobody, but zero events means every consumer is synchronously coupled. In Evans's vocabulary that's a candidate Open Host Service with a Published Language — the upstream context everyone depends on. Whether the language is actually published or just leaked through the database is what Exhibit B will tell us. Tracking owns no domain entities — generic subdomain? Three black boxes — Carrier Routing, Customs, Returns Engine — no contracts surfaced for them, no evidence yet. Notice the language: 'might', 'looks like', 'could be'. Contracts alone don't confirm boundaries. They suggest hypotheses. The next exhibit checks them against the database."
 </Notes>
 
 ---
@@ -592,13 +592,13 @@ Find tables with multiple writers — because two writers to the same table mean
   earlierExhibit="Exhibit A"
   earlierClaim="Consignee Service: clean boundary ✓ | Referenced by all. References nobody. | Published language."
   laterExhibit="Exhibit B"
-  laterFinding="Consignee's customer_addresses table | Read directly by 3 services | Shipment, Carrier, Invoicing — all bypass the API | The boundary is a facade ✗"
+  laterFinding="Consignee's customer_addresses table | Read directly by 3 services | Shipment, Carrier, Invoicing — all bypass the API | The boundary is a facade ✗ | Three Conformist consumers."
   connector="but the database says…"
   punchline="Contracts declared a boundary. The database showed it doesn't exist."
 />
 
 <Notes>
-"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by everyone, references nobody, a textbook published language. Now the database lens. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. Usually it happens because the API didn't exist when consumers needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. This is why you need multiple lenses — one artifact alone can mislead you."
+"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by everyone, references nobody, a textbook published language. Now the database lens. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. In strategic DDD terms, those three consumers are now in a Conformist relationship with Consignee — they conform to its internal table schema instead of its published API, because the API didn't exist when they needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. The API boundary is a facade. Three Conformists is what facade means here. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."
 </Notes>
 
 ---
@@ -1264,7 +1264,7 @@ This error references warehouses, carriers, and orders — an invariant validati
 
 The prefix shows where the rule lives. The content shows where it belongs.
 
-*Hypothesis — take it to domain experts.*
+*Hypothesis — take it to domain experts. Fix is an Anti-Corruption Layer between Carrier and Returns/Policy until the rule moves home.*
 </Callout>
 
 </div>
@@ -1286,7 +1286,7 @@ What rules does it skip? Nobody knows. `skip_validation()` has grown over years.
 </Split>
 
 <Notes>
-"Check which service owns the rule versus what domain it belongs to — because a business policy in the wrong service is a boundary signal. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just surfaced a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
+"Check which service owns the rule versus what domain it belongs to — because a business policy in the wrong service is a boundary signal. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just surfaced a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. The migration path is named in Evans: an Anti-Corruption Layer between Carrier and Returns/Policy. You don't move the rule on day one. You wrap Carrier's call in an ACL so the rule lives in one place while Returns/Policy is being built — then the rule moves home and the ACL goes away. ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
 </Notes>
 
 ---
@@ -1507,7 +1507,7 @@ Measure how often files from different services change in the same commit — be
 <BoundedContextMap version="7" />
 
 <Notes>
-"Final update. Carrier flips from green extractable (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them: Shipment Fulfilment is the merged context. The three unknown blobs — one of them is now Returns/Policy in purple, revealed by Exhibit F. The other two remain unknown. Hypothesis v0.7 — seven lenses, one evidence-backed hypothesis. The remembered domain said three contexts. The encoded domain shows seven. Now we reconcile."
+"Final update. Carrier flips from green extractable (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them: Shipment Fulfilment is the merged context. What we're actually doing here is naming a Shared Kernel that already existed in practice — Shipment and Carrier have been sharing state for years without admitting it. Three options exist in DDD vocabulary: keep the Shared Kernel and govern it explicitly, split it into two contexts with an Anti-Corruption Layer between them, or merge them into one bounded context. The 72% co-change number says splitting will fail; the merge is the honest move. The three unknown blobs — one of them is now Returns/Policy in purple, revealed by Exhibit F. The other two remain unknown. Hypothesis v0.7 — seven lenses, one evidence-backed hypothesis. The remembered domain said three contexts. The encoded domain shows seven. Now we reconcile."
 </Notes>
 
 ---
