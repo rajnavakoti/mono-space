@@ -348,9 +348,21 @@ export function TranslationMap({ version }: TranslationMapProps) {
   return (
     <figure className={styles.figure}>
       {/* No internal title — the slide H2 already carries it. We keep the
-          italic subtitle as a one-line orientation under the slide title. */}
+          italic subtitle as a one-line orientation under the slide title.
+          On v=3 (Rosetta Stone) the slide is tall enough to clip the H2
+          on smaller fullscreen viewports; we prepend a highlighted
+          "THE ROSETTA STONE" badge to the subtitle so the audience can
+          always read the title even if the H2 itself scrolls out of view. */}
       <header className={styles.header}>
-        <div className={styles.subtitle}>{t.subtitle}</div>
+        <div className={styles.subtitle}>
+          {v === 3 && (
+            <>
+              <span className={styles.subtitleBadge}>The Rosetta Stone</span>
+              {" — "}
+            </>
+          )}
+          {t.subtitle}
+        </div>
       </header>
 
       {twoColumn ? (
