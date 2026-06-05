@@ -283,22 +283,23 @@
   gap: 10px;
 }
 
-/* Stacked summary cards run tighter than the original horizontal
-   cards — fewer pixels per card so all three fit alongside the
-   rules listing. Card layout: big number column | (title + examples
-   stacked vertically). */
+/* Stacked summary cards: big number column | (title + examples stacked
+   vertically). Sized for readability — the headline numbers stay
+   prominent and the example lists are large enough to read from the
+   back row. */
 .colRight .summaryCard {
-  padding: 8px 12px;
+  padding: 12px 16px;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: 14px;
+  column-gap: 18px;
+  row-gap: 4px;
   align-items: center;
   text-align: left;
 }
 
 .colRight .summaryNumber {
-  font-size: 36px;
+  font-size: 52px;
   margin-bottom: 0;
   grid-row: 1 / span 2;
   grid-column: 1;
@@ -308,15 +309,15 @@
 .colRight .summaryTitle {
   margin-bottom: 0;
   text-align: left;
-  font-size: 10.5px;
+  font-size: 12.5px;
   grid-column: 2;
   grid-row: 1;
 }
 
 .colRight .summaryList {
   text-align: left;
-  font-size: 11px;
-  line-height: 1.35;
+  font-size: 13px;
+  line-height: 1.4;
   grid-column: 2;
   grid-row: 2;
 }
