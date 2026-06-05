@@ -2,9 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { TranslationMap } from "./TranslationMap";
 
 describe("TranslationMap", () => {
-  it("at v1 renders the sparse 2-row table (person + address) with v0.1 title", () => {
+  it("at v1 renders the sparse 2-row table (person + address) with the v0.1 subtitle", () => {
     render(<TranslationMap version="1" />);
-    expect(screen.getByText("Translation Map v0.1")).toBeInTheDocument();
+    // Component title was dropped — the slide H2 in MDX carries the title
+    // and the component now only shows the orientation subtitle.
+    expect(
+      screen.getByText("What each context calls the same concept"),
+    ).toBeInTheDocument();
     expect(screen.getByText("The person")).toBeInTheDocument();
     expect(screen.getByText("The address")).toBeInTheDocument();
     // Rows that only appear at v0.2+ are not present yet
@@ -31,7 +35,9 @@ describe("TranslationMap", () => {
 
   it("at v2 adds delivery / bill / reservation / return rows + the business rules box", () => {
     render(<TranslationMap version="2" />);
-    expect(screen.getByText("Translation Map v0.2")).toBeInTheDocument();
+    expect(
+      screen.getByText("Now with business rules nobody documented"),
+    ).toBeInTheDocument();
     expect(screen.getByText("The delivery")).toBeInTheDocument();
     expect(screen.getByText("The bill")).toBeInTheDocument();
     expect(screen.getByText("The reservation")).toBeInTheDocument();
@@ -42,9 +48,18 @@ describe("TranslationMap", () => {
     expect(screen.getByText(/Price variance tolerance/i)).toBeInTheDocument();
   });
 
-  it("at v3 promotes the title to Rosetta Stone and adds the three summary cards", () => {
+  it("at v3 hides the rules box and shows the three summary cards", () => {
     render(<TranslationMap version="3" />);
-    expect(screen.getByText("The System's Rosetta Stone")).toBeInTheDocument();
+    // The Rosetta Stone slide already counts the rules in its
+    // summary card — the rules listing belongs to v=2.
+    expect(
+      screen.queryByText(/Rules found in error codes/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Same concepts\. Different names\. No translation map existed/i,
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText("The payment")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.getByText("9")).toBeInTheDocument();

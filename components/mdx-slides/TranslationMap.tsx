@@ -255,13 +255,18 @@ export function TranslationMap({ version }: TranslationMapProps) {
   const v = parseVersion(version);
   const t = TITLES[v];
   const rows = buildRows(v);
-  const showRules = v >= 2;
+  // Rules box belongs to the v=2 slide (where the recovered business
+  // rules ARE the centerpiece). The v=3 Rosetta-Stone slide already
+  // counts them in its "9 rules never written down" summary card —
+  // re-listing them here overflows the slide vertically.
+  const showRules = v === 2;
   const showSummary = v === 3;
 
   return (
     <figure className={styles.figure}>
+      {/* No internal title — the slide H2 already carries it. We keep the
+          italic subtitle as a one-line orientation under the slide title. */}
       <header className={styles.header}>
-        <div className={styles.title}>{t.title}</div>
         <div className={styles.subtitle}>{t.subtitle}</div>
       </header>
 
