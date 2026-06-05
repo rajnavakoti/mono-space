@@ -354,15 +354,22 @@ export function TranslationMap({ version }: TranslationMapProps) {
       </header>
 
       {twoColumn ? (
-        <div className={styles.twoColumn}>
-          <div className={styles.colLeft}>
-            {tableBlock}
-            {summaryBlock}
+        <>
+          {/* The 7-row × 7-col table needs full width to stay readable
+              — sharing a row with anything else clips columns. */}
+          {tableBlock}
+          {/* Findings split into two columns BELOW the table: rules
+              listing on the left, three summary cards stacked on the
+              right. */}
+          <div className={styles.twoColumn}>
+            <div className={styles.colLeft}>
+              {rulesBlock}
+            </div>
+            <div className={styles.colRight}>
+              {summaryBlock}
+            </div>
           </div>
-          <div className={styles.colRight}>
-            {rulesBlock}
-          </div>
-        </div>
+        </>
       ) : (
         <>
           {tableBlock}
