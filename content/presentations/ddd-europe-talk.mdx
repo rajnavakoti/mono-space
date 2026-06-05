@@ -31,30 +31,7 @@ Title slide. Let it sit for a moment. Don't rush. Take a breath.
 
 ---
 
-## One country
-
-<Split ratio="1:1">
-<div>
-
-<SlideImage src="/pics/map of India.avif" alt="Map of India — one country, many states" />
-
-</div>
-<div>
-
-<BigStat value="424" label="living languages" />
-
-<BigStat value="22" label="official" tone="amber" punchline="And somehow it works." />
-
-</div>
-</Split>
-
-<Notes>
-"I'm from India. Whenever I travel to conferences like this, people ask me the same question — how do you manage? You have so many languages in one country. How does it even function? Four hundred and twenty-four living languages. Twenty-two official. One country. Actually it's simpler than you think. And I can explain it with DDD."
-</Notes>
-
----
-
-## Mesh of bounded contexts
+## One country · mesh of bounded contexts
 
 <Split ratio="1:1">
 <div>
@@ -64,9 +41,9 @@ Title slide. Let it sit for a moment. Don't rush. Take a breath.
 </div>
 <div>
 
-The borders ended up following the languages.
+<BigStat value="424" label="living languages" />
 
-Each state has its own vocabulary. Its own way of naming things.
+<BigStat value="22" label="official" tone="amber" punchline="One country. The borders followed the languages." />
 
 **Each state = a bounded context.**
 
@@ -76,45 +53,12 @@ Each state has its own vocabulary. Its own way of naming things.
 </Split>
 
 <Notes>
-"The borders ended up following the languages. Each state has its own language, its own vocabulary, its own way of naming things. In DDD terms — each state is a bounded context. The language of the state is its ubiquitous language. And when you cross the border, you switch contexts."
+"I'm from India. Whenever I travel to conferences like this, people ask me the same question — how do you manage? You have so many languages in one country. How does it even function? Four hundred and twenty-four living languages. Twenty-two official. One country. Actually it's simpler than you think. The borders ended up following the languages. Each state has its own language, its own vocabulary, its own way of naming things. In DDD terms — each state is a bounded context. The language of the state is its ubiquitous language. And when you cross the border, you switch contexts."
 </Notes>
 
 ---
 
-## When you cross a boundary
-
-<Split ratio="1:1">
-<div>
-
-<SlideImage src="/pics/indian train station canonical names.jpg" alt="Indian railway station yellow board — same place name in three scripts" />
-
-</div>
-<div>
-
-**INSIDE THE STATE**
-
-→ Native language · precise · nuanced
-
-→ Local word for *glass* · *sorry*
-
-**CROSSING THE BOUNDARY**
-
-→ Shared vocabulary · lossy · approximate
-
-→ "glass" · "sorry"
-
-You cross a boundary — you switch to the <mark>shared vocabulary. You lose nuance. You gain interoperability.</mark>
-
-</div>
-</Split>
-
-<Notes>
-"What do you speak when you cross into a state where you don't know the language? You use the shared vocabulary — English internationally, whatever works regionally. And something interesting happens. You lose precision. Some words don't even need translation back. When someone wrongs me, I don't say the word for sorry in my native language. I say sorry. When I ask for water, I say glass. The shared vocabulary just won. In your systems — what are those words? What concepts did every service just borrow from somewhere and nobody remembers the original?"
-</Notes>
-
----
-
-## How we actually learn
+## Street bilingualism · how we actually learn
 
 <Split ratio="1:1">
 <div>
@@ -123,6 +67,8 @@ You cross a boundary — you switch to the <mark>shared vocabulary. You lose nua
 
 </div>
 <div>
+
+Cross a boundary — you trade nuance for <mark>shared vocabulary.</mark>
 
 <BigStat value="26%" tone="amber" label="of Indians are bilingual by formal education" />
 
@@ -138,7 +84,7 @@ The rest is <mark>necessity and observation. Constant immersion.</mark>
 </Split>
 
 <Notes>
-"Census 2011 — only twenty-six percent of Indians are bilingual by formal education. The rest learned another way. Street bilingualism. The marketplace vocabulary you pick up because you need to buy vegetables. Media and pop culture as teacher — Bollywood, songs, posters on every wall. My father speaks six languages. He never went to school. Necessity and observation. Constant immersion. That is the other way. And that's exactly the situation you're in with a legacy system. Nobody's going to hand you the textbook. You learn it the way we learn languages — from what's around you."
+"What do you speak when you cross into a state where you don't know the language? You use the shared vocabulary. You lose precision — when someone wrongs me, I don't say the word for sorry in my native language. I say sorry. The shared vocabulary just won. In your systems — what are those words? What concepts did every service just borrow from somewhere and nobody remembers the original? Now — how do people actually learn the new language they cross into? Census 2011 — only twenty-six percent of Indians are bilingual by formal education. The rest learned another way. Street bilingualism. The marketplace vocabulary you pick up because you need to buy vegetables. Media and pop culture as teacher — Bollywood, songs, posters on every wall. My father speaks six languages. He never went to school. Necessity and observation. Constant immersion. That is the other way. And that's exactly the situation you're in with a legacy system. Nobody's going to hand you the textbook. You learn it the way we learn languages — from what's around you."
 </Notes>
 
 ---
@@ -176,7 +122,7 @@ Menu. Chicken symbol. One word: **POLLO**
 
 ---
 
-## Textbook language vs street language
+## Textbook vs street · a few years ago
 
 <Split ratio="1:1">
 <div>
@@ -185,11 +131,7 @@ Menu. Chicken symbol. One word: **POLLO**
 
 **THE TEXTBOOK GAVE US:**
 
-→ bounded contexts
-
-→ ubiquitous language
-
-→ context maps
+→ bounded contexts · ubiquitous language · context maps
 
 </div>
 <div>
@@ -198,52 +140,15 @@ Menu. Chicken symbol. One word: **POLLO**
 
 **WHAT THE STREET DEMANDS:**
 
-→ a method when the experts have left
-
-→ documentation is wrong
-
-→ ownership is unclear
-
-→ no time for greenfield design
+→ a method when the experts have left, docs are wrong, ownership unclear, no greenfield time
 
 </div>
 </Split>
 
-The textbook is the destination. <mark>This is how you find your way there when the map is missing.</mark>
+A few years ago — a 15-year legacy order-fulfilment system. No documentation. One question: *<mark>"Can we rediscover the domain from what the system left behind?"</mark>*
 
 <Notes>
-"The textbook gave us the concepts — bounded contexts, ubiquitous language, context maps. What it didn't give us was a method for when the experts are gone, the documentation is wrong, the ownership is unclear. This is the gap between textbook language and street language. The textbook is the destination. Today is about how you find your way there when the map is missing."
-</Notes>
-
----
-
-## A few years ago
-
-<Split ratio="1:1">
-<div>
-
-<SlideImage src="/pics/antikythera.jpg" alt="The Antikythera mechanism — an ancient artifact whose function had to be reverse-engineered" />
-
-</div>
-<div>
-
-→ A legacy order-fulfilment system
-
-→ 15 years of accumulated complexity
-
-→ No documentation
-
-→ One question:
-
-> *"Can we rediscover the domain from what the system left behind?"*
-
-*Note — the system you'll see today is a composite. Drawn from real legacy systems, with names changed. The artifacts are what matter.*
-
-</div>
-</Split>
-
-<Notes>
-"A few years ago — a legacy order-fulfilment system. Fifteen years of accumulated complexity. No documentation. One question: can we rediscover the domain from what the system left behind? Without talking to a single domain expert first? Quick disclosure before we go further — the system you'll walk through today is a composite. Drawn from real legacy systems I've worked with, with names changed. The artifacts are what matter. Think of it like the Antikythera mechanism — pulled from a wreck, no manual, no inventor to ask. Whatever the system does today, it does because somebody, somewhere, encoded it. Our job is to read what's still readable."
+"The textbook gave us the concepts — bounded contexts, ubiquitous language, context maps. What it didn't give us was a method for when the experts are gone, the documentation is wrong, the ownership is unclear. This is the gap between textbook language and street language. A few years ago I was on exactly that kind of system — fifteen years of accumulated complexity, no documentation, one question: can we rediscover the domain from what the system left behind? Without talking to a single domain expert first? Quick disclosure before we go further — the system you'll walk through today is a composite. Drawn from real legacy systems I've worked with, with names changed. The artifacts are what matter. Whatever the system does today, it does because somebody, somewhere, encoded it. Our job is to read what's still readable."
 </Notes>
 
 ---
