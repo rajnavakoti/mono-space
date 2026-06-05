@@ -1318,6 +1318,27 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ---
 
+## Extraction Playbook
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="THE DECISION" accent="amber" items="Causing incidents + shared by 3+ services → EXTRACT (high priority), Causing incidents + simpler coupling → EXTRACT (medium priority), Blocking team velocity but no incidents yet → WRAP with ACL first, Clean boundary confirmed by 3+ exhibits → LEAVE ALONE" />
+
+</div>
+<div>
+
+<ContentCard title="THE SEQUENCE" accent="green" items="1. Strangle reads — API gateway in front of shared tables, 2. Introduce events — replace synchronous co-writes, 3. Shadow traffic — run new path in parallel + compare, 4. Feature-flag cutover — 1% → 10% → 50% → 100%" />
+
+</div>
+</Split>
+
+<Notes>
+"So what do we do with this? Finding the boundaries is half the work. Extracting them safely is the other half. The decision: if it's causing incidents and shared by many services — extract. If it's blocking velocity but no incidents yet — wrap with an Anti-Corruption Layer first. If it's clean — leave it alone. The sequence: strangle reads first, then introduce events, then shadow traffic, then feature-flag the cutover. You don't rewrite. You strangle. Incrementally. With evidence telling you exactly where to cut. Now — let's zoom back out and reconcile this with what the team remembered."
+</Notes>
+
+---
+
 ## The Remembered Domain vs The Encoded Domain
 
 <Split ratio="1:1">
@@ -1338,28 +1359,7 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 </Split>
 
 <Notes>
-"Two models. Side by side. The team remembered 3 contexts. The system encoded 7. Delivery is its own context — not part of Order. Invoicing has its own lifecycle. Returns and Policy is a missing context — its rules are scattered. Customer is a source of truth nobody actually uses through its API. And Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year."
-</Notes>
-
----
-
-## Extraction Playbook
-
-<Split ratio="1:1">
-<div>
-
-<ContentCard title="THE DECISION" accent="amber" items="Causing incidents + shared by 3+ services → EXTRACT (high priority), Causing incidents + simpler coupling → EXTRACT (medium priority), Blocking team velocity but no incidents yet → WRAP with ACL first, Clean boundary confirmed by 3+ exhibits → LEAVE ALONE" />
-
-</div>
-<div>
-
-<ContentCard title="THE SEQUENCE" accent="green" items="1. Strangle reads — API gateway in front of shared tables, 2. Introduce events — replace synchronous co-writes, 3. Shadow traffic — run new path in parallel + compare, 4. Feature-flag cutover — 1% → 10% → 50% → 100%" />
-
-</div>
-</Split>
-
-<Notes>
-"Finding the boundaries is half the work. Extracting them safely is the other half. The decision: if it's causing incidents and shared by many services — extract. If it's blocking velocity but no incidents yet — wrap with an anti-corruption layer first. If it's clean — leave it alone. The sequence: strangle reads first, then introduce events, then shadow traffic, then feature-flag the cutover. You don't rewrite. You strangle. Incrementally. With evidence telling you exactly where to cut."
+"[SLOW DOWN. This is the moment.] Two models. Side by side. The team remembered 3 contexts. The system encoded 7. Delivery is its own context — not part of Order. Invoicing has its own lifecycle. Returns and Policy is a missing context — its rules are scattered. Customer is a source of truth nobody actually uses through its API. And Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year. [Pause. Let it land. This is the conference clip.]"
 </Notes>
 
 ---
