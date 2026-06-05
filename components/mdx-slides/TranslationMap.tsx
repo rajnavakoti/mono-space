@@ -255,11 +255,11 @@ export function TranslationMap({ version }: TranslationMapProps) {
   const v = parseVersion(version);
   const t = TITLES[v];
   const rows = buildRows(v);
-  // Rules box belongs to the v=2 slide (where the recovered business
-  // rules ARE the centerpiece). The v=3 Rosetta-Stone slide already
-  // counts them in its "9 rules never written down" summary card —
-  // re-listing them here overflows the slide vertically.
-  const showRules = v === 2;
+  // Rules box appears on v=2 (where it's the centerpiece) and stays on
+  // v=3 (Rosetta Stone) — the audience needs to feel "we found a lot"
+  // when this lands. The slide may currently clip top/bottom at default
+  // zoom; restructure is deferred.
+  const showRules = v >= 2;
   const showSummary = v === 3;
 
   return (

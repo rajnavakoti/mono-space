@@ -48,13 +48,13 @@ describe("TranslationMap", () => {
     expect(screen.getByText(/Price variance tolerance/i)).toBeInTheDocument();
   });
 
-  it("at v3 hides the rules box and shows the three summary cards", () => {
+  it("at v3 keeps the rules box and adds the three summary cards", () => {
     render(<TranslationMap version="3" />);
-    // The Rosetta Stone slide already counts the rules in its
-    // summary card — the rules listing belongs to v=2.
+    // Rules box stays on the Rosetta Stone — visually reinforces
+    // "we found a lot" alongside the summary cards.
     expect(
-      screen.queryByText(/Rules found in error codes/i),
-    ).not.toBeInTheDocument();
+      screen.getByText(/Rules found in error codes/i),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
         /Same concepts\. Different names\. No translation map existed/i,
