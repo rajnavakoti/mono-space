@@ -258,7 +258,11 @@
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: 18px;
-  align-items: stretch;
+  /* align-items: start so the rules box sits at its natural height
+     instead of stretching to match the right column's three cards.
+     Otherwise we get visible dead space below the quote inside the
+     rules box. */
+  align-items: start;
   margin-top: 12px;
 }
 
@@ -269,10 +273,9 @@
   min-width: 0;
 }
 
-/* Rules box fills the left column top-to-bottom. */
+/* Rules box sits at natural height — no fill-the-column behavior. */
 .colLeft .rulesBox {
   margin-top: 0;
-  height: 100%;
 }
 
 /* Override the default 3-col summary row — when stacked in the narrow
@@ -324,4 +327,13 @@
 
 .colRight .summaryList li {
   padding: 0;
+}
+
+/* Kill the global ".mdxSlide ul li::before" '>' marker for these
+   cards — with padding: 0 it overlaps the first letter of every
+   example, and the cards already read clearly as a vertical list
+   without bullets. */
+.colRight .summaryList li::before {
+  content: none;
+  display: none;
 }
