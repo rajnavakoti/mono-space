@@ -1300,10 +1300,20 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ## The System's Rosetta Stone
 
-<TranslationMap version="3" />
+<TranslationMap version="3" parts="rules" />
 
 <Notes>
-"This is what the translation map becomes when you've worked all seven lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And the three cards at the bottom say it plain. Five names for one person. Nine rules that never made it into a spec. Eight domain events the system tracks but never publishes. No translation map existed in this organisation. This is it. From here we draw the new map."
+"This is what the translation map becomes when you've worked all seven lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And below the table, the nine rules we recovered from the error codes. Price tolerance 2%, four-hour SLA, ten-thousand-euro cap, return windows by category. Production has run on these for years and none of them are in any spec. No translation map existed in this organisation. This is it. Now click — let's count what's in the room."
+</Notes>
+
+---
+
+## 5 names · 9 rules · 7 events
+
+<TranslationMap version="3" parts="summary" />
+
+<Notes>
+"Five names for one person — buyer, customer, recipient, account, user. Five names the audience watched fracture across six contracts in Exhibit A, the same person every time. Nine rules nobody wrote down — every one of them pulled out of an error code, running in production right now. Seven domain events the system tracks every single day and tells nobody — four fossilised in the database, three in the logs. That is the cost of no translation map. Five names, nine rules, seven events. We didn't build this artifact — the system already knew it. We just made it readable. From here, we draw the new map."
 </Notes>
 
 ---

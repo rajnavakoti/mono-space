@@ -242,6 +242,14 @@ const SUMMARY_CARDS: SummaryCard[] = [
 
 interface TranslationMapProps {
   version: TranslationMapVersion | number | string;
+  /**
+   * Optional part selector for v=3 (Rosetta Stone). When the full v=3
+   * is too tall for a single slide we split it across two beats:
+   *   parts="rules"   — table + legend + 9-rule listing (the artifact)
+   *   parts="summary" — three big summary cards (the punchline reveal)
+   *   undefined       — render everything (default)
+   */
+  parts?: "rules" | "summary";
 }
 
 function parseVersion(raw: string | number): 1 | 2 | 3 {
@@ -251,19 +259,25 @@ function parseVersion(raw: string | number): 1 | 2 | 3 {
   return n as 1 | 2 | 3;
 }
 
-export function TranslationMap({ version }: TranslationMapProps) {
+export function TranslationMap({ version, parts }: TranslationMapProps) {
   const v = parseVersion(version);
   const t = TITLES[v];
   const rows = buildRows(v);
-  const showRules = v >= 2;
-  const showSummary = v === 3;
-  // v=3 (Rosetta Stone) uses a two-column layout: table + headline
-  // summary cards on the left (the artifact + its punchline numbers),
-  // rules listing on the right (the deep-dive evidence). This keeps
-  // everything visible without clipping at default zoom.
-  const twoColumn = v === 3;
+  // When v=3 is split into two beats via `parts`, each beat shows a
+  // subset of the artifact:
+  //   parts="rules"   — table + ✅ legend + rules listing, no cards
+  //   parts="summary" — three summary cards only, big and centered
+  //   undefined       — render everything (the all-in-one v=3 slide)
+  const splitRules = v === 3 && parts === "rules";
+  const splitSummary = v === 3 && parts === "summary";
+  const showTable = !splitSummary;
+  const showRules = (v >= 2 || splitRules) && !splitSummary;
+  const showSummary = (v === 3 && !splitRules) || splitSummary;
+  // The two-column layout (table left, rules+cards right) only applies
+  // when the FULL v=3 renders. The split variants are single-column.
+  const twoColumn = v === 3 && !parts;
 
-  const tableBlock = (
+  const tableBlock = showTable && (
     <>
       <table className={styles.table}>
         <thead>
@@ -345,25 +359,29 @@ export function TranslationMap({ version }: TranslationMapProps) {
     </div>
   );
 
+  const figureClass = splitSummary
+    ? `${styles.figure} ${styles.splitSummaryWrap}`
+    : styles.figure;
+
   return (
-    <figure className={styles.figure}>
+    <figure className={figureClass}>
       {/* No internal title — the slide H2 already carries it. We keep the
           italic subtitle as a one-line orientation under the slide title.
-          On v=3 (Rosetta Stone) the slide is tall enough to clip the H2
-          on smaller fullscreen viewports; we prepend a highlighted
-          "THE ROSETTA STONE" badge to the subtitle so the audience can
-          always read the title even if the H2 itself scrolls out of view. */}
-      <header className={styles.header}>
-        <div className={styles.subtitle}>
-          {v === 3 && (
-            <>
-              <span className={styles.subtitleBadge}>The Rosetta Stone</span>
-              {" — "}
-            </>
-          )}
-          {t.subtitle}
-        </div>
-      </header>
+          On the splitSummary beat the slide H2 IS the punchline ("5 names.
+          9 rules. 7 events.") so we skip the header entirely on that one. */}
+      {!splitSummary && (
+        <header className={styles.header}>
+          <div className={styles.subtitle}>
+            {v === 3 && !parts && (
+              <>
+                <span className={styles.subtitleBadge}>The Rosetta Stone</span>
+                {" — "}
+              </>
+            )}
+            {t.subtitle}
+          </div>
+        </header>
+      )}
 
       {twoColumn ? (
         <>
