@@ -208,72 +208,18 @@ A few years ago — a 15-year legacy order-fulfilment system. No documentation. 
 
 ---
 
-## Pick one concept — the person
+## Pick one concept — the person vs the address
 
-> *Who receives the delivery?*
-
-Pick one concept across all services — because same fields with different names means the ubiquitous language fractured.
-
-<Split ratio="3:1">
-<div>
+> *Same fields, different names → fractured language. Different fields, different names → correct DDD.*
 
 <CompareTable colWeights="1|1|1|1|3" headers="Service|Term Used|ID Field|Fields|Infer" rows="Shipment|buyer|buyerId|3|the person placing the order?||Consignee|customer|customerId|**20**|**the full customer profile?**||Inventory|user|userId|1|who requested the reservation?||Carrier|recipient|recipientId|3|who receives the package?||Invoicing|account|accountId|3|**billing entity — person or company?**||Tracking|user|userId|2|who gets notified?" />
 
-</div>
-<div>
-
-<Callout type="warning">
-**🚩 Validate with domain experts**
-
-**Consignee has 20 fields** for this concept (segments, loyalty, preferences, addresses). Everyone else has 3.
-
-→ Who is the **system of record**?
-
-→ Is "account" **intentionally different** (billing entity vs person)?
-
-→ 5 names, same fields — **drift or design**?
-</Callout>
-
-</div>
-</Split>
-
-<Notes>
-"Pick one concept that should exist everywhere — because same fields with different names means the translation map between contexts is missing. The person receiving the delivery. Five names. Same three fields. But 'account' in Invoicing might mean a billing entity, not a person. We flag it, we don't judge. Consignee has 20 fields, everyone else has 3. Five thin copies of a concept one service owns richly. Who is the system of record?"
-</Notes>
-
----
-
-## The address — correct DDD
-
-> *Where do they deliver?*
-
-<Split ratio="3:1">
-<div>
-
 <CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|**mixed concerns**||Consignee|CustomerAddress|**label**, isDefault|10|customer-managed||Carrier|DeliveryAddress|**accessCode**, isResidential|11|operational||Invoicing|BillingAddress|**vatNumber**, companyName|10|legal document" />
 
-</div>
-<div>
-
-<Callout type="tip">
-**✅ Correct DDD**
-
-Different names *and* different fields. Each context adds fields for its purpose:
-
-Carrier needs `accessCode` → for the delivery driver
-
-Invoicing needs `vatNumber` → for the legal document
-
-Consignee needs `label` → "Home" / "Work"
-
-*Each context should own its own Address representation.*
-</Callout>
-
-</div>
-</Split>
+**🚩 The person:** 5 names, same 3 fields → drift. *Who is the system of record?*  **✅ The address:** different names AND different fields → correct boundary separation.
 
 <Notes>
-"Now compare with Address. Same four services. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look the same but they serve different purposes. This IS correct DDD — each bounded context should own its own Address. So the test: same fields, different names — flag it. Different fields for different purposes — correct boundary separation."
+"Pick one concept that should exist everywhere — because same fields with different names means the translation map between contexts is missing. The person receiving the delivery. Five names. Same three fields. But 'account' in Invoicing might mean a billing entity, not a person. We flag it, we don't judge. Consignee has 20 fields, everyone else has 3. Five thin copies of a concept one service owns richly. Who is the system of record? Now compare with Address — same four services that have it. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look similar but they serve different purposes. This IS correct DDD — each bounded context owns its own Address. So the test: same fields, different names — flag it. Different fields for different purposes — correct boundary separation."
 </Notes>
 
 ---
@@ -1080,71 +1026,39 @@ But zero incidents means the coupling hasn't hurt yet.
 
 ---
 
-## What error codes do we have?
+## Decode the top error codes
 
-> Pull every error code and rank by frequency — because <mark>the most-thrown codes are the business rules nobody documented</mark>.
-
-<Split ratio="3:2">
-<div>
+> Rank every error code by frequency — because <mark>the most-thrown codes are the business rules nobody documented.</mark>
 
 <CompareTable colWeights="1|1|3|2" headers="Service|Codes|Top codes · annual throws|Notes" rows="Shipment (ORD-)|47|ORD-E003 · **4,102** · price variance|**business rules**||Carrier (DEL-)|32|DEL-E011 · **3,420** · return window|**misplaced concern?**||Invoicing (INV-)|28|INV-E001 · 1,823 · invoice tolerance|**policies**||Inventory (STK-)|15|STK-E004 · 892 · stock threshold|resource limits||Consignee (CST-)|8|CST-E001 · 412 · validation|clean ✓||Tracking (TRK-)|4|TRK-E001 · 98 · delivery failure|infra only" totalsRow="TOTAL|**134 codes**|Top 10 = ~60% of throws|12 months data" />
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="warning">
+**🟠 ORD-E003 · 4,102/year**
+
+"Price variance exceeded" — if price drifts >**2%** between cart and checkout, reject.
+
+The 2% lives nowhere in documentation. Fires 11 times a day. *Does your pricing manager know it exists?*
+</Callout>
 
 </div>
 <div>
 
 <Callout type="warning">
-**📋 Error code inventory**
+**🟠 ORD-E031 · 2,156/year**
 
-134 codes across 6 services · 12 months data.
+"Split shipment threshold" — items from **3+ warehouses** triggers split logic.
 
-**Top 10 codes alone** account for ~60% of all throws — those are the high-frequency invariants worth decoding first.
-
-Most codes have **no documentation** beyond the error message. The threshold lives only in code.
-
-Carrier owns `DEL-E011` (3,420/year) but it's a returns rule — **misplaced concern** worth flagging.
+Validates across warehouses, carriers, and orders — *orchestration logic nobody gave a name to.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Pull every error code and rank by frequency — because the most-thrown codes are the business rules nobody documented. 134 codes across six services. Twelve months of data. The top ten codes account for about 60% of all throws — those are the high-frequency invariants worth decoding first. Most have no documentation beyond the error message itself. The threshold lives only in the code. Look at Carrier — DEL-E011 fires 3,420 times a year. It's a return window rule. But it lives in Carrier, not in any returns context. That's a misplaced concern worth flagging. The next slides decode the top codes one by one — what business rule each one encodes."
-</Notes>
-
----
-
-## Decode the top error codes
-
-> *Two error codes. Two undocumented business rules.*
-
-Decode the top error codes — because <mark>high-frequency codes are domain invariants that exist only in code — thresholds, SLAs, policies nobody wrote down.</mark>
-
-<Callout type="warning">
-**🟠 ORD-E003 · 4,102/year**
-
-"Price variance exceeded"
-
-If price drifts more than **2%** between cart and checkout, reject the order.
-
-That 2% exists nowhere in documentation. Only in code. Fires 11 times a day.
-
-*Does your pricing manager know it exists?*
-</Callout>
-
-<Callout type="warning">
-**🟠 ORD-E031 · 2,156/year**
-
-"Split shipment threshold"
-
-Items from **3+ warehouses** triggers split-shipment logic.
-
-This error references warehouses, carriers, and orders — an invariant validating across 3 contexts.
-
-*Orchestration logic that nobody gave a name to.*
-</Callout>
-
-<Notes>
-"Decode the top error codes — because high-frequency codes are domain invariants that exist only in code: thresholds, SLAs, policies nobody wrote down. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it."
+"Pull every error code and rank by frequency — because the most-thrown codes are the business rules nobody documented. 134 codes across six services. Twelve months of data. The top ten codes account for about 60% of all throws — those are the high-frequency invariants worth decoding first. Most have no documentation beyond the error message itself. The threshold lives only in the code. Let's decode the top two. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it. And one more outlier worth flagging — Carrier's DEL-E011 fires 3,420 times a year and it's a returns rule that doesn't belong in Carrier. We'll dig into that on the next slide."
 </Notes>
 
 ---
@@ -1242,49 +1156,16 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ---
 
-## What's in git history?
-
-> Pull six months of commits across all services — because <mark>files that change together are coupled, even if the architecture diagram doesn't show it</mark>.
-
-<Split ratio="3:2">
-<div>
-
-<CompareTable colWeights="1|1|1|2" headers="Service|Commits|Files touched|Notes" rows="Shipment|412|89|**most active**||Inventory|312|71|active||Invoicing|248|64|active||Carrier|218|56|steady||Consignee|187|42|focused||Tracking|38|12|**low activity**" totalsRow="TOTAL|**1,415 commits**|334 files touched|6 months" />
-
-</div>
-<div>
-
-<Callout type="warning">
-**📋 Git history inventory**
-
-6 months · 1,415 commits · 334 files touched across 6 services.
-
-**47 file pairs** co-change more than 10% of the time.
-
-**4 cross-service pairs** flagged > 40% — investigated in the next slide.
-
-**1 pair > 70%** — strongest dead-boundary signal yet. The architecture diagram never showed it.
-</Callout>
-
-</div>
-</Split>
-
-<Notes>
-"Pull six months of commits across all services — because files that change together are coupled, even if the architecture diagram doesn't show it. About 1,400 commits. 334 files touched. Shipment is the most active codebase, Tracking the least — which lines up with the contract age signal from Exhibit A. Now the interesting number: 47 file pairs co-change more than 10% of the time. Four of those pairs cross service boundaries — that's where coupling lives that nobody declared. And one pair is above 70%. That's the strongest dead-boundary signal we've found anywhere. The next slide ranks the top cross-service pairs and shows which couplings the team has been carrying without realising it."
-</Notes>
-
----
-
 ## Measure co-change frequency
 
-> *Which code actually co-evolves?*
-
-Measure how often files from different services change in the same commit — because <mark>high cross-service co-change means developers can't work on one service without touching the other — coupling the architecture diagram won't show you.</mark>
+> Six months of commits across all services — because <mark>files that change together are coupled, even if the architecture diagram doesn't show it.</mark>
 
 <RankedBars max="100" bars="OrderController + ShipmentService::72::red|DeliveryScheduler + InventoryChecker::68::red|PricingEngine + OrderValidator::54::amber|InvoiceGenerator + OrderEventHandler::41::yellow|CustomerAddressValidator (solo)::89::green" />
 
+**1,415 commits · 334 files · 6 months.** 47 file pairs co-change >10%. 4 cross-service pairs flagged >40% — ranked above. **1 pair >70%** — the strongest dead-boundary signal yet, never shown on any architecture diagram.
+
 <Notes>
-"Measure how often files from different services change in the same commit — because high cross-service co-change means developers can't work on one service without touching the other. OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 7 exhibits."
+"Pull six months of commits across all services — because files that change together are coupled, even if the architecture diagram doesn't show it. About 1,400 commits. 334 files touched. Shipment is the most active codebase, Tracking the least — which lines up with the contract age signal from Exhibit A. 47 file pairs co-change more than 10% of the time. Four of those pairs cross service boundaries — that's where coupling lives that nobody declared. Now look at the ranked bars. OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 7 exhibits."
 </Notes>
 
 ---
