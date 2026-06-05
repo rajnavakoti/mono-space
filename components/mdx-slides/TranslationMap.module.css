@@ -11,7 +11,7 @@
   --tm-green: #6E9B6E;
   --tm-red: #B26464;
 
-  margin: 12px auto;
+  margin: 6px auto;
   width: 100%;
   max-width: 1100px;
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
@@ -20,11 +20,11 @@
 }
 
 .header {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .title {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -32,10 +32,10 @@
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13px;
   font-style: italic;
   color: var(--tm-text-muted);
-  margin-top: 6px;
+  margin-top: 4px;
   letter-spacing: 0.02em;
 }
 
@@ -44,13 +44,13 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
 .table th,
 .table td {
   border: 1px solid var(--tm-border-muted);
-  padding: 10px 12px;
+  padding: 6px 10px;
   text-align: left;
   vertical-align: top;
 }
@@ -128,20 +128,20 @@
 /* ── Recovered business rules box (v0.2+) ──────────────────────────── */
 
 .rulesBox {
-  margin-top: 24px;
+  margin-top: 14px;
   border: 2px solid var(--tm-accent);
   border-left-width: 6px;
-  padding: 16px 22px;
+  padding: 10px 18px;
   background: var(--tm-bg-muted);
 }
 
 .rulesHeader {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--tm-accent);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 .rulesList {
@@ -150,7 +150,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 4px;
 }
 
 .ruleItem {
@@ -178,46 +178,46 @@
 }
 
 .rulesQuote {
-  margin-top: 14px;
-  padding-top: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px dashed var(--tm-text-muted);
   font-style: italic;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--tm-text);
 }
 
 /* ── Summary cards (v0.3 only) ─────────────────────────────────────── */
 
 .summaryRow {
-  margin-top: 24px;
+  margin-top: 14px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .summaryCard {
   border: 2px solid var(--tm-text);
-  padding: 22px 20px;
+  padding: 12px 14px;
   text-align: center;
   background: var(--tm-bg);
 }
 
 .summaryNumber {
-  font-size: 64px;
+  font-size: 44px;
   font-weight: 900;
   line-height: 1;
   color: var(--tm-accent);
   letter-spacing: -0.04em;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 .summaryTitle {
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--tm-text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   font-weight: 700;
 }
 

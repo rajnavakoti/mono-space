@@ -312,10 +312,13 @@
 /* ── HTML legend bar below the canvas ──────────────────────────────── */
 /* Lives below the SVG, above the figcaption. Always has room.
    Never competes with shapes for canvas space. */
+/* Legend strip now renders ABOVE the canvas (between slide title and
+   the diagram) so the "X · from Exhibit Y" findings read as exhibit
+   context, not orphaned footer text. */
 .legendBar {
-  margin: 12px auto 0;
+  margin: 0 auto 12px;
   max-width: 1000px;
-  padding: 12px 24px;
+  padding: 10px 24px;
   background: var(--bcm-bg-muted);
   border-left: 3px solid var(--bcm-accent);
   font-family: var(--font-mono, "JetBrains Mono"), monospace;

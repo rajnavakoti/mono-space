@@ -414,10 +414,19 @@ function buildState(v: BoundedContextMapVersion): ModelState {
   if (v === 5) overlays.push({ kind: "incidentFan" });
   if (v === 6) overlays.push({ kind: "returnsArrow" });
 
-  // Legend per version — explains the overlays in words. Sits below
-  // the canvas as HTML, always has room, never overlaps shapes.
+  // Legend per version — explains the overlays in words. Rendered as
+  // an HTML strip ABOVE the canvas so it reads as exhibit context next
+  // to the slide title, not as orphaned footer text below the diagram.
   let legend: Legend | undefined;
-  if (v === 1) {
+  if (v === 0) {
+    legend = {
+      header: "Baseline · before any exhibit",
+      items: [
+        { marker: "amber", text: "6 services we know about. 3 black boxes we don't." },
+        { marker: "amber", text: "No lines. No labels. No opinions yet. Every exhibit adds evidence." },
+      ],
+    };
+  } else if (v === 1) {
     legend = {
       header: "Hypothesis · from Exhibit A",
       items: [
@@ -507,6 +516,30 @@ export function BoundedContextMap({ version }: Props) {
 
   return (
     <figure className={styles.figure}>
+      {state.legend && (
+        <div className={styles.legendBar}>
+          <div className={styles.legendHeader}>{state.legend.header}</div>
+          <ul className={styles.legendList}>
+            {state.legend.items.map((item, i) => {
+              const markerClass =
+                item.marker === "red"
+                  ? styles.markerRed
+                  : item.marker === "green"
+                    ? styles.markerGreen
+                    : item.marker === "amber"
+                      ? styles.markerAmber
+                      : styles.markerPurple;
+              return (
+                <li key={i} className={styles.legendItem}>
+                  <span className={`${styles.legendMarker} ${markerClass}`} />
+                  <span>{item.text}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       <div className={styles.canvas}>
         <svg
           viewBox="0 0 1100 700"
@@ -732,30 +765,6 @@ export function BoundedContextMap({ version }: Props) {
           )}
         </svg>
       </div>
-
-      {state.legend && (
-        <div className={styles.legendBar}>
-          <div className={styles.legendHeader}>{state.legend.header}</div>
-          <ul className={styles.legendList}>
-            {state.legend.items.map((item, i) => {
-              const markerClass =
-                item.marker === "red"
-                  ? styles.markerRed
-                  : item.marker === "green"
-                    ? styles.markerGreen
-                    : item.marker === "amber"
-                      ? styles.markerAmber
-                      : styles.markerPurple;
-              return (
-                <li key={i} className={styles.legendItem}>
-                  <span className={`${styles.legendMarker} ${markerClass}`} />
-                  <span>{item.text}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
 
       {state.showSummaryBand && (
         <div className={styles.summaryBand}>

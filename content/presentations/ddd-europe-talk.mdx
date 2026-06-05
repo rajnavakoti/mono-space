@@ -282,8 +282,6 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 <BoundedContextMap version="0" />
 
-> The 6 services we know about. 3 black boxes we don't. No lines, no labels, no opinions yet. Every exhibit adds evidence.
-
 <Notes>
 "Before we open any artifact — here's what we have. The 6 services we've heard mentioned by name. 3 black boxes we know exist but nothing's documented about. No lines between them. No verdicts. No colours. This is our baseline. Every exhibit from here adds evidence to this map."
 </Notes>
@@ -809,8 +807,6 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
 ## Event catalog v0.2 — what the database tracks but never publishes
 
-> 6 fossilized. Invoicing tracks but never tells.
-
 <EventCatalog version="2" />
 
 <Notes>
@@ -1025,8 +1021,6 @@ The edge cases nobody mentioned in Event Storming:
 ---
 
 ## Event catalog v0.3 — final
-
-> 22 known. 9 the system never published. 3 that should exist but don't.
 
 <EventCatalog version="3" />
 
@@ -1476,39 +1470,47 @@ Measure how often files from different services change in the same commit — be
 
 > *Start with the least coupled. End with the most entangled.*
 
-Determine extraction order — because <mark>git tells you which services to extract first (lowest coupling) and which to tackle last (highest coupling).</mark>
+<Split ratio="1:1">
+<div>
 
 <Callout type="tip">
 **🟢 1 · Extract first**
 
-**Consignee** — 89% solo
-
-Independent. Clean. Go.
+**Consignee** — 89% solo · independent · clean · go.
 </Callout>
+
+</div>
+<div>
 
 <Callout type="warning">
 **🟡 2 · Stabilize first**
 
-**Invoicing** — 41% co-change
-
-Moderate coupling. Stabilize the event contract first, then extract.
+**Invoicing** — 41% co-change · stabilize event contract, then extract.
 </Callout>
+
+</div>
+</Split>
+
+<Split ratio="1:1">
+<div>
 
 <Callout type="warning">
 **🟠 3 · Fix before extracting**
 
-**Inventory** — 68% co-change
-
-Replace co-write with a saga first. Then extract.
+**Inventory** — 68% co-change · replace co-write with a saga, then extract.
 </Callout>
+
+</div>
+<div>
 
 <Callout type="danger">
 **🔴 4 · Extract last**
 
-**Shipment + Carrier** — 72% co-change
-
-Merge first. Then decide if the merged context needs splitting differently.
+**Shipment + Carrier** — 72% co-change · merge first, then decide if it splits differently.
 </Callout>
+
+</div>
+</Split>
 
 <Notes>
 "Determine extraction order — because git tells you which services to extract first and which to tackle last. Start with Consignee — 89% solo, genuinely independent, extract first. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
@@ -1537,8 +1539,6 @@ Merge first. Then decide if the merged context needs splitting differently.
 ## The System's Rosetta Stone
 
 <TranslationMap version="3" />
-
-> Same concepts. Different names. No translation map existed — until now.
 
 <Notes>
 "This is what the translation map becomes when you've worked all seven lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And the three cards at the bottom say it plain. Five names for one person. Nine rules that never made it into a spec. Eight domain events the system tracks but never publishes. No translation map existed in this organisation. This is it. From here we draw the new map."
