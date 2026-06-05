@@ -246,3 +246,55 @@
   letter-spacing: 0.04em;
   font-weight: 500;
 }
+
+/* ── Two-column Rosetta Stone layout (v=3 only) ────────────────────── */
+/* Left column: translation table + legend + 3 summary cards.
+   Right column: the 9-rule listing — its own dense scroll-free panel.  */
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.colLeft,
+.colRight {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Rules box sits at the top of the right column (no extra margin from
+   the default rulesBox margin-top). */
+.colRight .rulesBox {
+  margin-top: 0;
+  height: 100%;
+}
+
+/* Summary cards sit below the table inside the left column — pull them
+   tight against the legend above. */
+.colLeft .summaryRow {
+  margin-top: 10px;
+}
+
+/* In the narrow right column, drop the rules-list row gap so the 9 rules
+   + quote fit alongside the left-column table without growing the slide. */
+.colRight .rulesList {
+  gap: 3px;
+}
+
+.colRight .ruleItem {
+  font-size: 12px;
+  gap: 8px;
+}
+
+.colRight .ruleCode {
+  font-size: 10px;
+}
+
+.colRight .rulesQuote {
+  font-size: 11.5px;
+  margin-top: 6px;
+  padding-top: 6px;
+}

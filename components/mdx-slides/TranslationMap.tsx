@@ -255,21 +255,16 @@ export function TranslationMap({ version }: TranslationMapProps) {
   const v = parseVersion(version);
   const t = TITLES[v];
   const rows = buildRows(v);
-  // Rules box appears on v=2 (where it's the centerpiece) and stays on
-  // v=3 (Rosetta Stone) — the audience needs to feel "we found a lot"
-  // when this lands. The slide may currently clip top/bottom at default
-  // zoom; restructure is deferred.
   const showRules = v >= 2;
   const showSummary = v === 3;
+  // v=3 (Rosetta Stone) uses a two-column layout: table + headline
+  // summary cards on the left (the artifact + its punchline numbers),
+  // rules listing on the right (the deep-dive evidence). This keeps
+  // everything visible without clipping at default zoom.
+  const twoColumn = v === 3;
 
-  return (
-    <figure className={styles.figure}>
-      {/* No internal title — the slide H2 already carries it. We keep the
-          italic subtitle as a one-line orientation under the slide title. */}
-      <header className={styles.header}>
-        <div className={styles.subtitle}>{t.subtitle}</div>
-      </header>
-
+  const tableBlock = (
+    <>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -311,43 +306,70 @@ export function TranslationMap({ version }: TranslationMapProps) {
       <div className={styles.legend}>
         <span className={styles.recordMark}>✅</span> = system of record for this concept
       </div>
+    </>
+  );
 
-      {showRules && (
-        <div className={styles.rulesBox}>
-          <div className={styles.rulesHeader}>
-            Rules found in error codes — never documented
-          </div>
-          <ul className={styles.rulesList}>
-            {BUSINESS_RULES.map((r, i) => (
-              <li key={i} className={styles.ruleItem}>
-                <span className={styles.ruleName}>{r.rule}</span>
-                <span className={styles.ruleValue}>{r.value}</span>
-                <span className={styles.ruleCode}>({r.code})</span>
-              </li>
+  const rulesBlock = showRules && (
+    <div className={styles.rulesBox}>
+      <div className={styles.rulesHeader}>
+        Rules found in error codes — never documented
+      </div>
+      <ul className={styles.rulesList}>
+        {BUSINESS_RULES.map((r, i) => (
+          <li key={i} className={styles.ruleItem}>
+            <span className={styles.ruleName}>{r.rule}</span>
+            <span className={styles.ruleValue}>{r.value}</span>
+            <span className={styles.ruleCode}>({r.code})</span>
+          </li>
+        ))}
+      </ul>
+      <div className={styles.rulesQuote}>
+        “These rules ran in production for years. None of them are in any spec.”
+      </div>
+    </div>
+  );
+
+  const summaryBlock = showSummary && (
+    <div className={styles.summaryRow}>
+      {SUMMARY_CARDS.map((card, i) => (
+        <div key={i} className={styles.summaryCard}>
+          <div className={styles.summaryNumber}>{card.number}</div>
+          <div className={styles.summaryTitle}>{card.title}</div>
+          <ul className={styles.summaryList}>
+            {card.examples.map((ex, j) => (
+              <li key={j}>{ex}</li>
             ))}
           </ul>
-          <div className={styles.rulesQuote}>
-            “These rules ran in production for years. None of them are in any spec.”
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <figure className={styles.figure}>
+      {/* No internal title — the slide H2 already carries it. We keep the
+          italic subtitle as a one-line orientation under the slide title. */}
+      <header className={styles.header}>
+        <div className={styles.subtitle}>{t.subtitle}</div>
+      </header>
+
+      {twoColumn ? (
+        <div className={styles.twoColumn}>
+          <div className={styles.colLeft}>
+            {tableBlock}
+            {summaryBlock}
+          </div>
+          <div className={styles.colRight}>
+            {rulesBlock}
           </div>
         </div>
+      ) : (
+        <>
+          {tableBlock}
+          {rulesBlock}
+          {summaryBlock}
+        </>
       )}
-
-      {showSummary && (
-        <div className={styles.summaryRow}>
-          {SUMMARY_CARDS.map((card, i) => (
-            <div key={i} className={styles.summaryCard}>
-              <div className={styles.summaryNumber}>{card.number}</div>
-              <div className={styles.summaryTitle}>{card.title}</div>
-              <ul className={styles.summaryList}>
-                {card.examples.map((ex, j) => (
-                  <li key={j}>{ex}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      )}
-
     </figure>
   );
 }
