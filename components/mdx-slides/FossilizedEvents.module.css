@@ -1,0 +1,124 @@
+/* FossilizedEvents — DB column -> Domain Event mapping list.
+   Each row is a single, scannable line: column on the left, arrow,
+   event name in the middle, "never published" badge on the right. */
+
+.figure {
+  --fe-text: var(--color-text, #111);
+  --fe-text-muted: var(--color-text-muted, #999);
+  --fe-bg: var(--color-bg, #FFF);
+  --fe-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --fe-amber: #C9A96E;
+  --fe-red: #B26464;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px auto;
+  width: 100%;
+  max-width: 640px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  border: 2px solid var(--fe-text);
+  padding: 18px 22px;
+  background: var(--fe-bg);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--fe-text);
+}
+
+.tableHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fe-text);
+}
+
+.tableIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.tableName {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.fossilLabel {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fe-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 160px 18px 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--fe-text-muted);
+  font-size: 14px;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.column {
+  color: var(--fe-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.arrow {
+  color: var(--fe-text-muted);
+  font-weight: 800;
+  text-align: center;
+  font-size: 16px;
+}
+
+.event {
+  color: var(--fe-text);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fe-red);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.punchline {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid var(--fe-amber);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--fe-text);
+  letter-spacing: 0.02em;
+}
+
+.followup {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fe-text-muted);
+  font-style: italic;
+}

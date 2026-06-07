@@ -362,3 +362,37 @@
 .colRight .summaryList li:last-child::after {
   content: "";
 }
+
+/* ── splitSummary variant (Rosetta Stone "what we found" reveal) ──── */
+/* When v=3 is split into two beats, the second beat is just the three
+   summary cards as a centerpiece reveal. Cards run BIG and horizontal,
+   sized to read from the back row. */
+
+.splitSummaryWrap .summaryRow {
+  margin-top: 0;
+  gap: 24px;
+}
+
+.splitSummaryWrap .summaryCard {
+  padding: 32px 28px;
+}
+
+.splitSummaryWrap .summaryNumber {
+  font-size: 96px;
+  margin-bottom: 12px;
+}
+
+.splitSummaryWrap .summaryTitle {
+  font-size: 14px;
+  margin-bottom: 16px;
+  letter-spacing: 0.12em;
+}
+
+.splitSummaryWrap .summaryList {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.splitSummaryWrap .summaryList li {
+  padding: 3px 0;
+}

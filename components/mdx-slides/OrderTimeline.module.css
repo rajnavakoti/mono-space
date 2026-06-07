@@ -1,0 +1,155 @@
+/* OrderTimeline — vertical event timeline with service-colored tags
+   and a dramatic gap break. Designed for the Exhibit D "Trace one
+   entity" slide where the 87-second gap is the story. */
+
+.figure {
+  --ot-text: var(--color-text, #111);
+  --ot-text-muted: var(--color-text-muted, #999);
+  --ot-bg: var(--color-bg, #FFF);
+  --ot-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --ot-red: #B26464;
+  --ot-green: #6E9B6E;
+  --ot-amber: #C9A96E;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 22px auto;
+  width: 100%;
+  max-width: 760px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.timeline {
+  border: 2px solid var(--ot-text);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 130px 130px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 18px;
+  border-bottom: 1px dotted var(--ot-text-muted);
+  font-size: 13px;
+}
+
+.timeline > div:last-child .row {
+  border-bottom: none;
+}
+
+/* Phase tints — sync rows pick up a faint red left edge, async rows
+   pick up green. Subtle so the service-tag colours stay the eye-catch. */
+.rowSync {
+  border-left: 4px solid var(--ot-red);
+  background: color-mix(in srgb, var(--ot-red) 4%, transparent);
+}
+
+.rowAsync {
+  border-left: 4px solid var(--ot-green);
+  background: color-mix(in srgb, var(--ot-green) 4%, transparent);
+}
+
+.rowNeutral {
+  border-left: 4px solid transparent;
+}
+
+.timestamp {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ot-text);
+  letter-spacing: 0.02em;
+}
+
+.serviceTag {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 2px solid currentColor;
+  text-align: center;
+}
+
+/* Service-specific colors. Each service picks up the same tone every
+   time it appears in the timeline — so the audience reads the
+   recurring participant at a glance. */
+.serviceShipment {
+  color: #B26464;
+  background: color-mix(in srgb, #B26464 8%, transparent);
+}
+
+.serviceInventory {
+  color: #8C78A5;
+  background: color-mix(in srgb, #8C78A5 8%, transparent);
+}
+
+.serviceInvoicing {
+  color: #C9A96E;
+  background: color-mix(in srgb, #C9A96E 10%, transparent);
+}
+
+.serviceTracking {
+  color: #5A8AB5;
+  background: color-mix(in srgb, #5A8AB5 8%, transparent);
+}
+
+.serviceCarrier {
+  color: #6E9B6E;
+  background: color-mix(in srgb, #6E9B6E 8%, transparent);
+}
+
+.serviceConsignee {
+  color: #888;
+  background: color-mix(in srgb, #888 8%, transparent);
+}
+
+.serviceDefault {
+  color: var(--ot-text);
+  background: var(--ot-bg-muted);
+}
+
+.description {
+  font-size: 13px;
+  color: var(--ot-text);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* The gap row — visual hard break. Two horizontal rules around a label
+   sitting in its own band so the audience reads "real time passes
+   here". */
+.gap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--ot-bg-muted);
+  border-top: 2px dashed var(--ot-text);
+  border-bottom: 2px dashed var(--ot-text);
+}
+
+.gapLine {
+  height: 2px;
+  background: var(--ot-text-muted);
+}
+
+.gapLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ot-text);
+  padding: 4px 12px;
+  background: var(--ot-bg);
+  border: 2px solid var(--ot-text);
+}
+
+.caption {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ot-text);
+  font-style: italic;
+  line-height: 1.45;
+}

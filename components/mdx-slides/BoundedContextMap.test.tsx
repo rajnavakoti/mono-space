@@ -35,23 +35,38 @@ describe("BoundedContextMap", () => {
     expect(stricken.getAttribute("class")).toMatch(/regionFindingStrike/);
   });
 
-  it("at v3 Exhibit C findings — aggregates + extractable + BLOCKED verdicts", () => {
+  it("at v3 Exhibit C findings — aggregates discovered + extraction blockers + BLOCKED verdicts", () => {
     render(<BoundedContextMap version="3" />);
     // Four aggregates surfaced by C's transaction clustering — each
     // named as the first finding line on the owning context.
     expect(screen.getByText("Order Aggregate")).toBeInTheDocument();
-    expect(screen.getByText("Delivery Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Delivery Aggregate ✓")).toBeInTheDocument();
     expect(screen.getByText("Payment Aggregate")).toBeInTheDocument();
     expect(screen.getByText("Reservation Aggregate")).toBeInTheDocument();
-    // 'extractable ✓' appears on BOTH Carrier and Consignee.
-    expect(screen.getAllByText("extractable ✓").length).toBeGreaterThanOrEqual(2);
+    // "extractable ✓" used to appear on Carrier + Consignee — replaced
+    // with honest "ext blocked" verdicts now that the cross-service
+    // co-writes (Shipment->Carrier) and Conformist consumers (3 services
+    // bypassing Consignee's API) make true extraction impossible at v=3.
+    expect(screen.queryByText("extractable ✓")).not.toBeInTheDocument();
+    expect(screen.getByText("ext blocked by Ship")).toBeInTheDocument();
+    // Consignee shows just "ext blocked" — the "3 Conformists" detail
+    // lives in the v=2 legend strip and speaker notes (it doesn't fit
+    // inside the smaller Consignee circle).
+    expect(screen.getByText("ext blocked")).toBeInTheDocument();
     // BLOCKED ✗ appears on Shipment AND Inventory.
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
 
-  it("at v5 Consignee flips to clean ✓ (tech-debt '0 incidents' lives in legend, not circle)", () => {
+  it("at v5 Consignee flips to a qualified clean — boundary holds, Conformists still remain", () => {
     render(<BoundedContextMap version="5" />);
-    expect(screen.getByText("clean ✓")).toBeInTheDocument();
+    // Earlier "clean ✓" was too triumphant — the Bounded Context holds
+    // under load but the 3 Conformist consumers from Exhibit B haven't
+    // been fixed. The qualified verdict ("clean boundary" + "3
+    // Conformists remain") keeps the visual progress (still green
+    // status) while staying intellectually honest.
+    expect(screen.getByText("clean boundary")).toBeInTheDocument();
+    expect(screen.getByText("3 Conformists remain")).toBeInTheDocument();
+    expect(screen.queryByText("clean ✓")).not.toBeInTheDocument();
     // '0 incidents' is a tech-debt metric — should NOT appear inside
     // the Consignee circle.
     expect(screen.queryByText("0 incidents")).not.toBeInTheDocument();
@@ -70,7 +85,12 @@ describe("BoundedContextMap", () => {
   it("at v7 Shipment + Carrier merge into Shipment Fulfilment blob with summary band (was v8)", () => {
     render(<BoundedContextMap version="7" />);
     expect(screen.getByText("SHIPMENT FULFILMENT")).toBeInTheDocument();
-    expect(screen.getByText(/Shipment ⊕ Carrier/)).toBeInTheDocument();
+    // "Shipment ⊕ Carrier" now appears twice — inside the merged blob
+    // AND in the legend strip above the canvas — so we assert at least
+    // one match instead of exactly one.
+    expect(
+      screen.getAllByText(/Shipment ⊕ Carrier/).length,
+    ).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Remembered")).toBeInTheDocument();
     expect(screen.getByText("Discovered")).toBeInTheDocument();
   });

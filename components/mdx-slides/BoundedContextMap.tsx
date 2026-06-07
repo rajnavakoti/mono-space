@@ -202,9 +202,15 @@ function shipmentStatus(v: number): Status {
 }
 function carrierStatus(v: number): Status {
   if (v === 0) return "gray";
-  if (v === 1 || v === 2) return "amber"; // dead boundary suspicion
-  if (v >= 3 && v <= 6) return "green";   // extractable from v0.3 transactions onward
-  return "red";                            // v0.7: not actually rendered as separate; merge happens
+  // v=1-6: amber. The Delivery Aggregate is internally clean from C
+  // onward, but cross-service co-writes from Shipment (2,103/wk at the
+  // transaction level, hardening across every lens) mean Carrier
+  // cannot be extracted independently. Calling it "extractable ✓" at
+  // v=3 would contradict the evidence the audience already saw three
+  // slides ago. The dramatic reveal at v=7 is git NAMING the
+  // relationship (Shared Kernel) — not "discovering" the block.
+  if (v >= 1 && v <= 6) return "amber";
+  return "red"; // v=7: handled by the merged Shipment Fulfilment blob
 }
 function consigneeStatus(v: number): Status {
   if (v === 0) return "gray";
@@ -240,15 +246,20 @@ function shipmentFindings(v: number): string[] {
   return f;
 }
 function carrierFindings(v: number): string[] {
-  // v0.3 — name Carrier's aggregate emerging from C; verdict carries.
-  // Renamed from 'Shipment Aggregate' to 'Delivery Aggregate' — the
-  // underlying tables are called shipments/tracking_events but Carrier's
-  // job is physical delivery tracking, and 'Shipment Aggregate inside
-  // Carrier' reads broken on stage given there's also a Shipment service.
-  if (v === 3) return ["Delivery Aggregate", "↔ circular", "extractable ✓"];
+  // v0.3 — name Carrier's aggregate emerging from C; honest verdict
+  // qualifies it. "Delivery Aggregate" reads as a DDD finding (the
+  // commit cluster IS an aggregate); "ext blocked by Ship" reads as
+  // the readiness verdict that respects the cross-service co-writes
+  // we just established this exhibit (2,103/wk).
+  if (v === 3) return ["Delivery Aggregate ✓", "ext blocked by Ship"];
+
   const f: string[] = [];
-  if (v >= 1) f.push("↔ circular");
-  if (v >= 3 && v <= 6) f.push("extractable ✓");
+  // v=1 = Exhibit A's circular-refs hypothesis. By v=2 the database
+  // lens has hardened it into "Shipment coupling" — same finding,
+  // stronger evidence.
+  if (v === 1) f.push("↔ circular");
+  else if (v >= 2) f.push("↔ Ship coupling");
+  if (v >= 4 && v <= 6) f.push("ext blocked");
   // Incident count '17 incidents · w/ Ship' at v>=5 deliberately NOT
   // pushed — tech-debt metric. The legend carries it as evidence;
   // the circle shows only DDD verdicts.
@@ -263,13 +274,19 @@ function consigneeFindings(v: number): string[] {
   // keep the model clean.
   if (v === 2) return ["0 events", "~~published language?~~", "facade"];
   // v0.3-v0.4 — facade verdict carries forward without the struck-through
-  // historical hypothesis. C's transaction lens adds the extractable
-  // verdict — Consignee's internal commits are clean, so the context
-  // can be extracted (the 3 consumer bypasses are a separate fix).
-  if (v >= 3 && v <= 4) return ["0 events", "facade", "extractable ✓"];
-  // v0.5+ — confirmed clean. 'clean ✓' carries the DDD verdict; the
-  // raw '0 incidents' metric belongs in the legend, not the circle.
-  return ["clean ✓"];
+  // historical hypothesis. Consignee's INTERNAL commits are clean (C's
+  // transaction lens) but the 3 Conformist consumers established at B
+  // block independent extraction. The Conformist detail lives in the
+  // v=2 legend strip + speaker notes; the circle just carries the
+  // verdict so the text fits inside the smaller Consignee shape.
+  if (v >= 3 && v <= 4) return ["0 events", "facade", "ext blocked"];
+  // v0.5+ — incident lens reveals 0 incidents at this boundary, so the
+  // Bounded Context holds operationally. BUT the 3 Conformist consumers
+  // from Exhibit B haven't been fixed — they're still reading the table
+  // directly. Same intellectual-honesty discipline as Carrier at v=3:
+  // the boundary IS clean (visual stays green), but the integration
+  // pattern still needs work, so the text carries the qualifier.
+  return ["clean boundary", "3 Conformists remain"];
 }
 function inventoryFindings(v: number): string[] {
   // v0.2 — Exhibit B surfaces the disputed-aggregate hypothesis from the
@@ -430,48 +447,62 @@ function buildState(v: BoundedContextMapVersion): ModelState {
     legend = {
       header: "Hypothesis · from Exhibit A",
       items: [
-        { marker: "amber", text: "Shipment ↔ Carrier · dead boundary?  (duplicate schema + circular refs)" },
+        { marker: "amber", text: "Shipment ↔ Carrier · dead boundary? (duplicate schema + circular refs)" },
+        { marker: "amber", text: "Consignee = candidate Open Host Service · Published Language" },
+        { marker: "amber", text: "Shipment = suspected Aggregate root (god entity)" },
+        { marker: "amber", text: "Tracking = candidate Generic Subdomain" },
       ],
     };
   } else if (v === 2) {
     legend = {
       header: "Database-layer findings · from Exhibit B",
       items: [
-        { marker: "red", text: "3 services bypass Consignee API · facade boundary confirmed" },
-        { marker: "red", text: "Shipment ↔ Inventory · shared write on inventory_reserved (2 writers)" },
+        { marker: "red", text: "3 Conformist consumers bypass Consignee API · published-language facade" },
+        { marker: "red", text: "Shipment ↔ Inventory · disputed Aggregate (2 writers on inventory_reserved)" },
       ],
     };
   } else if (v === 3) {
     legend = {
       header: "Transaction-layer findings · from Exhibit C",
       items: [
+        { marker: "amber", text: "4 Aggregates discovered: Order · Delivery · Payment · Reservation" },
         { marker: "red", text: "Shipment ↔ Carrier · dead boundary proved (2,103 co-writes/wk)" },
         { marker: "red", text: "Shipment ↔ Inventory · extraction blocker (4,512/wk · 580ms same commit)" },
       ],
     };
   } else if (v === 4) {
     legend = {
-      header: "Runtime flow",
+      header: "Runtime flow · from Exhibit D",
       items: [
-        { marker: "red", text: "Sync chain · 2s — Shipment → Inventory → Invoicing" },
-        { marker: "green", text: "Async gap · 87s — → Carrier" },
+        { marker: "red", text: "Sync chain · 2s — Shipment → Inventory → Invoicing · extraction blocker" },
+        { marker: "green", text: "Async gap · 87s — → Carrier · natural boundary" },
+        { marker: "amber", text: "Tracking confirmed as Generic Subdomain (silent participant)" },
       ],
     };
   } else if (v === 5) {
     legend = {
-      header: "Incident clustering · coupling strength",
+      header: "Incident clustering · from Exhibit E",
       items: [
         { marker: "red", text: "Shipment ↔ Inventory · 23 incidents · 4 SEV1 · structural coupling" },
         { marker: "red", text: "Shipment ↔ Carrier · 17 incidents · structural coupling" },
         { marker: "red", text: "Shipment ↔ Invoicing · 14 incidents · moderate coupling" },
-        { marker: "green", text: "Consignee boundary · 0 incidents · clean" },
+        { marker: "green", text: "Consignee = clean Bounded Context (0 incidents)" },
       ],
     };
   } else if (v === 6) {
     legend = {
       header: "Discovery · from Exhibit F",
       items: [
-        { marker: "purple", text: "Returns / Policy revealed by DEL-E011 in Carrier — a new bounded context" },
+        { marker: "purple", text: "Returns / Policy revealed by DEL-E011 — a new Bounded Context" },
+        { marker: "amber", text: "Fix path: Anti-Corruption Layer between Carrier and Returns / Policy" },
+      ],
+    };
+  } else if (v === 7) {
+    legend = {
+      header: "Reconciliation · from Exhibit G",
+      items: [
+        { marker: "red", text: "Shipment ⊕ Carrier · resolving an undeclared Shared Kernel (72% co-change)" },
+        { marker: "amber", text: "Three DDD options: govern · split with ACL · merge — the 72% says merge" },
       ],
     };
   }

@@ -104,7 +104,12 @@ export default async function PresentationPage({ params }: PageProps) {
         )}
 
         <Suspense>
-          <PresentationViewer slides={slideNodes} notes={notes} slug={slug} />
+          <PresentationViewer
+            slides={slideNodes}
+            notes={notes}
+            slug={slug}
+            hideSlideCount={mdxPres.frontmatter.hideSlideCount}
+          />
         </Suspense>
       </div>
     );
