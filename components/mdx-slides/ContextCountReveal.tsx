@@ -103,13 +103,13 @@ function layoutCircles(n: number): { cx: number; cy: number; r: number }[] {
     ];
   if (n === 7)
     return [
-      { cx: cx - 130, cy: cy - 75, r: 38 },
-      { cx: cx, cy: cy - 90, r: 38 },
-      { cx: cx + 130, cy: cy - 75, r: 38 },
-      { cx: cx - 70, cy: cy + 10, r: 38 },
-      { cx: cx + 70, cy: cy + 10, r: 38 },
-      { cx: cx - 90, cy: cy + 90, r: 38 },
-      { cx: cx + 90, cy: cy + 90, r: 38 },
+      { cx: cx - 130, cy: cy - 75, r: 46 },
+      { cx: cx, cy: cy - 90, r: 46 },
+      { cx: cx + 130, cy: cy - 75, r: 46 },
+      { cx: cx - 78, cy: cy + 10, r: 46 },
+      { cx: cx + 78, cy: cy + 10, r: 46 },
+      { cx: cx - 95, cy: cy + 95, r: 46 },
+      { cx: cx + 95, cy: cy + 95, r: 46 },
     ];
   // n>=8 fallback — even distribution on a ring.
   const r = 38;
@@ -147,8 +147,9 @@ function Panel({ label, source, contexts, tone }: PanelProps) {
       >
         {positions.map((p, i) => {
           // Font shrinks for tighter clusters so labels stay readable
-          // without overflowing the circle outline.
-          const fontSize = p.r >= 50 ? 14 : p.r >= 42 ? 12 : 11;
+          // without overflowing the circle outline. Tuned so text feels
+          // proportional to the circle rather than dominating it.
+          const fontSize = p.r >= 55 ? 13 : p.r >= 45 ? 11 : 10;
           // Long labels with a `/` (e.g. "Returns/Policy") split onto
           // two stacked lines so they actually fit inside the circle.
           const text = contexts[i];
