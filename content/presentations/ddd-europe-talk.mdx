@@ -1247,12 +1247,12 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
   leftAccent="amber"
   rightLabel="What the system encoded"
   rightSource="From forensic evidence"
-  rightContexts="Order|Delivery|Invoicing|Inventory|Returns/Policy|Customer|Warehouse"
+  rightContexts="Order|Delivery|Invoicing|Inventory|Returns/Policy|Customer|Tracking"
   rightAccent="green"
 />
 
 <Notes>
-"[SLOW DOWN. This is the moment.] Two models. Side by side. The team remembered 3 contexts. The system encoded 7. Delivery is its own context — not part of Order. Invoicing has its own lifecycle. Returns and Policy is a missing context — its rules are scattered. Customer is a source of truth nobody actually uses through its API. And Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year. [Pause. Let it land. This is the conference clip.]"
+"[SLOW DOWN. This is the moment.] Two models. Side by side. The team remembered 3 contexts. The system encoded 7. [Pause. Let the audience read the boxes for 3-5 seconds.] What's new on the right that isn't on the left. Delivery is its own context — not part of Order. Invoicing has its own lifecycle including dunning — also not part of Order. Returns and Policy is a missing context — its rules are scattered across services, surfaced by a single error code. Customer is a source of truth nobody actually uses through its API — the team remembered it, but they didn't realize how leaky the boundary was. Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year. And what the team called Warehouse — that's actually Inventory. The system never had a Warehouse context. Then look at the last box on the right — Tracking. A Generic Subdomain. The team didn't even REMEMBER Tracking. It's been silently participating in every order lifecycle transition the whole time. Nobody put it on a diagram. The error codes knew. The logs knew. The system encoded it for years. [Pause. Let it land. This is the conference clip.]"
 </Notes>
 
 ---
