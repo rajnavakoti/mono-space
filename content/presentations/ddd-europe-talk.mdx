@@ -1238,27 +1238,6 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
 
 ---
 
-## Extraction Playbook
-
-<Split ratio="1:1">
-<div>
-
-<ContentCard title="THE DECISION" accent="amber" items="Causing incidents + shared by 3+ services → EXTRACT (high priority), Causing incidents + simpler coupling → EXTRACT (medium priority), Blocking team velocity but no incidents yet → WRAP with ACL first, Clean boundary confirmed by 3+ exhibits → LEAVE ALONE" />
-
-</div>
-<div>
-
-<ContentCard title="THE SEQUENCE" accent="green" items="1. Strangle reads — API gateway in front of shared tables, 2. Introduce events — replace synchronous co-writes, 3. Shadow traffic — run new path in parallel + compare, 4. Feature-flag cutover — 1% → 10% → 50% → 100%" />
-
-</div>
-</Split>
-
-<Notes>
-"So what do we do with this? Finding the boundaries is half the work. Extracting them safely is the other half. The decision: if it's causing incidents and shared by many services — extract. If it's blocking velocity but no incidents yet — wrap with an Anti-Corruption Layer first. If it's clean — leave it alone. The sequence: strangle reads first, then introduce events, then shadow traffic, then feature-flag the cutover. You don't rewrite. You strangle. Incrementally. With evidence telling you exactly where to cut. Now — let's zoom back out and reconcile this with what the team remembered."
-</Notes>
-
----
-
 ## The Remembered Domain vs The Encoded Domain
 
 <Split ratio="1:1">
@@ -1356,6 +1335,8 @@ You'll have aggregates, runtime behaviour, and a fossilized event catalog.
 
 ---
 
+## The thesis
+
 <Callout>
 **The domain isn't in the documentation. It isn't in people's heads. It's in the system.**
 
@@ -1372,6 +1353,16 @@ SLOW DOWN. This is the thesis statement — the head of the close. Deliver each 
 
 ---
 
+## One last thing
+
+<Split ratio="2:3">
+<div>
+
+<SlideImage src="/pics/pollo 1.jpg" alt="The pollo menu from the opening — back as the bookend" />
+
+</div>
+<div>
+
 > *A menu.*
 >
 > *A chicken symbol.*
@@ -1387,6 +1378,9 @@ SLOW DOWN. This is the thesis statement — the head of the close. Deliver each 
 Your legacy system has been leaving artifacts on the table for years.
 
 <mark>You already know how to read them.</mark>
+
+</div>
+</Split>
 
 <Notes>
 "[Click to this slide. The minimal slide is the heart of the close — let the contrast with everything that came before do the work.] We started with a restaurant menu and a word I didn't know. The method I used to figure out that pollo was chicken — that's the same method you just watched applied to a fifteen-year-old delivery system. Observe the artifacts. Make inferences. Validate against evidence. Your system has been narrating itself the entire time. The domain is in there. You just need to know what to look for. [Pause. Let it land. Then click forward to the checklist for the practical takeaway.]"
