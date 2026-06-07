@@ -34,6 +34,8 @@ export { ApiFacadeContrast } from "./ApiFacadeContrast";
 export { ForeignKeyFan } from "./ForeignKeyFan";
 export { EvidenceStack } from "./EvidenceStack";
 export { FossilizedEvents } from "./FossilizedEvents";
+export { RuntimeFlow } from "./RuntimeFlow";
+export { OrderTimeline } from "./OrderTimeline";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -71,6 +73,8 @@ import { ApiFacadeContrast } from "./ApiFacadeContrast";
 import { ForeignKeyFan } from "./ForeignKeyFan";
 import { EvidenceStack } from "./EvidenceStack";
 import { FossilizedEvents } from "./FossilizedEvents";
+import { RuntimeFlow } from "./RuntimeFlow";
+import { OrderTimeline } from "./OrderTimeline";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -115,4 +119,6 @@ export const mdxSlideComponents = {
   ForeignKeyFan,
   EvidenceStack,
   FossilizedEvents,
+  RuntimeFlow,
+  OrderTimeline,
 };

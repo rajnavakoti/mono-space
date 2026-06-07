@@ -1,0 +1,156 @@
+/* RuntimeFlow — two stacked panels showing sync chain (red, blocking)
+   and async gap (green, decoupled). Designed for the Exhibit D slide
+   where the audience needs to see "5 services waiting for each other"
+   vs "2 services across a queue" at a glance. */
+
+.figure {
+  --rf-text: var(--color-text, #111);
+  --rf-text-muted: var(--color-text-muted, #999);
+  --rf-bg: var(--color-bg, #FFF);
+  --rf-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --rf-red: #B26464;
+  --rf-green: #6E9B6E;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 22px auto;
+  width: 100%;
+  max-width: 880px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.panel {
+  border: 2px solid var(--rf-text);
+  background: var(--rf-bg);
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.panelSync {
+  border-left: 6px solid var(--rf-red);
+}
+
+.panelAsync {
+  border-left: 6px solid var(--rf-green);
+}
+
+.panelLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rf-text-muted);
+  align-self: flex-start;
+}
+
+.chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.chainGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.box {
+  border: 2px solid var(--rf-text);
+  background: var(--rf-bg);
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rf-text);
+  white-space: nowrap;
+}
+
+.syncArrow {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--rf-red);
+  line-height: 1;
+  padding: 0 4px;
+}
+
+/* Async arrow is intentionally LONG — a dotted run plus the gap label
+   plus a single arrowhead — so the audience reads "there is a real
+   distance between these two services" without needing prose. */
+.asyncArrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  color: var(--rf-green);
+  font-weight: 800;
+}
+
+.asyncDots {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--rf-green);
+}
+
+.asyncGapLabel {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--rf-green);
+  background: color-mix(in srgb, var(--rf-green) 14%, transparent);
+  padding: 4px 10px;
+  border: 1px solid var(--rf-green);
+}
+
+.asyncArrowHead {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--rf-green);
+  line-height: 1;
+}
+
+.durationLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.durationNumber {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--rf-red);
+  letter-spacing: 0.04em;
+}
+
+.durationCaption {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--rf-text-muted);
+}
+
+.verdict {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 4px 12px;
+  margin-top: 4px;
+}
+
+.verdictRed {
+  color: var(--rf-red);
+}
+
+.verdictGreen {
+  color: var(--rf-green);
+}
