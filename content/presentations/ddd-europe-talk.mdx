@@ -291,16 +291,12 @@ Map who references whom — because the service that references everyone is your
 
 → **Consignee referenced by all**, references nobody. Clean upstream — but 0 events. Sync bottleneck?
 
-→ **Tracking** references all services but owns only `Notification` + `Template`. **No domain entities. Generic subdomain?**
-
----
+→ **Tracking** references everything but owns only infrastructure.
+</Callout>
 
 **Domain entities owned per service:**
 
-Shipment · Consignee · Inventory · Carrier · Invoicing each own **3–4** domain entities.
-
-**Tracking** owns **2 — `Notification` + `Template` only.** No order. No customer. No shipment. Notification infrastructure.
-</Callout>
+<RankedBars max="5" bars="Shipment · Order · OrderLine · OrderAudit::3::red|Consignee · Customer · CustomerAddress · Preferences::3::amber|Inventory · Warehouse · StockLevel · Reservation::3::amber|Carrier · Shipment · ShipmentStatus · TrackingEvent::3::amber|Invoicing · Invoice · Payment · Refund · CreditNote::4::amber|Tracking · Notification · Template (no domain entities)::2::green" />
 
 </div>
 </Split>
