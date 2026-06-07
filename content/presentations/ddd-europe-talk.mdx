@@ -340,8 +340,6 @@ Find the same concept in two services — because when both services model the s
 
 <BoundedContextMap version="1" />
 
-> *Hypothesis:* Consignee = candidate <mark>**Open Host Service**</mark> · <mark>**Published Language**</mark>. Shipment = suspected **Aggregate** root (god entity). Tracking = candidate **Generic Subdomain**.
-
 <Notes>
 "First hypothesis from doing Exhibit A. The activities we just walked through — picking one concept, opening the biggest schema, mapping who references whom, looking for duplicate schemas — that's what produced this map. Shipment shows as god entity, because the activity surfaced 12 borrowed fields in one schema. Shipment↔Carrier looks like a possible dead boundary, because we found two services owning the same Shipment concept. Consignee might be a published language — referenced by all, references nobody, but zero events means every consumer is synchronously coupled. In Evans's vocabulary that's a candidate Open Host Service with a Published Language — the upstream context everyone depends on. Whether the language is actually published or just leaked through the database is what Exhibit B will tell us. Tracking owns no domain entities — generic subdomain? Three black boxes — Carrier Routing, Customs, Returns Engine — no contracts surfaced for them, no evidence yet. Notice the language: 'might', 'looks like', 'could be'. Contracts alone don't confirm boundaries. They suggest hypotheses. The next exhibit checks them against the database."
 </Notes>
@@ -502,8 +500,6 @@ Find tables with multiple writers — because two writers to the same table mean
 
 <BoundedContextMap version="2" />
 
-> *Three <mark>**Conformist**</mark> consumers of Consignee* (Shipment · Carrier · Invoicing bypass the API). Inventory = **disputed Aggregate** (shared write).
-
 <Notes>
 "Update the model after the database lens. Consignee's published-language hypothesis from Exhibit A — struck through. Three services read its tables directly; the API boundary is a facade. Inventory turns red — two writers on inventory_reserved, disputed aggregate. The three dashed red lines visualise the database-layer read coupling that contracts hid. The line between Shipment and Inventory marks the shared-write boundary violation. The three black boxes still unknown. What commits together belongs together — transactions next."
 </Notes>
@@ -650,8 +646,6 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 ## Hypothesis v0.3 — what commits together. What blocks extraction.
 
 <BoundedContextMap version="3" />
-
-> *Four <mark>**Aggregates**</mark> discovered:* Order (in Shipment) · Delivery (in Carrier) · Payment (in Invoicing) · Reservation (in Inventory). Shipment ↔ Carrier = **dead boundary proved**.
 
 <Notes>
 "Update the model after the transaction lens. Four aggregates emerge from the commit patterns. Order Aggregate inside Shipment — orders, order_lines, order_audit. Delivery Aggregate inside Carrier — shipments, tracking_events. Payment Aggregate inside Invoicing — payment_ledger, payment_events. Reservation Aggregate inside Inventory — inventory_reserved, stock_levels. The database has been enforcing these consistency boundaries for years; nobody designed them on a whiteboard. Now the verdicts. Carrier turns green — extractable, clean internal transactions. Consignee also extractable — facade aside, its own commits are clean (the 3 consumer bypasses are a separate fix). Shipment picks up the BLOCKED label — cross-context co-writes to Carrier 2,103 a week and to Inventory 4,512 a week. Inventory BLOCKED for the shared-write reason. The Shipment-Carrier line hardens — what was an amber dotted hypothesis in A is now a red solid 'dead boundary proved'. The Shipment-Inventory line also hardens — 580 milliseconds in the same commit, extraction blocker. The three black boxes still unknown. Hypothesis v0.3 — what commits together, what blocks extraction. Keep an eye on Carrier's green light though — Exhibit G has something to say about it later. Runtime next."
@@ -870,8 +864,6 @@ The edge cases nobody mentioned in Event Storming:
 
 <BoundedContextMap version="4" />
 
-> *Tracking confirmed as <mark>**Generic Subdomain**</mark> (silent participant).* Sync chain (2s) Shipment → Inventory → Invoicing blocks extraction. Async gap (87s) to Carrier = natural boundary.
-
 <Notes>
 "Update the model after the runtime lens. Tracking's hypothesis from earlier — generic subdomain? — now confirmed as silent participant, observed in every order lifecycle, owns nothing. The sync chain Shipment → Inventory → Invoicing is the red ribbon — every step blocks the next, two seconds total. The 87-second async gap to Carrier is the green dotted line — already decoupled at runtime, easiest extraction point. And the Event Storming sequence from two years ago was wrong — production runs Inventory before Confirmation before Invoice, not Payment first. The team's mental model has been out of date. Three black boxes still unknown. Four lenses done — structure and behavior. Now — what does it cost when boundaries are wrong?"
 </Notes>
@@ -1037,8 +1029,6 @@ But zero incidents means the coupling hasn't hurt yet.
 
 <BoundedContextMap version="5" />
 
-> *Consignee = <mark>**clean Bounded Context**</mark> confirmed* (0 incidents across all pairs). Shipment cluster carries 54 incidents — every wrong boundary now has a price tag.
-
 <Notes>
 "Update the model after the incident lens. The Shipment-Inventory line gets thicker — 23 incidents, the worst cluster, four SEV1s. Shipment-Carrier thicker too — 17 incidents from the dead boundary. Shipment-Invoicing carries the sync chain cost — 14 incidents under load. Consignee turns green — confirmed clean by the incident data, zero failures across all pairs. The three black boxes still unknown. Hypothesis v0.5 — the cost of wrong boundaries. Each architectural finding from previous exhibits now has a price tag attached. Now — what business rules has the system been quietly enforcing? Error codes next."
 </Notes>
@@ -1156,8 +1146,6 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 ## Hypothesis v0.6 — business rules nobody documented. One new context discovered.
 
 <BoundedContextMap version="6" />
-
-> *<mark>**Returns / Policy**</mark> revealed* as a new **Bounded Context**. Fix path: <mark>**Anti-Corruption Layer**</mark> between Carrier and Returns / Policy until DEL-E011 moves home.
 
 <Notes>
 "Update the model after the error-code lens. A new context materialises — Returns / Policy — in purple, in place of the middle unknown blob. DEL-E011 traces from Carrier into this new context: the return-window policy lives in Carrier but belongs in Returns / Policy. Nobody designed Returns / Policy as a context. The error code told us the concern exists. Shipment carries forward its god-entity verdict; the high-frequency invariants from Exhibit F — price tolerance, split-shipment logic, the override escape hatch — back it up. The two remaining unknown blobs still don't have evidence. Six lenses done. One left — the one that records every decision every developer ever made. Change velocity next."
@@ -1322,8 +1310,6 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 ## Hypothesis v0.7 — seven lenses. One evidence-backed hypothesis.
 
 <BoundedContextMap version="7" />
-
-> *Shipment ⊕ Carrier = resolving an undeclared <mark>**Shared Kernel**</mark>* (72% co-change). Three DDD options: govern · split with **ACL** · merge. The 72% says merge is the honest move.
 
 <Notes>
 "Final update. Carrier flips from green extractable (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them: Shipment Fulfilment is the merged context. What we're actually doing here is naming a Shared Kernel that already existed in practice — Shipment and Carrier have been sharing state for years without admitting it. Three options exist in DDD vocabulary: keep the Shared Kernel and govern it explicitly, split it into two contexts with an Anti-Corruption Layer between them, or merge them into one bounded context. The 72% co-change number says splitting will fail; the merge is the honest move. The three unknown blobs — one of them is now Returns/Policy in purple, revealed by Exhibit F. The other two remain unknown. Hypothesis v0.7 — seven lenses, one evidence-backed hypothesis. The remembered domain said three contexts. The encoded domain shows seven. Now we reconcile."

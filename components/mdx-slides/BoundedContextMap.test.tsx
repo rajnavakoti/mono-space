@@ -70,7 +70,12 @@ describe("BoundedContextMap", () => {
   it("at v7 Shipment + Carrier merge into Shipment Fulfilment blob with summary band (was v8)", () => {
     render(<BoundedContextMap version="7" />);
     expect(screen.getByText("SHIPMENT FULFILMENT")).toBeInTheDocument();
-    expect(screen.getByText(/Shipment ⊕ Carrier/)).toBeInTheDocument();
+    // "Shipment ⊕ Carrier" now appears twice — inside the merged blob
+    // AND in the legend strip above the canvas — so we assert at least
+    // one match instead of exactly one.
+    expect(
+      screen.getAllByText(/Shipment ⊕ Carrier/).length,
+    ).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Remembered")).toBeInTheDocument();
     expect(screen.getByText("Discovered")).toBeInTheDocument();
   });
