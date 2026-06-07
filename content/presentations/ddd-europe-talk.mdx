@@ -425,15 +425,12 @@ Find tables with multiple writers — because two writers to the same table mean
 </div>
 <div>
 
-<Callout type="warning">
-**🚩 The key distinction**
-
-**READ coupling = dependency.** Manageable. No data corruption.
-
-**WRITE coupling = boundary violation.** Two aggregate owners. Race conditions. 3 AM pages.
-
-→ `inventory_reserved` has **2 WRITERS**. Shipment and Inventory both believe they own reservations.
-</Callout>
+<WriteConflictDiagram
+  writers="Shipment Service|Inventory Service"
+  table="inventory_reserved"
+  badge="⚠ 2 writers · disputed Aggregate"
+  caption="Both services believe they own the Reservation. Race conditions live here."
+/>
 
 </div>
 </Split>
