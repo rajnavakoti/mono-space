@@ -246,8 +246,14 @@
   white-space: pre;
 }
 
+/* Code-block highlight bands — uses the same amber-tint as the deck's
+   <mark> and CompareTable highlights so the visual language stays
+   consistent. Bold weight makes the highlighted lines read at a glance
+   even on the small in-slide font size. */
 .codeHighlightLine {
-  background-color: var(--color-surface-hover);
+  background-color: color-mix(in srgb, var(--color-accent) 26%, transparent);
+  font-weight: 800;
+  color: var(--color-text);
   display: block;
   margin: 0 calc(-1 * var(--space-lg));
   padding: 0 var(--space-lg);
