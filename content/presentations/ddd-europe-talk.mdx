@@ -326,14 +326,14 @@ Look for duplicate schemas — because same concept with two owners means the <m
 
 → **Two duplicate schemas**: `Shipment` / `ShipmentInfo` and `Invoice` / `Invoice`.
 
-→ Merge or build an ACL.
+→ *Dead boundary suspected. Validate against the database next.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'sent' and 'disputed.' Two duplicate schemas. Two fictional boundaries. Merge into one context or build a proper anti-corruption layer."
+"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'sent' and 'disputed.' Two duplicate schemas. Two suspected dead boundaries. But the contract alone can't confirm that — what looks like a duplicate could still be intentional separation for different concerns. The database lens will tell us whether the data layer agrees with this hypothesis. We don't prescribe fixes yet — by Act 3, when we've worked all seven lenses, we'll know whether the right move is to merge these contexts, build an ACL between them, or leave them alone."
 </Notes>
 
 ---
