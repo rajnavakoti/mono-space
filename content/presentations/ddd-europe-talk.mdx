@@ -1154,53 +1154,6 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
 
 ---
 
-## Compare git evidence to previous exhibits
-
-> Compare git evidence to previous exhibits — because <mark>cross-service co-change confirms or overrides earlier conclusions, and solo-changing files are your reference for what good separation looks like.</mark>
-
-<Split ratio="1:1">
-<div>
-
-<Callout type="danger">
-**🔴 Coupled in git**
-
-**OrderController + ShipmentService** — 72%
-→ dead boundary confirmed by 6 exhibits now.
-
-**DeliveryScheduler + InventoryChecker** — 68%
-→ hidden dependency. Git found what contracts didn't.
-
-**PricingEngine + OrderValidator** — 54%
-→ extract last. Stabilize the interface before separating.
-</Callout>
-
-</div>
-<div>
-
-<Callout type="tip">
-**🟢 Independent in git**
-
-**CustomerAddressValidator** — 89% solo
-→ Consignee IS independent. Confirmed: A, B, C, E, G.
-
-**CarrierRateCalculator** — 94% solo
-→ well-encapsulated, clean boundary.
-
-**NotificationRenderer** — 91% solo
-→ infrastructure, correctly isolated.
-
-*These are your reference points for what good separation looks like.*
-</Callout>
-
-</div>
-</Split>
-
-<Notes>
-"Compare git evidence to previous exhibits — because cross-service co-change confirms or overrides earlier conclusions, and solo-changing files are your reference for what good separation looks like. On the left — coupled. OrderController and ShipmentService at 72% — the dead boundary, now confirmed by six exhibits. DeliveryScheduler and InventoryChecker at 68% — a hidden dependency that none of the previous six exhibits caught. Git found it. PricingEngine and OrderValidator at 54% — if you try to extract pricing first, you'll be changing two services in lockstep for every feature. Extract it last. On the right — what independence looks like. CustomerAddressValidator changes alone 89% of the time. CarrierRateCalculator 94%. NotificationRenderer 91%. These are your reference points. When you're deciding whether two things belong together, compare their co-change rate to these baselines."
-</Notes>
-
----
-
 ## Determine extraction order
 
 > *Start with the least coupled. End with the most entangled.*
@@ -1248,7 +1201,7 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
 </Split>
 
 <Notes>
-"Determine extraction order — because git tells you which services to extract first and which to tackle last. Start with Consignee — 89% solo, genuinely independent, extract first. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
+"Determine extraction order — because git tells you which services to extract first and which to tackle last. For reference before we read the order — the files that change ALONE in this codebase are your baseline for what good separation looks like. CustomerAddressValidator at 89% solo. CarrierRateCalculator at 94%. NotificationRenderer at 91%. Anything co-changing significantly more than that is a coupling signal. Now the order. Start with Consignee — 89% solo, genuinely independent, extract first. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
 </Notes>
 
 ---
