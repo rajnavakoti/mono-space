@@ -975,9 +975,12 @@ But zero incidents means the coupling hasn't hurt yet.
 
 > Rank every error code by frequency — because <mark>the most-thrown codes are the business rules nobody documented.</mark>
 
+<Split ratio="3:2">
+<div>
+
 <CompareTable colWeights="1|1|3|2" headers="Service|Codes|Top codes · annual throws|Notes" rows="Shipment (ORD-)|47|ORD-E003 · **4,102** · price variance|**business rules**||Carrier (DEL-)|32|DEL-E011 · **3,420** · return window|**misplaced concern?**||Invoicing (INV-)|28|INV-E001 · 1,823 · invoice tolerance|**policies**||Inventory (STK-)|15|STK-E004 · 892 · stock threshold|resource limits||Consignee (CST-)|8|CST-E001 · 412 · validation|clean ✓||Tracking (TRK-)|4|TRK-E001 · 98 · delivery failure|infra only" totalsRow="TOTAL|**134 codes**|Top 10 = ~60% of throws|12 months data" />
 
-<Split ratio="1:1">
+</div>
 <div>
 
 <Callout type="warning">
@@ -987,9 +990,6 @@ But zero incidents means the coupling hasn't hurt yet.
 
 The 2% lives nowhere in documentation. Fires 11 times a day. *Does your pricing manager know it exists?*
 </Callout>
-
-</div>
-<div>
 
 <Callout type="warning">
 **🟠 ORD-E031 · 2,156/year**
@@ -1018,17 +1018,19 @@ Validates across warehouses, carriers, and orders — *orchestration logic nobod
 <Callout type="warning">
 **🟡 DEL-E011 · 412/year**
 
-"Return window validation"
+"Return window validation" — Electronics = 30 days · Clothing = 14 days · Perishable = none.
 
-→ Electronics = 30 days
-→ Clothing = 14 days
-→ Perishable = none
+**The prefix shows where the rule LIVES. The content shows where it BELONGS.**
 
-**Lives in `DEL-` (Carrier) · belongs in Returns / Policy.**
+<FlowRow>
+  <FlowBox>DEL- (Carrier)</FlowBox>
+  <FlowArrow />
+  <FlowBox accent>ACL</FlowBox>
+  <FlowArrow />
+  <FlowBox success>Returns / Policy</FlowBox>
+</FlowRow>
 
-The prefix shows where the rule lives. The content shows where it belongs.
-
-*Hypothesis — take it to domain experts. Fix is an Anti-Corruption Layer between Carrier and Returns/Policy until the rule moves home.*
+*Evans's fix path — Anti-Corruption Layer wraps Carrier's rule while Returns/Policy is built, then the rule moves home.*
 </Callout>
 
 </div>
