@@ -54,7 +54,38 @@ export function WriteConflictDiagram({
         ))}
       </div>
       <div className={styles.tableBox}>
-        <div className={styles.tableName}>{table}</div>
+        <div className={styles.tableNameRow}>
+          {/* Small cylinder database icon — stroked, no fill, so it
+              picks up the surrounding color via currentColor. */}
+          <svg
+            className={styles.tableIcon}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <ellipse
+              cx="12"
+              cy="5"
+              rx="9"
+              ry="2.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            />
+            <path
+              d="M3 5 L3 19 A9 2.5 0 0 0 21 19 L21 5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            />
+            <path
+              d="M3 12 A9 2.5 0 0 0 21 12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            />
+          </svg>
+          <span className={styles.tableName}>{table}</span>
+        </div>
         {badge && <div className={styles.badge}>{badge}</div>}
       </div>
       {caption && <div className={styles.caption}>{caption}</div>}

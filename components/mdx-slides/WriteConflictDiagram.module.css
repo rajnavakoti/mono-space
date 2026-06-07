@@ -78,6 +78,24 @@
   min-width: 320px;
 }
 
+/* Icon + name on one row, vertically centred. The icon picks up the
+   table-name colour via currentColor so the cylinder reads as a single
+   visual unit with the table identifier. */
+.tableNameRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--wcd-text);
+}
+
+.tableIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  /* Slight nudge so the cylinder centres on the text x-height. */
+  margin-top: -2px;
+}
+
 .tableName {
   font-size: 20px;
   font-weight: 800;
