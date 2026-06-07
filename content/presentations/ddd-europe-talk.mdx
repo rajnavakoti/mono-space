@@ -279,7 +279,7 @@ Map who references whom — because the service that references everyone is your
 <Split ratio="3:2">
 <div>
 
-<HeatmapMatrix labels="Ship|Cons|Inv|Car|Inv$|Track" rowNames="Shipment|Consignee|Inventory|Carrier|Invoicing|Tracking" cells="-|x|x|x|x|.||.|-|.|.|.|.||x|x|-|.|.|.||x|x|x|-|.|.||x|x|.|.|-|.||x|x|.|x|x|-" highlightRow="Shipment" highlightCol="Cons" />
+<HeatmapMatrix labels="Ship|Cons|Inv|Car|Inv$|Track" rowNames="Shipment|Consignee|Inventory|Carrier|Invoicing|Tracking" cells="-|x|x|x|x|.||.|-|.|.|.|.||x|x|-|.|.|.||x|x|x|-|.|.||x|x|.|.|-|.||x|x|.|x|x|-" ownsLabels="Order · OrderLine · OrderAudit|Customer · CustomerAddress · Preferences|Warehouse · StockLevel · Reservation|Shipment · ShipmentStatus · TrackingEvent|Invoice · Payment · Refund · CreditNote|**Notification · Template** (no domain entities)" highlightRow="Shipment" highlightCol="Cons" />
 
 </div>
 <div>
@@ -291,12 +291,8 @@ Map who references whom — because the service that references everyone is your
 
 → **Consignee referenced by all**, references nobody. Clean upstream — but 0 events. Sync bottleneck?
 
-→ **Tracking** references everything but owns only infrastructure.
+→ **Tracking** references everything but owns only infrastructure. **No domain entities. Generic subdomain?**
 </Callout>
-
-**Domain entities owned per service:**
-
-<RankedBars max="5" bars="Shipment · Order · OrderLine · OrderAudit::3::red|Consignee · Customer · CustomerAddress · Preferences::3::amber|Inventory · Warehouse · StockLevel · Reservation::3::amber|Carrier · Shipment · ShipmentStatus · TrackingEvent::3::amber|Invoicing · Invoice · Payment · Refund · CreditNote::4::amber|Tracking · Notification · Template (no domain entities)::2::green" />
 
 </div>
 </Split>

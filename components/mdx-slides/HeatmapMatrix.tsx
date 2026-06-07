@@ -29,6 +29,17 @@ interface HeatmapMatrixProps {
   highlightRow?: string;
   /** Column to highlight (must match an entry in `labels`). */
   highlightCol?: string;
+  /**
+   * Optional pipe-separated text rendered as a right-most "Owns" column —
+   * one entry per row, in row order. Used on the references-matrix slide
+   * so each service's owned entities are visible alongside its references
+   * pattern. Wrap a row's label in `**…**` to flag the standout row
+   * (e.g. Tracking's "Notification + Template only" generic-subdomain
+   * evidence) — that row's owns cell renders with a stronger tint.
+   */
+  ownsLabels?: string;
+  /** Header text for the owns column. Defaults to "OWNS". */
+  ownsHeader?: string;
 }
 
 export function HeatmapMatrix({
@@ -37,6 +48,8 @@ export function HeatmapMatrix({
   cells,
   highlightRow,
   highlightCol,
+  ownsLabels,
+  ownsHeader = "OWNS",
 }: HeatmapMatrixProps) {
   const cols = labels.split("|").map((s) => s.trim());
   const rows = (rowNames ?? labels).split("|").map((s) => s.trim());
@@ -47,9 +60,27 @@ export function HeatmapMatrix({
   const rowHighlightIdx = highlightRow ? rows.indexOf(highlightRow) : -1;
   const colHighlightIdx = highlightCol ? cols.indexOf(highlightCol) : -1;
 
-  // Inline grid columns: a fixed label column plus 1fr per data column.
+  // Optional "Owns" column. Each entry is a free-text label rendered
+  // in the rightmost column. Wrapping a row's text in `**…**` flags it
+  // as a standout row (stronger tint) — used for the Tracking row's
+  // generic-subdomain evidence.
+  const owns = ownsLabels
+    ? ownsLabels.split("|").map((s) => s.trim())
+    : null;
+  const ownsCellFor = (idx: number): { text: string; standout: boolean } => {
+    const raw = owns?.[idx] ?? "";
+    const m = raw.match(/^\*\*(.+)\*\*$/);
+    return m
+      ? { text: m[1], standout: true }
+      : { text: raw, standout: false };
+  };
+
+  // Inline grid columns: fixed label column + 1fr per data column + a
+  // wider fixed column at the end for the optional Owns text.
   const gridStyle = {
-    gridTemplateColumns: `120px repeat(${cols.length}, 1fr)`,
+    gridTemplateColumns: owns
+      ? `120px repeat(${cols.length}, 1fr) 220px`
+      : `120px repeat(${cols.length}, 1fr)`,
   };
 
   return (
@@ -67,6 +98,11 @@ export function HeatmapMatrix({
             {col}
           </div>
         ))}
+        {owns && (
+          <div className={`${styles.colHeader} ${styles.ownsHeader}`}>
+            {ownsHeader}
+          </div>
+        )}
       </div>
 
       {/* Data rows */}
@@ -101,6 +137,18 @@ export function HeatmapMatrix({
                 </div>
               );
             })}
+            {owns && (() => {
+              const { text, standout } = ownsCellFor(r);
+              return (
+                <div
+                  className={`${styles.ownsCell} ${
+                    standout ? styles.ownsCellStandout : ""
+                  }`}
+                >
+                  {text}
+                </div>
+              );
+            })()}
           </div>
         );
       })}

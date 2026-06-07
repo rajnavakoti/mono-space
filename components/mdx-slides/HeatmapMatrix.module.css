@@ -108,3 +108,33 @@
 .markDiagonal {
   font-size: 14px;
 }
+
+/* ── Optional "Owns" column ────────────────────────────────────────── */
+/* Right-most column listing each row's owned entities. Used on the
+   references-matrix slide so the audience sees ownership evidence
+   alongside the reference pattern. */
+
+.ownsHeader {
+  border-left: 2px solid var(--color-text, #111);
+  background: var(--color-bg-secondary, #F5F5F5);
+}
+
+.ownsCell {
+  padding: 8px 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text, #111);
+  border-left: 2px solid var(--color-text, #111);
+  display: flex;
+  align-items: center;
+}
+
+/* Standout owns cell (wrap text in `**…**` in the prop to trigger).
+   Stronger background + bold for the row that carries the slide's
+   key evidence — e.g. Tracking's "Notification + Template only". */
+.ownsCellStandout {
+  background: color-mix(in srgb, #C9A96E 22%, transparent);
+  font-weight: 800;
+  color: var(--color-text, #111);
+}
