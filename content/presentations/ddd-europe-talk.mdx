@@ -810,40 +810,40 @@ It owns no state. It makes no decisions. But it watches every lifecycle transiti
 
 ---
 
-<TitleCard badge="EXHIBIT E" subtitle="The architecture is the bug.">Incident Clustering</TitleCard>
+<TitleCard badge="EXHIBIT E" subtitle="Validating the boundaries against production reality.">Incident Clustering</TitleCard>
 
 <Notes>
-"Fifth lens. We've mapped structure — contracts, database, transactions. We've seen behavior — the logs. Now the question every engineering manager asks: so what? What does this COST us? Let's look at where the system breaks."
+"Fifth lens. Important framing before we open this one — the previous four exhibits were about DISCOVERING the real bounded contexts and where their boundaries lie. This exhibit is different. It's a sanity check. If our model of the bounded contexts is right, the pain in production should cluster on the seams we already named. If it doesn't, our model is wrong. So this isn't a new technique — it's a check. The question every engineering manager asks at this point is: so what? What does this COST us? Let's look at where the system breaks and see whether the pain matches the boundaries we've drawn."
 </Notes>
 
 ---
 
-## Re-tag incidents by service pair
+## Re-tag incidents by bounded context boundary
 
-> Re-tag your incidents by which two services were involved — because <mark>incidents classified as 'Service X failed' hide the coupling underneath.</mark>
+> Re-tag incidents by **which boundary failed**, not by which service owns them — because <mark>incidents classified as 'Service X failed' hide the bounded context coupling underneath.</mark>
 
 <BigStat value="83" label="incidents in 12 months" />
 
-<BigStat value="64" label="at service boundaries" />
+<BigStat value="64" label="at context boundaries" />
 
-<BigStat value="77%" tone="amber" label="of all failures are cross-boundary" punchline="The system isn't failing because services are buggy. It's failing because the boundaries are wrong." />
+<BigStat value="77%" tone="amber" label="of all failures cross a bounded context" punchline="The system isn't failing because services are buggy. It's failing because the bounded contexts are in the wrong places." />
 
 <Notes>
-"Re-tag your incidents by which two services were involved — because incidents classified as 'Inventory failed' or 'Carrier timed out' hide the coupling underneath. 83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every four days. Ten of them SEV1 — ten nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
+"Re-tag your incidents by which boundary failed, not by which service owns the ticket — because incidents classified as 'Inventory failed' or 'Carrier timed out' hide the bounded-context coupling underneath. 83 production incidents in 12 months. 64 of them — 77% — cross a bounded-context boundary. One incident roughly every four days. Ten of them SEV1 — ten nights someone got paged at 3 AM because of a context-boundary problem. The system is not failing because individual services are buggy. It's failing because the bounded contexts are in the wrong places. This is exactly what Evans warns about — bad boundaries create accidental complexity and operational pain."
 </Notes>
 
 ---
 
-## Find where interactions cluster
+## Find which boundaries cluster
 
-> *Where do failures cluster?*
+> *Which bounded-context seams break repeatedly?*
 
-Find where interactions cluster — because <mark>repeated failures between the same two services means the coupling is structural, not accidental.</mark>
+Find which boundaries cluster — because <mark>repeated failures across the same context boundary mean the coupling is structural, not accidental.</mark>
 
 <Split ratio="3:1">
 <div>
 
-<RankedBars bars="Shipment ↔ Inventory::23::red|Within single service::19::green|Shipment ↔ Carrier::17::amber|Invoicing ↔ Shipment::14::amber|Carrier ↔ Tracking::6::yellow|Inventory ↔ Warehouse::4::yellow" />
+<RankedBars bars="Shipment ↔ Inventory::23::red|Within single context::19::green|Shipment ↔ Carrier::17::amber|Invoicing ↔ Shipment::14::amber|Carrier ↔ Tracking::6::yellow|Inventory ↔ Warehouse::4::yellow" />
 
 </div>
 <div>
@@ -851,72 +851,72 @@ Find where interactions cluster — because <mark>repeated failures between the 
 <Callout type="warning">
 **🚩 Read the pattern**
 
-**23 at Shipment ↔ Inventory** = not bad luck. Structural coupling.
+**23 at Shipment ↔ Inventory** = not bad luck. The **disputed Aggregate** is leaking.
 
-**0 at Consignee** = confirmed clean.
+**0 at Consignee** = the **Bounded Context** is clean.
 
-Internal incidents: 1 SEV1. Boundary incidents: 10 SEV1s.
+Within-context: 1 SEV1. Cross-context: 10 SEV1s.
 
-*The severity skews to boundaries, not just the count.*
+*Severity skews to boundaries, not just count.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Find where interactions cluster — because repeated failures between the same two services means the coupling is structural, not accidental. 23 incidents at Shipment-Inventory — the top cluster. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-boundary. The most damaging failures are overwhelmingly at boundaries. And 19 internal incidents — only 1 SEV1. The boundaries are where the pain is."
+"Find which boundaries cluster — because repeated failures across the same context boundary means the coupling is structural, not accidental. 23 incidents at Shipment-Inventory — the top cluster. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-context. The most damaging failures are overwhelmingly at bounded-context boundaries. And 19 within-context incidents — only 1 SEV1. The boundaries are where the pain is. The model we built across the previous exhibits is starting to validate itself."
 </Notes>
 
 ---
 
-## Connect each cluster to previous exhibits
+## Connect each cluster to a DDD finding
 
 > *Shipment ↔ Inventory: 23 incidents*
 
-Connect each cluster back to your earlier exhibits — because <mark>each failure pattern should trace to a coupling you already identified.</mark>
+Connect each cluster back to the DDD finding it confirms — because <mark>if our model is right, every failure pattern should trace to a coupling we already named.</mark>
 
 <Split ratio="3:2">
 <div>
 
-<PieChart slices="Race condition::30::highlight|Timeout::26|Stale read::22|Orphaned reservation::22" annotations="Exhibit B: 2 writers to inventory_reserved (7 races)|Exhibit C: 580ms co-write under load (6 timeouts)|Read replica lag (5 stale reads)|Exhibit C: missing saga (5 orphans)" />
+<PieChart slices="Race condition::30::highlight|Timeout::26|Stale read::22|Orphaned reservation::22" annotations="Exhibit B disputed Aggregate (7 races)|Exhibit C 580ms cross-context co-write (6 timeouts)|Read replica lag (5 stale reads)|Exhibit C missing saga (5 orphans)" />
 
 </div>
 <div>
 
 <Callout type="danger">
-**🔴 Every incident traces back**
+**🔴 Every incident traces to a DDD finding**
 
-2-writer violation (Exhibit B) → **7 race conditions**
+**Disputed Aggregate** (Exhibit B) → **7 race conditions**
 
-580ms co-write (Exhibit C) → **6 timeouts**
+**Cross-context co-write** (Exhibit C) → **6 timeouts**
 
-Missing saga (Exhibit C) → **5 orphaned reservations**
+**Missing saga** (Exhibit C) → **5 orphaned reservations**
 
 → 4 SEV1s. 4 nights someone got paged. 4 war rooms.
 
-*The evidence is converging.*
+*The DDD model and the production pain match.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Connect each cluster back to your earlier exhibits — because each failure pattern should trace to a coupling you already identified. Take the top cluster — 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's two-writer violation, now costing real pages. 6 timeouts — the 580-millisecond synchronous co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a finding from a previous exhibit. The coupling we found in artifacts now has a measurable cost. 4 SEV1s. 4 nights someone got paged at 3 AM because of a boundary problem."
+"Connect each cluster back to the DDD finding it confirms — because if our model of the bounded contexts is right, every failure pattern should trace to a coupling we already named. Take the top cluster — 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's disputed Aggregate finding, now costing real pages. 6 timeouts — the 580-millisecond cross-context co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a DDD finding. The model and the pain match. 4 SEV1s. 4 nights someone got paged at 3 AM because of a bounded-context boundary problem. This is what Evans means when he says good boundaries reduce accidental complexity."
 </Notes>
 
 ---
 
-## Find what's not clustering
+## Find which boundaries don't cluster
 
 > *Urgent vs important*
 
-Find what's not clustering — because <mark>confirming which interactions are clean is as valuable as finding which are broken.</mark>
+Find which boundaries DON'T cluster — because <mark>a Bounded Context that holds under production load is as valuable a finding as one that breaks.</mark>
 
 <Split ratio="1:1">
 <div>
 
 <Callout type="danger">
-**🔴 Where it breaks**
+**🔴 Bounded contexts in the wrong place**
 
 **Shipment ↔ Inventory** — 23 incidents
 
@@ -924,31 +924,31 @@ Find what's not clustering — because <mark>confirming which interactions are c
 
 **Invoicing ↔ Shipment** — 14 incidents
 
-These boundaries are in the wrong place or using the wrong integration pattern.
+These boundaries are wrong, or the integration pattern is wrong.
 
-→ *Fix these first.*
+→ *Fix these first — pain compounds.*
 </Callout>
 
 </div>
 <div>
 
 <Callout type="tip">
-**🟢 Where it doesn't**
+**🟢 Bounded contexts that hold**
 
 **Consignee boundary** — 0 incidents
 
-The boundary IS clean. The data access isn't (Exhibit B: 3 direct readers).
+The Bounded Context IS clean. The data access path isn't (Exhibit B: 3 Conformist consumers).
 
 But zero incidents means the coupling hasn't hurt yet.
 
-→ *Fix later. Ticking clock, not a fire.*
+→ *Fix later — ticking clock, not a fire.*
 </Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Find what's not clustering — because confirming which interactions are clean is as valuable as finding which are broken. Consignee boundary — zero incidents. Zero. The boundary IS clean — even though Exhibit B showed 3 services reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you what hurts NOW. The other exhibits tell you what will hurt NEXT."
+"Find which boundaries don't cluster — because confirming which bounded contexts hold under load is as valuable a finding as which ones break. Consignee boundary — zero incidents. Zero. The Bounded Context IS clean — even though Exhibit B showed 3 Conformist consumers reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you which bounded contexts to extract FIRST. The other exhibits tell you which ones to extract NEXT. Both findings matter."
 </Notes>
 
 ---
