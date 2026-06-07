@@ -312,7 +312,7 @@ Find the same concept in two services — because when both services model the s
 <Split ratio="3:2">
 <div>
 
-<CodeBlock title="shipment-carrier · concept-overlap evidence" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string         # from Shipment&#10;    recipientId: string     # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;    status: [created, picked_up, in_transit,&#10;             out_for_delivery, delivered,&#10;             failed, returned, lost, damaged]" />
+<CodeBlock title="shipment-carrier · concept-overlap evidence" highlight="4-5,13-14" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string         # from Shipment&#10;    recipientId: string     # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;    status: [created, picked_up, in_transit,&#10;             out_for_delivery, delivered,&#10;             failed, returned, lost, damaged]" />
 
 </div>
 <div>
