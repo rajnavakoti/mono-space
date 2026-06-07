@@ -478,6 +478,21 @@
   border: 2px solid var(--color-text);
 }
 
+/* When two CompareTables stack on one slide (e.g. Exhibit A's
+   person-vs-address contrast), give them breathing room so they don't
+   read as one merged broken table. Adjacent-sibling selector only —
+   the first table on a slide is untouched. */
+.compareTable + .compareTable {
+  margin-top: var(--space-lg);
+}
+
+/* A markdown paragraph immediately following a CompareTable is the
+   takeaway/conclusion. Add a small top margin so it doesn't feel
+   pasted onto the table's bottom border. */
+.compareTable + p {
+  margin-top: var(--space-md);
+}
+
 .compareTableHeader {
   display: grid;
   grid-template-columns: 1fr 1fr;
