@@ -212,11 +212,24 @@ A few years ago — a 15-year legacy order-fulfilment system. No documentation. 
 
 > *Same fields, different names → fractured language. Different fields, different names → correct DDD.*
 
+<Split ratio="2:1">
+<div>
+
 <CompareTable colWeights="1|1|1|1|3" headers="Service|Term Used|ID Field|Fields|Infer" rows="Shipment|buyer|buyerId|3|the person placing the order?||Consignee|customer|customerId|**20**|**the full customer profile?**||Inventory|user|userId|1|who requested the reservation?||Carrier|recipient|recipientId|3|who receives the package?||Invoicing|account|accountId|3|**billing entity — person or company?**||Tracking|user|userId|2|who gets notified?" />
 
 <CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|**mixed concerns**||Consignee|CustomerAddress|**label**, isDefault|10|customer-managed||Carrier|DeliveryAddress|**accessCode**, isResidential|11|operational||Invoicing|BillingAddress|**vatNumber**, companyName|10|legal document" />
 
 **🚩 The person:** 5 names, same 3 fields → drift. *Who is the system of record?*  **✅ The address:** different names AND different fields → correct boundary separation.
+
+</div>
+<div>
+
+<SlideImage src="/pics/indian train station canonical names.jpg" alt="Indian railway station yellow board — one station name written in three scripts" />
+
+*One destination. Three scripts.*
+
+</div>
+</Split>
 
 <Notes>
 "Pick one concept that should exist everywhere — because same fields with different names means the translation map between contexts is missing. The person receiving the delivery. Five names. Same three fields. But 'account' in Invoicing might mean a billing entity, not a person. We flag it, we don't judge. Consignee has 20 fields, everyone else has 3. Five thin copies of a concept one service owns richly. Who is the system of record? Now compare with Address — same four services that have it. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look similar but they serve different purposes. This IS correct DDD — each bounded context owns its own Address. So the test: same fields, different names — flag it. Different fields for different purposes — correct boundary separation."
