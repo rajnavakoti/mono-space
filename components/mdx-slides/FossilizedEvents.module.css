@@ -11,13 +11,13 @@
   --fe-red: #B26464;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin: 18px auto;
+  gap: 12px;
+  margin: 22px auto;
   width: 100%;
-  max-width: 560px;
+  max-width: 640px;
   font-family: var(--font-mono, "JetBrains Mono"), monospace;
   border: 2px solid var(--fe-text);
-  padding: 14px 18px;
+  padding: 18px 22px;
   background: var(--fe-bg);
 }
 
@@ -37,18 +37,18 @@
 }
 
 .tableIcon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
 .tableName {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
 .fossilLabel {
-  font-size: 10px;
+  font-size: 11.5px;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -64,12 +64,12 @@
 
 .row {
   display: grid;
-  grid-template-columns: 130px 14px 1fr auto;
+  grid-template-columns: 160px 18px 1fr auto;
   align-items: baseline;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 12px;
+  padding: 8px 0;
   border-bottom: 1px dotted var(--fe-text-muted);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .row:last-child {
@@ -86,17 +86,18 @@
   color: var(--fe-text-muted);
   font-weight: 800;
   text-align: center;
+  font-size: 16px;
 }
 
 .event {
   color: var(--fe-text);
   font-weight: 800;
-  font-size: 14px;
+  font-size: 17px;
   letter-spacing: 0.02em;
 }
 
 .badge {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--fe-red);
   letter-spacing: 0.06em;
@@ -104,20 +105,20 @@
 }
 
 .punchline {
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 2px solid var(--fe-amber);
   text-align: center;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--fe-text);
   letter-spacing: 0.02em;
 }
 
 .followup {
-  margin-top: 4px;
+  margin-top: 6px;
   text-align: center;
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--fe-text-muted);
   font-style: italic;
 }
