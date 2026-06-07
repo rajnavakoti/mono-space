@@ -202,9 +202,15 @@ function shipmentStatus(v: number): Status {
 }
 function carrierStatus(v: number): Status {
   if (v === 0) return "gray";
-  if (v === 1 || v === 2) return "amber"; // dead boundary suspicion
-  if (v >= 3 && v <= 6) return "green";   // extractable from v0.3 transactions onward
-  return "red";                            // v0.7: not actually rendered as separate; merge happens
+  // v=1-6: amber. The Delivery Aggregate is internally clean from C
+  // onward, but cross-service co-writes from Shipment (2,103/wk at the
+  // transaction level, hardening across every lens) mean Carrier
+  // cannot be extracted independently. Calling it "extractable ✓" at
+  // v=3 would contradict the evidence the audience already saw three
+  // slides ago. The dramatic reveal at v=7 is git NAMING the
+  // relationship (Shared Kernel) — not "discovering" the block.
+  if (v >= 1 && v <= 6) return "amber";
+  return "red"; // v=7: handled by the merged Shipment Fulfilment blob
 }
 function consigneeStatus(v: number): Status {
   if (v === 0) return "gray";
@@ -240,15 +246,20 @@ function shipmentFindings(v: number): string[] {
   return f;
 }
 function carrierFindings(v: number): string[] {
-  // v0.3 — name Carrier's aggregate emerging from C; verdict carries.
-  // Renamed from 'Shipment Aggregate' to 'Delivery Aggregate' — the
-  // underlying tables are called shipments/tracking_events but Carrier's
-  // job is physical delivery tracking, and 'Shipment Aggregate inside
-  // Carrier' reads broken on stage given there's also a Shipment service.
-  if (v === 3) return ["Delivery Aggregate", "↔ circular", "extractable ✓"];
+  // v0.3 — name Carrier's aggregate emerging from C; honest verdict
+  // qualifies it. "Delivery Aggregate" reads as a DDD finding (the
+  // commit cluster IS an aggregate); "ext blocked by Ship" reads as
+  // the readiness verdict that respects the cross-service co-writes
+  // we just established this exhibit (2,103/wk).
+  if (v === 3) return ["Delivery Aggregate ✓", "ext blocked by Ship"];
+
   const f: string[] = [];
-  if (v >= 1) f.push("↔ circular");
-  if (v >= 3 && v <= 6) f.push("extractable ✓");
+  // v=1 = Exhibit A's circular-refs hypothesis. By v=2 the database
+  // lens has hardened it into "Shipment coupling" — same finding,
+  // stronger evidence.
+  if (v === 1) f.push("↔ circular");
+  else if (v >= 2) f.push("↔ Ship coupling");
+  if (v >= 4 && v <= 6) f.push("ext blocked");
   // Incident count '17 incidents · w/ Ship' at v>=5 deliberately NOT
   // pushed — tech-debt metric. The legend carries it as evidence;
   // the circle shows only DDD verdicts.
@@ -263,10 +274,12 @@ function consigneeFindings(v: number): string[] {
   // keep the model clean.
   if (v === 2) return ["0 events", "~~published language?~~", "facade"];
   // v0.3-v0.4 — facade verdict carries forward without the struck-through
-  // historical hypothesis. C's transaction lens adds the extractable
-  // verdict — Consignee's internal commits are clean, so the context
-  // can be extracted (the 3 consumer bypasses are a separate fix).
-  if (v >= 3 && v <= 4) return ["0 events", "facade", "extractable ✓"];
+  // historical hypothesis. Consignee's INTERNAL commits are clean (C's
+  // transaction lens) but the 3 Conformist consumers established at B
+  // mean it can't be extracted independently — they'd have to migrate
+  // off the table-direct reads first. "ext blocked · 3 Conformists"
+  // is more honest than "extractable ✓".
+  if (v >= 3 && v <= 4) return ["0 events", "facade", "ext blocked · 3 Conformists"];
   // v0.5+ — confirmed clean. 'clean ✓' carries the DDD verdict; the
   // raw '0 incidents' metric belongs in the legend, not the circle.
   return ["clean ✓"];

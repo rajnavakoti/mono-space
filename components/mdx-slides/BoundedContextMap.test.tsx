@@ -35,16 +35,21 @@ describe("BoundedContextMap", () => {
     expect(stricken.getAttribute("class")).toMatch(/regionFindingStrike/);
   });
 
-  it("at v3 Exhibit C findings — aggregates + extractable + BLOCKED verdicts", () => {
+  it("at v3 Exhibit C findings — aggregates discovered + extraction blockers + BLOCKED verdicts", () => {
     render(<BoundedContextMap version="3" />);
     // Four aggregates surfaced by C's transaction clustering — each
     // named as the first finding line on the owning context.
     expect(screen.getByText("Order Aggregate")).toBeInTheDocument();
-    expect(screen.getByText("Delivery Aggregate")).toBeInTheDocument();
+    expect(screen.getByText("Delivery Aggregate ✓")).toBeInTheDocument();
     expect(screen.getByText("Payment Aggregate")).toBeInTheDocument();
     expect(screen.getByText("Reservation Aggregate")).toBeInTheDocument();
-    // 'extractable ✓' appears on BOTH Carrier and Consignee.
-    expect(screen.getAllByText("extractable ✓").length).toBeGreaterThanOrEqual(2);
+    // "extractable ✓" used to appear on Carrier + Consignee — replaced
+    // with honest "ext blocked" verdicts now that the cross-service
+    // co-writes (Shipment->Carrier) and Conformist consumers (3 services
+    // bypassing Consignee's API) make true extraction impossible at v=3.
+    expect(screen.queryByText("extractable ✓")).not.toBeInTheDocument();
+    expect(screen.getByText("ext blocked by Ship")).toBeInTheDocument();
+    expect(screen.getByText("ext blocked · 3 Conformists")).toBeInTheDocument();
     // BLOCKED ✗ appears on Shipment AND Inventory.
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
