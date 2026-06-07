@@ -23,7 +23,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 28px 24px;
+  padding: 24px 18px;
   border: 2px solid var(--afc-text);
   background: var(--afc-bg);
 }
@@ -47,13 +47,13 @@
 
 /* Consumers laid out as columns — each column owns its consumer box
    AND its down-arrow, so 3 vs 5 consumers both align under their own
-   arrows without any hard-coded width math. Wraps to a second row if
-   the panel is narrower than the consumer set wants. */
+   arrows without any hard-coded width math. Sized so 5 consumers fit
+   in a single row inside one panel (~520px inner width). */
 .consumerGrid {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
 }
 
@@ -62,17 +62,19 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  min-width: 0;
 }
 
 .consumerBox {
   border: 2px solid var(--afc-text);
   background: var(--afc-bg);
-  padding: 8px 14px;
-  font-size: 12.5px;
+  padding: 6px 10px;
+  font-size: 11.5px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--afc-text);
+  white-space: nowrap;
 }
 
 .arrow {
