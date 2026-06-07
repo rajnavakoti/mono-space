@@ -61,18 +61,30 @@ export function HeatmapMatrix({
   const colHighlightIdx = highlightCol ? cols.indexOf(highlightCol) : -1;
 
   // Optional "Owns" column. Each entry is a free-text label rendered
-  // in the rightmost column. Wrapping a row's text in `**…**` flags it
-  // as a standout row (stronger tint) — used for the Tracking row's
-  // generic-subdomain evidence.
+  // in the rightmost column. Any `**inline bold**` segments are
+  // rendered as <strong>; if the entry contains *any* `**…**`, the
+  // whole cell gets the standout amber-tint background — used to
+  // call out the row that carries the slide's key evidence (e.g.
+  // Tracking's "Notification + Template only" generic-subdomain row).
   const owns = ownsLabels
     ? ownsLabels.split("|").map((s) => s.trim())
     : null;
-  const ownsCellFor = (idx: number): { text: string; standout: boolean } => {
+  interface OwnsSegment {
+    text: string;
+    bold: boolean;
+  }
+  const ownsCellFor = (
+    idx: number,
+  ): { segments: OwnsSegment[]; standout: boolean } => {
     const raw = owns?.[idx] ?? "";
-    const m = raw.match(/^\*\*(.+)\*\*$/);
-    return m
-      ? { text: m[1], standout: true }
-      : { text: raw, standout: false };
+    const standout = /\*\*(.+?)\*\*/.test(raw);
+    // Split on **bold** so segments alternate normal / bold / normal.
+    const parts = raw.split(/\*\*(.+?)\*\*/g);
+    const segments: OwnsSegment[] = [];
+    parts.forEach((part, i) => {
+      if (part !== "") segments.push({ text: part, bold: i % 2 === 1 });
+    });
+    return { segments, standout };
   };
 
   // Inline grid columns: fixed label column + 1fr per data column + a
@@ -138,14 +150,20 @@ export function HeatmapMatrix({
               );
             })}
             {owns && (() => {
-              const { text, standout } = ownsCellFor(r);
+              const { segments, standout } = ownsCellFor(r);
               return (
                 <div
                   className={`${styles.ownsCell} ${
                     standout ? styles.ownsCellStandout : ""
                   }`}
                 >
-                  {text}
+                  {segments.map((seg, i) =>
+                    seg.bold ? (
+                      <strong key={i}>{seg.text}</strong>
+                    ) : (
+                      <span key={i}>{seg.text}</span>
+                    ),
+                  )}
                 </div>
               );
             })()}
