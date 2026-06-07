@@ -1121,7 +1121,7 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 **6** months
 
----
+***
 
 **47** pairs co-change >10%
 
@@ -1142,14 +1142,11 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 > Check if git contradicts previous exhibits — because <mark>git reveals development coupling that transaction data and API contracts can't see — and it can override earlier conclusions.</mark>
 
-<ContradictionReveal
-  earlierExhibit="After 6 exhibits"
-  earlierClaim="Carrier · 🟡 Delivery Aggregate is clean | Internal transactions are clean | Extraction blocked by Shipment | …but we don't know what the relationship IS."
-  laterExhibit="Exhibit G names it"
-  laterFinding="Carrier · 🔴 Shared Kernel with Shipment | 72% co-change | Every PR that touches one requires changes in the other | The boundary doesn't exist in dev practice."
-  connector="and git names it…"
-  punchline="Six exhibits surfaced the COUPLING. | The seventh named the RELATIONSHIP — a Shared Kernel. | Govern, split with ACL, or merge — the 72% says merge."
-/>
+Six exhibits surfaced the coupling between Shipment and Carrier. *We never named what kind of relationship it was.*
+
+<BigStat value="72%" tone="amber" label="co-change · Shipment ⊕ Carrier" punchline="That's a SHARED KERNEL." />
+
+**3 DDD options: govern · split with ACL · merge.**  *The 72% says merge.*
 
 <Notes>
 "Check if git contradicts previous exhibits — or more precisely, if git can NAME a relationship the earlier exhibits could only describe. After six exhibits we knew Carrier had a clean Delivery Aggregate internally — but extraction was blocked by Shipment's cross-service co-writes. We didn't have a name for what kind of relationship that was. Then we opened git. 72% co-change with Shipment. Every PR that touches one requires changes in the other. That's a Shared Kernel — Evans's word for two contexts that share state and evolve together. In DDD you have three options for a Shared Kernel: govern it explicitly, split it with an Anti-Corruption Layer between them, or merge them into one bounded context. The 72% co-change says splitting will fail. The merge is the honest move. The earlier exhibits found the COUPLING. Git's job was to NAME the relationship. This is why you need 7 lenses — each one says something different about the same boundary."
