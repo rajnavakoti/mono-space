@@ -461,7 +461,7 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ## Look at table structure
 
-> Look at table structure — because cross-boundary foreign keys are <mark>hard coupling at the data layer.</mark>
+> Look at table structure — because cross-context foreign keys lock <mark>**Aggregates** to other contexts' schemas.</mark>
 
 <Split ratio="3:2">
 <div>
@@ -476,14 +476,14 @@ Find tables with multiple writers — because two writers to the same table mean
   sourceLabel="31 columns"
   targets="customers::Consignee|warehouses::Inventory|carriers::Carrier|invoices::Invoicing"
   fkCount="4 FKs"
-  caption="Four foreign keys, four other services. Pull one and you have to handle the others."
+  caption="Each FK locks an Aggregate in one context to schema choices in another. Pull one, you have to handle the others."
 />
 
 </div>
 </Split>
 
 <Notes>
-"Look at table structure — because cross-boundary foreign keys are hard coupling at the data layer. The orders table has four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. That FK ties them together at the data layer. The contracts could have hidden this — the database can't. The 31-column god-entity verdict from Exhibit A holds — the persistence layer confirmed it. But the new signal is structural: cross-boundary FKs everywhere."
+"Look at table structure — because cross-context foreign keys lock Aggregates to other contexts' schemas. The Aggregate consistency rule in DDD says: an Aggregate references other Aggregates by ID only, never by enforced foreign keys at the data layer. Here the orders table has four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. Each FK is a database-level constraint that crosses a bounded context boundary. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. The contracts could have hidden this — the database can't. The 31-column god-entity verdict from Exhibit A holds; the persistence layer confirmed it. The new signal is structural — cross-context FKs everywhere."
 </Notes>
 
 ---
