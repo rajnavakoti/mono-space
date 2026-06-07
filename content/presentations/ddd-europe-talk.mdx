@@ -21,7 +21,7 @@ Title slide. Let it sit for a moment. Don't rush. Take a breath.
 
 ---
 
-<TitleCard badge="ACT 1" subtitle="A corroded lump of bronze">The Artifact</TitleCard>
+<TitleCard badge="ACT 1" subtitle="How do you read a domain you didn't write?">The Artifact</TitleCard>
 
 <Notes>
 Transition to Act 1. Pause before the next slide.
@@ -29,233 +29,248 @@ Transition to Act 1. Pause before the next slide.
 
 ---
 
-## The Antikythera Mechanism
+## How many languages do you speak?
+
+> *Bilingual? Trilingual? Learned one without a textbook or a classroom?*
+
+<Notes>
+"Quick show of hands — how many of you speak more than one language? [pause, look around] Keep your hand up if you learned one of those languages without a textbook. Without a class. Without Duolingo. [pause] How many of you still have an active Duolingo streak? [hands drop dramatically] That's the book approach. Today is about the other way."
+</Notes>
+
+---
+
+## One country
 
 <Split ratio="1:1">
 <div>
 
-In 1900, divers pulled a **corroded lump of bronze** from a Greek shipwreck.
-
-It sat in a museum for **two years**. Nobody knew what it was.
-
-Then someone looked inside — and found **precision gear wheels**, a millimetre apart, encoding **2,000 years of astronomical knowledge**.
-
-The builders were gone. The documentation was gone. But **the machine remembered everything.**
+<SlideImage src="/pics/map of India.avif" alt="Map of India — one country, many states" />
 
 </div>
 <div>
 
-<SlideImage src="/antikythera.webp" alt="The Antikythera Mechanism — the world's first known computer" />
+<BigStat value="424" label="living languages" />
+
+<BigStat value="22" label="official" tone="amber" punchline="And somehow it works." />
 
 </div>
 </Split>
 
 <Notes>
-"In 1900, archaeologists pulled a corroded lump of bronze from a Greek shipwreck. It looked like junk. It turned out to be a 2,000-year-old computer — and the user guide was hidden inside the bronze the whole time. Researchers spent 120 years reading it — X-rays in the 70s, 3D imaging in the 2000s. Each new technique revealed another layer of what the builders encoded."
+"I'm from India. Whenever I travel to conferences like this, people ask me the same question — how do you manage? You have so many languages in one country. How does it even function? Four hundred and twenty-four living languages. Twenty-two official. One country. Actually it's simpler than you think. And I can explain it with DDD."
 </Notes>
 
 ---
 
-<Callout>
-Legacy systems are the same. They look like technical debt. They're actually dense archives of domain knowledge — written under deadline pressure, tested by millions of real transactions, validated over decades.
-
-**The architects left. The documentation went stale. But the system kept running. And it remembers everything.**
-</Callout>
-
-<Notes>
-"Legacy systems are the Antikythera mechanism of our industry. They look like corroded bronze — technical debt, legacy code nobody wants to touch. But inside, encoded in the schemas, the contracts, the error codes, the git history — is everything the original builders knew about the domain. This talk is about how to read what the system has been trying to tell you."
-</Notes>
-
----
-
-## What is "Legacy"?
-
-<Callout>
-Legacy isn't about age.
-
-**It's about lost knowledge.**
-
-A system is legacy when the people who understood it are no longer available to explain it.
-</Callout>
-
-<Notes>
-"Before we go further — let me define legacy. I don't mean old code. A 6-year-old microservice can be legacy if the team that built it has turned over. A 30-year-old monolith might not be legacy if the original team still maintains it. Legacy is about KNOWLEDGE DECAY — when the understanding of why the system works the way it does has left the building."
-</Notes>
-
----
-
-## Every system has a domain model
+## Mesh of bounded contexts
 
 <Split ratio="1:1">
 <div>
 
-> *"A domain model is not a particular diagram. It is the idea that the diagram is intended to convey."*
->
-> — **Eric Evans**
-
-Most domain models were **never designed on a whiteboard**.
-
-They were built into the code, the schemas, the contracts — **decision by decision, over years**.
-
-The model is there. It was just never written down.
+<SlideImage src="/pics/language map of india 2.webp" alt="India linguistic map — borders that follow languages" />
 
 </div>
 <div>
 
-<SlideImage src="/evans-model.webp" alt="Eric Evans on domain models" />
+The borders ended up following the languages.
+
+Each state has its own vocabulary. Its own way of naming things.
+
+**Each state = a bounded context.**
+
+**The language of the state = its <mark>ubiquitous language.</mark>**
 
 </div>
 </Split>
 
 <Notes>
-"Eric Evans himself says it — the model is the idea, not the diagram. In most legacy systems, nobody drew the diagram. But the model exists. It's encoded in every API contract, every database table, every error code. Developers embedded domain knowledge into the system without realizing they were building a model. Our job is to read it."
+"The borders ended up following the languages. Each state has its own language, its own vocabulary, its own way of naming things. In DDD terms — each state is a bounded context. The language of the state is its ubiquitous language. And when you cross the border, you switch contexts."
 </Notes>
 
 ---
 
-## My story
+## When you cross a boundary
 
 <Split ratio="1:1">
 <div>
 
-A data architect was trying to build **canonical data models** for a large delivery domain.
-
-**Top-down, from domain knowledge.** The right approach — but the domain was too large. It was taking months.
-
-I had a question:
-
-> *"The API specs already exist. The contracts are already written. Why start from scratch?"*
+<SlideImage src="/pics/indian train station canonical names.jpg" alt="Indian railway station yellow board — same place name in three scripts" />
 
 </div>
 <div>
 
-We took the spec files. Laid them side by side. Started extracting: **data concepts, entities, value objects, relationships.**
+**INSIDE THE STATE**
 
-In **weeks**, not months.
+→ Native language · precise · nuanced
 
-Then she left the company. The work died. Because it was **manual**.
+→ Local word for *glass* · *sorry*
+
+**CROSSING THE BOUNDARY**
+
+→ Shared vocabulary · lossy · approximate
+
+→ "glass" · "sorry"
+
+You cross a boundary — you switch to the <mark>shared vocabulary. You lose nuance. You gain interoperability.</mark>
 
 </div>
 </Split>
 
 <Notes>
-"Here's how this started for me. I was working with a data architect in a large delivery domain. She was trying to build canonical data models — top-down, the textbook way. But the domain was enormous. Dozens of teams, vendor integrations, legacy platforms. After months, the models were still incomplete. So I asked: the APIs already exist. Why aren't we reading what's already there? We tried it. In weeks we had a working draft model. Then she left the company, and the manual work died with her."
+"What do you speak when you cross into a state where you don't know the language? You use the shared vocabulary — English internationally, whatever works regionally. And something interesting happens. You lose precision. Some words don't even need translation back. When someone wrongs me, I don't say the word for sorry in my native language. I say sorry. When I ask for water, I say glass. The shared vocabulary just won. In your systems — what are those words? What concepts did every service just borrow from somewhere and nobody remembers the original?"
 </Notes>
 
 ---
 
-## Meanwhile...
+## How we actually learn
 
 <Split ratio="1:1">
 <div>
 
-A technology architect did **strategic DDD** — the textbook way.
-
-Event Storming. Domain storytelling. Stakeholder interviews.
-
-**It worked.** But it took multiple sessions, merged outputs, and over **2 years** to produce a current and target state architecture.
+<SlideImage src="/pics/bollywood street movie posters.webp" alt="Bollywood street movie posters layered on a wall" />
 
 </div>
 <div>
 
-And the moment the architecture was documented...
+<BigStat value="26%" tone="amber" label="of Indians are bilingual by formal education" />
 
-**...the system kept evolving.**
+→ **Street bilingualism**
 
-The gap between what people remembered and what the system actually does started growing immediately.
+→ **Marketplace vocabulary**
+
+→ **Media and pop culture as teacher**
+
+The rest is <mark>necessity and observation. Constant immersion.</mark>
 
 </div>
 </Split>
 
 <Notes>
-"Meanwhile, I watched a technology architect do strategic DDD properly. Event Storming, domain storytelling, the full textbook approach. It worked — beautifully. But in a domain this large, it took multiple sessions, dozens of people, and over two years. And the moment the architecture was documented, the system kept evolving. The documentation started drifting from reality on day one."
+"Census 2011 — only twenty-six percent of Indians are bilingual by formal education. The rest learned another way. Street bilingualism. The marketplace vocabulary you pick up because you need to buy vegetables. Media and pop culture as teacher — Bollywood, songs, posters on every wall. My father speaks six languages. He never went to school. Necessity and observation. Constant immersion. That is the other way. And that's exactly the situation you're in with a legacy system. Nobody's going to hand you the textbook. You learn it the way we learn languages — from what's around you."
 </Notes>
 
 ---
 
-## The question that started this talk
-
-<Callout>
-What if you could **extract a draft domain model** from the artifacts the system already produces — **before** you run your first Event Storming session?
-
-Not to replace the workshop. To **give it a head start.**
-
-To ask *"is this how it works?"* instead of *"how does this work?"*
-</Callout>
-
-<Notes>
-"That experience left me with a question: what if you could combine both approaches? Start with what the system already knows — the artifacts — then bring the experts in to validate and extend? Not replace Event Storming. Give it a head start. Arrive with evidence instead of blank sticky notes. Ask 'is this how it works?' instead of 'how does this work?' — because people are MUCH faster at reacting to evidence than creating from scratch."
-</Notes>
-
----
-
-## A domain I know well
+## The menu
 
 <Split ratio="1:1">
 <div>
 
-**A delivery domain. 30 years in operation.**
-
-<ContentCard title="4 LAYERS" accent="amber" items="Core services — 6 years of modern microservices, Neighboring domains — 30-year-old order management monolith, Vendor platforms — operational backbone for 25+ years, External carriers — automated APIs to Excel spreadsheets" />
+<SlideImage src="/pics/pollo 1.jpg" alt="Latin American restaurant menu — POLLO with chicken icon" />
 
 </div>
 <div>
 
-Nobody designed this landscape holistically.
+First visit. Latin American restaurant.
 
-**It grew.** Vendors came and went. Systems were added. Contracts ended. Markets have different processes.
+Menu. Chicken symbol. One word: **POLLO**
 
-Some teams have real-time telemetry. Others operate on **phone calls and spreadsheets**.
+→ Inference: *pollo = chicken*
+
+"Pollo is chicken, right?"
+
+→ Validation: *"Yes. But it's pronounced polo. Double-L in Spanish is a Y sound."*
+
+**<mark>OBSERVE → INFER → VALIDATE.</mark>**
+
+*No grammar book. I was hungry.*
 
 </div>
 </Split>
 
 <Notes>
-"Let me show you the domain I'll use as our case study. A delivery domain I know well. 30 years in operation. Four layers: core services built in the last 6 years — modern, microservices, Kubernetes. Neighboring domains running on order management systems that predate most of this room. Vendor platforms that have been the operational backbone for 25 years. And external carriers ranging from fully automated APIs to suppliers who still send data in Excel. Nobody designed this holistically. It grew."
+"First time I visited a Latin American country. I went to a restaurant. I looked at the menu. There's a little chicken symbol next to a word — pollo. I'd never studied Spanish. But I looked at the symbol, and I made a guess: pollo is chicken. Then I turned to my friend and said — pollo is chicken, right? She said — yes, but it's pronounced polo. Double-L in Spanish is a Y sound. Observe. Infer. Validate. I looked at an artifact — the menu. I made an assumption from the evidence. And I checked the assumption with someone who knew. I didn't read a grammar book. There wasn't time. I was hungry."
 </Notes>
 
 ---
 
-## Where the knowledge lives
+## Textbook language vs street language
 
 <Split ratio="1:1">
 <div>
 
-<ContentCard title="KNOWLEDGE SCATTERED ACROSS" accent="red" items="Event Storming output from 2 years ago — already partially wrong, Confluence page last updated in 2022 — everyone still links to it, One ops person who understands the carrier integration — leaving next month, Slack threads from 2019 that explain why certain rules exist, Error codes nobody documented but everyone works around" />
+<SlideImage src="/pics/DDD-books.jpg" alt="The DDD textbooks — Evans, Vernon, Khononov on a shelf" />
+
+**THE TEXTBOOK GAVE US:**
+
+→ bounded contexts
+
+→ ubiquitous language
+
+→ context maps
 
 </div>
 <div>
 
-> *"We don't see what we don't intend to see."*
->
-> — **Dave Snowden**, DDD Europe 2018
+<SlideImage src="/pics/dutch languges books.jpeg" alt="Dutch language phrasebooks and learner guides" />
 
-This isn't a dysfunctional team. This is **every large enterprise delivery domain**.
+**WHAT THE STREET DEMANDS:**
+
+→ a method when the experts have left
+
+→ documentation is wrong
+
+→ ownership is unclear
+
+→ no time for greenfield design
+
+</div>
+</Split>
+
+The textbook is the destination. <mark>This is how you find your way there when the map is missing.</mark>
+
+<Notes>
+"The textbook gave us the concepts — bounded contexts, ubiquitous language, context maps. What it didn't give us was a method for when the experts are gone, the documentation is wrong, the ownership is unclear. This is the gap between textbook language and street language. The textbook is the destination. Today is about how you find your way there when the map is missing."
+</Notes>
+
+---
+
+## A few years ago
+
+<Split ratio="1:1">
+<div>
+
+<SlideImage src="/pics/antikythera.jpg" alt="The Antikythera mechanism — an ancient artifact whose function had to be reverse-engineered" />
+
+</div>
+<div>
+
+→ A legacy order-fulfilment system
+
+→ 15 years of accumulated complexity
+
+→ No documentation
+
+→ One question:
+
+> *"Can we rediscover the domain from what the system left behind?"*
+
+*Note — the system you'll see today is a composite. Drawn from real legacy systems, with names changed. The artifacts are what matter.*
 
 </div>
 </Split>
 
 <Notes>
-"And here's where the knowledge about this domain actually lives. An Event Storming output from 2 years ago — already partially wrong because half the team turned over. A Confluence page from 2022 that everyone still links to. One ops person who understands the carrier integration — she's leaving next month. Slack threads from 2019 that nobody can find. Dave Snowden said it at this conference: we don't see what we don't intend to see. Even Event Storming can only capture what the room remembers. But the system? The system remembers everything."
+"A few years ago — a legacy order-fulfilment system. Fifteen years of accumulated complexity. No documentation. One question: can we rediscover the domain from what the system left behind? Without talking to a single domain expert first? Quick disclosure before we go further — the system you'll walk through today is a composite. Drawn from real legacy systems I've worked with, with names changed. The artifacts are what matter. Think of it like the Antikythera mechanism — pulled from a wreck, no manual, no inventor to ask. Whatever the system does today, it does because somebody, somewhere, encoded it. Our job is to read what's still readable."
 </Notes>
 
 ---
 
-<Callout>
-**The system remembers everything. We're the ones who forgot.**
+## Seven lenses · one hypothesis
 
-Eight forensic techniques. Eight lenses on the same system. Each reveals something the others can't.
+<BigStat value="7" label="artifacts" />
 
-Together, they produce a **draft domain model** — extracted from artifacts, not from memory.
-</Callout>
+<BigStat value="7" label="lenses" />
+
+<BigStat value="1" label="hypothesis" tone="amber" punchline="Every exhibit adds evidence. Every slide moves the model." />
 
 <Notes>
-"So here's what I'm going to show you. Eight forensic techniques — each one reads a different artifact the system produces. API contracts. Database schemas. Transaction logs. Production logs. Incidents. Data lineage. Error codes. Git history. Each reveals something the others can't see. Together, they produce a draft model that you can take into your next Event Storming session — or use to validate the one you already have. I'm calling it Forensic DDD. Let's start."
+"Seven artifacts. Seven different lenses. Each one reveals what the others can't. Every exhibit adds evidence to a hypothesis about where the boundaries are. At the end, we reconcile what the system says with what the team remembers. Let's start with the most obvious artifact. The one hiding in plain sight. The API contracts. Exhibit A."
 </Notes>
 
 ---
 
-<TitleCard badge="ACT 2" subtitle="Eight lenses. One emerging model.">The Investigation</TitleCard>
+<TitleCard badge="ACT 2" subtitle="Seven lenses. One emerging model.">The Investigation</TitleCard>
 
 <Notes>
 Pause. Act 2 begins. The investigation. From here, every exhibit adds to the emerging model.
@@ -263,244 +278,1252 @@ Pause. Act 2 begins. The investigation. From here, every exhibit adds to the eme
 
 ---
 
-## Exhibit A — Contract Archaeology
+## The hypothesis starts empty
 
-<Split ratio="1:1">
+<BoundedContextMap version="0" />
+
+<Notes>
+"Before we open any artifact — here's what we have. The 6 services we've heard mentioned by name. 3 black boxes we know exist but nothing's documented about. No lines between them. No verdicts. No colours. This is our baseline. Every exhibit from here adds evidence to this map."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT A" subtitle="Teams are polite in workshops. Contracts are honest.">Contract Archaeology</TitleCard>
+
+<Notes>
+"First lens. We read the API contracts — what teams declared publicly. 6 OpenAPI specs, 2 AsyncAPI event schemas, 1 GraphQL BFF. Plus 3 services we know exist but have no contracts for — black boxes. Teams are polite in workshops. Contracts are honest."
+</Notes>
+
+---
+
+## What do we have?
+
+> *Vocabulary reveals where bounded context boundaries fractured.*
+
+<Split ratio="3:2">
 <div>
 
-**Read the API contracts. What did teams declare?**
-
-6 OpenAPI specs. 2 AsyncAPI event schemas. 1 GraphQL BFF.
-
-3 services have **no contracts at all** — black boxes.
-
-> *"Teams are polite in workshops. Contracts are honest."*
+<CompareTable headers="Service|Endpoints|Schemas|Events|Version|Last Modified|Confidence" rows="Shipment|7|10|6|**v2**|2 weeks ago|High||Consignee|6|9|**NONE**|v1|3 weeks ago|High||Inventory|7|8|**—**|v1|2 months ago|Medium||Carrier|7|10|7|v1|1 week ago|High||Invoicing|8|11|**NONE**|v1|6 months ago|Low||Tracking|4|8|**—**|v1|**14 months ago**|Very Low" totalsRow="TOTAL|**39**|**56**|**13**|—|—|—" />
 
 </div>
 <div>
 
-<ContentCard title="WHAT THE CONTRACTS REVEAL" accent="amber" items="6 names for the same person — buyer / customer / user / recipient / account / consignee, One schema coupled to 4 other contexts — god entity, Two services that reference each other — dead boundary, Two services publish ZERO events — synchronous bottleneck" />
+<ContractYield />
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit A. We start with what teams declared — their API contracts. 6 REST APIs, 2 event schemas, 1 GraphQL BFF. We also know 3 services exist that have no contracts at all — black boxes. The findings are immediate: 6 different names for the same person across services. One schema — the shipment entity — reaches into 4 other contexts. That's a god entity. Two services reference each other bidirectionally — a dead boundary. And two services publish zero events, forcing everyone to call them synchronously. Teams are polite in workshops. Contracts are honest."
+"Count what you have — because services that publish zero events force every consumer into synchronous coupling. Silence is a boundary signal. 6 services on the left. 39 endpoints. 56 schemas. 13 events declared in total — but look where they come from. Consignee and Invoicing say NONE explicitly. Tracking and Inventory have nothing. Versioning — Shipment is on v2 already, someone's invested there. Last-modified — Tracking hasn't been touched in 14 months, very low confidence. Now on the right — what those contracts actually yielded once we stripped the noise. 28 unique entities, grouped by service. Shipment holds a copy of Invoice — duplication signal. And 13 domain events implicit in the contract state machines themselves. That's an Event Storming starter pack you didn't pay for. We'll spend the rest of the talk validating what's real."
 </Notes>
 
 ---
 
-## Exhibit A — The Address Problem
+## Pick one concept — the person
 
-<CompareTable headers="Field Concept|Shipment|Consignee|Carrier|Invoicing" rows="Street line 1|line1|streetAddress|street|addressLine1||Street line 2|line2|apartmentUnit|street2|addressLine2||Postal code|postalCode|zipCode|postal|postalCode||Country|country|countryCode|countryCode|country" />
+> *Who receives the delivery?*
 
-4 services. 4 address schemas. 4 different field names for the same things.
+Pick one concept across all services — because same fields with different names means the ubiquitous language fractured.
 
-> Different fields = correct DDD. Different **names** for same fields = **vocabulary drift**.
-
-<Notes>
-"Look at the Address concept across 4 services. Four different names for 'street line 1'. Four different names for postal code. Now — different FIELDS across contexts is CORRECT DDD. Shipping needs access codes, invoicing needs VAT numbers. But different NAMES for the same fields? That's vocabulary drift. The ubiquitous language fractured in implementation. Nobody noticed because each service is correct in its own context."
-</Notes>
-
----
-
-## Exhibit B — Schema Archaeology
-
-<Split ratio="1:1">
+<Split ratio="3:1">
 <div>
 
-**Go deeper. What does the database actually show?**
-
-The contracts declared boundaries. The database shows whether those boundaries are real.
-
-> *"The API says 'I own this.' The database says 'so does he.'"*
+<CompareTable colWeights="1|1|1|1|3" headers="Service|Term Used|ID Field|Fields|Infer" rows="Shipment|buyer|buyerId|3|the person placing the order?||Consignee|customer|customerId|**20**|**the full customer profile?**||Inventory|user|userId|1|who requested the reservation?||Carrier|recipient|recipientId|3|who receives the package?||Invoicing|account|accountId|3|**billing entity — person or company?**||Tracking|user|userId|2|who gets notified?" />
 
 </div>
 <div>
 
-<ContentCard title="WHAT THE DATABASE REVEALS" accent="red" items="orders table read by 4 services — de facto shared kernel, inventory_reserved has 2 WRITERS — boundary violation, customer_addresses read by 3 services bypassing the API, shipment_status shared between Shipment + Carrier — dead boundary confirmed, Ghost database users — processes nobody knows about" />
+<Callout type="warning">
+**🚩 Validate with domain experts**
+
+**Consignee has 20 fields** for this concept (segments, loyalty, preferences, addresses). Everyone else has 3.
+
+→ Who is the **system of record**?
+
+→ Is "account" **intentionally different** (billing entity vs person)?
+
+→ 5 names, same fields — **drift or design**?
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit B. The contracts declared boundaries. Now let's check if those boundaries are real. The database doesn't have opinions — it just records who accessed what. The orders table is read by 4 services directly. inventory_reserved has TWO writers — that's a boundary violation. Two services believe they own reservation logic. And customer_addresses is read by 3 services that bypassed the API entirely. The API boundary looked clean. The database says it's a facade."
+"Pick one concept that should exist everywhere — because same fields with different names means the translation map between contexts is missing. The person receiving the delivery. Five names. Same three fields. But 'account' in Invoicing might mean a billing entity, not a person. We flag it, we don't judge. Consignee has 20 fields, everyone else has 3. Five thin copies of a concept one service owns richly. Who is the system of record?"
 </Notes>
 
 ---
 
-## Exhibit C — Transaction Boundaries
+## The address — correct DDD
 
-<Split ratio="1:1">
+> *Where do they deliver?*
+
+<Split ratio="3:1">
 <div>
 
-**What commits together, belongs together.**
-
-Mine the transaction logs. Which tables are always written in the same database commit?
-
-Those clusters ARE your aggregates — whether anyone designed them or not.
+<CompareTable colWeights="1|2|3|1|2" headers="Service|Schema Name|Unique Fields|Fields|Infer" rows="Shipment|Address|deliveryInstructions, taxId|11|**mixed concerns**||Consignee|CustomerAddress|**label**, isDefault|10|customer-managed||Carrier|DeliveryAddress|**accessCode**, isResidential|11|operational||Invoicing|BillingAddress|**vatNumber**, companyName|10|legal document" />
 
 </div>
 <div>
 
-<ContentCard title="TRANSACTION CLUSTERS" accent="amber" items="{orders + order_lines + order_audit} — 84K/week — Order aggregate ✓, {shipments + tracking_events} — 31K/week — Shipment aggregate ✓, {orders + shipments} — 2103/week — ⚠ CROSS-CONTEXT, {orders + inventory_reserved} — 4512/week at 580ms — ⚠ BOUNDARY VIOLATION" />
+<Callout type="tip">
+**✅ Correct DDD**
+
+Different names *and* different fields. Each context adds fields for its purpose:
+
+Carrier needs `accessCode` → for the delivery driver
+
+Invoicing needs `vatNumber` → for the legal document
+
+Consignee needs `label` → "Home" / "Work"
+
+*Each context should own its own Address representation.*
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit C. If multiple tables are always written in the same transaction, they belong to the same aggregate. The database already knows this. We mined 7 days of transactions. Clean aggregates emerge immediately — orders with order_lines, 84,000 times a week. But then: orders and shipments committed together 2,103 times. The Shipment service is writing to Carrier's table in the same commit. And orders with inventory_reserved — 4,512 times at 580 milliseconds average. That's a distributed concern handled locally. It works in a monolith. It breaks the moment you try to extract."
+"Now compare with Address. Same four services. But look — different names AND different fields. Carrier needs access codes for the delivery driver. Invoicing needs VAT numbers for the legal document. Consignee needs labels like Home and Work. They look the same but they serve different purposes. This IS correct DDD — each bounded context should own its own Address. So the test: same fields, different names — flag it. Different fields for different purposes — correct boundary separation."
 </Notes>
 
 ---
 
-## Exhibit D — Log Mining
+## Open the biggest schema
 
-<Split ratio="1:1">
+> *Shipment Service · openapi.yaml · components/schemas/Order*
+
+A fat schema that packs multiple contexts is a <mark>god entity</mark> that absorbed its neighbors.
+
+<Split ratio="2:1">
 <div>
 
-**The system narrates itself in real time.**
-
-Every `logger.info("Order confirmed")` is a **fossilized domain event** — published to nobody, preserved in plain text.
-
-Trace one entity across all services. Compare to what Event Storming documented.
+<CodeBlock title="shipment-service · openapi.yaml" code="components:&#10;  schemas:&#10;    Order:&#10;      type: object&#10;      properties:&#10;        orderId: string&#10;        status: OrderStatus&#10;        lines: array&#10;        totalAmount: number&#10;        createdAt: date-time&#10;&#10;        # from CONSIGNEE&#10;        buyerId: string&#10;        buyerName: string&#10;        buyerEmail: string&#10;&#10;        # from INVENTORY&#10;        warehouseId: string&#10;        warehouseName: string&#10;&#10;        # from CARRIER&#10;        carrierId: string&#10;        carrierName: string&#10;        trackingNumber: string&#10;&#10;        # from INVOICING&#10;        invoiceId: string&#10;        invoiceNumber: string&#10;        paymentMethod: string&#10;        paymentStatus: string" />
 
 </div>
 <div>
 
-**Event Storming said:**
-Payment → Inventory → Shipment
+<Callout type="warning">
+**⚠️ One schema. Four other contexts.**
 
-**Production logs say:**
-Inventory → Confirmation → Invoice
+**5 own fields. 12 fields from other contexts.**
 
-> *"The gap between what people remember and what the system does — that's the most dangerous kind of technical debt."*
+Every change in Consignee, Inventory, Carrier, or Invoicing potentially breaks this schema.
+
+🚩 Validate
+
+→ Does Shipment *need* all these fields, or did it just accumulate?
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit D. Every log line is a fossilized domain event — the events the system was designed to publish but nobody wired up. We traced one order across all services. The Event Storming from 2 years ago said: Payment, then Inventory, then Shipment. The production logs say: Inventory reserved FIRST, then order confirmed, then invoice generated. Different sequence. Different participants. The team's mental model was wrong. And that gap — between what people remember and what the system does — is the most dangerous kind of technical debt. It's not in the code. It's in the team's understanding."
+"Open the biggest schema — because a fat schema that packs multiple contexts is a god entity. The Order schema. 5 fields of its own — orderId, status, lines, totalAmount, currency. Then 12 borrowed from 4 other contexts. buyerId, buyerName, buyerEmail from Consignee. warehouseId, warehouseName from Inventory. carrierId, carrierName, trackingNumber from Carrier. invoiceId, invoiceNumber, paymentMethod, paymentStatus from Invoicing. Every change in any of those potentially breaks this one schema. Does Shipment actually need all this, or did it just accumulate over 12 years?"
 </Notes>
 
 ---
 
-<Callout>
-**— MIDPOINT —**
+## Map who references whom
 
-The documented model said **3 clean bounded contexts**.
+> *Who depends on whom?*
 
-The artifacts are telling a different story.
+Map who references whom — because the service that references everyone is your <mark>coupling hub</mark>.
 
-Let's keep reading.
+<Split ratio="3:2">
+<div>
+
+<HeatmapMatrix labels="Ship|Cons|Inv|Car|Inv$|Track" rowNames="Shipment|Consignee|Inventory|Carrier|Invoicing|Tracking" cells="-|x|x|x|x|.||.|-|.|.|.|.||x|x|-|.|.|.||x|x|x|-|.|.||x|x|.|.|-|.||x|x|.|x|x|-" highlightRow="Shipment" highlightCol="Cons" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 Three signals**
+
+→ **Shipment references all 4 services**. Coupling hub. God service?
+
+→ **Consignee referenced by all**, references nobody. Clean upstream — but 0 events. Sync bottleneck?
+
+→ **Tracking** references all services but owns only `Notification` + `Template`. **No domain entities. Generic subdomain?**
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Map who references whom. Trace which services reference each other's concepts through ID fields. Three signals. First — Shipment's row has 4 crosses. Pulls from every other service. Coupling hub. God service? Second — Consignee's column has 5 crosses. Referenced by all, references nobody. But zero events — every dependency is a synchronous API call. Sync bottleneck. Third — Tracking references everything but only owns Notification and Template. No domain entities of its own. Generic subdomain? Notice what we're NOT saying yet — no 'dead boundary', no verdicts about whether two contexts are actually one. The heatmap shows references. That's all. Boundary verdicts need schema evidence, and that comes next."
+</Notes>
+
+---
+
+## Look for duplicate schemas
+
+> *Not all coupling is the same*
+
+Look for duplicate schemas — because same concept with two owners means the <mark>boundary between them is fictional.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CodeBlock title="shipment-carrier · duplicate-schema evidence" code="# SHIPMENT SERVICE defines:&#10;  ShipmentInfo:&#10;    carrierId: string&#10;    carrierName: string&#10;    trackingNumber: string&#10;    estimatedDelivery: date&#10;&#10;# CARRIER SERVICE defines:&#10;  Shipment:&#10;    shipmentId: string&#10;    orderId: string         # from Shipment&#10;    recipientId: string     # from Consignee&#10;    carrierName: string&#10;    trackingNumber: string&#10;    status: [created, picked_up, in_transit,&#10;             out_for_delivery, delivered,&#10;             failed, returned, lost, damaged]" />
+
+</div>
+<div>
+
+<Callout type="danger">
+**🔴 Dead boundary signal**
+
+→ **Both services define Shipment schema**. Both reference each other. Circular.
+
+→ **Shipment also defines Invoice (5 states)**. Invoicing owns Invoice (7 states). Stale copy, missing states.
+
+→ **Two duplicate schemas**: `Shipment` / `ShipmentInfo` and `Invoice` / `Invoice`.
+
+→ Merge or build an ACL.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find the same schema in two services — because same concept with two owners means the boundary is fictional. Shipment Service defines ShipmentInfo. Carrier defines Shipment. Same concept, two owners. Notice — Carrier carries the full 9-state lifecycle. Shipment's copy has no states at all. The Shipment service isn't really tracking shipment lifecycle — Carrier is. So why are they two services? Same pattern with Invoice. Shipment defines Invoice with 5 states. Invoicing owns Invoice with 7. A stale copy missing 'sent' and 'disputed.' Two duplicate schemas. Two fictional boundaries. Merge into one context or build a proper anti-corruption layer."
+</Notes>
+
+---
+
+## Hypothesis v0.1 — what the contracts declared
+
+<BoundedContextMap version="1" />
+
+<Notes>
+"First hypothesis from doing Exhibit A. The activities we just walked through — picking one concept, opening the biggest schema, mapping who references whom, looking for duplicate schemas — that's what produced this map. Shipment shows as god entity, because the activity surfaced 12 borrowed fields in one schema. Shipment↔Carrier looks like a possible dead boundary, because we found two services owning the same Shipment concept. Consignee might be a published language — referenced by all, references nobody, but zero events means every consumer is synchronously coupled. Tracking owns no domain entities — generic subdomain? Three black boxes — Carrier Routing, Customs, Returns Engine — no contracts surfaced for them, no evidence yet. Notice the language: 'might', 'looks like', 'could be'. Contracts alone don't confirm boundaries. They suggest hypotheses. The next exhibit checks them against the database."
+</Notes>
+
+---
+
+## Translation map v0.1 — extracted from 6 contracts
+
+> Six services. One human. Five names.
+
+<TranslationMap version="1" />
+
+<Notes>
+"Translation map building in parallel with the context map. What does each service call the same concept? Six contracts gave us two rows. The person — buyer, customer, recipient, account, user. Five unique names across six services. Inventory and Tracking both say 'user' — but Inventory's user is who requested the reservation, Tracking's user is who gets notified. Same name, different concept. Consignee has twenty fields for its customer, everyone else has between one and three — that's the system-of-record signal. The address — four flavours, different fields per context. Sparse by design. This grows every time a new exhibit surfaces a concept. By Act 3 it becomes the system's Rosetta Stone."
+</Notes>
+
+---
+
+## Event catalog v0.1 — what services chose to announce
+
+> 13 declared. 4 services silent.
+
+<EventCatalog version="1" />
+
+<Notes>
+"Third artifact building alongside the context map and translation map — the event catalog. Walk every AsyncAPI contract and list the events each service declares. Shipment's domain announces six — Order placed, confirmed, cancelled, lines added, fulfilment started, completed. Carrier's domain announces seven — Shipment created, picked up, in transit, out for delivery, delivered, failed, returned. Thirteen events total. Now look at who's silent. Consignee, Invoicing, Inventory, Tracking — zero events declared. Four out of six services publish nothing. That's not because they don't HAVE domain events. It's a choice about visibility. The next exhibit asks: what events do they track internally even when they don't publish? Contracts told us what they declare. Next we open the database to see what they hide."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT B" subtitle="The API says 'I own this.' The database says 'so does he.'">Schema Archaeology</TitleCard>
+
+<Notes>
+"Second lens. The contracts showed us what teams declared. Now let's check if those declarations are real. The database doesn't have opinions. It just records who accessed what."
+</Notes>
+
+---
+
+## What's in the database?
+
+> List which service owns which tables — because you need <mark>ownership before you can spot violations</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|3|1|2" headers="Service|Tables Owned|Columns|Notes" rows="Shipment|orders · order_lines · order_audit|**31+**|**⚠ fat table**||Consignee|customers · customer_addresses|27|—||Carrier|carriers · shipments · shipment_status|38|—||Invoicing|invoices · payments · payment_ledger · refunds|45|—||Inventory|warehouses · stock_levels · inventory_reserved|22|—||Tracking|no domain tables · uses notification APIs|**—**|**generic?**" totalsRow="TOTAL|6 services · 15 tables|~160|—" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Database inventory**
+
+6 services · ~160 columns total.
+
+**`orders` alone: 31 columns** → god entity from Exhibit A confirmed at the persistence layer.
+
+5 lifecycle timestamps in `orders` (`confirmed_at`, `shipped_at`, `delivered_at`, `cancelled_at`, `completed_at`) → potential domain events. Exhibit C territory.
+
+`Tracking` owns nothing → generic-subdomain hypothesis from Exhibit A now has database evidence.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"List which service owns which tables — because you need ownership before you can spot violations. Six services. Around 160 columns total. Shipment owns the orders cluster — 31+ columns, the god entity from Exhibit A confirmed at the persistence layer. Carrier owns shipments and shipment_status. Invoicing has the biggest footprint at 45 columns across four tables. Tracking has no domain tables at all — it consumes notification APIs. That generic-subdomain hypothesis from Exhibit A just got more evidence. Also noticed: 5 lifecycle timestamps in the orders table — confirmed_at, shipped_at, delivered_at, cancelled_at, completed_at. Those look like potential domain events. We'll investigate in Exhibit C."
+</Notes>
+
+---
+
+## Find tables with multiple writers
+
+> *Which tables do multiple services access?*
+
+Find tables with multiple writers — because two writers to the same table means <mark>two services believe they own the same aggregate</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="2|2|3|2" headers="Table|Writers|Readers|Severity" rows="orders|Shipment|Carrier · Invoicing · Reporting|🟠 4 readers bypass API||inventory_reserved|**Shipment · Inventory**|—|**🔴 2 WRITERS**||customer_addresses|Consignee|Shipment · Carrier · Invoicing|🟠 3 readers bypass API||shipment_status|Carrier|Shipment|**🟡 supports dead boundary**||payment_ledger|Invoicing|Reporting|🟢 clean" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 The key distinction**
+
+**READ coupling = dependency.** Manageable. No data corruption.
+
+**WRITE coupling = boundary violation.** Two aggregate owners. Race conditions. 3 AM pages.
+
+→ `inventory_reserved` has **2 WRITERS**. Shipment and Inventory both believe they own reservations.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find tables with multiple writers — because two writers to the same table means two services believe they own the same aggregate. Five tables in the shared map. inventory_reserved has two writers — Shipment and Inventory both write to it. Two services believe they own reservation logic. That's where race conditions come from. shipment_status — Carrier writes, Shipment reads. That supports the dead-boundary hypothesis from Exhibit A. The git lens will confirm it later. Now look at payment_ledger — one writer, one reader. That's clean. That's how it should work. The distinction the audience should walk away with: reading is dependency, writing is violation."
+</Notes>
+
+---
+
+## Check if API boundaries match DB access
+
+> Check if API boundaries match DB access — because services bypassing the API means the <mark>declared boundary is a facade.</mark>
+
+<ContradictionReveal
+  earlierExhibit="Exhibit A"
+  earlierClaim="Consignee Service: clean boundary ✓ | Referenced by all. References nobody. | Published language."
+  laterExhibit="Exhibit B"
+  laterFinding="Consignee's customer_addresses table | Read directly by 3 services | Shipment, Carrier, Invoicing — all bypass the API | The boundary is a facade ✗"
+  connector="but the database says…"
+  punchline="Contracts declared a boundary. The database showed it doesn't exist."
+/>
+
+<Notes>
+"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by everyone, references nobody, a textbook published language. Now the database lens. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. The API boundary is a facade. The database tells a different story. Usually it happens because the API didn't exist when consumers needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. This is why you need multiple lenses — one artifact alone can mislead you."
+</Notes>
+
+---
+
+## Look at table structure
+
+> Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are <mark>hard coupling at the data layer.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CodeBlock title="schema · orders table" code="orders table — 31 columns&#10;&#10;  # Cross-boundary foreign keys:&#10;    buyer_id         → customers     (Consignee)&#10;    warehouse_id     → warehouses    (Inventory)&#10;    carrier_id       → carriers      (Carrier)&#10;    invoice_id       → invoices      (Invoicing)&#10;&#10;  4 FKs pointing to 4 other services' tables.&#10;  31 columns total." />
+
+</div>
+<div>
+
+<Callout type="warning">
+**💡 Two signals**
+
+→ **FAT TABLE — 31 columns.** God entity from Exhibit A confirmed at the database layer. Never properly decomposed.
+
+→ **CROSS-BOUNDARY FOREIGN KEYS — 4 FKs to 4 other services' tables.** Can't delete a customer without handling their orders first. Can't migrate Consignee independently. Hard coupling at the data layer.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are hard coupling at the data layer. The orders table has 31 columns. The god entity from Exhibit A confirmed at the database — same fat schema, same accumulation, same problem persisted. And four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. That FK ties them together at the data layer. The contracts could have hidden this — the database can't."
+</Notes>
+
+---
+
+## Hypothesis v0.2 — what the database reveals beneath
+
+<BoundedContextMap version="2" />
+
+<Notes>
+"Update the model after the database lens. Consignee's published-language hypothesis from Exhibit A — struck through. Three services read its tables directly; the API boundary is a facade. Inventory turns red — two writers on inventory_reserved, disputed aggregate. The three dashed red lines visualise the database-layer read coupling that contracts hid. The line between Shipment and Inventory marks the shared-write boundary violation. The three black boxes still unknown. What commits together belongs together — transactions next."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT C" subtitle="What commits together, belongs together.">Transaction Boundaries</TitleCard>
+
+<Notes>
+"Third lens. The contracts showed what teams declared. The database showed real coupling. Now we go one layer deeper — what the database COMMITS TOGETHER. Because every BEGIN...COMMIT block is a consistency boundary. In DDD terms — that's an aggregate. Whether anyone designed it or not."
+</Notes>
+
+---
+
+## What do transactions reveal?
+
+> Mine `pg_stat_statements` — because every commit pattern is a <mark>consistency boundary the code has been enforcing for years.</mark>
+
+<BigStat value="847" label="transaction clusters · 7 days" tone="neutral" />
+
+<BigStat value="812" label="single-service commits · 96% — clean aggregates" tone="green" />
+
+<BigStat value="35" label="cross-service co-writes · 4% — boundary violations" tone="red" punchline="96% stay within one service. 4% cross boundaries. That 4% is where the problems live." />
+
+<Notes>
+"Mine pg_stat_statements — because every BEGIN...COMMIT block is a consistency boundary. In DDD terms, an aggregate, whether anyone designed it or not. Seven days of transactions analysed. 847 distinct commit patterns. 812 of them stay within a single service — clean aggregates, 96% of the volume. 35 cross service boundaries — only 4%. That 4% is where the problems live. The next slides decompose those 35 commits — three clean aggregates we'll surface first, then two cross-service co-writes that block extraction."
+</Notes>
+
+---
+
+## Find clean aggregates
+
+> *Which tables commit together?*
+
+Find what commits together within one service — because <mark>high-frequency co-writes within one service are your aggregates.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="3|1|1|2" headers="Tables in same transaction|Frequency|Service|Infer" rows="{orders · order_lines · order_audit}|**84,219/wk**|Shipment|✅ Order Aggregate||{shipments · tracking_events}|31,445/wk|Carrier|✅ Delivery Aggregate||{payment_ledger · payment_events}|9,877/wk|Invoicing|✅ Payment Aggregate||{inventory_reserved · stock_levels}|3,298/wk|Inventory|✅ Reservation Aggregate" />
+
+</div>
+<div>
+
+<Callout type="tip">
+**💡 Aggregates emerge**
+
+**84,219 times per week**, `orders` + `order_lines` + `order_audit` commit together. Not accidental — that's the Order Aggregate.
+
+The database has been enforcing these consistency boundaries for years. Nobody drew them on a whiteboard. *The code decided.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find what commits together within one service — because high-frequency co-writes within one service are your aggregates. Top row: orders, order_lines, order_audit commit together 84,000 times a week. Not accidental — that's the Order Aggregate. Shipments with tracking_events — the Delivery Aggregate in Carrier. Payment_ledger with payment_events — the Payment Aggregate in Invoicing. Inventory's reservation cluster — clean within Inventory's own writes. Shipment writing to it is a separate story coming next. Four aggregates the database has been enforcing for years. Nobody drew them on a whiteboard. The code decided."
+</Notes>
+
+---
+
+## Find cross-service co-writes
+
+> *Which services commit into each other's tables?*
+
+Find transactions that write to tables owned by different services — because <mark>cross-service co-writes mean you cannot extract those services independently.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="2|2|2|2" headers="Tables in same transaction|Frequency|Pattern|Verdict" rows="{orders · shipments}|**2,103/wk**|Shipment writes to Carrier|🔴 dead boundary confirmed||{orders · inventory_reserved}|**4,512/wk · 580ms**|Shipment writes to Inventory|🔴 shared kernel confirmed" />
+
+</div>
+<div>
+
+<Callout type="danger">
+**🔴 Each exhibit confirms the previous**
+
+**Shipment ↔ Carrier** · A: circular refs · B: shared tables · C: 2,103/wk same commit
+
+→ Cannot split without breaking the transaction.
+
+**Shipment ↔ Inventory** · B: 2 writers on `inventory_reserved` · C: same commit at 580ms
+
+→ Must fix the pattern before extracting.
+
+*The Extraction Readiness verdict comes next.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find transactions that write to tables owned by different services — because cross-service co-writes mean you cannot extract those services independently. Two violations. Shipment writes to Carrier's shipments table 2,103 times a week — the dead boundary from Exhibit A, proved at the transaction level. Shipment also writes to Inventory's inventory_reserved table 4,512 times, 580 milliseconds per transaction — the two-writer violation from Exhibit B, both services committing in the same transaction. Each exhibit confirms the previous. Extraction readiness verdict comes next."
+</Notes>
+
+---
+
+## Connect timestamps to transactions
+
+> *The transaction that sets a timestamp IS the event.*
+
+Connect the timestamps from Exhibit B to the transactions — because <mark>the transaction that sets a timestamp IS the domain event, and the tables in that commit ARE the event payload.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CodeBlock title="example · confirmOrder()" code="When confirmOrder() runs:&#10;&#10;  BEGIN&#10;    UPDATE orders&#10;      SET status = 'confirmed'&#10;      SET confirmed_at = NOW()         ← the event&#10;&#10;    INSERT INTO inventory_reserved     ← what else&#10;      (order_id, sku, quantity)           changes&#10;&#10;  COMMIT&#10;&#10;  This transaction = OrderConfirmed event.&#10;&#10;  Payload:&#10;    order status changed to confirmed&#10;    + inventory was reserved&#10;&#10;  Published?    No.&#10;  Tracked?      Yes.&#10;  Announced?    Never." />
+
+</div>
+<div>
+
+<Callout type="tip">
+**💡 Fossilized domain events**
+
+Exhibit B showed: timestamp columns EXIST in the `orders` table.
+
+Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
+
+→ `confirmed_at` → OrderConfirmed
+
+→ `shipped_at` → OrderShipped
+
+→ `delivered_at` → OrderDelivered
+
+→ `cancelled_at` → OrderCancelled
+
+→ `completed_at` → OrderCompleted
+
+**5 domain events the system has been recording for years but never publishing.**
+
+🔗 Exhibit D will find these same events fossilized in the logs. *Three independent sources.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Connect timestamps to transactions — because the transaction that sets a timestamp defines the domain event: what changed, what else changed with it, and the consistency boundary the change happened within. That's the event payload the system never published. When confirmOrder runs, confirmed_at is set on the order AND a row is inserted into inventory_reserved — in the same commit. That transaction IS the OrderConfirmed event. The payload is: order status changed plus inventory reserved. Five lifecycle timestamps, five domain events the system records but never announces. Exhibit D will find these same events fossilized in production logs. Three independent sources, one diagnosis."
+</Notes>
+
+---
+
+## Hypothesis v0.3 — what commits together. What blocks extraction.
+
+<BoundedContextMap version="3" />
+
+<Notes>
+"Update the model after the transaction lens. Four aggregates emerge from the commit patterns. Order Aggregate inside Shipment — orders, order_lines, order_audit. Delivery Aggregate inside Carrier — shipments, tracking_events. Payment Aggregate inside Invoicing — payment_ledger, payment_events. Reservation Aggregate inside Inventory — inventory_reserved, stock_levels. The database has been enforcing these consistency boundaries for years; nobody designed them on a whiteboard. Now the verdicts. Carrier turns green — extractable, clean internal transactions. Consignee also extractable — facade aside, its own commits are clean (the 3 consumer bypasses are a separate fix). Shipment picks up the BLOCKED label — cross-context co-writes to Carrier 2,103 a week and to Inventory 4,512 a week. Inventory BLOCKED for the shared-write reason. The Shipment-Carrier line hardens — what was an amber dotted hypothesis in A is now a red solid 'dead boundary proved'. The Shipment-Inventory line also hardens — 580 milliseconds in the same commit, extraction blocker. The three black boxes still unknown. Hypothesis v0.3 — what commits together, what blocks extraction. Keep an eye on Carrier's green light though — Exhibit G has something to say about it later. Runtime next."
+</Notes>
+
+---
+
+## Event catalog v0.2 — what the database tracks but never publishes
+
+<EventCatalog version="2" />
+
+<Notes>
+"Event catalog grew. Six events fossilized in the database — four from orders timestamps: confirmed_at to OrderConfirmed, shipped_at to OrderShipped, delivered_at to OrderDelivered, cancelled_at to OrderCancelled. Two from invoices timestamps: paid_at to InvoicePaid, issued_at to InvoiceIssued. And look at Invoicing — it declared zero events in its contracts, but it has paid_at and issued_at. It tracks when payments and invoices happen — it just never tells anyone. The database knew. The contracts didn't. Four events we still have no evidence for anywhere — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded, InventoryReserved. Exhibit D will surface some of those in the logs."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT D" subtitle="Every logger.info is a fossilized domain event — published to nobody.">Log Mining</TitleCard>
+
+<Notes>
+"Fourth lens. We've read structure — contracts, database, transactions. All static artifacts. Now we go live. Production logs. The system narrating itself in real time. Remember the language analogy? The contracts are the written signs. The logs are the SPOKEN language — the system telling you what it actually does."
+</Notes>
+
+---
+
+## What's in the logs?
+
+> Pull a week of production logs — because every `logger.info` is a <mark>fossilized domain event the system narrates but never publishes</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|1|3|2" headers="Service|Lines / day|Top fossilized events|Notes" rows="Shipment|22,134|OrderPlaced · OrderConfirmed · OrderCompleted|published ✓||Carrier|16,892|ShipmentCreated · ShipmentDelivered|published ✓||Consignee|6,408|AddressChanged · ProfileUpdated|**never published**||Invoicing|14,205|InvoiceGenerated · PaymentCaptured · RefundProcessed|**never published**||Inventory|15,634|InventoryReserved · StockAdjusted|**never published**||Tracking|28,156|NotificationSent · EmailDelivered|**infra · not domain**" totalsRow="TOTAL|**~103k / day**|6 candidate events fossilized|7 days · ~720k lines" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Log inventory**
+
+7 days analyzed · ~720,000 log lines.
+
+**3 services** (Consignee · Invoicing · Inventory) narrate domain events they never publish anywhere.
+
+`Tracking` runs ~28k lines/day — the highest volume — but it's notification infrastructure, not domain. Confirms generic-subdomain hypothesis.
+
+6 candidate fossilized events emerging. Exhibit C cross-references the database to confirm which are real.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Pull a week of production logs — because every logger.info is a fossilized domain event the system narrates but never publishes. Seven days. About 720,000 log lines. Look at the per-service breakdown. Tracking has the highest volume — 28k a day — but it's all notification infrastructure, not domain events. That confirms the generic-subdomain hypothesis from Exhibit A. Shipment and Carrier publish what they log — domain events declared in their AsyncAPI contracts. But Consignee, Invoicing, Inventory — they're recording AddressChanged, InvoiceGenerated, InventoryReserved every single day. Tens of thousands of times. None of those events get published anywhere. The system already knows about these events. The publisher just isn't wired up. Six candidate events emerging from this lens. Cross-referencing with the database in Exhibit C confirms which are real."
+</Notes>
+
+---
+
+## Trace one entity across all services
+
+> *Trace: order ORD-2024-881742*
+
+Trace one entity end-to-end — because the <mark>actual sequence reveals sync chains, async boundaries, and participants nobody mentioned.</mark>
+
+<CodeBlock title="production · log trace · order lifecycle" code="# SYNC chain (2 seconds) ↓&#10;09:14:02  Shipment        Order CREATED (DRAFT)&#10;09:14:02  Shipment        Inventory check requested&#10;09:14:03  Inventory       Reserve: SKU-1194, qty=3&#10;09:14:03  Shipment        Order CONFIRMED&#10;09:14:04  Invoicing       Invoice INV-39201 generated&#10;09:14:04  Tracking        Email sent: order_confirmed&#10;&#10;── 87 second gap ──&#10;&#10;# ASYNC boundary ↓&#10;09:15:31  Carrier         Shipment SHP-77012 created&#10;&#10;── 5 hours ──&#10;&#10;14:22:08  Carrier         Picked up by DHL&#10;&#10;── next day ──&#10;&#10;08:41:19  Carrier         Delivered, signed=J.SMITH&#10;08:41:20  Shipment        Order status=DELIVERED&#10;08:41:20  Tracking        Email sent: order_delivered" />
+
+<Notes>
+"Trace one entity end-to-end — because the actual sequence reveals sync chains, async boundaries, and participants nobody mentioned in Event Storming. Sorted chronologically. Look at the timing. 09:14:02 to 09:14:04 — creation through invoice generation — 2 seconds. That's synchronous. Shipment calls Inventory, waits for the response, confirms the order, calls Invoicing, waits, then Tracking fires. A chain. Then — 87 second gap before Carrier creates the shipment. That's asynchronous. Carrier is already decoupled at runtime. The timing reveals the architecture: synchronous chain from creation through invoicing, asynchronous to carrier. And notice Tracking — appears twice, in both flows, nobody mentioned it."
+</Notes>
+
+---
+
+## Identify sync chains and async boundaries
+
+> Identify sync chains and async boundaries — because <mark>synchronous chains are extraction blockers and async gaps are boundaries that already exist.</mark>
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="danger">
+**🔴 Sync chain · 2 seconds**
+
+**Shipment → Inventory → Shipment → Invoicing → Tracking**
+
+Each step waits for the previous. If Inventory is slow, everything is slow. If Invoicing is down, orders stop.
+
+→ Confirms Exhibit C: `{orders, inventory_reserved}` co-write. Same coupling, different evidence.
+
+*The extraction blocker.*
+</Callout>
+
+</div>
+<div>
+
+<Callout type="tip">
+**🟢 Async boundary · 87 seconds**
+
+**Invoicing ···87s gap··· Carrier**
+
+Carrier picks up from a queue or poll. If Carrier is down, orders still get created.
+
+→ This boundary already exists. Carrier is already decoupled at runtime — even though Exhibit A showed API coupling.
+
+*Your easiest extraction point.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Identify sync chains and async boundaries — because synchronous chains are extraction blockers and async gaps are boundaries that already exist. On the left — a synchronous chain. Shipment calls Inventory, waits, confirms, calls Invoicing, waits. Two seconds, four services, all blocking. If any service in that chain is slow, the whole order creation is slow. Confirms Exhibit C's transaction finding — the same coupling, different evidence. On the right — an 87-second gap before Carrier. That's async. Carrier is already decoupled at runtime. Even though Exhibit A showed API coupling between Shipment and Carrier, at runtime they're already separated by a queue. That's your easiest extraction point — the boundary already exists in practice."
+</Notes>
+
+---
+
+## Compare to Event Storming
+
+<ContradictionReveal
+  earlierExhibit="Event Storming (2 years ago)"
+  earlierClaim="Payment → Inventory → Shipment"
+  laterExhibit="Production (today)"
+  laterFinding="Inventory → Confirmation → Invoice | Payment doesn't happen at order time at all. | The sequence is different. | The participants are different."
+  connector="but production says…"
+  punchline="The gap between what people remember and what the system does — that's the most dangerous kind of technical debt. | It's not in the code. It's in the team's understanding."
+/>
+
+<Notes>
+SLOW DOWN. Pause before reading the comparison. Let the audience read it themselves first. Then: "The event storming from two years ago said: Payment, then Inventory, then Shipment. Production says: Inventory reserved FIRST, then order confirmed, then invoice generated. Payment doesn't happen at order time at all. The sequence is different. The participants are different. [PAUSE 3 SECONDS] The team's mental model was wrong. Not because they're bad at their jobs. Because the system evolved and the documentation didn't. The gap between what people remember and what the system does — that's the most dangerous kind of technical debt. It's not in the code. It's in the team's understanding."
+</Notes>
+
+---
+
+## Identify silent participants
+
+> *Who else is in the flow?*
+
+Identify services that appear in the flow but were never mentioned — because <mark>silent participants are hidden dependencies that break when transitions change.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<CodeBlock title="trace · tracking appearances" code="09:14:04  Tracking   Email sent: order_confirmed&#10;08:41:20  Tracking   Email sent: order_delivered" />
+
+**Tracking Notifications appears TWICE.**
+
+Nobody mentioned it in Event Storming. Nobody put it on the context map.
+
+It owns no state transitions. It makes no domain decisions. But it participates in every order lifecycle event.
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 Silent participant**
+
+Tracking is triggered by status transitions it observes. If CONFIRMED or DELIVERED transitions change, **Tracking breaks silently**.
+
+→ Confirms Exhibit A: coupled to everything, owns nothing.
+
+*Infrastructure pretending to be a domain service.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Identify services that appear in the flow but were never mentioned — because silent participants are hidden dependencies that break when transitions change. Tracking Notifications appears twice in the trace — at confirmation and at delivery. Nobody mentioned it in the event storming. Nobody put it on the context map. But it's silently participating in every order lifecycle transition. It owns no state. It makes no decisions. But if the confirmation or delivery transitions change, Tracking breaks — silently, because it's just sending emails. Confirms what Exhibit A suggested — Tracking is infrastructure pretending to be a domain service."
+</Notes>
+
+---
+
+## Build the event catalog
+
+> *Events the system publishes to nobody*
+
+Build the event catalog from log patterns — because <mark>these are the domain events the system has been recording for years but never publishing.</mark>
+
+<Split ratio="3:1">
+<div>
+
+<CompareTable colWeights="2|1|1|1" headers="Fossilized Event|Daily Count|Service|Category" rows="Order CREATED|12,034|Shipment|🟢 core||Inventory RESERVED|11,891|Inventory|🟢 core||Order CONFIRMED|11,756|Shipment|🟢 core||Invoice GENERATED|11,402|Invoicing|🟢 core||Shipment CREATED|10,877|Carrier|🟢 core||Shipment DELIVERED|9,234|Carrier|🟢 core||Order CANCELLED|278|Shipment|🟡 edge case||Refund PROCESSED|156|Invoicing|🟡 edge case||Shipment FAILED|89|Carrier|🔴 error" />
+
+</div>
+<div>
+
+<Callout type="tip">
+**💡 These are your events**
+
+Every log line with a state transition = a domain event the system never formalized.
+
+The happy path: ~11,000/day.
+
+The edge cases nobody mentioned in Event Storming:
+
+→ **278** cancellations/day
+
+→ **156** refunds/day
+
+→ **89** delivery failures/day
+
+🔗 Exhibit C showed timestamps in the same transactions. *Same events. Two independent sources.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Build the event catalog from log patterns — because these are the domain events the system has been recording for years but never publishing. Trace 1,000 orders instead of one and you get the full picture. The happy path processes about 11,000 orders per day. But the edge cases nobody mentioned in Event Storming: 278 cancellations a day, 156 refunds, 89 delivery failures. The logs show you every path the system actually takes, including the ones nobody remembers designing. And remember Exhibit C — confirmed_at is set in the same transaction as the Order CONFIRMED log event. Two independent sources, same events. The evidence converges. This is the artifact v0.3 — thirteen events the contracts declared, nine more fossilized between the database timestamps and the logs, three we still have no evidence for anywhere. Twenty-two known events. Three missing — those go to the domain experts."
+</Notes>
+
+---
+
+## Hypothesis v0.4 — what actually happens at runtime
+
+<BoundedContextMap version="4" />
+
+<Notes>
+"Update the model after the runtime lens. Tracking's hypothesis from earlier — generic subdomain? — now confirmed as silent participant, observed in every order lifecycle, owns nothing. The sync chain Shipment → Inventory → Invoicing is the red ribbon — every step blocks the next, two seconds total. The 87-second async gap to Carrier is the green dotted line — already decoupled at runtime, easiest extraction point. And the Event Storming sequence from two years ago was wrong — production runs Inventory before Confirmation before Invoice, not Payment first. The team's mental model has been out of date. Three black boxes still unknown. Four lenses done — structure and behavior. Now — what does it cost when boundaries are wrong?"
+</Notes>
+
+---
+
+## Event catalog v0.3 — final
+
+<EventCatalog version="3" />
+
+<Notes>
+"This is the event catalog after four lenses. Thirteen events declared in the AsyncAPI contracts at Exhibit A. Six fossilized in database timestamps from Exhibit C — Invoicing's paid_at and issued_at among them, despite contracts saying Invoicing publishes nothing. Three more fossilized in production logs from Exhibit D — InventoryReserved at 11,891 a day, InvoiceGenerated at 11,402, RefundProcessed at 156. Twenty-two known events total. Only thirteen of them are published anywhere. Nine the system records every single day and tells nobody. And three we still have no evidence for in any source — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded. Those go to the domain experts as 'should this exist? Who should own it?' That's the artifact the audience walks out of this exercise with."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT E" subtitle="The architecture is the bug.">Incident Clustering</TitleCard>
+
+<Notes>
+"Fifth lens. We've mapped structure — contracts, database, transactions. We've seen behavior — the logs. Now the question every engineering manager asks: so what? What does this COST us? Let's look at where the system breaks."
+</Notes>
+
+---
+
+## Re-tag incidents by service pair
+
+> Re-tag your incidents by which two services were involved — because <mark>incidents classified as 'Service X failed' hide the coupling underneath.</mark>
+
+<BigStat value="83" label="incidents in 12 months" />
+
+<BigStat value="64" label="at service boundaries" />
+
+<BigStat value="77%" tone="amber" label="of all failures are cross-boundary" punchline="The system isn't failing because services are buggy. It's failing because the boundaries are wrong." />
+
+<Notes>
+"Re-tag your incidents by which two services were involved — because incidents classified as 'Inventory failed' or 'Carrier timed out' hide the coupling underneath. 83 production incidents in 12 months. 64 of them — 77% — at service boundaries. One incident roughly every four days. Ten of them SEV1 — ten nights someone got paged at 3 AM because of a boundary problem. The system is not failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places."
+</Notes>
+
+---
+
+## Find where interactions cluster
+
+> *Where do failures cluster?*
+
+Find where interactions cluster — because <mark>repeated failures between the same two services means the coupling is structural, not accidental.</mark>
+
+<Split ratio="3:1">
+<div>
+
+<RankedBars bars="Shipment ↔ Inventory::23::red|Within single service::19::green|Shipment ↔ Carrier::17::amber|Invoicing ↔ Shipment::14::amber|Carrier ↔ Tracking::6::yellow|Inventory ↔ Warehouse::4::yellow" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**🚩 Read the pattern**
+
+**23 at Shipment ↔ Inventory** = not bad luck. Structural coupling.
+
+**0 at Consignee** = confirmed clean.
+
+Internal incidents: 1 SEV1. Boundary incidents: 10 SEV1s.
+
+*The severity skews to boundaries, not just the count.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find where interactions cluster — because repeated failures between the same two services means the coupling is structural, not accidental. 23 incidents at Shipment-Inventory — the top cluster. 17 at Shipment-Carrier. 14 at Invoicing-Shipment. And zero — zero — at the Consignee boundary. Look at the severity. 10 out of 11 SEV1s are cross-boundary. The most damaging failures are overwhelmingly at boundaries. And 19 internal incidents — only 1 SEV1. The boundaries are where the pain is."
+</Notes>
+
+---
+
+## Connect each cluster to previous exhibits
+
+> *Shipment ↔ Inventory: 23 incidents*
+
+Connect each cluster back to your earlier exhibits — because <mark>each failure pattern should trace to a coupling you already identified.</mark>
+
+<Split ratio="3:2">
+<div>
+
+<PieChart slices="Race condition::30::highlight|Timeout::26|Stale read::22|Orphaned reservation::22" annotations="Exhibit B: 2 writers to inventory_reserved (7 races)|Exhibit C: 580ms co-write under load (6 timeouts)|Read replica lag (5 stale reads)|Exhibit C: missing saga (5 orphans)" />
+
+</div>
+<div>
+
+<Callout type="danger">
+**🔴 Every incident traces back**
+
+2-writer violation (Exhibit B) → **7 race conditions**
+
+580ms co-write (Exhibit C) → **6 timeouts**
+
+Missing saga (Exhibit C) → **5 orphaned reservations**
+
+→ 4 SEV1s. 4 nights someone got paged. 4 war rooms.
+
+*The evidence is converging.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Connect each cluster back to your earlier exhibits — because each failure pattern should trace to a coupling you already identified. Take the top cluster — 23 incidents at Shipment-Inventory. 7 race conditions — both services write to inventory_reserved. That's Exhibit B's two-writer violation, now costing real pages. 6 timeouts — the 580-millisecond synchronous co-write from Exhibit C, under load it times out. 5 orphaned reservations — order cancelled but inventory not released — the missing saga that Exhibit C said we need. Every incident traces back to a finding from a previous exhibit. The coupling we found in artifacts now has a measurable cost. 4 SEV1s. 4 nights someone got paged at 3 AM because of a boundary problem."
+</Notes>
+
+---
+
+## Find what's not clustering
+
+> *Urgent vs important*
+
+Find what's not clustering — because <mark>confirming which interactions are clean is as valuable as finding which are broken.</mark>
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="danger">
+**🔴 Where it breaks**
+
+**Shipment ↔ Inventory** — 23 incidents
+
+**Shipment ↔ Carrier** — 17 incidents
+
+**Invoicing ↔ Shipment** — 14 incidents
+
+These boundaries are in the wrong place or using the wrong integration pattern.
+
+→ *Fix these first.*
+</Callout>
+
+</div>
+<div>
+
+<Callout type="tip">
+**🟢 Where it doesn't**
+
+**Consignee boundary** — 0 incidents
+
+The boundary IS clean. The data access isn't (Exhibit B: 3 direct readers).
+
+But zero incidents means the coupling hasn't hurt yet.
+
+→ *Fix later. Ticking clock, not a fire.*
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Find what's not clustering — because confirming which interactions are clean is as valuable as finding which are broken. Consignee boundary — zero incidents. Zero. The boundary IS clean — even though Exhibit B showed 3 services reading its table directly. The coupling exists but it hasn't hurt yet. That's the difference between urgent and important. The left side — fix now, people are getting paged. The right side — fix later, it's a ticking clock, not a fire. Incident clustering tells you what hurts NOW. The other exhibits tell you what will hurt NEXT."
+</Notes>
+
+---
+
+## Hypothesis v0.5 — the cost of wrong boundaries
+
+<BoundedContextMap version="5" />
+
+<Notes>
+"Update the model after the incident lens. The Shipment-Inventory line gets thicker — 23 incidents, the worst cluster, four SEV1s. Shipment-Carrier thicker too — 17 incidents from the dead boundary. Shipment-Invoicing carries the sync chain cost — 14 incidents under load. Consignee turns green — confirmed clean by the incident data, zero failures across all pairs. The three black boxes still unknown. Hypothesis v0.5 — the cost of wrong boundaries. Each architectural finding from previous exhibits now has a price tag attached. Now — what business rules has the system been quietly enforcing? Error codes next."
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT F" subtitle="The errors aren't bugs — they're the system protecting itself.">Error Code Reverse-Engineering</TitleCard>
+
+<Notes>
+"Seventh lens. Every legacy system has cryptic error codes that nobody fully understands but everyone works around. These codes are fossilized business rules. Each one is a domain invariant someone decided was important enough to validate and reject. The error code table is the most honest business rules document in the entire system."
+</Notes>
+
+---
+
+## What error codes do we have?
+
+> Pull every error code and rank by frequency — because <mark>the most-thrown codes are the business rules nobody documented</mark>.
+
+<Split ratio="3:2">
+<div>
+
+<CompareTable colWeights="1|1|3|2" headers="Service|Codes|Top codes · annual throws|Notes" rows="Shipment (ORD-)|47|ORD-E003 · **4,102** · price variance|**business rules**||Carrier (DEL-)|32|DEL-E011 · **3,420** · return window|**misplaced concern?**||Invoicing (INV-)|28|INV-E001 · 1,823 · invoice tolerance|**policies**||Inventory (STK-)|15|STK-E004 · 892 · stock threshold|resource limits||Consignee (CST-)|8|CST-E001 · 412 · validation|clean ✓||Tracking (TRK-)|4|TRK-E001 · 98 · delivery failure|infra only" totalsRow="TOTAL|**134 codes**|Top 10 = ~60% of throws|12 months data" />
+
+</div>
+<div>
+
+<Callout type="warning">
+**📋 Error code inventory**
+
+134 codes across 6 services · 12 months data.
+
+**Top 10 codes alone** account for ~60% of all throws — those are the high-frequency invariants worth decoding first.
+
+Most codes have **no documentation** beyond the error message. The threshold lives only in code.
+
+Carrier owns `DEL-E011` (3,420/year) but it's a returns rule — **misplaced concern** worth flagging.
+</Callout>
+
+</div>
+</Split>
+
+<Notes>
+"Pull every error code and rank by frequency — because the most-thrown codes are the business rules nobody documented. 134 codes across six services. Twelve months of data. The top ten codes account for about 60% of all throws — those are the high-frequency invariants worth decoding first. Most have no documentation beyond the error message itself. The threshold lives only in the code. Look at Carrier — DEL-E011 fires 3,420 times a year. It's a return window rule. But it lives in Carrier, not in any returns context. That's a misplaced concern worth flagging. The next slides decode the top codes one by one — what business rule each one encodes."
+</Notes>
+
+---
+
+## Decode the top error codes
+
+> *Two error codes. Two undocumented business rules.*
+
+Decode the top error codes — because <mark>high-frequency codes are domain invariants that exist only in code — thresholds, SLAs, policies nobody wrote down.</mark>
+
+<Callout type="warning">
+**🟠 ORD-E003 · 4,102/year**
+
+"Price variance exceeded"
+
+If price drifts more than **2%** between cart and checkout, reject the order.
+
+That 2% exists nowhere in documentation. Only in code. Fires 11 times a day.
+
+*Does your pricing manager know it exists?*
+</Callout>
+
+<Callout type="warning">
+**🟠 ORD-E031 · 2,156/year**
+
+"Split shipment threshold"
+
+Items from **3+ warehouses** triggers split-shipment logic.
+
+This error references warehouses, carriers, and orders — an invariant validating across 3 contexts.
+
+*Orchestration logic that nobody gave a name to.*
 </Callout>
 
 <Notes>
-"We're halfway through the investigation. Four exhibits in. And the documented model — 3 clean bounded contexts from Event Storming — is already contradicted by every artifact we've read. The contracts show coupling. The database shows shared tables. The transactions show cross-context commits. The logs show a different sequence. Let's keep reading. It gets more revealing."
+"Decode the top error codes — because high-frequency codes are domain invariants that exist only in code: thresholds, SLAs, policies nobody wrote down. ORD-E003 — price variance exceeded. If the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation. Only in code. It fires 11 times a day. Is it still the right number? Does your pricing manager know it exists? ORD-E031 — split shipment. Items from 3 or more warehouses triggers split logic. This error code references warehouses, carriers, AND orders — it validates across 3 contexts. That's orchestration logic. It needs its own context. Nobody named it."
 </Notes>
 
 ---
 
-## Exhibit E — Incident Clustering
+## Check where rules live vs where they belong
+
+> Check which service owns the rule vs what domain it belongs to — because <mark>a business policy in the wrong service is a misplaced concern — a boundary signal.</mark>
 
 <Split ratio="1:1">
 <div>
 
-**Where failures cluster is where boundaries are wrong.**
+<Callout type="warning">
+**🟡 DEL-E011 · 412/year**
 
-83 incidents in 12 months. 64 at service boundaries.
+"Return window validation"
 
-**77% of all failures are cross-boundary.**
+→ Electronics = 30 days
+→ Clothing = 14 days
+→ Perishable = none
 
-> *"The architecture is the bug."*
+**Lives in `DEL-` (Carrier) · belongs in Returns / Policy.**
+
+The prefix shows where the rule lives. The content shows where it belongs.
+
+*Hypothesis — take it to domain experts.*
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="TOP BOUNDARY CLUSTERS" accent="red" items="Shipment ↔ Inventory: 23 incidents (4 SEV1) — race conditions + timeouts, Shipment ↔ Carrier: 17 incidents — the dead boundary hurts, Invoicing ↔ Shipment: 14 incidents — sync chain in critical path, Consignee boundary: 0 incidents — confirmed clean ✓" />
+<Callout type="danger">
+**🔴 ORD-E099 · 891/year**
+
+"Legacy override applied"
+
+**891 times per year**, someone bypasses validation.
+
+What rules does it skip? Nobody knows. `skip_validation()` has grown over years. No documentation. No audit trail.
+
+*Audit this first.*
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit E. 83 production incidents in 12 months. 64 of them — 77% — occurred at service boundaries. The system isn't failing because individual services are buggy. It's failing because the boundaries between them are in the wrong places. The top cluster: Shipment to Inventory — 23 incidents, 4 of them SEV1. Race conditions from the two-writer violation we found in Exhibit B. Timeouts from the synchronous co-write we found in Exhibit C. The coupling we found in artifacts is now costing real engineering hours and real customer impact. The architecture is the bug."
+"Check which service owns the rule versus what domain it belongs to — because a business policy in the wrong service is a boundary signal. DEL-E011 — return window per category. Electronics get 30 days, clothing 14, perishable gets none. That's a business POLICY. But it lives in the Carrier service — prefixed DEL because the delivery team built it. The prefix shows where the rule LIVES. The content shows where it BELONGS. This error code just surfaced a missing context — Returns/Policy. Nobody designed it. The error code knew it existed. ORD-E099 — the dangerous one. Legacy override. 891 times a year, someone bypasses standard validation. What rules does it skip? Nobody knows completely. The function has grown over years. No documentation. No audit trail. 891 unlogged validation bypasses per year. Audit this first."
 </Notes>
 
 ---
 
-## Exhibit F — Data Lineage
+## Check the error-to-incident ratio
 
-<Split ratio="1:1">
+> *ORD-E001: "Insufficient allocation"*
+
+Check how many errors become incidents — because <mark>the ratio tells you the error handling is load-bearing — understand it before you touch it.</mark>
+
+<BigStat value="12,847" label="error fires per year" tone="amber" />
+
+<BigStat value="23" label="actual incidents (from Exhibit E)" tone="red" punchline="The error handling is LOAD-BEARING. Remove this validation without understanding it → 12,847 failures instead of 23." />
+
+<Notes>
+"Check how many errors become incidents — because the ratio tells you the error handling is load-bearing. Remember the 23 incidents at Shipment-Inventory from Exhibit E? ORD-E001 — insufficient allocation — fires 12,847 times per year. The error handling catches 12,824 of them successfully. Only 23 escape into incidents. The error code is load-bearing. It's not a bug — it's the system protecting itself. Remove this validation without understanding it and you get 12,847 failures per year instead of 23. That ratio tells you the error handling is more important than you think. Understand what it protects before you touch it."
+</Notes>
+
+---
+
+## Hypothesis v0.6 — business rules nobody documented. One new context discovered.
+
+<BoundedContextMap version="6" />
+
+<Notes>
+"Update the model after the error-code lens. A new context materialises — Returns / Policy — in purple, in place of the middle unknown blob. DEL-E011 traces from Carrier into this new context: the return-window policy lives in Carrier but belongs in Returns / Policy. Nobody designed Returns / Policy as a context. The error code told us the concern exists. Shipment carries forward its god-entity verdict; the high-frequency invariants from Exhibit F — price tolerance, split-shipment logic, the override escape hatch — back it up. The two remaining unknown blobs still don't have evidence. Six lenses done. One left — the one that records every decision every developer ever made. Change velocity next."
+</Notes>
+
+---
+
+## Translation map v0.2 — enriched with business rules from error codes
+
+> Nine rules nobody wrote down. We just found them all.
+
+<TranslationMap version="2" />
+
+<Notes>
+"Same artifact, five exhibits later. The translation map now has six rows. Delivery and bill have clear systems of record — Carrier owns Shipment with 9 states; Invoicing owns Invoice with 7. The reservation belongs to Inventory. The return — DEL-E011 — lives in Carrier and shouldn't. That's the misplaced concept. And below the table, the recovered business rules. Nine of them, pulled out of error codes, never written down. Price tolerance 2%, four-hour SLA, ten-thousand-euro cap, return windows by category. Production has run on these for years and none of them are in any spec. When you take this list to domain experts, the rules are often the biggest surprise — they didn't know the system was enforcing them. Next lens — change velocity. What does git history reveal about our boundaries?"
+</Notes>
+
+---
+
+<TitleCard badge="EXHIBIT G" subtitle="Git records every architectural decision, whether you meant to make it or not.">Change Velocity</TitleCard>
+
+<Notes>
+"Seventh and final lens. Six exhibits mapped structure, data, behavior, cost, and rules. One lens left — the one that records every decision every developer ever made. Git history. If files from two services change together in the same commit, those services are coupled — regardless of what the architecture diagram says."
+</Notes>
+
+---
+
+## What's in git history?
+
+> Pull six months of commits across all services — because <mark>files that change together are coupled, even if the architecture diagram doesn't show it</mark>.
+
+<Split ratio="3:2">
 <div>
 
-**Follow one entity. Find who owns the truth.**
-
-The delivery address exists in **4 copies**. 4 formats. 4 update policies.
-
-**342 mismatches** in 90 days.
-
-When a customer calls: *"where is my order?"* — the answer depends on which service the agent looks at.
+<CompareTable colWeights="1|1|1|2" headers="Service|Commits|Files touched|Notes" rows="Shipment|412|89|**most active**||Inventory|312|71|active||Invoicing|248|64|active||Carrier|218|56|steady||Consignee|187|42|focused||Tracking|38|12|**low activity**" totalsRow="TOTAL|**1,415 commits**|334 files touched|6 months" />
 
 </div>
 <div>
 
-<ContentCard title="EACH COPY = A CONTEXT BOUNDARY" accent="amber" items="Consignee: current address (customer-managed), Shipment: snapshot at order time (immutable), Carrier: operational — updatable before dispatch, Invoicing: concatenated string (lossy / unreconstructable), Warehouse: SCD Type 2 — has better history than the source" />
+<Callout type="warning">
+**📋 Git history inventory**
+
+6 months · 1,415 commits · 334 files touched across 6 services.
+
+**47 file pairs** co-change more than 10% of the time.
+
+**4 cross-service pairs** flagged > 40% — investigated in the next slide.
+
+**1 pair > 70%** — strongest dead-boundary signal yet. The architecture diagram never showed it.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit F. Pick one entity — the delivery address — and trace it everywhere. 4 copies. 4 formats. 4 different update policies. The carrier can update the address independently after the order is placed. The invoice stores it as one concatenated string you can't parse back. 342 mismatches in 90 days. Each copy with different rules IS a bounded context boundary. The fix isn't centralizing the data — it's acknowledging the context boundaries and building the propagation events that should exist."
+"Pull six months of commits across all services — because files that change together are coupled, even if the architecture diagram doesn't show it. About 1,400 commits. 334 files touched. Shipment is the most active codebase, Tracking the least — which lines up with the contract age signal from Exhibit A. Now the interesting number: 47 file pairs co-change more than 10% of the time. Four of those pairs cross service boundaries — that's where coupling lives that nobody declared. And one pair is above 70%. That's the strongest dead-boundary signal we've found anywhere. The next slide ranks the top cross-service pairs and shows which couplings the team has been carrying without realising it."
 </Notes>
 
 ---
 
-## Exhibit G — Error Code Reverse-Engineering
+## Measure co-change frequency
+
+> *Which code actually co-evolves?*
+
+Measure how often files from different services change in the same commit — because <mark>high cross-service co-change means developers can't work on one service without touching the other — coupling the architecture diagram won't show you.</mark>
+
+<RankedBars max="100" bars="OrderController + ShipmentService::72::red|DeliveryScheduler + InventoryChecker::68::red|PricingEngine + OrderValidator::54::amber|InvoiceGenerator + OrderEventHandler::41::yellow|CustomerAddressValidator (solo)::89::green" />
+
+<Notes>
+"Measure how often files from different services change in the same commit — because high cross-service co-change means developers can't work on one service without touching the other. OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 7 exhibits."
+</Notes>
+
+---
+
+## Check for overrides
+
+> Check if git contradicts previous exhibits — because <mark>git reveals development coupling that transaction data and API contracts can't see — and it can override earlier conclusions.</mark>
+
+<ContradictionReveal
+  earlierExhibit="Exhibit C"
+  earlierClaim="Carrier Integration: 🟢 READY | Clean internal transactions. | Transaction boundary is clean. | Ready to extract."
+  laterExhibit="Exhibit G"
+  laterFinding="Carrier Integration: 🔴 NOT READY | 72% co-change with Shipment | Every PR that touches one requires changes in the other."
+  connector="but git overruled…"
+  punchline="The transaction boundary is clean. The development reality isn't. | Git overruled Exhibit C. | This is why you need 7 lenses — it took the seventh to catch what the third missed."
+/>
+
+<Notes>
+"Check if git contradicts previous exhibits — because git reveals development coupling that transaction data and API contracts can't see. One override. Exhibit C gave Carrier Integration a green light — clean transactions, ready to extract. We were confident. Then we opened the git history. 72% co-change with Shipment. Every PR that touches one requires changes in the other. The transaction boundary is clean. The development reality isn't. Git overruled Exhibit C. This is why you need 7 lenses — one artifact can mislead you. It took the seventh lens to catch what the third lens missed."
+</Notes>
+
+---
+
+## Compare git evidence to previous exhibits
+
+> Compare git evidence to previous exhibits — because <mark>cross-service co-change confirms or overrides earlier conclusions, and solo-changing files are your reference for what good separation looks like.</mark>
 
 <Split ratio="1:1">
 <div>
 
-**Error codes are fossilized business rules.**
+<Callout type="danger">
+**🔴 Coupled in git**
 
-Every `ORD-E003: Price variance exceeded` encodes a domain invariant someone decided was important enough to validate and reject.
+**OrderController + ShipmentService** — 72%
+→ dead boundary confirmed by 6 exhibits now.
 
-The error code table is the **most honest business rules document** in the system.
+**DeliveryScheduler + InventoryChecker** — 68%
+→ hidden dependency. Git found what contracts didn't.
+
+**PricingEngine + OrderValidator** — 54%
+→ extract last. Stabilize the interface before separating.
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="DECODED BUSINESS RULES" accent="amber" items="ORD-E003: 2% price tolerance — exists only in code, ORD-E031: split shipment at 3+ warehouses — hidden orchestration context, DEL-E011: return window per category — business rule in wrong service, ORD-E099: 891 validation bypasses/year — the escape hatch nobody governs" />
+<Callout type="tip">
+**🟢 Independent in git**
+
+**CustomerAddressValidator** — 89% solo
+→ Consignee IS independent. Confirmed: A, B, C, E, G.
+
+**CarrierRateCalculator** — 94% solo
+→ well-encapsulated, clean boundary.
+
+**NotificationRenderer** — 91% solo
+→ infrastructure, correctly isolated.
+
+*These are your reference points for what good separation looks like.*
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit G. Nobody documents error codes. They accumulate over years. But each one is a fossilized business rule. ORD-E003: if the price changes by more than 2% between cart and checkout, reject. That 2% threshold exists nowhere in documentation — only in code. It fires 11 times a day. DEL-E011: return window differs by product category. That's a business policy living in the wrong service — delivery, not returns. And ORD-E099: legacy override. 891 times a year, someone bypasses validation. What rules does it skip? Nobody knows completely. The errors aren't bugs — they're the system protecting itself."
+"Compare git evidence to previous exhibits — because cross-service co-change confirms or overrides earlier conclusions, and solo-changing files are your reference for what good separation looks like. On the left — coupled. OrderController and ShipmentService at 72% — the dead boundary, now confirmed by six exhibits. DeliveryScheduler and InventoryChecker at 68% — a hidden dependency that none of the previous six exhibits caught. Git found it. PricingEngine and OrderValidator at 54% — if you try to extract pricing first, you'll be changing two services in lockstep for every feature. Extract it last. On the right — what independence looks like. CustomerAddressValidator changes alone 89% of the time. CarrierRateCalculator 94%. NotificationRenderer 91%. These are your reference points. When you're deciding whether two things belong together, compare their co-change rate to these baselines."
 </Notes>
 
 ---
 
-## Exhibit H — Change Velocity
+## Determine extraction order
+
+> *Start with the least coupled. End with the most entangled.*
 
 <Split ratio="1:1">
 <div>
 
-**Git knows which code actually co-evolves.**
+<Callout type="tip">
+**🟢 1 · Extract first**
 
-If files from two services change together **72% of the time**, the boundary between them is fiction — regardless of what the architecture diagram says.
-
-> *"Git records every architectural decision, whether you meant to make it or not."*
+**Consignee** — 89% solo · independent · clean · go.
+</Callout>
 
 </div>
 <div>
 
-<ContentCard title="CO-CHANGE EVIDENCE" accent="red" items="OrderController + ShipmentService: 72% — dead boundary at dev level, DeliveryScheduler + InventoryChecker: 68% — hidden dependency, PricingEngine + OrderValidator: 54% — extract LAST not first, CustomerAddressValidator: 89% solo — Consignee confirmed clean ✓" />
+<Callout type="warning">
+**🟡 2 · Stabilize first**
+
+**Invoicing** — 41% co-change · stabilize event contract, then extract.
+</Callout>
+
+</div>
+</Split>
+
+<Split ratio="1:1">
+<div>
+
+<Callout type="warning">
+**🟠 3 · Fix before extracting**
+
+**Inventory** — 68% co-change · replace co-write with a saga, then extract.
+</Callout>
+
+</div>
+<div>
+
+<Callout type="danger">
+**🔴 4 · Extract last**
+
+**Shipment + Carrier** — 72% co-change · merge first, then decide if it splits differently.
+</Callout>
 
 </div>
 </Split>
 
 <Notes>
-"Exhibit H. The final lens. Git records which files change together. If OrderController and ShipmentService change together 72% of the time, the developers have been telling you the boundary is fictional — with every commit, for years. This overrides Exhibit C: Carrier Integration looked 'ready to extract' from transaction data. But git says 72% co-change. The runtime boundary is clean. The development reality isn't. Git is the tiebreaker. And CustomerAddressValidator changes alone 89% of the time — the Consignee context is genuinely independent. Confirmed by 8 exhibits."
+"Determine extraction order — because git tells you which services to extract first and which to tackle last. Start with Consignee — 89% solo, genuinely independent, extract first. Then Invoicing — moderate coupling, stabilize the event contract between it and Shipment, then extract. Inventory needs work first — replace the co-write with a saga, then extract. Shipment and Carrier — don't extract separately. Merge them first. Then decide if the merged context needs splitting along different lines. Start with the least coupled. End with the most entangled. Git tells you the order."
+</Notes>
+
+---
+
+## Hypothesis v0.7 — seven lenses. One evidence-backed hypothesis.
+
+<BoundedContextMap version="7" />
+
+<Notes>
+"Final update. Carrier flips from green extractable (Exhibit C) to red NOT READY — 72% co-change with Shipment overrules the transaction-boundary verdict. A MERGE indicator appears between them: Shipment Fulfilment is the merged context. The three unknown blobs — one of them is now Returns/Policy in purple, revealed by Exhibit F. The other two remain unknown. Hypothesis v0.7 — seven lenses, one evidence-backed hypothesis. The remembered domain said three contexts. The encoded domain shows seven. Now we reconcile."
 </Notes>
 
 ---
@@ -508,7 +1531,17 @@ If files from two services change together **72% of the time**, the boundary bet
 <TitleCard badge="ACT 3" subtitle="The Rosetta Stone moment">The Reconciliation</TitleCard>
 
 <Notes>
-"Eight exhibits. Eight lenses. The same couplings confirmed from independent sources. Like the Rosetta Stone — the same decree written in three scripts. When eight independent artifacts say the same thing, it's not an opinion. It's a diagnosis."
+"Seven exhibits. Seven lenses. The same couplings confirmed from independent sources. Like the Rosetta Stone — the same decree written in three scripts. When seven independent artifacts say the same thing, it's not an opinion. It's a diagnosis."
+</Notes>
+
+---
+
+## The System's Rosetta Stone
+
+<TranslationMap version="3" />
+
+<Notes>
+"This is what the translation map becomes when you've worked all seven lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And the three cards at the bottom say it plain. Five names for one person. Nine rules that never made it into a spec. Eight domain events the system tracks but never publishes. No translation map existed in this organisation. This is it. From here we draw the new map."
 </Notes>
 
 ---
@@ -527,7 +1560,7 @@ If files from two services change together **72% of the time**, the boundary bet
 
 **What the system encoded: 7 contexts**
 
-<ContentCard title="FROM FORENSIC EVIDENCE" accent="green" items="Order — lifecycle only, Delivery — independent lifecycle (Exhibits A + C), Invoicing — own lifecycle including dunning (Exhibit D), Inventory — needs its own transactional boundary (Exhibits C + E), Returns/Policy — rules scattered across services (Exhibit G), Customer — source of truth nobody uses properly (Exhibits B + F), Warehouse — split-shipment orchestration (Exhibit G)" />
+<ContentCard title="FROM FORENSIC EVIDENCE" accent="green" items="Order — lifecycle only, Delivery — independent lifecycle (Exhibits A + C), Invoicing — own lifecycle including dunning (Exhibit D), Inventory — needs its own transactional boundary (Exhibits C + E), Returns/Policy — rules scattered across services (Exhibit F), Customer — source of truth nobody uses properly (Exhibit B), Warehouse — split-shipment orchestration (Exhibit F)" />
 
 </div>
 </Split>
@@ -559,7 +1592,7 @@ If files from two services change together **72% of the time**, the boundary bet
 
 ---
 
-## What Forensic DDD gives Event Storming
+## Not a replacement — a preparation
 
 <Split ratio="1:1">
 <div>
@@ -585,34 +1618,48 @@ The system tells the domain story back to us.
 </Split>
 
 <Notes>
-"Forensic DDD doesn't replace Event Storming. It changes the question. Without evidence, you ask 'how does this work?' and experts build from memory. With evidence, you ask 'is this how it works?' and experts react. People are much faster at reacting than creating. You arrive with a draft model extracted from 8 independent artifacts. The experts validate, correct, and extend it. The workshop is richer, faster, and grounded in evidence instead of memory."
+"Before I close — let me be clear about what this is and isn't. Forensic DDD is not a replacement for Event Storming. It's a preparation for it. Event Storming is expensive — fifteen people in a room for two days costs real money. If you walk in with blank stickies and ask 'how does the system work?' — you get memory. Expensive, incomplete memory that immediately starts drifting. If you walk in with a hypothesis v0.7 and ask 'is THIS how it works?' — you get reactions to evidence. Faster. Grounded. The gaps are visible, not assumed. These two things complement each other. They don't compete."
 </Notes>
 
 ---
 
-## The Forensic DDD Checklist
+## You don't need all seven
 
 <Split ratio="1:1">
 <div>
 
-<ContentCard title="READ THE ARTIFACTS" accent="amber" items="A — API contracts: vocabulary drift + coupling, B — Database: shared tables + boundary violations, C — Transactions: aggregate boundaries, D — Logs: actual runtime behavior, E — Incidents: cost of wrong boundaries, F — Data lineage: who owns the truth, G — Error codes: undocumented business rules, H — Git: development coupling" />
+**If you only have 30 minutes:**
+
+→ Read the contracts (Exhibit A)
+
+You'll find the vocabulary drift. That alone tells you where boundaries fractured.
+
+**If you have a morning:**
+
+→ Add the database schema (Exhibit B)
+
+You'll find who actually owns what.
 
 </div>
 <div>
 
-**The toolkit is open source.**
+**If you have a day:**
 
-`github.com/rajnavakoti/ddd-archaeology`
+→ Add transactions + logs (C + D)
 
-8 CLI commands. Synthetic dataset. Chain-of-thought documentation.
+You'll have aggregates, runtime behaviour, and a fossilized event catalog.
 
-Point it at your own contracts, schemas, and logs.
+**All seven together:**
+
+→ Full hypothesis. Every lens reinforces the next.
 
 </div>
 </Split>
 
+<mark>One alone is still better than nothing.</mark>
+
 <Notes>
-"Here's the checklist. Eight exhibits. Take this to your own systems. The toolkit is open source — 8 CLI commands, a synthetic delivery platform dataset, and the full chain-of-thought documentation for each technique. Point it at your own artifacts and see what the system tells you."
+"You don't need to run all seven exhibits. This isn't a checklist you complete before you're allowed to proceed. In some situations one artifact is enough. A new team joining a domain — read the contracts on day one. An architect asked to assess extraction readiness — add the database schema. A team preparing for Event Storming — add the logs. Every exhibit adds signal. Start with what you have. One alone is still better than nothing."
 </Notes>
 
 ---
@@ -628,7 +1675,58 @@ Teams are polite in workshops. Contracts are honest. The database doesn't have o
 </Callout>
 
 <Notes>
-SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain isn't in the documentation. It isn't in people's heads. It's in the system. Encoded in transactions. Fossilized in logs. Buried in error codes. [pause] Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. [pause] Legacy systems aren't just technical debt. They're dense archives of domain knowledge. If you know how to read them. [pause] Thank you."
+SLOW DOWN. This is the thesis statement — the head of the close. Deliver each sentence with a pause. "The domain isn't in the documentation. It isn't in people's heads. It's in the system. Encoded in transactions. Fossilized in logs. Buried in error codes. [pause] Teams are polite in workshops. Contracts are honest. The database doesn't have opinions. Logs can't lie. [pause] Legacy systems aren't just technical debt. They're dense archives of domain knowledge. If you know how to read them."
+</Notes>
+
+---
+
+> *A menu.*
+>
+> *A chicken symbol.*
+>
+> *A word you didn't know.*
+
+**You observed.**
+
+**You inferred.**
+
+**You validated.**
+
+Your legacy system has been leaving artifacts on the table for years.
+
+<mark>You already know how to read them.</mark>
+
+<Notes>
+"[Click to this slide. The minimal slide is the heart of the close — let the contrast with everything that came before do the work.] We started with a restaurant menu and a word I didn't know. The method I used to figure out that pollo was chicken — that's the same method you just watched applied to a fifteen-year-old delivery system. Observe the artifacts. Make inferences. Validate against evidence. Your system has been narrating itself the entire time. The domain is in there. You just need to know what to look for. [Pause. Let it land. Then click forward to the checklist for the practical takeaway.]"
+</Notes>
+
+---
+
+## The Forensic DDD Checklist
+
+<Split ratio="1:1">
+<div>
+
+<ContentCard title="READ THE ARTIFACTS" accent="amber" items="A — API contracts: vocabulary drift + coupling, B — Database: shared tables + boundary violations, C — Transactions: aggregate boundaries, D — Logs: actual runtime behavior, E — Incidents: cost of wrong boundaries, F — Error codes: undocumented business rules, G — Git: development coupling" />
+
+</div>
+<div>
+
+**The toolkit is open source.**
+
+`github.com/rajnavakoti/ddd-archaeology`
+
+7 CLI commands. Synthetic dataset. Chain-of-thought documentation.
+
+Point it at your own contracts, schemas, and logs.
+
+*The full toolkit also runs as a chain of reasoning agents — point it at your artifacts.*
+
+</div>
+</Split>
+
+<Notes>
+"Here's the checklist. Seven exhibits. Take this to your own systems. The toolkit is open source — 7 CLI commands, a synthetic delivery platform dataset, and the full chain-of-thought documentation for each technique. It also runs as a chain of reasoning agents — point it at your artifacts and let it produce a structured hypothesis before a single human meeting is scheduled. Either way — start with what you have. [Stay on this slide for Q&A.]"
 </Notes>
 
 ---
@@ -636,5 +1734,5 @@ SLOW DOWN. This is the closing. Deliver each sentence with a pause. "The domain 
 <TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/rajnavakoti/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
 
 <Notes>
-Final slide. Stay up while people clap or approach for questions. If time remains, take questions. If not: "I'll be outside — find me."
+Final slide — the goodbye after the pollo callback + checklist Q&A. Stay up while people clap or approach for questions. If time remains, take questions from the checklist slide. If not: "I'll be outside — find me."
 </Notes>

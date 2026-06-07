@@ -1,0 +1,391 @@
+/* BoundedContextMap — overlapping bounded-context regions. */
+
+.figure {
+  --bcm-accent: var(--color-accent, #C9A96E);
+  --bcm-bg: var(--color-bg, #FFF);
+  --bcm-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --bcm-text: var(--color-text, #111);
+  --bcm-text-muted: var(--color-text-muted, #999);
+  --bcm-red: #B26464;
+  --bcm-green: #6E9B6E;
+  --bcm-purple: #8C78A5;
+  --bcm-gray: #888;
+
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.canvas {
+  width: 100%;
+  background: var(--bcm-bg);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Region paths — fill is semi-transparent, stroke carries the status colour. */
+.regionPath {
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 200ms ease;
+}
+
+.statusRed .regionPath {
+  fill: rgba(178, 100, 100, 0.16);
+  stroke: var(--bcm-red);
+}
+
+.statusAmber .regionPath {
+  fill: rgba(201, 169, 110, 0.16);
+  stroke: var(--bcm-accent);
+  stroke-width: 2.5;
+}
+
+.statusGreen .regionPath {
+  fill: rgba(110, 155, 110, 0.16);
+  stroke: var(--bcm-green);
+}
+
+.statusPurple .regionPath {
+  fill: rgba(140, 120, 165, 0.16);
+  stroke: var(--bcm-purple);
+}
+
+.statusGray .regionPath {
+  fill: rgba(136, 136, 136, 0.10);
+  stroke: var(--bcm-gray);
+}
+
+.statusUnknown .regionPath {
+  fill: rgba(150, 150, 150, 0.06);
+  stroke: var(--bcm-text-muted);
+  stroke-dasharray: 8 5;
+  stroke-width: 2;
+  opacity: 0.65;
+}
+
+/* The internal line that marks the Shipment+Carrier fusion */
+.memoryLine {
+  stroke: var(--bcm-red);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.65;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Ghost-of-formerly-separate-context labels inside the merged blob */
+.mergedGhostLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 15px;
+  font-style: italic;
+  fill: var(--bcm-red);
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+}
+
+/* Exhibit tag in canvas corner — anchors the audience to which exhibit
+   the current model state corresponds to. */
+.exhibitTag {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 22px;
+  font-weight: 800;
+  fill: var(--bcm-text-muted);
+  letter-spacing: 0.18em;
+  opacity: 0.45;
+}
+
+.mergedStrike {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* Labels — sized for back-of-room readability at a DDD-Europe-style projection */
+.regionLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.regionSublabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.regionFinding {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* Label fills per status — labels mirror the border colour for emphasis. */
+.statusRed .regionLabel,
+.statusRed .regionSublabel,
+.statusRed .regionFinding {
+  fill: var(--bcm-red);
+}
+
+.statusAmber .regionLabel,
+.statusAmber .regionSublabel,
+.statusAmber .regionFinding {
+  fill: var(--bcm-accent);
+}
+
+.statusGreen .regionLabel,
+.statusGreen .regionSublabel,
+.statusGreen .regionFinding {
+  fill: var(--bcm-green);
+}
+
+.statusPurple .regionLabel,
+.statusPurple .regionSublabel,
+.statusPurple .regionFinding {
+  fill: var(--bcm-purple);
+}
+
+.statusGray .regionLabel,
+.statusGray .regionSublabel,
+.statusGray .regionFinding {
+  fill: var(--bcm-gray);
+}
+
+.statusUnknown .regionLabel {
+  fill: var(--bcm-text-muted);
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Summary band — "Remembered 3 / Discovered 7" */
+.summaryBand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin: 16px auto 0;
+  padding: 16px 32px;
+  border-top: 2px solid var(--bcm-accent);
+  background: var(--bcm-bg-muted);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  max-width: 800px;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--bcm-text-muted);
+  font-weight: 600;
+}
+
+.summaryValue {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--bcm-text);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.summaryDetail {
+  font-size: 11px;
+  color: var(--bcm-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.summaryDivider {
+  font-size: 28px;
+  color: var(--bcm-text-muted);
+  font-weight: 300;
+}
+
+.caption {
+  margin-top: 12px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--bcm-text-muted);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* ── Overlays ─────────────────────────────────────────────────────────── */
+
+/* Sync chain ribbon (v0.4): translucent red band visualising the
+   synchronous flow Shipment → Inventory → Invoicing. Routed below
+   Carrier (Carrier is async, not part of this chain). No label —
+   the HTML legend below the canvas explains it. */
+.syncRibbon > path {
+  stroke: rgba(178, 100, 100, 0.45);
+}
+
+/* Async dotted line (v0.4+): green dotted line + arrowhead from
+   Invoicing toward Carrier. No label. */
+.asyncDotted > path {
+  stroke: var(--bcm-green);
+  opacity: 0.75;
+}
+.asyncDotted > polygon {
+  fill: var(--bcm-green);
+  opacity: 0.85;
+}
+
+/* Incident fan (v0.5): three red lines radiating from Shipment
+   (the epicentre) to Inventory, Carrier, Invoicing. Stroke widths
+   set inline per line, proportional to incident count. */
+.incidentFan > path {
+  stroke: var(--bcm-red);
+  opacity: 0.55;
+  stroke-linecap: round;
+}
+
+/* Dotted hypothesis line in the gap between Shipment and Carrier (v0.1).
+   Amber because it's a HYPOTHESIS earned by Exhibit A's duplicate schema
+   evidence — not a verdict. The legend below the canvas names it. */
+.deadBoundaryLine > line {
+  stroke: var(--bcm-accent, #C9A96E);
+  opacity: 0.85;
+}
+
+/* Three red dashed lines converging on Consignee (v0.2) — the services
+   that read its tables directly, bypassing the API. */
+.facadeBypass > path {
+  stroke: var(--bcm-red);
+  opacity: 0.65;
+  stroke-linecap: round;
+}
+
+/* Single red dashed line between Shipment and Inventory (v0.2) —
+   the inventory_reserved shared-write coupling. Slightly thicker than
+   facadeBypass because it's the worse kind of coupling (write, not read). */
+.sharedKernel > path {
+  stroke: var(--bcm-red);
+  opacity: 0.75;
+  stroke-linecap: round;
+}
+
+/* Strikethrough on a finding text when its label is wrapped in ~~markers~~.
+   Used to show a hypothesis that was refuted by the current version's
+   evidence — visible only on the version of refutation, then dropped. */
+.regionFindingStrike {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+/* Red SOLID line Shipment <-> Carrier at v0.3 — promotes the v0.1 amber
+   dotted hypothesis to a transaction-proved verdict. */
+.deadBoundaryProved > line {
+  stroke: var(--bcm-red);
+  opacity: 0.9;
+}
+
+/* Red SOLID line Shipment <-> Inventory at v0.3 — confirms the v0.2
+   sharedKernel as an extraction blocker (4,512/wk, 580ms same commit). */
+.extractionBlocker > path {
+  stroke: var(--bcm-red);
+  opacity: 0.9;
+}
+
+/* Marker fills — used both by SVG circle markers and (.markerX as a
+   className) by HTML span markers in the HTML legend bar. */
+.markerRed { fill: var(--bcm-red); background: var(--bcm-red); }
+.markerGreen { fill: var(--bcm-green); background: var(--bcm-green); }
+.markerAmber { fill: var(--bcm-accent); background: var(--bcm-accent); }
+.markerPurple { fill: var(--bcm-purple); background: var(--bcm-purple); }
+
+/* ── HTML legend bar below the canvas ──────────────────────────────── */
+/* Lives below the SVG, above the figcaption. Always has room.
+   Never competes with shapes for canvas space. */
+/* Legend strip now renders ABOVE the canvas (between slide title and
+   the diagram) so the "X · from Exhibit Y" findings read as exhibit
+   context, not orphaned footer text. */
+.legendBar {
+  margin: 0 auto 12px;
+  max-width: 1000px;
+  padding: 10px 24px;
+  background: var(--bcm-bg-muted);
+  border-left: 3px solid var(--bcm-accent);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.legendHeader {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bcm-text-muted);
+  margin-bottom: 8px;
+}
+
+.legendList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bcm-text);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.legendMarker {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Address-drift tendrils from Consignee (v0.6+) — dotted amber arcs out */
+.addressTendrils > path {
+  stroke: var(--bcm-accent);
+  opacity: 0.55;
+}
+
+.addressLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--bcm-accent);
+  letter-spacing: 0.06em;
+}
+
+/* Returns-delegation arrow (v0.7+) — purple from Carrier to Returns/Policy */
+.returnsArrow > path,
+.returnsArrow > polygon {
+  stroke: var(--bcm-purple);
+  fill: var(--bcm-purple);
+  opacity: 0.85;
+}
+
+.returnsLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--bcm-purple);
+  letter-spacing: 0.06em;
+}

@@ -1,0 +1,99 @@
+/* ContractYield — sidebar panel listing entities + events extracted */
+
+.figure {
+  --cy-accent: var(--color-accent, #C9A96E);
+  --cy-bg: var(--color-bg, #FFF);
+  --cy-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --cy-text: var(--color-text, #111);
+  --cy-text-muted: var(--color-text-muted, #999);
+  --cy-border: var(--color-text, #111);
+  --cy-border-muted: var(--color-border-muted, #DDD);
+  --cy-event: #E6C36B;
+
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--cy-border);
+}
+
+.sectionCount {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cy-accent);
+  letter-spacing: -0.02em;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cy-text);
+  font-weight: 700;
+}
+
+/* ── Entities by service ──────────────────────────────────────────── */
+
+.serviceList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.serviceLine {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cy-text);
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--cy-border-muted);
+}
+
+.serviceLine:last-child {
+  border-bottom: none;
+}
+
+.serviceName {
+  display: inline-block;
+  min-width: 96px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cy-text);
+  margin-right: 10px;
+  font-size: 13px;
+}
+
+.serviceEntities {
+  color: var(--cy-text);
+  font-weight: 500;
+}
+
+/* ── Events line — plain comma-separated text, matches entity rows ── */
+
+.eventsLine {
+  margin: 0;
+  padding: 6px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cy-text);
+  font-weight: 500;
+}

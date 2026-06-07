@@ -20,6 +20,15 @@ export { LifecycleDiagram } from "./diagrams";
 export { Timeline } from "./diagrams";
 export { PipelineDiagram } from "./diagrams";
 export { HubDiagram } from "./diagrams";
+export { HeatmapMatrix } from "./HeatmapMatrix";
+export { ContradictionReveal } from "./ContradictionReveal";
+export { BigStat } from "./BigStat";
+export { RankedBars } from "./RankedBars";
+export { LineageTree } from "./LineageTree";
+export { BoundedContextMap } from "./BoundedContextMap";
+export { TranslationMap } from "./TranslationMap";
+export { ContractYield } from "./ContractYield";
+export { EventCatalog } from "./EventCatalog";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -43,6 +52,15 @@ import { LifecycleDiagram } from "./diagrams";
 import { Timeline } from "./diagrams";
 import { PipelineDiagram } from "./diagrams";
 import { HubDiagram } from "./diagrams";
+import { HeatmapMatrix } from "./HeatmapMatrix";
+import { ContradictionReveal } from "./ContradictionReveal";
+import { BigStat } from "./BigStat";
+import { RankedBars } from "./RankedBars";
+import { LineageTree } from "./LineageTree";
+import { BoundedContextMap } from "./BoundedContextMap";
+import { TranslationMap } from "./TranslationMap";
+import { ContractYield } from "./ContractYield";
+import { EventCatalog } from "./EventCatalog";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -73,4 +91,13 @@ export const mdxSlideComponents = {
   Timeline,
   PipelineDiagram,
   HubDiagram,
+  HeatmapMatrix,
+  ContradictionReveal,
+  BigStat,
+  RankedBars,
+  LineageTree,
+  BoundedContextMap,
+  TranslationMap,
+  ContractYield,
+  EventCatalog,
 };

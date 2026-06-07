@@ -512,6 +512,28 @@
   line-height: 1.4;
 }
 
+/* Highlighted cell content via `**text**` markdown-bold convention.
+   Light amber tint + bold reads like a subtle highlighter, not a censor box. */
+.compareTableHighlight {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  color: var(--color-text);
+  padding: 1px 4px;
+  font-weight: 800;
+  border-radius: 0;
+}
+
+/* Optional totals row stacked at the bottom — stronger top border, bold cells.
+   The double-class selector beats the nth-child even-row zebra striping. */
+.compareTableRow.compareTableTotalsRow {
+  border-top: 2px solid var(--color-text);
+  background: var(--color-bg-secondary);
+}
+
+.compareTableRow.compareTableTotalsRow .compareTableCell {
+  font-weight: 800;
+  color: var(--color-text);
+}
+
 /* === Legend Component === */
 
 .legend {
@@ -772,6 +794,10 @@
 .calloutQuote {
   border-left: 4px solid var(--color-text-muted);
   font-style: italic;
+}
+
+.calloutDanger {
+  border-left: 4px solid #B26464;
 }
 
 .calloutLabel {

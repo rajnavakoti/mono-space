@@ -1,0 +1,115 @@
+/* ContradictionReveal — cross-exhibit refutation visual.
+ * Unified panel. No orphan punchline. CSS line-through on the deprecated
+ * statements (no markdown ~~ required, which next-mdx-remote doesn't render). */
+
+.container {
+  --cr-accent: var(--color-accent, #C9A96E);
+  --cr-bg: var(--color-bg, #FFF);
+  --cr-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --cr-text: var(--color-text, #111);
+  --cr-text-muted: var(--color-text-muted, #999);
+  --cr-border: var(--color-text, #111);
+
+  margin: 16px auto;
+  width: 100%;
+  max-width: 900px;
+  border: 2px solid var(--cr-border);
+  background: var(--cr-bg);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  display: flex;
+  flex-direction: column;
+}
+
+.earlier,
+.later {
+  padding: 18px 24px;
+}
+
+.earlier {
+  background: var(--cr-bg-muted);
+  opacity: 0.85;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cr-text-muted);
+  margin-bottom: 12px;
+}
+
+.statements {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.earlierStatement {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--cr-text-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--cr-accent);
+}
+
+.connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 0;
+  background: var(--cr-bg);
+  border-top: 1px dashed var(--cr-text-muted);
+  border-bottom: 1px dashed var(--cr-text-muted);
+}
+
+.connectorArrow {
+  font-size: 16px;
+  color: var(--cr-accent);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.connectorLabel {
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--cr-accent);
+  padding: 4px 14px;
+  border: 1.5px solid var(--cr-accent);
+  background: var(--cr-bg);
+}
+
+.laterStatement {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--cr-text);
+  font-weight: 500;
+}
+
+.punchline {
+  padding: 18px 24px;
+  border-top: 2px solid var(--cr-accent);
+  background: var(--cr-bg);
+  text-align: center;
+  color: var(--cr-text);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.punchlinePara {
+  margin: 0;
+  font-size: 14.5px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+}

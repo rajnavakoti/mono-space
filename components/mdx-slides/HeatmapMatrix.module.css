@@ -1,0 +1,110 @@
+/* HeatmapMatrix — coupling matrix rendered as a heatmap diagram. */
+
+.heatmap {
+  --hm-accent: var(--color-accent, #C9A96E);
+  --hm-bg: var(--color-bg, #FFF);
+  --hm-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --hm-text: var(--color-text, #111);
+  --hm-text-muted: var(--color-text-muted, #999);
+  --hm-border-muted: var(--color-border-muted, #DDD);
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 720px;
+  background: var(--hm-bg);
+  border: 2px solid var(--hm-text);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.headerRow,
+.dataRow {
+  display: grid;
+}
+
+.dataRow {
+  border-top: 1px solid var(--hm-border-muted);
+}
+
+.headerRow {
+  background: var(--hm-text);
+  color: var(--hm-bg);
+}
+
+.cornerCell {
+  padding: 8px;
+}
+
+.colHeader {
+  text-align: center;
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.colHeaderHighlight {
+  color: var(--hm-accent);
+  background: var(--hm-bg);
+}
+
+.rowHeader {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--hm-bg-muted);
+  border-right: 1px solid var(--hm-border-muted);
+  display: flex;
+  align-items: center;
+}
+
+.rowHeaderHighlight {
+  color: var(--hm-accent);
+  background: rgba(201, 169, 110, 0.08);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-left: 1px solid var(--hm-border-muted);
+  min-height: 48px;
+}
+
+.cellFilled {
+  background: rgba(201, 169, 110, 0.18);
+  color: var(--hm-accent);
+}
+
+.cellDiagonal {
+  background: var(--hm-bg-muted);
+  color: var(--hm-text-muted);
+}
+
+/* Highlight band: cells along the highlighted row OR column get a tint */
+.cellInHighlightedRow,
+.cellInHighlightedCol {
+  background: rgba(201, 169, 110, 0.10);
+}
+
+/* Filled cells inside the highlight band get a stronger amber */
+.cellFilled.cellInHighlightedRow,
+.cellFilled.cellInHighlightedCol {
+  background: rgba(201, 169, 110, 0.32);
+}
+
+/* Intersection of highlighted row + col: strongest tint regardless of state */
+.cellInHighlightedRow.cellInHighlightedCol {
+  background: rgba(201, 169, 110, 0.42);
+}
+
+.markFilled {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.markDiagonal {
+  font-size: 14px;
+}
