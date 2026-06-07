@@ -597,27 +597,12 @@ Connect the timestamps from Exhibit B to the transactions — because <mark>the 
 </div>
 <div>
 
-<Callout type="tip">
-**💡 Fossilized domain events**
-
-Exhibit B showed: timestamp columns EXIST in the `orders` table.
-
-Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
-
-→ `confirmed_at` → OrderConfirmed
-
-→ `shipped_at` → OrderShipped
-
-→ `delivered_at` → OrderDelivered
-
-→ `cancelled_at` → OrderCancelled
-
-→ `completed_at` → OrderCompleted
-
-**5 domain events the system has been recording for years but never publishing.**
-
-🔗 Exhibit D will find these same events fossilized in the logs. *Three independent sources.*
-</Callout>
+<FossilizedEvents
+  table="orders"
+  mappings="confirmed_at::OrderConfirmed|shipped_at::OrderShipped|delivered_at::OrderDelivered|cancelled_at::OrderCancelled|completed_at::OrderCompleted"
+  punchline="5 Domain Events. Recorded for years. Never announced."
+  followup="Exhibit D will find the same events fossilised in the logs."
+/>
 
 </div>
 </Split>
