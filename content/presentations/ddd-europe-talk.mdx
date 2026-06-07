@@ -568,19 +568,11 @@ Find transactions that write to tables owned by different services — because <
 </div>
 <div>
 
-<Callout type="danger">
-**🔴 Each exhibit confirms the previous**
-
-**Shipment ↔ Carrier** · A: circular refs · B: shared tables · C: 2,103/wk same commit
-
-→ Cannot split without breaking the transaction.
-
-**Shipment ↔ Inventory** · B: 2 writers on `inventory_reserved` · C: same commit at 580ms
-
-→ Must fix the pattern before extracting.
-
-*The Extraction Readiness verdict comes next.*
-</Callout>
+<EvidenceStack
+  exhibits="A · Contracts|B · Database|C · Transactions"
+  rows="Shipment ↔ Carrier::⚠ circular refs|✗ shared tables|✗✗ 2,103/wk · same commit||Shipment ↔ Inventory::—|✗ 2 writers on inventory_reserved|✗✗ 4,512/wk · 580ms"
+  caption="Each lens confirms the previous. The findings don't disappear — they harden."
+/>
 
 </div>
 </Split>
