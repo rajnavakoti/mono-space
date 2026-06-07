@@ -1107,9 +1107,30 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 > Six months of commits across all services — because <mark>files that change together are coupled, even if the architecture diagram doesn't show it.</mark>
 
+<Split ratio="3:1">
+<div>
+
 <RankedBars max="100" bars="OrderController + ShipmentService::72::red|DeliveryScheduler + InventoryChecker::68::red|PricingEngine + OrderValidator::54::amber|InvoiceGenerator + OrderEventHandler::41::yellow|CustomerAddressValidator (solo)::89::green" />
 
-**1,415 commits · 334 files · 6 months.** 47 file pairs co-change >10%. 4 cross-service pairs flagged >40% — ranked above. **1 pair >70%** — the strongest dead-boundary signal yet, never shown on any architecture diagram.
+</div>
+<div>
+
+**1,415** commits
+
+**334** files
+
+**6** months
+
+---
+
+**47** pairs co-change >10%
+
+**4** cross-service pairs >40%
+
+**1** pair >70% — the strongest dead-boundary signal yet, never on any architecture diagram
+
+</div>
+</Split>
 
 <Notes>
 "Pull six months of commits across all services — because files that change together are coupled, even if the architecture diagram doesn't show it. About 1,400 commits. 334 files touched. Shipment is the most active codebase, Tracking the least — which lines up with the contract age signal from Exhibit A. 47 file pairs co-change more than 10% of the time. Four of those pairs cross service boundaries — that's where coupling lives that nobody declared. Now look at the ranked bars. OrderController and ShipmentService — 72% co-change. Nearly three quarters of the time a developer touches one, they also touch the other. DeliveryScheduler and InventoryChecker — 68%. Nobody mentioned this dependency in any previous exhibit. Git found it. PricingEngine and OrderValidator — 54%. Extract pricing last, not first — it's coupled to every order change. And CustomerAddressValidator — changes alone 89% of the time. The Consignee context IS genuinely independent. Confirmed now by 7 exhibits."
@@ -1122,16 +1143,16 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 > Check if git contradicts previous exhibits — because <mark>git reveals development coupling that transaction data and API contracts can't see — and it can override earlier conclusions.</mark>
 
 <ContradictionReveal
-  earlierExhibit="Exhibit C"
-  earlierClaim="Carrier Integration: 🟢 READY | Clean internal transactions. | Transaction boundary is clean. | Ready to extract."
-  laterExhibit="Exhibit G"
-  laterFinding="Carrier Integration: 🔴 NOT READY | 72% co-change with Shipment | Every PR that touches one requires changes in the other."
-  connector="but git overruled…"
-  punchline="The transaction boundary is clean. The development reality isn't. | Git overruled Exhibit C. | This is why you need 7 lenses — it took the seventh to catch what the third missed."
+  earlierExhibit="After 6 exhibits"
+  earlierClaim="Carrier · 🟡 Delivery Aggregate is clean | Internal transactions are clean | Extraction blocked by Shipment | …but we don't know what the relationship IS."
+  laterExhibit="Exhibit G names it"
+  laterFinding="Carrier · 🔴 Shared Kernel with Shipment | 72% co-change | Every PR that touches one requires changes in the other | The boundary doesn't exist in dev practice."
+  connector="and git names it…"
+  punchline="Six exhibits surfaced the COUPLING. | The seventh named the RELATIONSHIP — a Shared Kernel. | Govern, split with ACL, or merge — the 72% says merge."
 />
 
 <Notes>
-"Check if git contradicts previous exhibits — because git reveals development coupling that transaction data and API contracts can't see. One override. Exhibit C gave Carrier Integration a green light — clean transactions, ready to extract. We were confident. Then we opened the git history. 72% co-change with Shipment. Every PR that touches one requires changes in the other. The transaction boundary is clean. The development reality isn't. Git overruled Exhibit C. This is why you need 7 lenses — one artifact can mislead you. It took the seventh lens to catch what the third lens missed."
+"Check if git contradicts previous exhibits — or more precisely, if git can NAME a relationship the earlier exhibits could only describe. After six exhibits we knew Carrier had a clean Delivery Aggregate internally — but extraction was blocked by Shipment's cross-service co-writes. We didn't have a name for what kind of relationship that was. Then we opened git. 72% co-change with Shipment. Every PR that touches one requires changes in the other. That's a Shared Kernel — Evans's word for two contexts that share state and evolve together. In DDD you have three options for a Shared Kernel: govern it explicitly, split it with an Anti-Corruption Layer between them, or merge them into one bounded context. The 72% co-change says splitting will fail. The merge is the honest move. The earlier exhibits found the COUPLING. Git's job was to NAME the relationship. This is why you need 7 lenses — each one says something different about the same boundary."
 </Notes>
 
 ---
