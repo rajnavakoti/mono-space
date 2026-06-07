@@ -528,7 +528,7 @@ const STATUS_CLASS: Record<Status, string> = {
 function parseVersion(raw: string | number): BoundedContextMapVersion {
   const n = Number.parseInt(String(raw), 10);
   if (!Number.isFinite(n) || n < 0) return 0;
-  if (n > 8) return 8;
+  if (n > 7) return 7;
   return n as BoundedContextMapVersion;
 }
 
@@ -775,17 +775,6 @@ export function BoundedContextMap({ version }: Props) {
             );
           })}
 
-          {/* v0.8 only: ghost-of-Shipment + ghost-of-Carrier struck-through */}
-          {v === 8 && (
-            <g className={styles.statusRed}>
-              <text x={290} y={155} className={styles.mergedGhostLabel} textAnchor="middle">
-                <tspan className={styles.mergedStrike}>Shipment</tspan>
-              </text>
-              <text x={590} y={155} className={styles.mergedGhostLabel} textAnchor="middle">
-                <tspan className={styles.mergedStrike}>Carrier</tspan>
-              </text>
-            </g>
-          )}
 
           {/* Exhibit tag in the top-right corner of the canvas — small
               anchor so the audience always knows which exhibit just landed. */}
