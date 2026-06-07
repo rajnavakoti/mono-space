@@ -1240,22 +1240,16 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
 
 ## The Remembered Domain vs The Encoded Domain
 
-<Split ratio="1:1">
-<div>
-
-**What the team remembers: 3 contexts**
-
-<ContentCard title="FROM EVENT STORMING" accent="amber" items="ORDER CONTEXT — everything starts here: orders + delivery + inventory + pricing, WAREHOUSE CONTEXT — stock and location, CUSTOMER CONTEXT — profile and address" />
-
-</div>
-<div>
-
-**What the system encoded: 7 contexts**
-
-<ContentCard title="FROM FORENSIC EVIDENCE" accent="green" items="Order — lifecycle only, Delivery — independent lifecycle (Exhibits A + C), Invoicing — own lifecycle including dunning (Exhibit D), Inventory — needs its own transactional boundary (Exhibits C + E), Returns/Policy — rules scattered across services (Exhibit F), Customer — source of truth nobody uses properly (Exhibit B), Warehouse — split-shipment orchestration (Exhibit F)" />
-
-</div>
-</Split>
+<ContextCountReveal
+  leftLabel="What the team remembers"
+  leftSource="From Event Storming"
+  leftContexts="Order|Warehouse|Customer"
+  leftAccent="amber"
+  rightLabel="What the system encoded"
+  rightSource="From forensic evidence"
+  rightContexts="Order|Delivery|Invoicing|Inventory|Returns/Policy|Customer|Warehouse"
+  rightAccent="green"
+/>
 
 <Notes>
 "[SLOW DOWN. This is the moment.] Two models. Side by side. The team remembered 3 contexts. The system encoded 7. Delivery is its own context — not part of Order. Invoicing has its own lifecycle. Returns and Policy is a missing context — its rules are scattered. Customer is a source of truth nobody actually uses through its API. And Inventory needs its own transactional boundary — the coupling proved by 23 incidents and 12,847 error code fires per year. [Pause. Let it land. This is the conference clip.]"

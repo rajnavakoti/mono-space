@@ -1,0 +1,135 @@
+/* ContextCountReveal — two SVG context clusters side by side.
+   Same visual register as <BoundedContextMap />: stroked circles, no
+   fills, monospace labels. The PUNCH is the count: 3 vs 7. */
+
+.figure {
+  --ccr-text: var(--color-text, #111);
+  --ccr-text-muted: var(--color-text-muted, #999);
+  --ccr-bg: var(--color-bg, #FFF);
+  --ccr-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --ccr-amber: #C9A96E;
+  --ccr-green: #6E9B6E;
+  --ccr-red: #B26464;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 18px auto;
+  width: 100%;
+  max-width: 1200px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 18px 22px;
+  border: 2px solid var(--ccr-text);
+  background: var(--ccr-bg);
+}
+
+.panelHeader {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.panelLabel {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ccr-text);
+}
+
+.panelMeta {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.panelCount {
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ccr-text);
+}
+
+.panelCountWord {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ccr-text-muted);
+  margin-top: 2px;
+}
+
+.panelSource {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ccr-text-muted);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  display: block;
+}
+
+.circle {
+  fill: var(--circle-fill, transparent);
+  stroke: var(--circle-stroke, var(--ccr-text));
+  stroke-width: 2.5;
+}
+
+.label {
+  fill: var(--ccr-text);
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Tone modifiers — set the stroke + a soft fill via CSS variables so
+   we don't duplicate the geometry per colour. */
+.toneAmber {
+  --circle-stroke: var(--ccr-amber);
+  --circle-fill: color-mix(in srgb, var(--ccr-amber) 18%, transparent);
+}
+
+.toneAmber .label {
+  fill: var(--ccr-text);
+}
+
+.toneGreen {
+  --circle-stroke: var(--ccr-green);
+  --circle-fill: color-mix(in srgb, var(--ccr-green) 16%, transparent);
+}
+
+.toneGreen .label {
+  fill: var(--ccr-text);
+}
+
+.toneRed {
+  --circle-stroke: var(--ccr-red);
+  --circle-fill: color-mix(in srgb, var(--ccr-red) 16%, transparent);
+}
+
+.toneNeutral {
+  --circle-stroke: var(--ccr-text);
+  --circle-fill: transparent;
+}

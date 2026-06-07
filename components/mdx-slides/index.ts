@@ -36,6 +36,7 @@ export { EvidenceStack } from "./EvidenceStack";
 export { FossilizedEvents } from "./FossilizedEvents";
 export { RuntimeFlow } from "./RuntimeFlow";
 export { OrderTimeline } from "./OrderTimeline";
+export { ContextCountReveal } from "./ContextCountReveal";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -75,6 +76,7 @@ import { EvidenceStack } from "./EvidenceStack";
 import { FossilizedEvents } from "./FossilizedEvents";
 import { RuntimeFlow } from "./RuntimeFlow";
 import { OrderTimeline } from "./OrderTimeline";
+import { ContextCountReveal } from "./ContextCountReveal";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -121,4 +123,5 @@ export const mdxSlideComponents = {
   FossilizedEvents,
   RuntimeFlow,
   OrderTimeline,
+  ContextCountReveal,
 };
