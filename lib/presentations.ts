@@ -94,6 +94,10 @@ export interface MdxPresentationFrontmatter {
   photos?: string[];
   videoId?: string;
   videoTitle?: string;
+  /** When true, the slide-count chrome (e.g. "12 / 65") is hidden in the
+   *  viewer. Useful for conference decks where audiences shouldn't see how
+   *  many slides remain. Prev/next buttons still render. */
+  hideSlideCount?: boolean;
 }
 
 export interface MdxPresentationRaw {

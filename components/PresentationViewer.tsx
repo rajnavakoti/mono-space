@@ -9,9 +9,16 @@ interface PresentationViewerProps {
   slides: ReactNode[];
   notes: (string | undefined)[];
   slug: string;
+  /** Hide the "12 / 65" counter chrome (conference-deck convention). */
+  hideSlideCount?: boolean;
 }
 
-export function PresentationViewer({ slides, notes: slideNotes, slug }: PresentationViewerProps) {
+export function PresentationViewer({
+  slides,
+  notes: slideNotes,
+  slug,
+  hideSlideCount = false,
+}: PresentationViewerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -164,9 +171,11 @@ export function PresentationViewer({ slides, notes: slideNotes, slug }: Presenta
             &larr;
           </button>
 
-          <span className={styles.counter} aria-live="polite">
-            {currentSlide} / {totalSlides}
-          </span>
+          {!hideSlideCount && (
+            <span className={styles.counter} aria-live="polite">
+              {currentSlide} / {totalSlides}
+            </span>
+          )}
 
           <button
             className={styles.navButton}
@@ -210,20 +219,23 @@ export function PresentationViewer({ slides, notes: slideNotes, slug }: Presenta
         </div>
       )}
 
-      {/* Progress Bar */}
-      <div
-        className={styles.progressBar}
-        role="progressbar"
-        aria-valuenow={currentSlide}
-        aria-valuemin={1}
-        aria-valuemax={totalSlides}
-        aria-label="Slide progress"
-      >
+      {/* Progress Bar — also leaks "how far through the deck" so it
+          hides together with the counter under `hideSlideCount`. */}
+      {!hideSlideCount && (
         <div
-          className={styles.progressFill}
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+          className={styles.progressBar}
+          role="progressbar"
+          aria-valuenow={currentSlide}
+          aria-valuemin={1}
+          aria-valuemax={totalSlides}
+          aria-label="Slide progress"
+        >
+          <div
+            className={styles.progressFill}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
     </div>
   );
 }
