@@ -57,9 +57,16 @@ describe("BoundedContextMap", () => {
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });
 
-  it("at v5 Consignee flips to clean ✓ (tech-debt '0 incidents' lives in legend, not circle)", () => {
+  it("at v5 Consignee flips to a qualified clean — boundary holds, Conformists still remain", () => {
     render(<BoundedContextMap version="5" />);
-    expect(screen.getByText("clean ✓")).toBeInTheDocument();
+    // Earlier "clean ✓" was too triumphant — the Bounded Context holds
+    // under load but the 3 Conformist consumers from Exhibit B haven't
+    // been fixed. The qualified verdict ("clean boundary" + "3
+    // Conformists remain") keeps the visual progress (still green
+    // status) while staying intellectually honest.
+    expect(screen.getByText("clean boundary")).toBeInTheDocument();
+    expect(screen.getByText("3 Conformists remain")).toBeInTheDocument();
+    expect(screen.queryByText("clean ✓")).not.toBeInTheDocument();
     // '0 incidents' is a tech-debt metric — should NOT appear inside
     // the Consignee circle.
     expect(screen.queryByText("0 incidents")).not.toBeInTheDocument();

@@ -280,9 +280,13 @@ function consigneeFindings(v: number): string[] {
   // v=2 legend strip + speaker notes; the circle just carries the
   // verdict so the text fits inside the smaller Consignee shape.
   if (v >= 3 && v <= 4) return ["0 events", "facade", "ext blocked"];
-  // v0.5+ — confirmed clean. 'clean ✓' carries the DDD verdict; the
-  // raw '0 incidents' metric belongs in the legend, not the circle.
-  return ["clean ✓"];
+  // v0.5+ — incident lens reveals 0 incidents at this boundary, so the
+  // Bounded Context holds operationally. BUT the 3 Conformist consumers
+  // from Exhibit B haven't been fixed — they're still reading the table
+  // directly. Same intellectual-honesty discipline as Carrier at v=3:
+  // the boundary IS clean (visual stays green), but the integration
+  // pattern still needs work, so the text carries the qualifier.
+  return ["clean boundary", "3 Conformists remain"];
 }
 function inventoryFindings(v: number): string[] {
   // v0.2 — Exhibit B surfaces the disputed-aggregate hypothesis from the
