@@ -49,7 +49,10 @@ describe("BoundedContextMap", () => {
     // bypassing Consignee's API) make true extraction impossible at v=3.
     expect(screen.queryByText("extractable ✓")).not.toBeInTheDocument();
     expect(screen.getByText("ext blocked by Ship")).toBeInTheDocument();
-    expect(screen.getByText("ext blocked · 3 Conformists")).toBeInTheDocument();
+    // Consignee shows just "ext blocked" — the "3 Conformists" detail
+    // lives in the v=2 legend strip and speaker notes (it doesn't fit
+    // inside the smaller Consignee circle).
+    expect(screen.getByText("ext blocked")).toBeInTheDocument();
     // BLOCKED ✗ appears on Shipment AND Inventory.
     expect(screen.getAllByText("BLOCKED ✗").length).toBeGreaterThanOrEqual(2);
   });

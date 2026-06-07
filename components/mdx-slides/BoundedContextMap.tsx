@@ -276,10 +276,10 @@ function consigneeFindings(v: number): string[] {
   // v0.3-v0.4 — facade verdict carries forward without the struck-through
   // historical hypothesis. Consignee's INTERNAL commits are clean (C's
   // transaction lens) but the 3 Conformist consumers established at B
-  // mean it can't be extracted independently — they'd have to migrate
-  // off the table-direct reads first. "ext blocked · 3 Conformists"
-  // is more honest than "extractable ✓".
-  if (v >= 3 && v <= 4) return ["0 events", "facade", "ext blocked · 3 Conformists"];
+  // block independent extraction. The Conformist detail lives in the
+  // v=2 legend strip + speaker notes; the circle just carries the
+  // verdict so the text fits inside the smaller Consignee shape.
+  if (v >= 3 && v <= 4) return ["0 events", "facade", "ext blocked"];
   // v0.5+ — confirmed clean. 'clean ✓' carries the DDD verdict; the
   // raw '0 incidents' metric belongs in the legend, not the circle.
   return ["clean ✓"];
