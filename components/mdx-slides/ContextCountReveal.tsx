@@ -145,24 +145,46 @@ function Panel({ label, source, contexts, tone }: PanelProps) {
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid meet"
       >
-        {positions.map((p, i) => (
-          <g key={i}>
-            <circle
-              cx={p.cx}
-              cy={p.cy}
-              r={p.r}
-              className={styles.circle}
-            />
-            <text
-              x={p.cx}
-              y={p.cy + 4}
-              className={styles.label}
-              textAnchor="middle"
-            >
-              {contexts[i]}
-            </text>
-          </g>
-        ))}
+        {positions.map((p, i) => {
+          // Font shrinks for tighter clusters so labels stay readable
+          // without overflowing the circle outline.
+          const fontSize = p.r >= 50 ? 14 : p.r >= 42 ? 12 : 11;
+          // Long labels with a `/` (e.g. "Returns/Policy") split onto
+          // two stacked lines so they actually fit inside the circle.
+          const text = contexts[i];
+          const parts = text.split("/");
+          const multiline = parts.length > 1;
+          return (
+            <g key={i}>
+              <circle
+                cx={p.cx}
+                cy={p.cy}
+                r={p.r}
+                className={styles.circle}
+              />
+              <text
+                x={p.cx}
+                y={p.cy + 4}
+                className={styles.label}
+                textAnchor="middle"
+                fontSize={fontSize}
+              >
+                {multiline ? (
+                  <>
+                    <tspan x={p.cx} dy="-0.4em">
+                      {parts[0]}
+                    </tspan>
+                    <tspan x={p.cx} dy="1.2em">
+                      /{parts.slice(1).join("/")}
+                    </tspan>
+                  </>
+                ) : (
+                  text
+                )}
+              </text>
+            </g>
+          );
+        })}
       </svg>
     </div>
   );
