@@ -48,6 +48,55 @@
   align-items: start;
 }
 
+/* ── v=3 only — two-column primary layout ─────────────────────────── */
+/* The default vertical stack (declared+silent grid → fossilized →
+   missing) runs off the bottom of the slide at v=3 when all four
+   sections render. Two columns put fossilized + missing BESIDE the
+   declared section instead of below it. */
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 6px;
+}
+
+.twoColumnLeft {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.twoColumnRight {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* In the narrower right column the fossilized groups need to stack
+   vertically rather than the default 1fr 1fr horizontal grid. */
+.twoColumnRight .fossilizedGroups {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* Section headers inside the right column run a touch smaller so all
+   three sub-sections fit without crowding. */
+.twoColumnRight .sectionCount {
+  font-size: 22px;
+}
+
+.twoColumnRight .fossilized {
+  margin-top: 0;
+  padding-top: 12px;
+}
+
+.twoColumnRight .missing {
+  margin-top: 0;
+  padding-top: 10px;
+}
+
 .declared,
 .silent {
   display: flex;

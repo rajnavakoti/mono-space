@@ -221,98 +221,134 @@ export function EventCatalog({ version }: EventCatalogProps = {}) {
     return acc;
   }, {});
 
+  // v=3 (Exhibit D final) renders FOUR sections — declared / silent /
+  // fossilized / missing — and the default vertical stack runs off the
+  // bottom of the slide. Switch to a two-column primary layout: declared
+  // on the LEFT (the biggest section), and silent + fossilized + missing
+  // stacked on the RIGHT.
+  const useTwoColumn = v === 3;
+
+  const declaredSection = (
+    <section className={styles.declared}>
+      <header className={styles.sectionHeader}>
+        <span className={`${styles.sectionCount} ${styles.countDeclared}`}>
+          {declaredCount}
+        </span>
+        <span className={styles.sectionLabel}>declared</span>
+      </header>
+      {data.declared.map((d) => (
+        <div key={d.domain} className={styles.domainBlock}>
+          <div className={styles.domainName}>
+            {d.domain}
+            <span className={styles.domainCount}>({d.events.length})</span>
+          </div>
+          <ul className={styles.eventList}>
+            {d.events.map((e) => (
+              <li key={e} className={styles.eventItem}>{e}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+
+  const silentSection = (
+    <section className={styles.silent}>
+      <header className={styles.sectionHeader}>
+        <span className={`${styles.sectionCount} ${styles.countSilent}`}>
+          {data.silent.length}
+        </span>
+        <span className={styles.sectionLabel}>silent · 0 events each</span>
+      </header>
+      <ul className={styles.silentList}>
+        {data.silent.map((s) => (
+          <li key={s} className={styles.silentItem}>{s}</li>
+        ))}
+      </ul>
+    </section>
+  );
+
+  const fossilizedSection = data.fossilized && data.fossilized.length > 0 && (
+    <section className={styles.fossilized}>
+      <header className={styles.sectionHeader}>
+        <span className={`${styles.sectionCount} ${styles.countFossilized}`}>
+          {data.fossilized.length}
+        </span>
+        <span className={styles.sectionLabel}>
+          fossilized ·{" "}
+          {v === 2
+            ? "new from Exhibit C"
+            : "system records, never publishes"}
+        </span>
+      </header>
+      <div className={styles.fossilizedGroups}>
+        {Object.entries(fossilizedByTable).map(([table, events]) => (
+          <div key={table} className={styles.fossilizedGroup}>
+            <div className={styles.fossilizedGroupHeader}>
+              From <code>{table}</code>:
+            </div>
+            <ul className={styles.fossilizedList}>
+              {events.map((f) => (
+                <li key={f.source} className={styles.fossilizedItem}>
+                  <code className={styles.fossilizedSource}>{f.source}</code>
+                  <span className={styles.fossilizedArrow}>→</span>
+                  <span className={styles.fossilizedEvent}>{f.event}</span>
+                  {f.flag && (
+                    <span className={styles.fossilizedFlag}>⚠ {f.flag}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+
+  const missingSection = data.stillMissing && data.stillMissing.length > 0 && (
+    <section className={styles.missing}>
+      <span className={styles.missingHeader}>
+        <strong>{data.stillMissing.length} events</strong> we still have no evidence for:
+      </span>
+      <span className={styles.missingList}>
+        {data.stillMissing.join(" · ")}
+      </span>
+    </section>
+  );
+
+  if (useTwoColumn) {
+    return (
+      <figure className={styles.figure}>
+        <header className={styles.header}>
+          <div className={styles.title}>{t.title}</div>
+          <div className={styles.subtitle}>{t.subtitle}</div>
+        </header>
+        <div className={styles.twoColumn}>
+          <div className={styles.twoColumnLeft}>{declaredSection}</div>
+          <div className={styles.twoColumnRight}>
+            {silentSection}
+            {fossilizedSection}
+            {missingSection}
+          </div>
+        </div>
+      </figure>
+    );
+  }
+
+  // Default (v=1, v=2) — vertical stack: header → grid(declared+silent)
+  // → fossilized (if any) → missing (if any).
   return (
     <figure className={styles.figure}>
       <header className={styles.header}>
         <div className={styles.title}>{t.title}</div>
         <div className={styles.subtitle}>{t.subtitle}</div>
       </header>
-
       <div className={styles.grid}>
-        <section className={styles.declared}>
-          <header className={styles.sectionHeader}>
-            <span className={`${styles.sectionCount} ${styles.countDeclared}`}>
-              {declaredCount}
-            </span>
-            <span className={styles.sectionLabel}>declared</span>
-          </header>
-          {data.declared.map((d) => (
-            <div key={d.domain} className={styles.domainBlock}>
-              <div className={styles.domainName}>
-                {d.domain}
-                <span className={styles.domainCount}>({d.events.length})</span>
-              </div>
-              <ul className={styles.eventList}>
-                {d.events.map((e) => (
-                  <li key={e} className={styles.eventItem}>{e}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
-
-        <section className={styles.silent}>
-          <header className={styles.sectionHeader}>
-            <span className={`${styles.sectionCount} ${styles.countSilent}`}>
-              {data.silent.length}
-            </span>
-            <span className={styles.sectionLabel}>silent · 0 events each</span>
-          </header>
-          <ul className={styles.silentList}>
-            {data.silent.map((s) => (
-              <li key={s} className={styles.silentItem}>{s}</li>
-            ))}
-          </ul>
-        </section>
+        {declaredSection}
+        {silentSection}
       </div>
-
-      {data.fossilized && data.fossilized.length > 0 && (
-        <section className={styles.fossilized}>
-          <header className={styles.sectionHeader}>
-            <span className={`${styles.sectionCount} ${styles.countFossilized}`}>
-              {data.fossilized.length}
-            </span>
-            <span className={styles.sectionLabel}>
-              fossilized ·{" "}
-              {v === 2
-                ? "new from Exhibit C"
-                : "system records, never publishes"}
-            </span>
-          </header>
-          <div className={styles.fossilizedGroups}>
-            {Object.entries(fossilizedByTable).map(([table, events]) => (
-              <div key={table} className={styles.fossilizedGroup}>
-                <div className={styles.fossilizedGroupHeader}>
-                  From <code>{table}</code>:
-                </div>
-                <ul className={styles.fossilizedList}>
-                  {events.map((f) => (
-                    <li key={f.source} className={styles.fossilizedItem}>
-                      <code className={styles.fossilizedSource}>{f.source}</code>
-                      <span className={styles.fossilizedArrow}>→</span>
-                      <span className={styles.fossilizedEvent}>{f.event}</span>
-                      {f.flag && (
-                        <span className={styles.fossilizedFlag}>⚠ {f.flag}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {data.stillMissing && data.stillMissing.length > 0 && (
-        <section className={styles.missing}>
-          <span className={styles.missingHeader}>
-            <strong>{data.stillMissing.length} events</strong> we still have no evidence for:
-          </span>
-          <span className={styles.missingList}>
-            {data.stillMissing.join(" · ")}
-          </span>
-        </section>
-      )}
+      {fossilizedSection}
+      {missingSection}
     </figure>
   );
 }
