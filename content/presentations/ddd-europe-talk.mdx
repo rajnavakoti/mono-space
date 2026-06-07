@@ -348,11 +348,9 @@ Find the same concept in two services — because when both services model the s
 
 ## Translation map v0.1 — extracted from 6 contracts
 
-> Six services. One human. Five names.
+> Six services. One human. Five names. <mark>**Ubiquitous Language**</mark> drift across <mark>**Bounded Contexts**</mark>. Consignee = candidate **System of Record**.
 
 <TranslationMap version="1" />
-
-> *<mark>**Ubiquitous Language**</mark> drift across <mark>**Bounded Contexts**</mark>: 5 names for one person, 4 for the address. Consignee = candidate **System of Record**.*
 
 <Notes>
 "Translation map building in parallel with the context map. What does each service call the same concept? Six contracts gave us two rows. The person — buyer, customer, recipient, account, user. Five unique names across six services. Inventory and Tracking both say 'user' — but Inventory's user is who requested the reservation, Tracking's user is who gets notified. Same name, different concept. Consignee has twenty fields for its customer, everyone else has between one and three — that's the system-of-record signal. The address — four flavours, different fields per context. Sparse by design. This grows every time a new exhibit surfaces a concept. By Act 3 it becomes the system's Rosetta Stone."
@@ -362,11 +360,9 @@ Find the same concept in two services — because when both services model the s
 
 ## Event catalog v0.1 — what services chose to announce
 
-> 13 declared. 4 services silent.
+> 13 declared. 4 services silent. Each declared event = part of that context's <mark>**Published Language**</mark>. The 4 silent services force <mark>**Conformist**</mark> consumers via synchronous coupling.
 
 <EventCatalog version="1" />
-
-> *Each declared event = part of that context's <mark>**Published Language**</mark>. The 4 silent services force <mark>**Conformist**</mark> consumers via synchronous coupling.*
 
 <Notes>
 "Third artifact building alongside the context map and translation map — the event catalog. Walk every AsyncAPI contract and list the events each service declares. Shipment's domain announces six — Order placed, confirmed, cancelled, lines added, fulfilment started, completed. Carrier's domain announces seven — Shipment created, picked up, in transit, out for delivery, delivered, failed, returned. Thirteen events total. Now look at who's silent. Consignee, Invoicing, Inventory, Tracking — zero events declared. Four out of six services publish nothing. That's not because they don't HAVE domain events. It's a choice about visibility. The next exhibit asks: what events do they track internally even when they don't publish? Contracts told us what they declare. Next we open the database to see what they hide."
@@ -655,9 +651,9 @@ Exhibit C shows: WHEN they fire and WHAT ELSE changes at that moment.
 
 ## Event catalog v0.2 — what the database tracks but never publishes
 
-<EventCatalog version="2" />
+> 6 <mark>**Domain Events**</mark> fossilised in database timestamps. Invoicing tracks them in code — its <mark>**Published Language**</mark> is still empty.
 
-> *6 <mark>**Domain Events**</mark> fossilised in database timestamps. Invoicing tracks them in code — its <mark>**Published Language**</mark> is still empty.*
+<EventCatalog version="2" />
 
 <Notes>
 "Event catalog grew. Six events fossilized in the database — four from orders timestamps: confirmed_at to OrderConfirmed, shipped_at to OrderShipped, delivered_at to OrderDelivered, cancelled_at to OrderCancelled. Two from invoices timestamps: paid_at to InvoicePaid, issued_at to InvoiceIssued. And look at Invoicing — it declared zero events in its contracts, but it has paid_at and issued_at. It tracks when payments and invoices happen — it just never tells anyone. The database knew. The contracts didn't. Four events we still have no evidence for anywhere — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded, InventoryReserved. Exhibit D will surface some of those in the logs."
@@ -872,9 +868,9 @@ The edge cases nobody mentioned in Event Storming:
 
 ## Event catalog v0.3 — final
 
-<EventCatalog version="3" />
+> 22 <mark>**Domain Events**</mark> total. 9 silent = missing <mark>**Published Language**</mark>. 3 with no evidence anywhere = take to domain experts.
 
-> *22 <mark>**Domain Events**</mark> total. 9 silent = missing <mark>**Published Language**</mark>. 3 with no evidence anywhere = take to domain experts.*
+<EventCatalog version="3" />
 
 <Notes>
 "This is the event catalog after four lenses. Thirteen events declared in the AsyncAPI contracts at Exhibit A. Six fossilized in database timestamps from Exhibit C — Invoicing's paid_at and issued_at among them, despite contracts saying Invoicing publishes nothing. Three more fossilized in production logs from Exhibit D — InventoryReserved at 11,891 a day, InvoiceGenerated at 11,402, RefundProcessed at 156. Twenty-two known events total. Only thirteen of them are published anywhere. Nine the system records every single day and tells nobody. And three we still have no evidence for in any source — ConsigneeRegistered, AddressChanged, LoyaltyTierUpgraded. Those go to the domain experts as 'should this exist? Who should own it?' That's the artifact the audience walks out of this exercise with."
@@ -1155,11 +1151,9 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ## Translation map v0.2 — enriched with business rules from error codes
 
-> Nine rules nobody wrote down. We just found them all.
+> Nine rules nobody wrote down. DEL-E011 = <mark>**misplaced invariant**</mark> — belongs to Returns / Policy. Migration via <mark>**Anti-Corruption Layer**</mark>. 9 hidden **Aggregate** invariants recovered from error codes.
 
 <TranslationMap version="2" />
-
-> *DEL-E011 = <mark>**misplaced invariant**</mark> — belongs to Returns / Policy. Migration via <mark>**Anti-Corruption Layer**</mark>. 9 hidden <mark>**Aggregate**</mark> invariants recovered from error codes.*
 
 <Notes>
 "Same artifact, five exhibits later. The translation map now has six rows. Delivery and bill have clear systems of record — Carrier owns Shipment with 9 states; Invoicing owns Invoice with 7. The reservation belongs to Inventory. The return — DEL-E011 — lives in Carrier and shouldn't. That's the misplaced concept. And below the table, the recovered business rules. Nine of them, pulled out of error codes, never written down. Price tolerance 2%, four-hour SLA, ten-thousand-euro cap, return windows by category. Production has run on these for years and none of them are in any spec. When you take this list to domain experts, the rules are often the biggest surprise — they didn't know the system was enforcing them. Next lens — change velocity. What does git history reveal about our boundaries?"
@@ -1319,9 +1313,9 @@ Check how many errors become incidents — because <mark>the ratio tells you the
 
 ## The System's Rosetta Stone
 
-<TranslationMap version="3" parts="rules" />
+> Vocabulary view of the <mark>**Context Map**</mark> across 7 <mark>**Bounded Contexts**</mark>. Where the <mark>**Ubiquitous Language**</mark> fractured — and now reads.
 
-> *Vocabulary view of the <mark>**Context Map**</mark> across 7 <mark>**Bounded Contexts**</mark>. Where the <mark>**Ubiquitous Language**</mark> fractured — and now reads.*
+<TranslationMap version="3" parts="rules" />
 
 <Notes>
 "This is what the translation map becomes when you've worked all seven lenses. Seven rows. The payment got added — paymentStatus in Shipment, Payment in Invoicing. The return row finally points to where it belongs — Returns/Policy. And below the table, the nine rules we recovered from the error codes. Price tolerance 2%, four-hour SLA, ten-thousand-euro cap, return windows by category. Production has run on these for years and none of them are in any spec. No translation map existed in this organisation. This is it. Now click — let's count what's in the room."
