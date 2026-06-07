@@ -3,8 +3,14 @@ import { JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
+
+// Inline no-flash theme script — runs synchronously on first paint to
+// pick up the stored theme before React hydrates, preventing the brief
+// light->dark flicker on dark-mode preferences. Kept as a raw string +
+// dangerouslySetInnerHTML on a real <script> in <head> (the only way
+// to guarantee blocking pre-hydration execution).
+const themeScript = `(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();`;
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -51,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={jetbrainsMono.variable} suppressHydrationWarning>
       <head>
-        <ThemeScript />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         <ThemeProvider>
