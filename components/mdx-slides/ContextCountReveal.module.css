@@ -1,6 +1,6 @@
-/* ContextCountReveal — two SVG context clusters side by side.
-   Same visual register as <BoundedContextMap />: stroked circles, no
-   fills, monospace labels. The PUNCH is the count: 3 vs 7. */
+/* ContextCountReveal — two flex-wrap context grids side by side.
+   The count IS the punch (3 vs 7). Boxes carry the labels so there's
+   no overlap risk regardless of label length or context count. */
 
 .figure {
   --ccr-text: var(--color-text, #111);
@@ -23,8 +23,8 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
-  padding: 18px 22px;
+  gap: 14px;
+  padding: 22px 24px;
   border: 2px solid var(--ccr-text);
   background: var(--ccr-bg);
 }
@@ -57,7 +57,7 @@
 }
 
 .panelCount {
-  font-size: 36px;
+  font-size: 44px;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -70,7 +70,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ccr-text-muted);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .panelSource {
@@ -83,53 +83,49 @@
   color: var(--ccr-text-muted);
 }
 
-.svg {
-  width: 100%;
-  height: auto;
-  max-height: 320px;
-  display: block;
+/* Flex-wrap grid of labelled boxes. Each box centres its label and
+   sizes to its content; the grid centres them as a cluster so the
+   panel reads as one visual unit. */
+.boxGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 12px;
+  padding: 12px 8px;
+  min-height: 220px;
 }
 
-.circle {
-  fill: var(--circle-fill, transparent);
-  stroke: var(--circle-stroke, var(--ccr-text));
-  stroke-width: 2.5;
-}
-
-.label {
-  fill: var(--ccr-text);
-  font-family: var(--font-mono, "JetBrains Mono"), monospace;
-  font-size: 14px;
-  font-weight: 700;
+.contextBox {
+  border: 2px solid var(--ccr-text);
+  background: var(--box-bg, var(--ccr-bg));
+  padding: 14px 22px;
+  font-size: 16px;
+  font-weight: 800;
   letter-spacing: 0.02em;
+  color: var(--ccr-text);
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* Tone modifiers — set the stroke + a soft fill via CSS variables so
-   we don't duplicate the geometry per colour. */
-.toneAmber {
-  --circle-stroke: var(--ccr-amber);
-  --circle-fill: color-mix(in srgb, var(--ccr-amber) 18%, transparent);
+/* Tone modifiers — each box gets a soft tinted fill so the cluster
+   reads as the same colour without the labels losing contrast. */
+.toneAmber .contextBox {
+  --box-bg: color-mix(in srgb, var(--ccr-amber) 18%, transparent);
+  border-color: var(--ccr-amber);
 }
 
-.toneAmber .label {
-  fill: var(--ccr-text);
+.toneGreen .contextBox {
+  --box-bg: color-mix(in srgb, var(--ccr-green) 16%, transparent);
+  border-color: var(--ccr-green);
 }
 
-.toneGreen {
-  --circle-stroke: var(--ccr-green);
-  --circle-fill: color-mix(in srgb, var(--ccr-green) 16%, transparent);
+.toneRed .contextBox {
+  --box-bg: color-mix(in srgb, var(--ccr-red) 14%, transparent);
+  border-color: var(--ccr-red);
 }
 
-.toneGreen .label {
-  fill: var(--ccr-text);
-}
-
-.toneRed {
-  --circle-stroke: var(--ccr-red);
-  --circle-fill: color-mix(in srgb, var(--ccr-red) 16%, transparent);
-}
-
-.toneNeutral {
-  --circle-stroke: var(--ccr-text);
-  --circle-fill: transparent;
+.toneNeutral .contextBox {
+  --box-bg: var(--ccr-bg);
+  border-color: var(--ccr-text);
 }
