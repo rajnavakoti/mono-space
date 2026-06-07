@@ -446,15 +446,16 @@ Find tables with multiple writers — because two writers to the same table mean
 > Check if API boundaries match DB access — because services bypassing the API means the <mark>declared boundary is a facade.</mark>
 
 <ApiFacadeContrast
-  consumers="Shipment|Carrier|Invoicing"
+  declaredConsumers="Shipment|Carrier|Invoicing|Inventory|Tracking"
+  actualConsumers="Shipment|Carrier|Invoicing"
   apiLabel="Consignee API"
   tableLabel="customer_addresses"
-  declaredVerdict="✓ Published Language — clean upstream boundary"
-  actualVerdict="⚠ 3 Conformists bypass the API · facade"
+  declaredVerdict="✓ 5 consumers via Published Language"
+  actualVerdict="⚠ 3 Conformists bypass · API is a facade"
 />
 
 <Notes>
-"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by everyone, references nobody, a textbook published language. Now the database lens. Three services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. In strategic DDD terms, those three consumers are now in a Conformist relationship with Consignee — they conform to its internal table schema instead of its published API, because the API didn't exist when they needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. The API boundary is a facade. Three Conformists is what facade means here. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."
+"Check if API boundaries match database access — because bypassing the API means the declared boundary is a facade. Exhibit A had Consignee marked clean — referenced by all five other services, references nobody, a textbook published language. Five consumers via the API. Now the database lens. Three of those five services — Shipment, Carrier, Invoicing — read the customer_addresses table directly. They bypass the Consignee API entirely. Inventory and Tracking still use the API properly. In strategic DDD terms, those three bypass-services are in a Conformist relationship with Consignee — they conform to its internal table schema instead of its published API, because the API didn't exist when they needed the data, or it was too slow, or someone said 'just read the table' and it became permanent. The API boundary isn't a total facade — it's a partial one. Three of five consumers treat it as if it weren't there. Three Conformists is what facade means here. The database tells a different story. This is why you need multiple lenses — one artifact alone can mislead you."
 </Notes>
 
 ---

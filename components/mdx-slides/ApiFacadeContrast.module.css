@@ -45,35 +45,38 @@
   align-self: flex-start;
 }
 
-.consumerRow {
+/* Consumers laid out as columns — each column owns its consumer box
+   AND its down-arrow, so 3 vs 5 consumers both align under their own
+   arrows without any hard-coded width math. Wraps to a second row if
+   the panel is narrower than the consumer set wants. */
+.consumerGrid {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
+}
+
+.consumerColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
 .consumerBox {
   border: 2px solid var(--afc-text);
   background: var(--afc-bg);
-  padding: 10px 16px;
-  font-size: 13px;
+  padding: 8px 14px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--afc-text);
 }
 
-.arrowRow {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  margin: 2px 0;
-}
-
 .arrow {
-  width: calc((100% - 42px) / 3);
-  text-align: center;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--afc-text-muted);
   line-height: 1;

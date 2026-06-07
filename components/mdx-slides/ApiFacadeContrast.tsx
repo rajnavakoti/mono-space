@@ -23,8 +23,23 @@
 import styles from "./ApiFacadeContrast.module.css";
 
 interface ApiFacadeContrastProps {
-  /** Pipe-separated consumer service names (1-6). */
-  consumers: string;
+  /**
+   * Pipe-separated consumer names for the DECLARED panel (what the
+   * contracts say). Falls back to `consumers` if not provided so older
+   * slide markup keeps working.
+   */
+  declaredConsumers?: string;
+  /**
+   * Pipe-separated consumer names for the ACTUAL panel (what the
+   * database shows). Often a SUBSET of declaredConsumers — the
+   * services that actually bypass the API.
+   */
+  actualConsumers?: string;
+  /**
+   * Legacy single-list prop. If `declaredConsumers` and
+   * `actualConsumers` are both unset, both panels use this list.
+   */
+  consumers?: string;
   /** Label for the API box in the middle (left panel only). */
   apiLabel: string;
   /** Label for the database table at the bottom. */
@@ -90,19 +105,15 @@ function Panel({
     >
       <div className={styles.panelLabel}>{label}</div>
 
-      <div className={styles.consumerRow}>
+      {/* Each consumer is a vertical column = box on top, arrow below.
+          That way 3 and 5 consumers both align under their own arrow
+          without hard-coding a width-per-arrow calc. */}
+      <div className={styles.consumerGrid}>
         {consumers.map((c, i) => (
-          <div key={i} className={styles.consumerBox}>
-            {c}
+          <div key={i} className={styles.consumerColumn}>
+            <div className={styles.consumerBox}>{c}</div>
+            <span className={styles.arrow}>↓</span>
           </div>
-        ))}
-      </div>
-
-      <div className={styles.arrowRow}>
-        {consumers.map((_, i) => (
-          <span key={i} className={styles.arrow}>
-            ↓
-          </span>
         ))}
       </div>
 
@@ -132,19 +143,25 @@ function Panel({
 }
 
 export function ApiFacadeContrast({
+  declaredConsumers,
+  actualConsumers,
   consumers,
   apiLabel,
   tableLabel,
   declaredVerdict,
   actualVerdict,
 }: ApiFacadeContrastProps) {
-  const consumerList = consumers.split("|").map((c) => c.trim());
+  const parse = (raw?: string) =>
+    raw ? raw.split("|").map((c) => c.trim()) : [];
+
+  const declaredList = parse(declaredConsumers ?? consumers);
+  const actualList = parse(actualConsumers ?? consumers);
 
   return (
     <figure className={styles.figure}>
       <Panel
         label="DECLARED · contracts"
-        consumers={consumerList}
+        consumers={declaredList}
         apiLabel={apiLabel}
         tableLabel={tableLabel}
         verdict={declaredVerdict}
@@ -152,7 +169,7 @@ export function ApiFacadeContrast({
       />
       <Panel
         label="ACTUAL · database"
-        consumers={consumerList}
+        consumers={actualList}
         tableLabel={tableLabel}
         verdict={actualVerdict}
         variant="actual"
