@@ -31,6 +31,7 @@ export { ContractYield } from "./ContractYield";
 export { EventCatalog } from "./EventCatalog";
 export { WriteConflictDiagram } from "./WriteConflictDiagram";
 export { ApiFacadeContrast } from "./ApiFacadeContrast";
+export { ForeignKeyFan } from "./ForeignKeyFan";
 
 import { Notes } from "./Notes";
 import { Split } from "./Split";
@@ -65,6 +66,7 @@ import { ContractYield } from "./ContractYield";
 import { EventCatalog } from "./EventCatalog";
 import { WriteConflictDiagram } from "./WriteConflictDiagram";
 import { ApiFacadeContrast } from "./ApiFacadeContrast";
+import { ForeignKeyFan } from "./ForeignKeyFan";
 
 /**
  * Component map passed to compileMDX for MDX slide rendering.
@@ -106,4 +108,5 @@ export const mdxSlideComponents = {
   EventCatalog,
   WriteConflictDiagram,
   ApiFacadeContrast,
+  ForeignKeyFan,
 };

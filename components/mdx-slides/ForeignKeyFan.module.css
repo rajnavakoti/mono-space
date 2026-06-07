@@ -1,0 +1,147 @@
+/* ForeignKeyFan — one source table at top, N target tables below.
+   Visual register: source carries a soft amber tint (the "god entity"
+   that everything points back at), the trunk arrow + connector is
+   red, target boxes are neutral so the source remains the eye-catch. */
+
+.figure {
+  --fkf-text: var(--color-text, #111);
+  --fkf-text-muted: var(--color-text-muted, #999);
+  --fkf-bg: var(--color-bg, #FFF);
+  --fkf-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --fkf-amber: #C9A96E;
+  --fkf-red: #B26464;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 22px auto;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+  max-width: 720px;
+}
+
+.sourceBox {
+  border: 3px solid var(--fkf-text);
+  background: color-mix(in srgb, var(--fkf-amber) 22%, transparent);
+  padding: 14px 28px;
+  text-align: center;
+}
+
+.sourceRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fkf-text);
+}
+
+.sourceIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.sourceName {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.sourceLabel {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--fkf-text-muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.trunkRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trunkArrow {
+  font-size: 30px;
+  color: var(--fkf-red);
+  font-weight: 800;
+  line-height: 0.8;
+}
+
+.trunkLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fkf-red);
+}
+
+/* Target row — auto-fit so 2-6 targets all look balanced. The
+   `::before` on each target draws a small drop arrow above it so
+   the trunk -> branch relationship reads as a fan even without an
+   actual SVG connector. */
+.targetRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(120px, 1fr);
+  gap: 14px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.targetBox {
+  border: 2px solid var(--fkf-text);
+  background: var(--fkf-bg);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.targetBox::before {
+  content: "↓";
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--fkf-red);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.targetTableRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fkf-text);
+}
+
+.targetIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.targetTable {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.targetService {
+  font-size: 10px;
+  color: var(--fkf-text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.caption {
+  margin-top: 14px;
+  max-width: 540px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fkf-text);
+  line-height: 1.45;
+  font-style: italic;
+}

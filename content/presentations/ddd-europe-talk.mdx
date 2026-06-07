@@ -461,29 +461,29 @@ Find tables with multiple writers — because two writers to the same table mean
 
 ## Look at table structure
 
-> Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are <mark>hard coupling at the data layer.</mark>
+> Look at table structure — because cross-boundary foreign keys are <mark>hard coupling at the data layer.</mark>
 
 <Split ratio="3:2">
 <div>
 
-<CodeBlock title="schema · orders table" code="orders table — 31 columns&#10;&#10;  # Cross-boundary foreign keys:&#10;    buyer_id         → customers     (Consignee)&#10;    warehouse_id     → warehouses    (Inventory)&#10;    carrier_id       → carriers      (Carrier)&#10;    invoice_id       → invoices      (Invoicing)&#10;&#10;  4 FKs pointing to 4 other services' tables.&#10;  31 columns total." />
+<CodeBlock title="schema · orders table" highlight="3-6" code="orders table — 31 columns&#10;&#10;    buyer_id         → customers     (Consignee)&#10;    warehouse_id     → warehouses    (Inventory)&#10;    carrier_id       → carriers      (Carrier)&#10;    invoice_id       → invoices      (Invoicing)&#10;&#10;  4 FKs pointing to 4 other services' tables.&#10;  Can't migrate any of them independently." />
 
 </div>
 <div>
 
-<Callout type="warning">
-**💡 Two signals**
-
-→ **FAT TABLE — 31 columns.** God entity from Exhibit A confirmed at the database layer. Never properly decomposed.
-
-→ **CROSS-BOUNDARY FOREIGN KEYS — 4 FKs to 4 other services' tables.** Can't delete a customer without handling their orders first. Can't migrate Consignee independently. Hard coupling at the data layer.
-</Callout>
+<ForeignKeyFan
+  sourceTable="orders"
+  sourceLabel="31 columns"
+  targets="customers::Consignee|warehouses::Inventory|carriers::Carrier|invoices::Invoicing"
+  fkCount="4 FKs"
+  caption="Four foreign keys, four other services. Pull one and you have to handle the others."
+/>
 
 </div>
 </Split>
 
 <Notes>
-"Look at table structure — because fat tables are god entities at the persistence layer, and cross-boundary foreign keys are hard coupling at the data layer. The orders table has 31 columns. The god entity from Exhibit A confirmed at the database — same fat schema, same accumulation, same problem persisted. And four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. That FK ties them together at the data layer. The contracts could have hidden this — the database can't."
+"Look at table structure — because cross-boundary foreign keys are hard coupling at the data layer. The orders table has four foreign keys pointing to four other services' tables. buyer_id to Consignee. warehouse_id to Inventory. carrier_id to Carrier. invoice_id to Invoicing. You can't delete a customer without handling their orders first. You can't migrate Consignee independently. That FK ties them together at the data layer. The contracts could have hidden this — the database can't. The 31-column god-entity verdict from Exhibit A holds — the persistence layer confirmed it. But the new signal is structural: cross-boundary FKs everywhere."
 </Notes>
 
 ---
