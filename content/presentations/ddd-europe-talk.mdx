@@ -445,13 +445,12 @@ Find tables with multiple writers — because two writers to the same table mean
 
 > Check if API boundaries match DB access — because services bypassing the API means the <mark>declared boundary is a facade.</mark>
 
-<ContradictionReveal
-  earlierExhibit="Exhibit A"
-  earlierClaim="Consignee Service: clean boundary ✓ | Referenced by all. References nobody. | Published language."
-  laterExhibit="Exhibit B"
-  laterFinding="Consignee's customer_addresses table | Read directly by 3 services | Shipment, Carrier, Invoicing — all bypass the API | The boundary is a facade ✗ | Three Conformist consumers."
-  connector="but the database says…"
-  punchline="Contracts declared a boundary. The database showed it doesn't exist."
+<ApiFacadeContrast
+  consumers="Shipment|Carrier|Invoicing"
+  apiLabel="Consignee API"
+  tableLabel="customer_addresses"
+  declaredVerdict="✓ Published Language — clean upstream boundary"
+  actualVerdict="⚠ 3 Conformists bypass the API · facade"
 />
 
 <Notes>

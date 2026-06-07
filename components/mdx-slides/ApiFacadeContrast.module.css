@@ -1,0 +1,144 @@
+/* ApiFacadeContrast — two side-by-side mini-diagrams. Same consumers,
+   same table. LEFT shows the declared path through the API; RIGHT
+   shows the actual path that bypasses it. */
+
+.figure {
+  --afc-text: var(--color-text, #111);
+  --afc-text-muted: var(--color-text-muted, #999);
+  --afc-bg: var(--color-bg, #FFF);
+  --afc-bg-muted: var(--color-bg-secondary, #F5F5F5);
+  --afc-green: #6E9B6E;
+  --afc-red: #B26464;
+  --afc-amber: #C9A96E;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 20px auto;
+  max-width: 1000px;
+  font-family: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 16px;
+  border: 2px solid var(--afc-text);
+  background: var(--afc-bg);
+}
+
+/* The ACTUAL panel gets a red-left edge to read as "this is the
+   uncomfortable truth" without an emoji or icon doing the work. */
+.panelActual {
+  border-left-width: 6px;
+  border-left-color: var(--afc-red);
+}
+
+.panelLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--afc-text-muted);
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+
+.consumerRow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.consumerBox {
+  border: 2px solid var(--afc-text);
+  background: var(--afc-bg);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--afc-text);
+}
+
+.arrowRow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.arrow {
+  width: calc((100% - 30px) / 3);
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--afc-text-muted);
+  line-height: 1;
+}
+
+.apiBox {
+  margin: 4px 0;
+  border: 2px solid var(--afc-text);
+  background: var(--afc-bg-muted);
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--afc-text);
+}
+
+.singleArrow {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--afc-text-muted);
+  line-height: 0.8;
+}
+
+.tableBox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 3px solid var(--afc-green);
+  background: color-mix(in srgb, var(--afc-green) 12%, transparent);
+  padding: 10px 18px;
+  color: var(--afc-text);
+}
+
+/* The ACTUAL panel's table picks up the red accent — it's the one
+   that's being read from instead of the API. */
+.tableBoxActual {
+  border-color: var(--afc-red);
+  background: color-mix(in srgb, var(--afc-red) 12%, transparent);
+}
+
+.tableIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.tableName {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.verdict {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 4px 10px;
+}
+
+.verdictDeclared {
+  color: var(--afc-green);
+}
+
+.verdictActual {
+  color: var(--afc-red);
+  font-weight: 800;
+}
