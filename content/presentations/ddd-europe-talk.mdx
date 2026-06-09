@@ -14,7 +14,7 @@ Title slide. Let it sit for a moment. Don't rush. Take a breath.
 
 ---
 
-<SpeakerCard name="Raj Navakoti" photo="/profile pic.png" role="Staff Software Engineer" interests="Domain-Driven Design, Enterprise Architecture, AI Systems" link1="WEB — rajnavakoti.com" link2="PAPER — arxiv.org/abs/2603.14057" link3="TOOLKIT — github.com/rajnavakoti/ddd-archaeology" qrUrl="https://rajnavakoti.com" />
+<SpeakerCard name="Raj Navakoti" photo="/profile pic.png" role="Staff Software Engineer" interests="Domain-Driven Design, Enterprise Architecture, AI Systems" link1="WEB — rajnavakoti.com" link2="PAPER — arxiv.org/abs/2603.14057" link3="TOOLKIT — github.com/ea-toolkit/ddd-archaeology" qrUrl="https://rajnavakoti.com" />
 
 <Notes>
 "I'm Raj. I work in a large delivery domain — logistics, carriers, warehouses, the full complexity of getting things from A to B at enterprise scale. I've spent the past few years navigating domain complexity in systems where the original architects are long gone. Today I want to share what I've found."
@@ -139,8 +139,6 @@ Menu. Chicken symbol. One word: **POLLO**
 
 **WHAT THE STREET DEMANDS:** a method for when the experts have left, the docs are wrong, the ownership is unclear, and there's no greenfield time.
 
-<SlideImage src="/pics/textbook-vs-street.jpg" alt="The street — chaotic real-world reality where the textbook method breaks down" />
-
 </div>
 </Split>
 
@@ -150,16 +148,32 @@ Menu. Chicken symbol. One word: **POLLO**
 
 ---
 
-## Seven lenses · one hypothesis
+## The system I'll walk you through
 
-<BigStat value="7" label="artifacts" />
+> *A delivery platform. 6 services. 1 shared database. ~160 columns. 28 domain entities. 13 domain events. 3 black boxes.*
 
-<BigStat value="7" label="lenses" />
+It calls itself microservices. The database says otherwise.
 
-<BigStat value="1" label="hypothesis" tone="amber" punchline="Every exhibit adds evidence. Every slide moves the model." />
+**A distributed monolith.** The complexity of distribution with none of the independence. 12 years of accumulated decisions, team changes, and architectural drift.
+
+A data architect tried to build canonical data models — top-down, from domain knowledge. It took months. The API specs already existed. The contracts were already written. *"Why start from scratch?"*
 
 <Notes>
-"Seven artifacts. Seven different lenses. Each one reveals what the others can't. Every exhibit adds evidence to a hypothesis about where the boundaries are. At the end, we reconcile what the system says with what the team remembers. Let's start with the most obvious artifact. The one hiding in plain sight. The API contracts. Exhibit A."
+"The system I'll walk you through today — a delivery platform. 6 services, each with its own API contract. Sounds like microservices on the architecture diagram. But they share one database. They write to each other's tables. This is a distributed monolith — the complexity of distribution with none of the independence. A data architect on the team was building canonical data models top-down. It was taking months. And I kept looking at the API specs already sitting in the repo. Why start from scratch when the system already encoded the model? That question became 7 forensic techniques."
+</Notes>
+
+---
+
+## Seven lenses · one hypothesis
+
+<CompareTable headers="Exhibit|Artifact|One Word" rows="A|API Contracts|**Boundaries**||B|Database Schema|**Ownership**||C|Transactions|**Aggregates**||D|Production Logs|**Behavior**||E|Incidents|**Cost**||F|Error Codes|**Rules**||G|Git History|**Coupling**" />
+
+Every exhibit adds evidence. Every slide moves the model.
+
+`github.com/ea-toolkit/ddd-archaeology` — open-source toolkit to try these patterns on your own system.
+
+<Notes>
+"Seven artifacts. Seven lenses. Here's the roadmap for the next 35 minutes. Boundaries, Ownership, Aggregates, Behavior, Cost, Rules, Coupling. Each one reveals what the others can't. Every exhibit adds evidence to a hypothesis about where the real domain boundaries are. At the end, we reconcile what the system says with what the team remembers. If any of this resonates — the toolkit is open source. You can point it at your own contracts and schemas after the talk. Let's start with the most obvious artifact. The API contracts. Exhibit A."
 </Notes>
 
 ---
@@ -763,7 +777,7 @@ Identify services that appear in the flow but were never mentioned — because <
 <Split ratio="2:3">
 <div>
 
-<SlideImage src="/pics/silent-participant.jpg" alt="Silent participant — the unseen actor in every flow" />
+<SlideImage src="/pics/I see what you did there cat.jpg" alt="I see what you did there — the silent participant watching everything" />
 
 </div>
 <div>
@@ -1225,12 +1239,12 @@ Six exhibits surfaced the coupling between Shipment and Carrier. *We never named
 
 ---
 
-## 5 names · 9 rules · 7 events
+## 5 names · 9 rules · 22 events
 
 <TranslationMap version="3" parts="summary" />
 
 <Notes>
-"Five names for one person — buyer, customer, recipient, account, user. Five names the audience watched fracture across six contracts in Exhibit A, the same person every time. Nine rules nobody wrote down — every one of them pulled out of an error code, running in production right now. Seven domain events the system tracks every single day and tells nobody — four fossilised in the database, three in the logs. That is the cost of no translation map. Five names, nine rules, seven events. We didn't build this artifact — the system already knew it. We just made it readable. From here, we draw the new map."
+"Five names for one person — buyer, customer, recipient, account, user. Five names the audience watched fracture across six contracts in Exhibit A. Nine rules nobody wrote down — every one pulled out of an error code, running in production right now. And twenty-two domain events — thirteen declared in contracts, six fossilized in database timestamps, three found only in the logs. Nine of those twenty-two the system tracks every day and tells nobody. Plus three more that SHOULD exist but we found no evidence anywhere — including AddressChanged, which explains 342 address mismatches. Five names, nine rules, twenty-two events. We didn't build this artifact — the system already knew it. We just made it readable. From here, we draw the new map."
 </Notes>
 
 ---
@@ -1274,13 +1288,21 @@ Experts build the model **from memory**. Expensive. Incomplete. Immediately star
 
 Experts **react to evidence**. Faster. Grounded. Gaps are visible, not assumed.
 
-The system tells the domain story back to us.
-
 </div>
 </Split>
 
+**What artifacts can't tell you — and only people can:**
+
+- Why a business rule exists (the 2% tolerance — regulation? a past incident? a guess?)
+- Which boundaries are intentional vs accidental
+- What the business WANTS to become vs what the system currently does
+- Political and organizational constraints that shaped the architecture
+- Domain language nuance — is "account" intentionally different from "customer"?
+
+**Artifacts show you what IS. People tell you what SHOULD BE. You need both.**
+
 <Notes>
-"Before I close — let me be clear about what this is and isn't. Forensic DDD is not a replacement for Event Storming. It's a preparation for it. Event Storming is expensive — fifteen people in a room for two days costs real money. If you walk in with blank stickies and ask 'how does the system work?' — you get memory. Expensive, incomplete memory that immediately starts drifting. If you walk in with a hypothesis v0.7 and ask 'is THIS how it works?' — you get reactions to evidence. Faster. Grounded. The gaps are visible, not assumed. These two things complement each other. They don't compete."
+"Before I close — let me be clear about what this is and isn't. Forensic DDD is not a replacement for Event Storming. It's a preparation for it. Event Storming is expensive — fifteen people in a room for two days costs real money. If you walk in with blank stickies and ask 'how does the system work?' — you get memory. If you walk in with hypothesis v0.7 and ask 'is THIS how it works?' — you get reactions to evidence. But here's what's critical — artifacts can't tell you everything. They can't tell you WHY a business rule exists. They can't tell you which boundaries are intentional versus accidental. They can't tell you what the business wants to become. They can't tell you the political and organizational constraints. Only people can express the business problems, the intent, the direction. Artifacts show you what IS. People tell you what SHOULD BE. You need both. These two methods complement each other. They don't compete."
 </Notes>
 
 ---
@@ -1391,7 +1413,7 @@ Your legacy system has been leaving artifacts on the table for years.
 
 **The toolkit is open source.**
 
-`github.com/rajnavakoti/ddd-archaeology`
+`github.com/ea-toolkit/ddd-archaeology`
 
 7 CLI commands. Synthetic dataset. Chain-of-thought documentation.
 
@@ -1408,7 +1430,7 @@ Point it at your own contracts, schemas, and logs.
 
 ---
 
-<TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/rajnavakoti/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
+<TitleCard badge="THANK YOU" subtitle="rajnavakoti.com · github.com/ea-toolkit/ddd-archaeology">Raj Navakoti — @rajnavakoti</TitleCard>
 
 <Notes>
 Final slide — the goodbye after the pollo callback + checklist Q&A. Stay up while people clap or approach for questions. If time remains, take questions from the checklist slide. If not: "I'll be outside — find me."
