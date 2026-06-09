@@ -150,16 +150,30 @@ Menu. Chicken symbol. One word: **POLLO**
 
 ## The system I'll walk you through
 
-> *A delivery platform. 6 services. 1 shared database. ~160 columns. 28 domain entities. 13 domain events. 3 black boxes.*
+<Split ratio="3:2">
+<div>
 
-It calls itself microservices. The database says otherwise.
+- 30-year-old delivery domain
+- Multiple markets · millions of daily transactions
+- 6 services · 1 shared database · 3 black boxes
+- Original builders gone
 
-**A distributed monolith.** The complexity of distribution with none of the independence. 12 years of accumulated decisions, team changes, and architectural drift.
+**Calls itself microservices. The database says otherwise.**
 
-A data architect tried to build canonical data models — top-down, from domain knowledge. It took months. The API specs already existed. The contracts were already written. *"Why start from scratch?"*
+Too big to understand from one diagram. Too coupled to trust the boundaries. Too critical to rewrite.
+
+*This was not a greenfield modelling exercise. It was a forensic investigation.*
+
+</div>
+<div>
+
+<SlideImage src="/pics/antikythera.jpg" alt="The Antikythera mechanism — ancient complexity recovered through forensic archaeology" />
+
+</div>
+</Split>
 
 <Notes>
-"The system I'll walk you through today — a delivery platform. 6 services, each with its own API contract. Sounds like microservices on the architecture diagram. But they share one database. They write to each other's tables. This is a distributed monolith — the complexity of distribution with none of the independence. A data architect on the team was building canonical data models top-down. It was taking months. And I kept looking at the API specs already sitting in the repo. Why start from scratch when the system already encoded the model? That question became 7 forensic techniques."
+"Before we open any artifact — here's the kind of system we were dealing with. A 30-year-old delivery domain. Multiple markets. Millions of daily transactions. Six services, one shared database, and three black boxes we couldn't see inside. The original builders are gone. On paper it says microservices. In reality — something much messier. Too big to understand from one diagram. Too coupled to trust the service boundaries. Too critical to rewrite. So this was never going to be a clean top-down modelling exercise. It had to be forensic."
 </Notes>
 
 ---
@@ -170,7 +184,7 @@ A data architect tried to build canonical data models — top-down, from domain 
 
 Every exhibit adds evidence. Every slide moves the model.
 
-`github.com/ea-toolkit/ddd-archaeology` — open-source toolkit to try these patterns on your own system.
+<mark>`github.com/ea-toolkit/ddd-archaeology` — open-source toolkit to try these patterns on your own system.</mark>
 
 <Notes>
 "Seven artifacts. Seven lenses. Here's the roadmap for the next 35 minutes. Boundaries, Ownership, Aggregates, Behavior, Cost, Rules, Coupling. Each one reveals what the others can't. Every exhibit adds evidence to a hypothesis about where the real domain boundaries are. At the end, we reconcile what the system says with what the team remembers. If any of this resonates — the toolkit is open source. You can point it at your own contracts and schemas after the talk. Let's start with the most obvious artifact. The API contracts. Exhibit A."
