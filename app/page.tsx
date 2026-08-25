@@ -2,7 +2,6 @@ import Image from "next/image";
 import { profile } from "@/content/profile";
 import { TypingEffect } from "@/components/TypingEffect";
 import { SvgIllustration } from "@/components/SvgIllustration";
-import { TerminalSnippet } from "@/components/TerminalSnippet";
 import { GeoPattern } from "@/components/GeoPattern";
 import { DotMatrix } from "@/components/DotMatrix";
 import { SkillsChart } from "@/components/SkillsChart";

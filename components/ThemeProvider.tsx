@@ -5,10 +5,13 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
 } from "react";
 
 type Theme = "dark" | "light";
+
+const STORAGE_KEY = "theme";
+const DEFAULT_THEME: Theme = "dark";
 
 interface ThemeContextValue {
   theme: Theme;
@@ -25,26 +28,48 @@ export function useTheme(): ThemeContextValue {
   return context;
 }
 
+// localStorage is external mutable state, so it is read through a store
+// rather than copied into state inside an effect. useSyncExternalStore
+// serves the server snapshot during hydration and swaps to the stored value
+// immediately after, which keeps the markup hydration-safe.
+const listeners = new Set<() => void>();
+
+function notifyListeners() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+function subscribe(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  // Keep other tabs in sync.
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function getSnapshot(): Theme {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored === "light" || stored === "dark" ? stored : DEFAULT_THEME;
+}
+
+function getServerSnapshot(): Theme {
+  return DEFAULT_THEME;
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-    }
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+  }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next: Theme = getSnapshot() === "dark" ? "light" : "dark";
+    localStorage.setItem(STORAGE_KEY, next);
+    notifyListeners();
   }, []);
 
   return (

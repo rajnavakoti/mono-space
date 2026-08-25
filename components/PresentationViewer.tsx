@@ -214,7 +214,7 @@ export function PresentationViewer({
       {/* Speaker Notes */}
       {showNotes && notes && (
         <div className={styles.notesPanel} aria-label="Speaker notes">
-          <h3 className={styles.notesTitle}>// notes</h3>
+          <h3 className={styles.notesTitle}>{"// notes"}</h3>
           <p className={styles.notesText}>{notes}</p>
         </div>
       )}

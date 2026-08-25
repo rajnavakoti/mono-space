@@ -17,6 +17,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
       - run: npm test -- --silent
 
       # Also runs tsc — type errors fail the build, same as the deploy job.

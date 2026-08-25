@@ -68,16 +68,23 @@ export function SkillsChart({ groups }: SkillsChartProps) {
   const lineStartR = r + 5;
   const lineEndR = r + 30;
 
-  let cumulative = 0;
+  const degreesFor = (group: SkillGroup) => (group.items.length / total) * 360;
+
+  // Running start angle per group, accumulated in order so the arc geometry
+  // matches a sequential sweep.
+  const startAngles = groups.reduce<number[]>(
+    (acc, group) => [...acc, acc[acc.length - 1] + degreesFor(group)],
+    [0],
+  );
+
   const slices = groups.map((group, i) => {
-    const pct = (group.items.length / total) * 360;
-    const startAngle = cumulative;
-    cumulative += pct;
+    const pct = degreesFor(group);
+    const startAngle = startAngles[i];
     const midAngle = startAngle + pct / 2;
     return {
       ...group,
       startAngle,
-      endAngle: cumulative,
+      endAngle: startAngle + pct,
       midAngle,
       pattern: PATTERNS[i % PATTERNS.length],
       color: COLORS[i % COLORS.length],

@@ -20,7 +20,7 @@ export default function PresentationsPage() {
         </span>
       </div>
       {presentations.length === 0 ? (
-        <p className={styles.empty}>// no presentations yet</p>
+        <p className={styles.empty}>{"// no presentations yet"}</p>
       ) : (
         <ul className={styles.list}>
           {presentations.map((pres) => (
