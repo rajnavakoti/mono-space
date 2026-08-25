@@ -37,16 +37,23 @@ export function PieChart({ slices, annotations }: PieChartProps) {
   const cy = pieSize / 2;
   const r = pieSize / 2 - 6;
 
-  let angle = -Math.PI / 2;
+  const toRadians = (percent: number) => (percent / 100) * Math.PI * 2;
 
-  const sliceData = items.map((item) => {
-    const sliceAngle = (item.percent / 100) * Math.PI * 2;
-    const startAngle = angle;
-    const x1 = cx + r * Math.cos(angle);
-    const y1 = cy + r * Math.sin(angle);
-    angle += sliceAngle;
-    const x2 = cx + r * Math.cos(angle);
-    const y2 = cy + r * Math.sin(angle);
+  // Running start angle per slice, accumulated in order so the geometry is
+  // identical to a sequential sweep. Starts at 12 o'clock.
+  const startAngles = items.reduce<number[]>(
+    (acc, item) => [...acc, acc[acc.length - 1] + toRadians(item.percent)],
+    [-Math.PI / 2],
+  );
+
+  const sliceData = items.map((item, i) => {
+    const sliceAngle = toRadians(item.percent);
+    const startAngle = startAngles[i];
+    const endAngle = startAngle + sliceAngle;
+    const x1 = cx + r * Math.cos(startAngle);
+    const y1 = cy + r * Math.sin(startAngle);
+    const x2 = cx + r * Math.cos(endAngle);
+    const y2 = cy + r * Math.sin(endAngle);
     const large = sliceAngle > Math.PI ? 1 : 0;
     const midAngle = startAngle + sliceAngle / 2;
     const d = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;

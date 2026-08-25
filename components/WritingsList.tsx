@@ -102,7 +102,7 @@ export function WritingsList({ writings, allTags }: WritingsListProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className={styles.empty}>// no writings matching this filter</p>
+        <p className={styles.empty}>{"// no writings matching this filter"}</p>
       ) : (
         <ul className={styles.postList}>
           {filtered.map((writing) => (

@@ -26,7 +26,7 @@ describe("HeatmapMatrix", () => {
   });
 
   it("applies the row-highlight class to the matching row header", () => {
-    const { container } = render(
+    render(
       <HeatmapMatrix
         labels="A|B|C"
         rowNames="Alpha|Beta|Gamma"

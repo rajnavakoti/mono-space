@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { getAllSlugs, getWritingBySlug } from "@/lib/writings";
@@ -97,9 +98,9 @@ export default async function WritingPage({ params }: PageProps) {
       <div className={styles.content}>{content}</div>
 
       <footer className={styles.footer}>
-        <a href="/writings" className={styles.backLink}>
+        <Link href="/writings" className={styles.backLink}>
           &larr; cd /writings
-        </a>
+        </Link>
       </footer>
     </article>
   );

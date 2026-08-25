@@ -42,11 +42,22 @@ export function TerminalSnippet({ lines, className }: TerminalSnippetProps) {
 
     if (currentChar < line.length) {
       timerRef.current = setTimeout(() => {
-        setCurrentChar((prev) => prev + 1);
+        const nextChar = currentChar + 1;
+        setCurrentChar(nextChar);
+        // Finish the line inside the timer chain. Doing it synchronously in
+        // the effect body cascades an extra render on every completed line.
+        if (nextChar === line.length) {
+          setDisplayedLines((prev) => [...prev, line]);
+          setIsPaused(true);
+        }
       }, 50);
     } else {
-      setDisplayedLines((prev) => [...prev, line]);
-      setIsPaused(true);
+      // Only reachable if `lines` changes mid-animation and leaves
+      // currentChar past the end of the new line.
+      timerRef.current = setTimeout(() => {
+        setDisplayedLines((prev) => [...prev, line]);
+        setIsPaused(true);
+      }, 0);
     }
 
     return cleanup;
