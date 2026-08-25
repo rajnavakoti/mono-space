@@ -15,10 +15,10 @@ describe("BigStat", () => {
 
   it("applies the tone class for amber/red/green", () => {
     const { rerender, container } = render(<BigStat value="1" tone="amber" />);
-    expect(container.firstChild?.className).toMatch(/toneAmber/);
+    expect(container.firstElementChild?.className).toMatch(/toneAmber/);
     rerender(<BigStat value="1" tone="red" />);
-    expect(container.firstChild?.className).toMatch(/toneRed/);
+    expect(container.firstElementChild?.className).toMatch(/toneRed/);
     rerender(<BigStat value="1" tone="green" />);
-    expect(container.firstChild?.className).toMatch(/toneGreen/);
+    expect(container.firstElementChild?.className).toMatch(/toneGreen/);
   });
 });
