@@ -128,6 +128,14 @@ export const profile: Profile = {
   ],
   speaking: [
     {
+      title: "Reverse-Engineering Domain-Driven Architecture",
+      event: "Code Europe",
+      date: "2026-09-15",
+      location: "Warsaw, Poland",
+      upcoming: true,
+      url: "/presentations/code-europe-talk",
+    },
+    {
       title: "Enterprise Context Management",
       event: "Create With",
       date: "2026-06-25",
